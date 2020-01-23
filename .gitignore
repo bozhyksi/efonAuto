@@ -2,3 +2,4 @@
 /e-fon-auto.iml
 target/
 *.iml
+test-result/
