@@ -9,9 +9,18 @@ import org.testng.annotations.Test;
 @Listeners(CustomListeners.class)
 
 public class LoginPageTests extends BaseTestMethods {
-    @Test
-    public static void loginTest(){
-        Assert.assertTrue(false);
-        System.out.println("test");
+
+    @Test(groups = {"regression", "smoke", "loginPageTests"})
+    public void loginTest(){
+        loginPage.fillInLogin(getLogin());
+        loginPage.fillInPassword(getPassword());
+        loginPage.clickLoginButton();
+
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

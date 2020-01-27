@@ -1,8 +1,9 @@
 package pages.basePage;
 
-import org.openqa.selenium.By;
+import core.configuration.fields.Fields;
 
-public class BasePage {
+public class BasePage extends Fields {
 
+    //private String
 
 }

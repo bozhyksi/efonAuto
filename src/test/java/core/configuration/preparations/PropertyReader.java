@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public final class PropertyReader {
+public class PropertyReader {
 
     public static String readProperty(String propName, String fileName){
                 String filePath = "target/classes/"+fileName;

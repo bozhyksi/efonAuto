@@ -9,7 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <baseUrl>http://192.168.102.162:9090/portal/login</baseUrl>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <suitName>regression</suitName>
+        <folder>regression</folder>
     </properties>
 
     <build>
@@ -25,6 +29,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
+                <configuration>
+                    <suiteXmlFiles>src\test\java\testSuitsXML\${folder}\${suitName}.xml</suiteXmlFiles>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -43,5 +50,30 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+
+        <profile>
+            <id>qa</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <baseUrl>http://192.168.102.162:9090/portal/login</baseUrl>
+                <login>Conference@qq.aa</login>
+                <password>Login123!!!</password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

@@ -44,6 +44,6 @@ public class Fields implements IFields {
 
     public SelenideElement getChildren(String parent, int id, String child, int childId) {
         locator = parent + "[" + id + "]" + child;
-        return $$(By.xpath(locator)).get();
+        return $$(By.xpath(locator)).get(childId);
     }
 }

@@ -1,5 +1,6 @@
 package core.configuration.preparations;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import core.configuration.driver.DriverConfigurator;
 import org.testng.annotations.AfterMethod;
@@ -11,7 +12,15 @@ import static core.configuration.preparations.PropertyReader.readProperty;
 
 public class PreparationsForRun extends DriverConfigurator {
 
-    private String getBaseURL(){
+    public String getLogin(){
+        return readProperty("login", "core.properties");
+    }
+
+    public String getPassword(){
+        return readProperty("password", "core.properties");
+    }
+
+    public String getBaseURL(){
         baseUrl = readProperty("baseUrl", "core.properties");
         return baseUrl;
     }
