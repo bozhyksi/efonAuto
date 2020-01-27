@@ -3,3 +3,6 @@
 target/
 *.iml
 test-result/
+.allure/
+allure-report/
+allure-results/
