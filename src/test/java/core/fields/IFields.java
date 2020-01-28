@@ -1,7 +1,6 @@
-package core.configuration.fields;
+package core.fields;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 public interface IFields {

@@ -1,20 +1,14 @@
-package core.configuration.customListeners;
+package core.customListeners;
 
-import com.codeborne.selenide.WebDriverRunner;
-import core.configuration.driver.DriverConfigurator;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.testng.internal.Configuration;
 
-import java.io.File;
-import java.io.IOException;
-
-import static core.configuration.preparations.PropertyReader.copyPropertiesFile;
 import static core.configuration.preparations.ReportPreparations.setAllureEnvProperties;
 import static core.configuration.screen.ScreenShotMaker.*;
 
 public class CustomListeners implements ITestListener {
+
     public void onTestStart(ITestResult iTestResult) {
 
     }

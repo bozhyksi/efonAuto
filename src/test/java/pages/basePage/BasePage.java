@@ -1,7 +1,7 @@
 package pages.basePage;
 
 import com.codeborne.selenide.SelenideElement;
-import core.configuration.fields.Fields;
+import core.fields.Fields;
 
 public class BasePage extends Fields {
 

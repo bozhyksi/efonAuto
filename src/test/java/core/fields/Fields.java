@@ -1,4 +1,4 @@
-package core.configuration.fields;
+package core.fields;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
