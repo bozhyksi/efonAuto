@@ -27,7 +27,7 @@ public class LoginPageTests extends BaseTestMethods {
 
         step("Verify if user was logged in");
         basePage.getButtonLogout().shouldBe(visible);
-        basePage.getMainMenu().shouldBe(visible);
+        basePage.formAdministration().shouldBe(visible);
 
         step("Click Logout");
         basePage.clickButtonLogout();
