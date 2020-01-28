@@ -1,11 +1,18 @@
 package core.configuration.customListeners;
 
+import com.codeborne.selenide.WebDriverRunner;
+import core.configuration.driver.DriverConfigurator;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.internal.Configuration;
 
-import static core.configuration.screen.ScreenShotMaker.makeScreenShot;
+import java.io.File;
+import java.io.IOException;
+
+import static core.configuration.preparations.PropertyReader.copyPropertiesFile;
+import static core.configuration.preparations.ReportPreparations.setAllureEnvProperties;
+import static core.configuration.screen.ScreenShotMaker.*;
 
 public class CustomListeners implements ITestListener {
     public void onTestStart(ITestResult iTestResult) {
@@ -17,7 +24,8 @@ public class CustomListeners implements ITestListener {
     }
 
     public void onTestFailure(ITestResult iTestResult) {
-        makeScreenShot(iTestResult.getName()+" "+iTestResult.getTestClass()+" "+iTestResult.getEndMillis());
+        String fileName = iTestResult.getName()+iTestResult.getEndMillis();
+        attachment(fileName);
     }
 
     public void onTestSkipped(ITestResult iTestResult) {
@@ -33,6 +41,6 @@ public class CustomListeners implements ITestListener {
     }
 
     public void onFinish(ITestContext iTestContext) {
-
+        setAllureEnvProperties();
     }
 }

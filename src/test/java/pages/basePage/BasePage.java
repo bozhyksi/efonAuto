@@ -12,6 +12,15 @@ public class BasePage extends Fields {
     private String dropdownHelpItemKnowledgeDatabaseXpath = "//*[@class=\"dropdown open\"]//a[text()='Knowledge database']";
     private String dropdownHelpItemSupportRequestXpath = "//*[@class=\"dropdown open\"]//a[text()='Support request']";
     private String linkUserNameXpath = "//div[@class=\"col-xs-7\"]//a[@href=\"/portal/contact-data\"]";
+    private String divMainMenu = "//main-menu//*[@id=\"navbar-collapse\"]";
+
+    public SelenideElement getMainMenu() {
+        return field(divMainMenu);
+    }
+
+    public SelenideElement getButtonLogout() {
+        return field(buttonLogoutXpath);
+    }
 
     public void clickButtonLogout(){
         field(buttonLogoutXpath).click();
