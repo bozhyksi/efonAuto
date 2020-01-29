@@ -6,3 +6,4 @@ test-result/
 .allure/
 allure-report/
 allure-results/
+build/

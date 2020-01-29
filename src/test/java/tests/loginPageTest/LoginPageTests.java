@@ -23,18 +23,38 @@ public class LoginPageTests extends BaseTestMethods {
         loginPage.fillInPassword(getPassword());
 
         step("Click Login button");
-        loginPage.clickLoginButton();
+        loginPage.getButtonLogin().click();
 
         step("Verify if user was logged in");
         basePage.getButtonLogout().shouldBe(visible);
         basePage.formAdministration().shouldBe(visible);
 
         step("Click Logout");
-        basePage.clickButtonLogout();
+        basePage.getButtonLogout().click();
 
         step("Verify if user was logged out");
         loginPage.getButtonLogin().shouldBe(visible);
         loginPage.getInputLoginField().shouldBe(visible);
         loginPage.getInputPasswordField().shouldBe(visible);
+    }
+
+    @Description("Verify if user can NOT login with incorrect credentials")
+    @Test(groups = {"regression", "smoke", "loginPageTests"})
+    public void loginTestNOT(){
+        step("Fill in Login with incorrect data");
+        loginPage.fillInLogin(getRandomEmail());
+
+        step("Fill in Pass with incorrect data");
+        loginPage.fillInPassword(getRandomPassword());
+
+        step("Click Login button");
+        loginPage.getButtonLogin().click();
+        loginPage.getButtonLogin().click(); // workaround, need to be investigated. If leave only one click - it does not work!
+
+        step("Verify if user was NOT logged");
+        loginPage.getButtonLogin().shouldBe(visible);
+        loginPage.getInputLoginField().shouldBe(visible);
+        loginPage.getInputPasswordField().shouldBe(visible);
+        loginPage.getMessageLoginError().shouldBe(visible);
     }
 }

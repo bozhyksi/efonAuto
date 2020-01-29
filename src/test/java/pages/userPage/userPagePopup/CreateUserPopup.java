@@ -1,5 +1,6 @@
 package pages.userPage.userPagePopup;
 
+import com.codeborne.selenide.SelenideElement;
 import pages.userPage.UserPage;
 
 public class CreateUserPopup extends UserPage {
@@ -9,7 +10,7 @@ public class CreateUserPopup extends UserPage {
     private String dropdownTitleXpath = "//create-user//select[@formcontrolname=\"salutation\"]";
     private String inputFirstNameXpath = "//create-user//input[@formcontrolname=\"firstName\"]";
     private String inputLastNameXpath = "//create-user//input[@formcontrolname=\"lastName\"]";
-    private String inputEmailXpath = "//create-user//input[@formcontrolname=\"loginEmail\"]";
+    private String inputLoginEmailXpath = "//create-user//input[@formcontrolname=\"loginEmail\"]";
     private String checkboxUseDiffContactEmailXpath = "//create-user//input[@formcontrolname=\"useDifferentContactEmail\"]";
     private String inputDiffContactEmailXpath = "//create-user//input[@formcontrolname=\"useDifferentContactEmail\"]";
     private String inputUseVoiceEmailEmailXpath = "//create-user//input[@formcontrolname=\"voicemailEmail\"]";
@@ -29,7 +30,119 @@ public class CreateUserPopup extends UserPage {
     private String buttonCloseXpath = "//button[@aria-label=\"Close\"]";
     //</editor-fold>
 
-    gettit
 
+    //<editor-fold desc="//-- CreateUserPopup get/set methods --//">
+    public SelenideElement getPopupTitle() {
+        return field(popupTitleXpath);
+    }
+
+    public SelenideElement getDropdownTitle() {
+        return field(dropdownTitleXpath);
+    }
+
+    public SelenideElement getInputFirstName() {
+        return field(inputFirstNameXpath);
+    }
+
+    public SelenideElement getInputLastName() {
+        return field(inputLastNameXpath);
+    }
+
+    public SelenideElement getInputLoginEmail() {
+        return field(inputLoginEmailXpath);
+    }
+
+    public SelenideElement getCheckboxUseDiffContactEmail() {
+        return field(checkboxUseDiffContactEmailXpath);
+    }
+
+    public SelenideElement getInputDiffContactEmail() {
+        return field(inputDiffContactEmailXpath);
+    }
+
+    public SelenideElement getCheckboxUseVoiceEmail() {
+        return field(checkboxUseVoiceEmailXpath);
+    }
+
+    public SelenideElement getInputUseVoiceEmailEmail() {
+        return field(inputUseVoiceEmailEmailXpath);
+    }
+
+    public SelenideElement getDropdownNumber() {
+        return field(dropdownNumberXpath);
+    }
+
+    public SelenideElement getDropdownEndDevices() {
+        return field(dropdownEndDevicesXpath);
+    }
+
+    public SelenideElement getCheckboxBusyOnBusy() {
+        return field(checkboxBusyOnBusyXpath);
+    }
+
+    public SelenideElement getDropdownAbbreviatedNumbers() {
+        return field(dropdownAbbreviatedNumbersXpath);
+    }
+
+    public SelenideElement getDropdownPermittedDestNumbers() {
+        return field(dropdownPermittedDestNumbersXpath);
+    }
+
+    public SelenideElement getCheckboxSmsEnabled() {
+        return field(checkboxSmsEnabledXpath);
+    }
+
+    public SelenideElement getCheckboxFaxEnabled() {
+        return field(checkboxFaxEnabledXpath);
+    }
+
+    public SelenideElement getCheckboxRoleFinance() {
+        return field(checkboxRoleFinanceXpath);
+    }
+
+    public SelenideElement getCheckboxActivateCallRecording() {
+        return field(checkboxActivateCallRecordingXpath);
+    }
+
+    public SelenideElement getDropdownCallRecordingDirection() {
+        return field(dropdownCallRecordingDirectionXpath);
+    }
+
+    public SelenideElement getButtonSave() {
+        return field(buttonSaveXpath);
+    }
+
+    public SelenideElement getButtonCancel() {
+        return field(buttonCancelXpath);
+    }
+
+    public SelenideElement getButtonClose() {
+        return field(buttonCloseXpath);
+    }
+    //</editor-fold>
+
+    public void selectTitle(String value){
+        getDropdownTitle().selectOption(value);
+    }
+
+    public void fillFirstName(String val){
+        getInputFirstName().setValue(val);
+    }
+
+    public void fillLastName(String val){
+        getInputLastName().setValue(val);
+    }
+
+    public void fillLoginEmail(String val){
+        getInputLoginEmail().setValue(val);
+    }
+
+    public void selectNumber(){
+        getDropdownNumber().selectOption(1);
+    }
+
+    public void selectEndDevices(){
+        getDropdownEndDevices().selectOption(1);
+    }
 
 }

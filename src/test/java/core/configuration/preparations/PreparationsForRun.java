@@ -1,6 +1,5 @@
 package core.configuration.preparations;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import core.configuration.driver.DriverConfigurator;
 import org.testng.annotations.AfterMethod;
@@ -34,5 +33,6 @@ public class PreparationsForRun extends DriverConfigurator {
     @AfterMethod(alwaysRun = true)
     public void closeBrowser(){
         WebDriverRunner.getWebDriver().quit();
+        driver = null;
     }
 }

@@ -26,6 +26,9 @@ public class DriverConfigurator {
     private ChromeOptions chromeOptions(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
+        options.addArguments("--test-type");
+        options.addArguments("--disable-notifications");
+        options.addArguments("--auto-open-devtools-for-tabs");
         Configuration.timeout = maxTimeWait;
         return options;
     }

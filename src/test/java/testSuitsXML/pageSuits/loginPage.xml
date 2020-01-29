@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+        <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Login Page Test Suite">
-    <test verbose="2" preserve-order="true" name="Login Page Test">
-        <groups>
-            <run>
-                <include name="loginPageTests"></include>
-            </run>
-        </groups>
-        <classes>
-            <class name="tests.loginPageTest.LoginPageTests"></class>
-        </classes>
-    </test>
+<test verbose="2" preserve-order="true" name="Login Page Test">
+    <groups>
+        <run>
+            <include name="loginPageTests"></include>
+        </run>
+    </groups>
+    <classes>
+        <class name="tests.loginPageTest.LoginPageTests"></class>
+    </classes>
+</test>
 </suite>

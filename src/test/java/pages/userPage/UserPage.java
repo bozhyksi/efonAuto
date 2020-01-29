@@ -56,6 +56,8 @@ public class UserPage extends BasePage {
     }
     //</editor-fold>
 
-
+    public void checkPageTitle(String val){
+        getPageTitle().getText().equals(val);
+    }
 
 }

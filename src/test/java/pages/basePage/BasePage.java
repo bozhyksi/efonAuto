@@ -1,6 +1,5 @@
 package pages.basePage;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
 
@@ -20,22 +19,22 @@ public class BasePage extends Fields {
 
     //Administration panel
     private String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
-    private String linkUserXpath = "//a[@href=\"/portal/user\"]";
-    private String linkNumbersXpath = "//a[@href=\"/portal/numbers\"]";
-    private String linkSubscriptionsXpath = "//a[@href=\"/portal/abos\"]";
-    private String linkLastCallsXpath = "//a[@href=\"/portal/last-calls\"]";
-    private String linkFaxXpath = "//a[@href=\"/portal/fax\"]";
-    private String linkIVRsXpath = "//a[@href=\"/portal/ivrs\"";
-    private String linkAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers\"]";
-    private String linkCallPickUpsXpath = "//a[@href=\"/portal/call-intercept-groups\"]";
-    private String linkFileManagementXpath = "//a[@href=\"/portal/file-management\"]";
-    private String linkCallForwardingXpath = "href=\"/portal/call-forwarding\"";
-    private String linkHuntGroupsXpath = "//a[@href=\"/portal/hunt-groups\"]";
-    private String linkConferenceCallsXpath = "//a[@href=\"/portal/conference-calls\"]";
-    private String linkQueuesXpath = "//a[@href=\"/portal/call-queues\"]";
-    private String linkEndDevicesXpath = "//a[@href=\"/portal/end-devices\"]";
-    private String linkRecordedCallsXpath = "//a[@href=\"/portal/recorded-calls\"]";
-    private String linkContactDataXpath = "//a[@href=\"/portal/contact-data\"][text()='Contact data']";
+    private String tabUserXpath = "//a[@href=\"/portal/user\"]";
+    private String tabNumbersXpath = "//a[@href=\"/portal/numbers\"]";
+    private String tabSubscriptionsXpath = "//a[@href=\"/portal/abos\"]";
+    private String tabLastCallsXpath = "//a[@href=\"/portal/last-calls\"]";
+    private String tabFaxXpath = "//a[@href=\"/portal/fax\"]";
+    private String tabIVRsXpath = "//a[@href=\"/portal/ivrs\"";
+    private String tabAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers\"]";
+    private String tabCallPickUpsXpath = "//a[@href=\"/portal/call-intercept-groups\"]";
+    private String tabFileManagementXpath = "//a[@href=\"/portal/file-management\"]";
+    private String tabCallForwardingXpath = "href=\"/portal/call-forwarding\"";
+    private String tabHuntGroupsXpath = "//a[@href=\"/portal/hunt-groups\"]";
+    private String tabConferenceCallsXpath = "//a[@href=\"/portal/conference-calls\"]";
+    private String tabQueuesXpath = "//a[@href=\"/portal/call-queues\"]";
+    private String tabEndDevicesXpath = "//a[@href=\"/portal/end-devices\"]";
+    private String tabRecordedCallsXpath = "//a[@href=\"/portal/recorded-calls\"]";
+    private String tabContactDataXpath = "//a[@href=\"/portal/contact-data\"][text()='Contact data']";
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
@@ -44,68 +43,68 @@ public class BasePage extends Fields {
         return field(alertErrorMsgXpath);
     }
 
-    public SelenideElement getLinkContactData() {
-        return field(linkContactDataXpath);
+    public SelenideElement getTabContactData() {
+        return field(tabContactDataXpath);
     }
 
-    public SelenideElement getLinkRecordedCalls() {
-        return field(linkRecordedCallsXpath);
+    public SelenideElement getTabRecordedCalls() {
+        return field(tabRecordedCallsXpath);
     }
 
-    public SelenideElement getLinkEndDevices() {
-        return field(linkEndDevicesXpath);
+    public SelenideElement getTabEndDevices() {
+        return field(tabEndDevicesXpath);
     }
 
-    public SelenideElement getLinkQueues() {
-        return field(linkQueuesXpath);
+    public SelenideElement getTabQueues() {
+        return field(tabQueuesXpath);
     }
 
-    public SelenideElement getLinkConferenceCalls() {
-        return field(linkConferenceCallsXpath);
+    public SelenideElement getTabConferenceCalls() {
+        return field(tabConferenceCallsXpath);
     }
 
-    public SelenideElement getLinkHuntGroups() {
-        return field(linkHuntGroupsXpath);
+    public SelenideElement getTabHuntGroups() {
+        return field(tabHuntGroupsXpath);
     }
 
-    public SelenideElement getLinkCallForwarding() {
-        return field(linkCallForwardingXpath);
+    public SelenideElement getTabCallForwarding() {
+        return field(tabCallForwardingXpath);
     }
 
-    public SelenideElement getLinkCallPickUps() {
-        return field(linkCallPickUpsXpath);
+    public SelenideElement getTabCallPickUps() {
+        return field(tabCallPickUpsXpath);
     }
 
-    public SelenideElement getLinkFileManagement() {
-        return field(linkFileManagementXpath);
+    public SelenideElement getTabFileManagement() {
+        return field(tabFileManagementXpath);
     }
 
-    public SelenideElement getLinkAbbreviatedNumbers() {
-        return field(linkAbbreviatedNumbersXpath);
+    public SelenideElement getTabAbbreviatedNumbers() {
+        return field(tabAbbreviatedNumbersXpath);
     }
 
-    public SelenideElement getLinkIVRs() {
-        return field(linkIVRsXpath);
+    public SelenideElement getTabIVRs() {
+        return field(tabIVRsXpath);
     }
 
-    public SelenideElement getLinkFax() {
-        return field(linkFaxXpath);
+    public SelenideElement getTabFax() {
+        return field(tabFaxXpath);
     }
 
-    public SelenideElement getLinkLastCalls() {
-        return field(linkLastCallsXpath);
+    public SelenideElement getTabLastCalls() {
+        return field(tabLastCallsXpath);
     }
 
-    public SelenideElement getLinkSubscriptions() {
-        return field(linkSubscriptionsXpath);
+    public SelenideElement getTabSubscriptions() {
+        return field(tabSubscriptionsXpath);
     }
 
-    public SelenideElement getLinkNumbers() {
-        return field(linkNumbersXpath);
+    public SelenideElement getTabNumbers() {
+        return field(tabNumbersXpath);
     }
 
-    public SelenideElement getLinkUser() {
-        return field(linkUserXpath);
+    public SelenideElement getTabUser() {
+        return field(tabUserXpath);
     }
 
     public SelenideElement formAdministration() {
@@ -116,36 +115,5 @@ public class BasePage extends Fields {
         return field(buttonLogoutXpath);
     }
     //</editor-fold>
-
-    public void clickButtonLogout() {
-        field(buttonLogoutXpath).click();
-    }
-
-    public void clickImgUpcBusiness() {
-        field(imgUpcBusinessXpath).click();
-    }
-
-    public void clickLinkFeedback() {
-        field(linkFeedbackXpath).click();
-    }
-
-    public void clickDropdownHelp() {
-        field(dropdownHelpXpath).click();
-        getAlertErrorMsg().shouldNotBe(Condition.visible);
-    }
-
-    public void clickDropdownHelpItemKnowledgeDatabase() {
-        clickDropdownHelp();
-        field(dropdownHelpItemKnowledgeDatabaseXpath).click();
-    }
-
-    public void clickDropdownHelpItemSupportRequest() {
-        clickDropdownHelp();
-        field(dropdownHelpItemSupportRequestXpath).click();
-    }
-
-    public void clickLinkUserName() {
-        field(linkUserNameXpath).click();
-    }
 
 }
