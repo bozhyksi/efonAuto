@@ -1,4 +1,4 @@
-package pages.UserPage;
+package pages.userPage;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -55,5 +55,7 @@ public class UserPage extends BasePage {
         return field(pageTitleXpath);
     }
     //</editor-fold>
+
+
 
 }

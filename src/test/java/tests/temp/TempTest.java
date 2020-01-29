@@ -1,6 +1,6 @@
 package tests.temp;
 
-import core.dbWorker.DataBaseWorker;
+import core.workers.DataBaseWorker;
 import flow.BaseTestMethods;
 import org.testng.annotations.Test;
 

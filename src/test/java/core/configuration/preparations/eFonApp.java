@@ -1,8 +1,8 @@
 package core.configuration.preparations;
 
-import core.dbWorker.DataBaseWorker;
+import core.workers.DataBaseWorker;
 import core.fields.Fields;
-import pages.UserPage.UserPage;
+import pages.userPage.UserPage;
 import pages.basePage.BasePage;
 import pages.loginPage.LoginPage;
 
