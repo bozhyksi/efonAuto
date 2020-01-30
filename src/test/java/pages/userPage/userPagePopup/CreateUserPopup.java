@@ -137,8 +137,9 @@ public class CreateUserPopup extends UserPage {
         getInputLoginEmail().setValue(val);
     }
 
-    public void selectNumber(){
+    public String selectNumber(){
         getDropdownNumber().selectOption(1);
+        return getDropdownNumber().getSelectedText();
     }
 
     public void selectEndDevices(){

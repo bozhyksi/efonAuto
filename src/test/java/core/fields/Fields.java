@@ -38,7 +38,25 @@ public class Fields implements IFields {
         return $$(By.xpath(locator));
     }
 
-    public SelenideElement getChildren(String parent, int id, String child) {
+    public SelenideElement getChildByParentName(String parentList, String childList, String parentName) {
+        ElementsCollection list1 = fields(parentList);
+        ElementsCollection list2 = fields(childList);
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (list1.get(i).text().equals(parentName)) {
+                return list2.get(i);
+            }
+        }
+        return null;
+    }
+
+    public SelenideElement getChildByParentName(ElementsCollection parentList, ElementsCollection childList, String parentName) {
+
+        for (int i = 0; i < parentList.size(); i++) {
+            if (parentList.get(i).text().equals(parentName)) {
+                return childList.get(i);
+            }
+        }
         return null;
     }
 

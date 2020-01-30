@@ -7,3 +7,4 @@ test-result/
 allure-report/
 allure-results/
 build/
+/test.xlsx

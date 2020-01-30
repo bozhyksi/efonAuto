@@ -10,7 +10,7 @@ import static io.qameta.allure.Allure.step;
 public class UserPageTests extends BaseTestMethods {
 
     @Description("Check if VPBX admin is able to create users")
-    @Test(groups = {"regression", "smoke", "userPageTests"})
+    @Test(groups = {"regression", "smoke", "userPageTests","ttt"})
     public void CheckIfVpbxAdminIsAbleToCreateUsers(){
         step("Preparing test data object - User");
         User user = new User();
@@ -33,10 +33,36 @@ public class UserPageTests extends BaseTestMethods {
         createUserPopup.fillFirstName(user.getFirstName());
         createUserPopup.fillLastName(user.getLastName());
         createUserPopup.fillLoginEmail(user.getLoginEmail());
-        createUserPopup.selectNumber();
+        user.setPhoneNumber(createUserPopup.selectNumber());
         createUserPopup.selectEndDevices();
 
         step("Save all made changes");
         createUserPopup.getButtonSave().click();
+
+        step("Verify if user was created with correct data");
+        userPage.checkIfUserExistsInTheList(user);
+
+        step("Clear test data, delete created user");
+        deleteUser(user);
     }
+
+    @Description("Check if VPBX admin is able to DELETE users")
+    @Test(groups = {"regression", "smoke", "userPageTests"})
+    public void CheckifVpbxAdminisAbletoDeleteUsers(){
+        step("Preparing test data object - User");
+        User user = new User();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Delete created user");
+        userPage.deleteUserButtonClick(user.getFullName());
+
+        step("Confirm deleting");
+        confirmationPopup.getYesButton().click();
+
+        step("Check if user was deleted");
+        userPage.checkIfUserDeleted(user);
+    }
+
 }

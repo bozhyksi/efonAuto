@@ -5,8 +5,8 @@ import pages.basePage.BasePage;
 
 public class ConfirmationPopup extends BasePage {
     private String titleConfirmationPopupXpath = "//div[@class=\"modal-content\"]//h3";
-    private String buttonDoNotSaveXpath = "//div[@class=\"modal-content\"]//button[text()='Do not save']";
-    private String buttonContinueWorkingXpath = "//div[@class=\"modal-content\"]//button[text()='Continue working']";
+    private String buttonDoNotSaveXpath = "//div[@class=\"modal-content\"]//button[text()='Do not save' or text()='Yes']";
+    private String buttonContinueWorkingXpath = "//div[@class=\"modal-content\"]//button[text()='Continue working' or text()='No']";
 
     public SelenideElement getButtonContinueWorking() {
         return field(buttonContinueWorkingXpath);
@@ -18,5 +18,13 @@ public class ConfirmationPopup extends BasePage {
 
     public SelenideElement getTitleConfirmationPopup() {
         return field(titleConfirmationPopupXpath);
+    }
+
+    public SelenideElement getYesButton(){
+        return field(buttonDoNotSaveXpath);
+    }
+
+    public SelenideElement getNoButton(){
+       return field(buttonContinueWorkingXpath);
     }
 }

@@ -17,7 +17,7 @@ public interface IFields {
 
     ElementsCollection getChildrenCollection(String parent, int id, String child);
 
-    SelenideElement getChildren(String parent, int id, String child);
+    SelenideElement getChildByParentName(String parentList, String childList, String parentName);
 
     SelenideElement getChildren(String parent, int id, String child, int childId);
 

@@ -9,6 +9,24 @@ public class User extends BaseTestMethods {
     private String loginEmail = getRandomEmail();
     private String UseDiffContactEmail = getRandomEmail();
     private String VoiceEmail = getRandomEmail();
+    private String phoneNumber;
+    private String endDevices;
+
+    public void setEndDevices(String endDevices) {
+        this.endDevices = endDevices;
+    }
+
+    public String getEndDevices() {
+        return endDevices;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -32,5 +50,9 @@ public class User extends BaseTestMethods {
 
     public String getVoiceEmail() {
         return VoiceEmail;
+    }
+
+    public String getFullName(){
+        return lastName+" "+firstName;
     }
 }

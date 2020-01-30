@@ -1,8 +1,11 @@
 package pages.userPage;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
+import tests.userPageTests.userPageTestData.User;
 
 public class UserPage extends BasePage {
 
@@ -43,6 +46,10 @@ public class UserPage extends BasePage {
         return fields(listUserNamesXpath);
     }
 
+    public ElementsCollection getListButtonDeleteUser(){
+        return fields(buttonDeleteUserXpath);
+    }
+
     public SelenideElement getButtonCreateNewUser() {
         return field(buttonCreateNewUserXpath);
     }
@@ -60,4 +67,17 @@ public class UserPage extends BasePage {
         getPageTitle().getText().equals(val);
     }
 
+    public void checkIfUserExistsInTheList(User user){
+        getListUserNames().filterBy(Condition.text(user.getFullName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        getListNumbers().filterBy(Condition.text(user.getPhoneNumber())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+    }
+
+    public void checkIfUserDeleted(User user){
+        getListUserNames().filterBy(Condition.text(user.getFullName())).shouldHave(CollectionCondition.size(0));
+        getListNumbers().filterBy(Condition.text(user.getPhoneNumber())).shouldHave(CollectionCondition.size(0));
+    }
+
+    public void deleteUserButtonClick(String userName){
+        getChildByParentName(getListUserNames(),getListButtonDeleteUser(),userName).click();
+    }
 }
