@@ -2,6 +2,7 @@ package flow;
 
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.Random;
@@ -59,8 +60,6 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void createUser(User user){
-        login();
-        basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");
         userPage.getButtonCreateNewUser().click();
         createUserPopup.getPopupTitle().getText().equals("Create user");
@@ -70,6 +69,14 @@ public class BaseTestMethods extends eFonApp {
         createUserPopup.fillLoginEmail(user.getLoginEmail());
         user.setPhoneNumber(createUserPopup.selectNumber());
         createUserPopup.selectEndDevices();
+        createUserPopup.fillInDiffContactEmail(user.getUseDiffContactEmail());
+        createUserPopup.fillInVoiceEmail(user.getVoiceEmail());
+        createUserPopup.getCheckboxBusyOnBusy().click();
+        user.setPermittedDestinationNumbers(createUserPopup.selectPermittedDestinationNumbers());
+        createUserPopup.getCheckboxSmsEnabled().click();
+        createUserPopup.getCheckboxRoleFinance().click();
+        user.setCallsRecordingDirection(createUserPopup.activateCallRecordings());
+        //createUserPopup.activateFaxDispatch(user.getInputLocalHeaderInfo());
         createUserPopup.getButtonSave().click();
         userPage.checkIfUserExistsInTheList(user);
     }
@@ -78,5 +85,21 @@ public class BaseTestMethods extends eFonApp {
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
         userPage.checkIfUserDeleted(user);
+    }
+
+    public void uploadPhoneBook(int numberOfEntriesInFile){
+        Phonebook phonebook = new Phonebook(numberOfEntriesInFile);
+        phonebook.createExcelPhonebookFile();
+        basePage.getTabPhonebook().click();
+        phonebookPage.validatePageTitle("Phonebook");
+        phonebookPage.uploadFile(phonebook.getfileName());
+        phonebookPage.validateUploadedNumbers(numberOfEntriesInFile);
+    }
+
+    public void deletePhonebook(){
+        basePage.getTabPhonebook().click();
+        phonebookPage.getButtonDeletePhoneBook().click();
+        confirmationPopup.getYesButton().click();
+        phonebookPage.checkIfPhonebookWasDeleted();
     }
 }

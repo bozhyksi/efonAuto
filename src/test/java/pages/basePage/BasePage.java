@@ -35,9 +35,15 @@ public class BasePage extends Fields {
     private String tabEndDevicesXpath = "//a[@href=\"/portal/end-devices\"]";
     private String tabRecordedCallsXpath = "//a[@href=\"/portal/recorded-calls\"]";
     private String tabContactDataXpath = "//a[@href=\"/portal/contact-data\"][text()='Contact data']";
+    private String tabPhonebookXpath = "//a[@href=\"/portal/phonebook\"][text()='Phonebook']";
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+
+
+    public SelenideElement getTabPhonebook() {
+        return field(tabPhonebookXpath);
+    }
 
     public SelenideElement getAlertErrorMsg() {
         return field(alertErrorMsgXpath);

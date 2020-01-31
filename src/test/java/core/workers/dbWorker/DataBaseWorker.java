@@ -1,4 +1,4 @@
-package core.workers;
+package core.workers.dbWorker;
 
 import java.sql.*;
 

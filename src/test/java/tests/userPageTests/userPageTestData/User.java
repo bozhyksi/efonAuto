@@ -11,6 +11,29 @@ public class User extends BaseTestMethods {
     private String VoiceEmail = getRandomEmail();
     private String phoneNumber;
     private String endDevices;
+    private String permittedDestinationNumbers;
+    private String callsRecordingDirection;
+    private String inputLocalHeaderInfo = getRandomString(10);
+
+    public String getInputLocalHeaderInfo() {
+        return inputLocalHeaderInfo;
+    }
+
+    public void setCallsRecordingDirection(String callsRecordingDirection) {
+        this.callsRecordingDirection = callsRecordingDirection;
+    }
+
+    public String getCallsRecordingDirection() {
+        return callsRecordingDirection;
+    }
+
+    public void setPermittedDestinationNumbers(String permittedDestinationNumbers) {
+        this.permittedDestinationNumbers = permittedDestinationNumbers;
+    }
+
+    public String getPermittedDestinationNumbers() {
+        return permittedDestinationNumbers;
+    }
 
     public void setEndDevices(String endDevices) {
         this.endDevices = endDevices;

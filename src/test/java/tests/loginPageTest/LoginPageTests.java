@@ -1,5 +1,6 @@
 package tests.loginPageTest;
 
+import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
@@ -14,7 +15,7 @@ import static io.qameta.allure.Allure.step;
 public class LoginPageTests extends BaseTestMethods {
 
     @Description("Verify if user can Login/LogOut with correct credentials")
-    @Test(groups = {"regression", "smoke", "loginPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"})
     public void loginTest(){
         step("Fill in Login");
         loginPage.fillInLogin(getLogin());
@@ -39,7 +40,7 @@ public class LoginPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can NOT login with incorrect credentials")
-    @Test(groups = {"regression", "smoke", "loginPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"})
     public void loginTestNOT(){
         step("Fill in Login with incorrect data");
         loginPage.fillInLogin(getRandomEmail());

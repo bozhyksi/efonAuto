@@ -8,7 +8,6 @@ import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.User;
 
 public class UserPage extends BasePage {
-
     //<editor-fold desc="//-- UserPage Locators --// ">
     private String pageTitleXpath = "//h1";
     private String inputSearchXpath = "//h3[text()='Search']//following-sibling::input[(contains(@placeholder,'Name, abbreviated'))]";
@@ -16,9 +15,9 @@ public class UserPage extends BasePage {
     private String listUserNamesXpath = "//*[@role=\"grid\"]//td[1]";
     private String listNumbersXpath = "//*[@role=\"grid\"]//td[2]";
     private String listEndDevicesXpath = "//*[@role=\"grid\"]//td[3]/a";
-    private String buttonBlockUserXpath = "//*[@role=\"grid\"]//td[4]/a[1]";
-    private String buttonConfigUserXpath = "//*[@role=\"grid\"]//td[4]/a[2]";
-    private String buttonDeleteUserXpath = "//*[@role=\"grid\"]//td[4]/a[3]";
+    private String buttonBlockUserXpath = "//*[@role=\"grid\"]//a[@id=\"blockUserButton\"]";
+    private String buttonConfigUserXpath = "//*[@role=\"grid\"]//a[@id=\"editUserButton\"]";
+    private String buttonDeleteUserXpath = "//*[@role=\"grid\"]//a[@id=\"deleteUserButton\"]";
     //</editor-fold>
 
     //<editor-fold desc="//-- UserPage get/set methods --//">
@@ -80,4 +79,5 @@ public class UserPage extends BasePage {
     public void deleteUserButtonClick(String userName){
         getChildByParentName(getListUserNames(),getListButtonDeleteUser(),userName).click();
     }
+
 }

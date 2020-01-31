@@ -12,7 +12,7 @@ public class CreateUserPopup extends UserPage {
     private String inputLastNameXpath = "//create-user//input[@formcontrolname=\"lastName\"]";
     private String inputLoginEmailXpath = "//create-user//input[@formcontrolname=\"loginEmail\"]";
     private String checkboxUseDiffContactEmailXpath = "//create-user//input[@formcontrolname=\"useDifferentContactEmail\"]";
-    private String inputDiffContactEmailXpath = "//create-user//input[@formcontrolname=\"useDifferentContactEmail\"]";
+    private String inputDiffContactEmailXpath = "//create-user//input[@formcontrolname=\"differentContactEmail\"]";
     private String inputUseVoiceEmailEmailXpath = "//create-user//input[@formcontrolname=\"voicemailEmail\"]";
     private String checkboxUseVoiceEmailXpath = "//create-user//input[@formcontrolname=\"useVoicemailEmail\"]";
     private String dropdownNumberXpath = "//create-user//select[@formcontrolname=\"number\"]";
@@ -21,17 +21,21 @@ public class CreateUserPopup extends UserPage {
     private String dropdownAbbreviatedNumbersXpath = "//label[text()='Abbreviated numbers']//following-sibling::div/select";
     private String dropdownPermittedDestNumbersXpath = "//create-user//select[@formcontrolname=\"currentBlockSet\"]";
     private String checkboxSmsEnabledXpath = "//create-user//input[@formcontrolname=\"smsEnabled\"]";
-    private String checkboxFaxEnabledXpath = "//create-user//input[@formcontrolname=\"faxEnabled\"]";
+    private String checkboxActivateFaxDispatchXpath = "//create-user//input[@formcontrolname=\"faxEnabled\"]";
     private String checkboxRoleFinanceXpath = "//create-user//input[@formcontrolname=\"roleFinance\"]";
     private String checkboxActivateCallRecordingXpath = "//create-user//input[@formcontrolname=\"activateCallRecording\"]";
     private String dropdownCallRecordingDirectionXpath = "//create-user//select[@formcontrolname=\"callRecordingDirection\"]";
     private String buttonSaveXpath = "//button[text()='Save']";
     private String buttonCancelXpath = "//button[text()='Cancel']";
     private String buttonCloseXpath = "//button[@aria-label=\"Close\"]";
+    private String inputLocalHeaderInfoXpath="//input[@formcontrolname=\"localHeaderInfo\"]";
     //</editor-fold>
 
-
     //<editor-fold desc="//-- CreateUserPopup get/set methods --//">
+    public SelenideElement getInputLocalHeaderInfo() {
+        return field(inputLocalHeaderInfoXpath);
+    }
+
     public SelenideElement getPopupTitle() {
         return field(popupTitleXpath);
     }
@@ -92,8 +96,8 @@ public class CreateUserPopup extends UserPage {
         return field(checkboxSmsEnabledXpath);
     }
 
-    public SelenideElement getCheckboxFaxEnabled() {
-        return field(checkboxFaxEnabledXpath);
+    public SelenideElement getcheckboxActivateFaxDispatch() {
+        return field(checkboxActivateFaxDispatchXpath);
     }
 
     public SelenideElement getCheckboxRoleFinance() {
@@ -144,6 +148,32 @@ public class CreateUserPopup extends UserPage {
 
     public void selectEndDevices(){
         getDropdownEndDevices().selectOption(1);
+    }
+
+    public void fillInDiffContactEmail(String email){
+        getCheckboxUseDiffContactEmail().click();
+        getInputDiffContactEmail().setValue(email);
+    }
+
+    public void fillInVoiceEmail(String email){
+        getCheckboxUseVoiceEmail().click();
+        getInputUseVoiceEmailEmail().setValue(email);
+    }
+
+    public String selectPermittedDestinationNumbers(){
+        getDropdownPermittedDestNumbers().selectOption(1);
+        return getDropdownPermittedDestNumbers().getSelectedText();
+    }
+
+    public String activateCallRecordings(){
+        getCheckboxActivateCallRecording().click();
+        getDropdownCallRecordingDirection().selectOption(1);
+        return getDropdownCallRecordingDirection().getSelectedText();
+    }
+
+    public void activateFaxDispatch(String val){
+        getcheckboxActivateFaxDispatch().click();
+        getInputLocalHeaderInfo().setValue(val);
     }
 
 }

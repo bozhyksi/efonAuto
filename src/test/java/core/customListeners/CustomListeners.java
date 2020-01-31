@@ -14,7 +14,7 @@ public class CustomListeners implements ITestListener {
     }
 
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("Test "+iTestResult.getName()+"successfully PASSED!");
+        System.out.println("Test '"+iTestResult.getName()+"' successfully PASSED!");
     }
 
     public void onTestFailure(ITestResult iTestResult) {

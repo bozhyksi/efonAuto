@@ -1,13 +1,14 @@
 package tests.temp;
 
+import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import org.testng.annotations.Test;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 
 public class TempTest extends BaseTestMethods {
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void Test1(){
-        Phonebook phonebook = new Phonebook(5);
-        excelFileWorker.writeExcelFile(phonebook.getArr());
+        Phonebook phonebook = new Phonebook(20);
+        phonebook.createExcelPhonebookFile();
     }
 }

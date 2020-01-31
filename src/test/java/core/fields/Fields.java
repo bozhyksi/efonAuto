@@ -53,7 +53,7 @@ public class Fields implements IFields {
     public SelenideElement getChildByParentName(ElementsCollection parentList, ElementsCollection childList, String parentName) {
 
         for (int i = 0; i < parentList.size(); i++) {
-            if (parentList.get(i).text().equals(parentName)) {
+            if (parentList.get(i).text().contains(parentName)) {
                 return childList.get(i);
             }
         }
