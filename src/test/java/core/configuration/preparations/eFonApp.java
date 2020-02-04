@@ -2,7 +2,7 @@ package core.configuration.preparations;
 
 import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
-import core.workers.excelWorker.ExcelFileWriter;
+import core.workers.excelWorker.ExcelFileWorker;
 import pages.basePage.BasePage;
 import pages.basePage.basePopup.ConfirmationPopup;
 import pages.loginPage.LoginPage;
@@ -17,7 +17,7 @@ public class eFonApp extends PreparationsForRun{
     public Fields fields = new Fields();
     public BasePage basePage = new BasePage();
     public DataBaseWorker dataBaseWorker = new DataBaseWorker();
-    public ExcelFileWriter excelFileWriter = new ExcelFileWriter();
+    public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
 
     public ConfirmationPopup confirmationPopup = new ConfirmationPopup();
     public LoginPage loginPage = new LoginPage();

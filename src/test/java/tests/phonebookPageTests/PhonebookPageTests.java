@@ -4,9 +4,13 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
+import tests.phonebookPageTests.phonebookPageTestData.PhonebookRowMapper;
+
+import java.util.List;
 
 import static io.qameta.allure.Allure.step;
 
@@ -17,26 +21,32 @@ public class PhonebookPageTests extends BaseTestMethods {
     @Description("Verify if user is able to upload xlsx phonebook")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
     public void VerifyIfUserIsAbleToUploadXlsxPhonebook(){
+        Phonebook phonebook;
         step("Preparing test data. Create phonebook.xlsx file with 20 entries");
         int numberOfPhones = 10;
-        Phonebook phonebook = new Phonebook(numberOfPhones);
+        phonebook = new Phonebook(numberOfPhones);
         phonebook.createExcelPhonebookFile();
+        try {
+            step("Log in the system as VPBX admin and goto Phonebook tab");
+            login();
+            basePage.getTabPhonebook().click();
+            phonebookPage.validatePageTitle("Phonebook");
 
-        step("Log in the system as VPBX admin and goto Phonebook tab");
-        login();
-        basePage.getTabPhonebook().click();
-        phonebookPage.validatePageTitle("Phonebook");
+            step("Upload Phonebook file");
+            phonebookPage.uploadFile(phonebook.getfileName());
 
-        step("Upload Phonebook file");
-        phonebookPage.uploadFile(phonebook.getfileName());
+            step("Verify if all numbers from file were uploaded");
+            phonebookPage.validateUploadedNumbers(numberOfPhones);
 
-        step("Verify if all numbers from file were uploaded");
-        phonebookPage.validateUploadedNumbers(numberOfPhones);
+            step("Clear test environment - delete uploaded Phonebook");
+            phonebookPage.getButtonDeletePhoneBook().click();
+            confirmationPopup.getYesButton().click();
+            phonebookPage.checkIfPhonebookWasDeleted();
+        } finally {
+            step("Delete test excel file");
+            excelFileWorker.deleteFile(phonebook.getfileName());
+        }
 
-        step("Clear test environment - delete uploaded Phonebook");
-        phonebookPage.getButtonDeletePhoneBook().click();
-        confirmationPopup.getYesButton().click();
-        phonebookPage.checkIfPhonebookWasDeleted();
     }
 
     @Description("Verify if user is able to restore phonebook from dataBase")
@@ -60,5 +70,56 @@ public class PhonebookPageTests extends BaseTestMethods {
 
         step("Delete restored phonebook");
         deletePhonebook();
+    }
+
+    @Description("Verify if user is able to download phonebook")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
+    public void VerifyIfUserIsAbleToDownloadPhonebook(){
+        try {
+            step("Prepare test data");
+            int numberOfEnriesInFile = 10;
+            List<Phonebook> phonebooks;
+
+            step("Log in the system as VPBX admin");
+            login();
+
+            step("Goto Phonebook tab Upload new phonebook file");
+            uploadPhoneBook(numberOfEnriesInFile);
+
+            step("Download phonebook");
+            phonebookPage.downloadPhonebook();
+
+            step("Read downloaded excel file, and verify data");
+            phonebooks = excelFileWorker.readExcelFile("phonebook.xls",new PhonebookRowMapper(), new Phonebook());
+            Assert.assertEquals(phonebooks.size()-1, numberOfEnriesInFile);
+
+            for (Phonebook entry: phonebooks) {
+                System.out.println(entry.toString());
+            }
+        } finally {
+            step("Delete test data - delete downloaded .xlsx file");
+            excelFileWorker.deleteFile("phonebook.xls");
+            deletePhonebook();
+        }
+    }
+
+    @Description("Verify if user is able to download example file")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
+    public void VerifyIfUserIsAbleToDownloadExample(){
+        step("Log in the system as VPBX admin and goto Phonebook tab");
+        login();
+        basePage.getTabPhonebook().click();
+        phonebookPage.validatePageTitle("Phonebook");
+
+        step("Click Download Example button");
+        phonebookPage.downloadExample();
+
+        step("Check if example file was downloaded");
+        try {
+            excelFileWorker.checkIfFileExists("excelimport_phonebook_example.xls");
+        } finally {
+            step("Delete example file");
+            excelFileWorker.deleteFile("excelimport_phonebook_example.xls");
+        }
     }
 }

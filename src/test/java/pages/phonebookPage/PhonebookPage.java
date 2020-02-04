@@ -2,6 +2,7 @@ package pages.phonebookPage;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
 
@@ -74,4 +75,13 @@ public class PhonebookPage extends BasePage {
         getListNumbers().shouldHave(CollectionCondition.size(1)).shouldHave(CollectionCondition.texts("No Items"));
     }
 
+    public void downloadPhonebook(){
+        getButtonDownloadList().click();
+        Selenide.sleep(3000);
+    }
+
+    public void downloadExample(){
+        getButtonDownloadExample().click();
+        Selenide.sleep(3000);
+    }
 }

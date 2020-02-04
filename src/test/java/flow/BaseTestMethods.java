@@ -94,6 +94,7 @@ public class BaseTestMethods extends eFonApp {
         phonebookPage.validatePageTitle("Phonebook");
         phonebookPage.uploadFile(phonebook.getfileName());
         phonebookPage.validateUploadedNumbers(numberOfEntriesInFile);
+        excelFileWorker.deleteFile(phonebook.getfileName());;
     }
 
     public void deletePhonebook(){

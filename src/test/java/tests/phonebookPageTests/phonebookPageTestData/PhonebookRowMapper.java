@@ -11,4 +11,9 @@ public class PhonebookRowMapper implements IAutoRowMapper<Phonebook> {
         row.createCell(1).setCellValue(dto.getName());
         row.createCell(2).setCellValue(dto.getShortDial());
     }
+
+    @Override
+    public Phonebook rowReaderMapper(Row row) {
+         return new Phonebook(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue());
+    }
 }

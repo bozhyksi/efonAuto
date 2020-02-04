@@ -2,7 +2,6 @@ package tests.phonebookPageTests.phonebookPageTestData;
 
 import flow.BaseTestMethods;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class Phonebook extends BaseTestMethods {
     private String number;
     private String name;
     private String shortDial;
-    private String path = Paths.get("").toAbsolutePath().toString()+"\\tempTestData\\phonebook.xlsx";
+    private String path = "AutoTestPhonebook.xlsx";
 
     public Phonebook(int entryNumber) {
         this.arr = new Phonebook[entryNumber];
@@ -39,6 +38,24 @@ public class Phonebook extends BaseTestMethods {
             this.shortDial = String.valueOf(shortDialCounter);
             shortDialCounter++;
         }
+    }
+
+    public Phonebook(String number, String name, String shortDial){
+        this.name = name;
+        this.shortDial = shortDial;
+        this.number = number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShortDial(String shortDial) {
+        this.shortDial = shortDial;
     }
 
     public String getName() {
@@ -66,7 +83,7 @@ public class Phonebook extends BaseTestMethods {
     }
 
     public void createExcelPhonebookFile(){
-        excelFileWriter.writeExcelFile(getfileName(), getList(),new PhonebookRowMapper());
+        excelFileWorker.writeExcelFile(getfileName(), getList(),new PhonebookRowMapper());
     }
 
     @Override
