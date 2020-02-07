@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Phonebook extends BaseTestMethods {
-    private static int shortDialmin = 290;
-    private static int shortDialmax = 299;
+    private static int shortDialmin = 700;
+    private static int shortDialmax = 799;
     private static int shortDialCounter = shortDialmin;
 
     private Phonebook[] arr;

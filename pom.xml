@@ -128,7 +128,7 @@
             </activation>
             <properties>
                 <baseUrl>http://192.168.102.162:9090/portal/login</baseUrl>
-                <login>PhoneBook@asd.aa</login>
+                <login>AutoTest@AutoTest.aa</login>
                 <password>Login123!!!</password>
                 <dB.jdbc.driver>com.mysql.cj.jdbc.Driver</dB.jdbc.driver>
                 <dB.url>jdbc:mysql://192.168.101.240:3306/webadmin_20170426?serverTimezone=UTC&amp;pinGlobalTxToPhysicalConnection=true</dB.url>

@@ -2,6 +2,7 @@ package flow;
 
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
 
@@ -60,6 +61,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void createUser(User user){
+        basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");
         userPage.getButtonCreateNewUser().click();
         createUserPopup.getPopupTitle().getText().equals("Create user");
@@ -82,6 +84,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteUser(User user){
+        basePage.getTabUser().click();
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
         userPage.checkIfUserDeleted(user);
@@ -102,5 +105,36 @@ public class BaseTestMethods extends eFonApp {
         phonebookPage.getButtonDeletePhoneBook().click();
         confirmationPopup.getYesButton().click();
         phonebookPage.checkIfPhonebookWasDeleted();
+    }
+
+    public void addSingleAbbrevNumber(String abbrevNum){
+        basePage.getTabAbbreviatedDialling().click();
+        abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
+        manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
+        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        abbreviatedNumbers.checkIfAbbrevNumberExistsInList(abbrevNum);
+    }
+
+    public void deleteSingleAbbrevNumber(String abbrevNum){
+        basePage.getTabAbbreviatedDialling().click();
+        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
+        abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum);
+        confirmationPopup.getYesButton().click();
+        abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum);
+    }
+
+    public void createAbbrevNumberRange(AbbreviatedDiallingTestData obj){
+        basePage.getTabAbbreviatedDialling().click();
+        abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
+        manageAbbrevNumbersPage.addRangeAbbrevNumber(obj.getFromNumber(), obj.getUntilNumber());
+        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        abbreviatedNumbers.checkIfAbbrevNumberRangeCreated(obj);
+    }
+
+    public void makeAbbrevNumberUnused(String shortNumber){
+        abbreviatedNumbers.editSingleAbbrevNumber(shortNumber);
+        popupAssignAbbrevDial.getRadioUnused().click();
+        popupAssignAbbrevDial.getButtonSave().click();
     }
 }

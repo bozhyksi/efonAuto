@@ -1,5 +1,6 @@
 package core.fields;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
@@ -51,13 +52,21 @@ public class Fields implements IFields {
     }
 
     public SelenideElement getChildByParentName(ElementsCollection parentList, ElementsCollection childList, String parentName) {
+        parentList.shouldHave(CollectionCondition.sizeGreaterThan(0));
+        childList.shouldHave(CollectionCondition.sizeGreaterThan(0));
 
         for (int i = 0; i < parentList.size(); i++) {
             if (parentList.get(i).text().contains(parentName)) {
                 return childList.get(i);
             }
         }
-        return null;
+        try {
+            throw new NullPointerException();
+        } catch (NullPointerException e) {
+            System.out.println("No element found");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public SelenideElement getChildren(String parent, int id, String child, int childId) {

@@ -16,6 +16,7 @@ public class BasePage extends Fields {
     private String dropdownHelpItemKnowledgeDatabaseXpath = "//*[@class=\"dropdown open\"]//a[text()='Knowledge database']";
     private String dropdownHelpItemSupportRequestXpath = "//*[@class=\"dropdown open\"]//a[text()='Support request']";
     private String linkUserNameXpath = "//div[@class=\"col-xs-7\"]//a[@href=\"/portal/contact-data\"]";
+    private String dropdownItemsPerPageXpath = "//span[text()=\"Items per page\"]/following-sibling::select";
 
     //Administration panel
     private String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
@@ -40,6 +41,9 @@ public class BasePage extends Fields {
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
 
+    public SelenideElement getDropdownItemsPerPage() {
+        return field(dropdownItemsPerPageXpath);
+    }
 
     public SelenideElement getTabPhonebook() {
         return field(tabPhonebookXpath);
@@ -85,7 +89,7 @@ public class BasePage extends Fields {
         return field(tabFileManagementXpath);
     }
 
-    public SelenideElement getTabAbbreviatedNumbers() {
+    public SelenideElement getTabAbbreviatedDialling() {
         return field(tabAbbreviatedNumbersXpath);
     }
 
