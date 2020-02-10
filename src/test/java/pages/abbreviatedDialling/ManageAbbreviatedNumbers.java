@@ -1,6 +1,5 @@
 package pages.abbreviatedDialling;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
@@ -37,7 +36,6 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     public void addSingleAbbrevNumber(String shortNumber){
         getInputAdd().setValue(shortNumber);
         getButtonAdd().click();
-        Selenide.sleep(500);
     }
 
     public void addRangeAbbrevNumber(String startRangeNum, String endRangeNum){
@@ -45,5 +43,4 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         getInputAddAreaUntil().setValue(endRangeNum);
         getButtonAddArea().click();
     }
-
 }

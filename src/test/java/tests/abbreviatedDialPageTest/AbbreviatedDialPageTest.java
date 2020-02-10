@@ -1,6 +1,7 @@
 package tests.abbreviatedDialPageTest;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -16,7 +17,7 @@ import static io.qameta.allure.Allure.step;
 
 @Listeners(CustomListeners.class)
 
-public class abbreviatedDialPageTest extends BaseTestMethods {
+public class AbbreviatedDialPageTest extends BaseTestMethods {
 
     @Description("Check if user can add single Short Number on \"Manage abbreviated numbers\" page")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
@@ -55,47 +56,55 @@ public class abbreviatedDialPageTest extends BaseTestMethods {
 
         step("Go to Abbreviated dialling -> Manage abbreviated numbers page and create short numbers from range");
         basePage.getTabAbbreviatedDialling().click();
+        deleteAllAbbrevNumbers();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addRangeAbbrevNumber(shortNums.getFromNumber(), shortNums.getUntilNumber());
+        waitUntilAlertDisappear();
 
         step("Goto Abbreviated dialling ->Abbreviated numbers and check if all short numbers were created ");
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         abbreviatedNumbers.checkIfAbbrevNumberRangeCreated(shortNums);
 
         step("Delete all test data - delete all short numbers");
-        abbreviatedNumbers.deleteAllShortNumbers(confirmationPopup);
+        deleteAllAbbrevNumbers();
         abbreviatedNumbers.getListNo().shouldHave(CollectionCondition.size(1)).shouldHave(CollectionCondition.texts("No Items"));
     }
 
     @Description("Check if user can Edit Abbreviated number and Assign it to Internal user")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToInternalUser(){
-        step("Prepare test data");
-        String singleShortNumber = getRandomNumber(201,299);
-        User user = new User();
+        User user;
 
-        step("Login the system");
-        login();
+            step("Prepare test data");
+            String singleShortNumber = getRandomNumber(201,299);
+            user = new User();
+        try {
+            step("Login the system");
+            login();
 
-        step("Create user");
-        createUser(user);
+            step("Create user");
+            createUser(user);
 
-        step("Add single Abbreviated Number");
-        addSingleAbbrevNumber(singleShortNumber);
+            step("Add single Abbreviated Number");
+            addSingleAbbrevNumber(singleShortNumber);
 
-        step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbers.editSingleAbbrevNumber(singleShortNumber);
+            step("Click on Edit button and open Assign abbreviated dialling popup");
+            abbreviatedNumbers.editSingleAbbrevNumber(singleShortNumber);
 
-        step("Assign short number to user");
-        popupAssignAbbrevDial.getRadioInternalUser().click();
-        popupAssignAbbrevDial.getDropdrownSelectUser().selectOptionContainingText(user.getFullName());
-        popupAssignAbbrevDial.getCheckboxForwardAsExternal().click();
-        popupAssignAbbrevDial.getButtonSave().click();
+            step("Assign short number to user");
+            popupAssignAbbrevDial.getRadioInternalUser().click();
+            popupAssignAbbrevDial.getDropdrownSelectUser().selectOptionContainingText(user.getLastName());
+            popupAssignAbbrevDial.getCheckboxForwardAsExternal().click();
+            popupAssignAbbrevDial.getButtonSave().click();
 
-        step("Clear test data - delete user");
-        //deleteUser(user);
-
-        //TEST NOT FINISHED. BLOCKED BY A BUG
+            step("Check if short dial was assign to the user and user's info is showed in the grid");
+            abbreviatedNumbers.getListCompany().filterBy(Condition.text(user.getLastName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+            abbreviatedNumbers.getListCompany().filterBy(Condition.text(user.getFirstName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        } finally {
+            step("Clear test data - delete user");
+            deleteUser(user);
+            deleteAllAbbrevNumbers();
+        }
     }
 
     @Description("Check if user can Edit Abbreviated number and Assign it to External user")
@@ -110,40 +119,46 @@ public class abbreviatedDialPageTest extends BaseTestMethods {
             put("company", getRandomString(10));
         }};
 
-        step("Login the system");
-        login();
+        try {
+            step("Login the system");
+            login();
 
-        step("Add single Abbreviated Number");
-        addSingleAbbrevNumber(dat.get("shortNumber"));
+            step("Add single Abbreviated Number");
+            addSingleAbbrevNumber(dat.get("shortNumber"));
+            waitUntilAlertDisappear();
 
-        step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
+            step("Click on Edit button and open Assign abbreviated dialling popup");
+            abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
 
-        step("Select External number radio");
-        popupAssignAbbrevDial.getRadioExternalNumber().click();
+            step("Select External number radio");
+            popupAssignAbbrevDial.getRadioExternalNumber().click();
 
-        step("Fill in External number phone");
-        popupAssignAbbrevDial.getInputExternalNumber().setValue(dat.get("extPhoneNum"));
+            step("Fill in External number phone");
+            popupAssignAbbrevDial.getInputExternalNumber().setValue(dat.get("extPhoneNum"));
 
-        step("Fill in Last name");
-        popupAssignAbbrevDial.getInputLastName().setValue(dat.get("lastName"));
+            step("Fill in Last name");
+            popupAssignAbbrevDial.getInputLastName().setValue(dat.get("lastName"));
 
-        step("Fill in First name");
-        popupAssignAbbrevDial.getInputFirstName().setValue(dat.get("firstName"));
+            step("Fill in First name");
+            popupAssignAbbrevDial.getInputFirstName().setValue(dat.get("firstName"));
 
-        step("Fill in Company and save all changes");
-        popupAssignAbbrevDial.getInputCompany().setValue(dat.get("company"));
-        popupAssignAbbrevDial.getButtonSave().click();
-        refreshPage();//temporary overcome because of bug
+            step("Fill in Company and save all changes");
+            popupAssignAbbrevDial.getInputCompany().setValue(dat.get("company"));
+            popupAssignAbbrevDial.getButtonSave().click();
+            refreshPage();//temporary overcome because of bug
 
-        step("Check if External user info is displayed in the Abbreviated dialling grid");
-        abbreviatedNumbers.checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(dat);
+            step("Check if External user info is displayed in the Abbreviated dialling grid");
+            abbreviatedNumbers.checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(dat);
 
-        step("Edit short dial, make it unUsed and Delete");
-        abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
-        popupAssignAbbrevDial.getRadioUnused().click();
-        popupAssignAbbrevDial.getButtonSave().click();
-        refreshPage();//temporary overcome because of bug
-        deleteSingleAbbrevNumber(dat.get("shortNumber"));
+            step("Edit short dial, make it unUsed and Delete");
+            abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
+            popupAssignAbbrevDial.getRadioUnused().click();
+            popupAssignAbbrevDial.getButtonSave().click();
+            refreshPage();//temporary overcome because of bug
+            deleteSingleAbbrevNumber(dat.get("shortNumber"));
+        } finally {
+            step("Delete test data - delete all short numbers");
+            deleteAllAbbrevNumbers();
+        }
     }
 }

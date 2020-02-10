@@ -63,7 +63,7 @@ public class Fields implements IFields {
         try {
             throw new NullPointerException();
         } catch (NullPointerException e) {
-            System.out.println("No element found");
+            System.out.println("===No element found===");
             e.printStackTrace();
             return null;
         }

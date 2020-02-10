@@ -8,6 +8,7 @@ import pages.abbreviatedDialling.AbbreviatedNumbers;
 import pages.abbreviatedDialling.ManageAbbreviatedNumbers;
 import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDialling;
 import pages.basePage.BasePage;
+import pages.basePage.basePopup.AlertPopup;
 import pages.basePage.basePopup.ConfirmationPopup;
 import pages.loginPage.LoginPage;
 import pages.phonebookPage.PhonebookPage;
@@ -24,6 +25,7 @@ public class eFonApp extends PreparationsForRun{
     public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
 
     public ConfirmationPopup confirmationPopup = new ConfirmationPopup();
+    public AlertPopup alertPopup = new AlertPopup();
     public LoginPage loginPage = new LoginPage();
     public UserPage userPage = new UserPage();
     public CreateUserPopup createUserPopup = new CreateUserPopup();

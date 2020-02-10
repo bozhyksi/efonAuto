@@ -1,5 +1,6 @@
 package flow;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
@@ -9,6 +10,12 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.Random;
 
 public class BaseTestMethods extends eFonApp {
+
+    public void waitUntilAlertDisappear(){
+        alertPopup.getAlertDialog().waitUntil(Condition.disappear,10000);
+        alertPopup.getAlertDialog().shouldNotBe(Condition.visible);
+        Selenide.sleep(1000);
+    }
 
     public void refreshPage(){
         Selenide.refresh();
@@ -111,6 +118,7 @@ public class BaseTestMethods extends eFonApp {
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
+        waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         abbreviatedNumbers.checkIfAbbrevNumberExistsInList(abbrevNum);
     }
@@ -122,6 +130,22 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum);
         confirmationPopup.getYesButton().click();
         abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum);
+    }
+
+    public void deleteAllAbbrevNumbers(){
+        String data;
+        basePage.getTabAbbreviatedDialling().click();
+        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
+        while (abbreviatedNumbers.getListNo().size() > 0) {
+            data = abbreviatedNumbers.getListNo().get(0).getText();
+            if (data.equals("No Items")) break;
+            if (!abbreviatedNumbers.getButtonDeleteByNum(data).exists()){
+                makeAbbrevNumberUnused(data);
+                basePage.getTabUser().click();//temporary overcome because of bug
+            }
+            deleteSingleAbbrevNumber(data);
+        }
     }
 
     public void createAbbrevNumberRange(AbbreviatedDiallingTestData obj){

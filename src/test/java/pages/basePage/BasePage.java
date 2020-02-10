@@ -125,5 +125,4 @@ public class BasePage extends Fields {
         return field(buttonLogoutXpath);
     }
     //</editor-fold>
-
 }
