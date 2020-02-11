@@ -10,6 +10,9 @@ import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDiall
 import pages.basePage.BasePage;
 import pages.basePage.basePopup.AlertPopup;
 import pages.basePage.basePopup.ConfirmationPopup;
+import pages.callPickUpPage.CallPickUpPage;
+import pages.callPickUpPage.callPickUpPopup.GroupCallPickupPopup;
+import pages.faxPage.FaxPage;
 import pages.loginPage.LoginPage;
 import pages.phonebookPage.PhonebookPage;
 import pages.userPage.UserPage;
@@ -36,4 +39,7 @@ public class eFonApp extends PreparationsForRun{
     public AssignAbbreviatedDialling popupAssignAbbrevDial = new AssignAbbreviatedDialling();
     public ManageAbbreviatedNumbers manageAbbrevNumbersPage = new ManageAbbreviatedNumbers();
     public AbbreviatedNumbers abbreviatedNumbers = new AbbreviatedNumbers();
+    public FaxPage faxPage = new FaxPage();
+    public CallPickUpPage callPickUpPage = new CallPickUpPage();
+    public GroupCallPickupPopup groupCallPickupPopup = new GroupCallPickupPopup();
 }

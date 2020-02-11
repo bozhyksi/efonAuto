@@ -1,12 +1,13 @@
 package tests.temp;
 
-import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import org.testng.annotations.Test;
+import tests.userPageTests.userPageTestData.User;
 
 public class TempTest extends BaseTestMethods {
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Test()
     public void Test1(){
-        System.out.println(System.getProperty("user.dir"));
+        login();
+        createUser(new User());
     }
 }

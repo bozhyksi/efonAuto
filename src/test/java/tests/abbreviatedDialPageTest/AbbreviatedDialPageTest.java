@@ -86,6 +86,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
             createUser(user);
 
             step("Add single Abbreviated Number");
+            deleteAllAbbrevNumbers();
             addSingleAbbrevNumber(singleShortNumber);
 
             step("Click on Edit button and open Assign abbreviated dialling popup");
@@ -102,7 +103,9 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
             abbreviatedNumbers.getListCompany().filterBy(Condition.text(user.getFirstName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
         } finally {
             step("Clear test data - delete user");
+            refreshPage();
             deleteUser(user);
+            refreshPage();
             deleteAllAbbrevNumbers();
         }
     }
@@ -158,6 +161,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
             deleteSingleAbbrevNumber(dat.get("shortNumber"));
         } finally {
             step("Delete test data - delete all short numbers");
+            refreshPage();
             deleteAllAbbrevNumbers();
         }
     }

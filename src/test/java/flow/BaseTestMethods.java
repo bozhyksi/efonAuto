@@ -1,5 +1,6 @@
 package flow;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
@@ -109,6 +110,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void deletePhonebook(){
         basePage.getTabPhonebook().click();
+        waitUntilAlertDisappear();
         phonebookPage.getButtonDeletePhoneBook().click();
         confirmationPopup.getYesButton().click();
         phonebookPage.checkIfPhonebookWasDeleted();
@@ -160,5 +162,35 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.editSingleAbbrevNumber(shortNumber);
         popupAssignAbbrevDial.getRadioUnused().click();
         popupAssignAbbrevDial.getButtonSave().click();
+    }
+
+    public void configFaxForNewUser(User user){
+        login();
+        createUser(user);
+        basePage.getTabFax().click();
+        faxPage.getDropdownSelectNumber().selectOption(0);
+        faxPage.getEditButton().click();
+        faxPage.getInputEmail().setValue(getRandomEmail());
+        faxPage.getRadioPdfOnly().click();
+        faxPage.getButtonSave().click();
+        alertPopup.getAlertDialog().should(Condition.appears);
+    }
+
+    public void createCallPickUpGroup(String groupName, String abbrevNum){
+        basePage.getTabCallPickUps().click();
+        callPickUpPage.getButtonNewGroup().click();
+        groupCallPickupPopup.getInputName().setValue(groupName);
+        groupCallPickupPopup.selectAbbrenNumber(abbrevNum);
+        groupCallPickupPopup.getDropdownSelectAccounts().selectOption(1);
+        groupCallPickupPopup.getButtonSave().click();
+
+        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(1));
+        callPickUpPage.getListAbbrevDial().filterBy(Condition.text(abbrevNum)).shouldHave(CollectionCondition.size(1));
+    }
+
+    public void deleteCallPickUpGroup(String groupName){
+        callPickUpPage.deletePickUpGroup(groupName);
+        confirmationPopup.getYesButton().click();
+        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(0));
     }
 }

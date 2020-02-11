@@ -4,7 +4,7 @@
     <test verbose="2" preserve-order="true" name="AbbreviatedDialPageTest">
         <groups>
             <run>
-                <include name="AbbreviatedDialPageTest"></include>
+                <include name="abbreviatedDialPageTest"></include>
             </run>
         </groups>
         <classes>

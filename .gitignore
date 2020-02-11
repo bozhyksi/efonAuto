@@ -10,3 +10,4 @@ build/
 /test.xlsx
 /src/test/java/testSuitsXML/testng.xml
 /tempTestData/phonebook.xlsx
+/AutoTestPhonebook.xlsx

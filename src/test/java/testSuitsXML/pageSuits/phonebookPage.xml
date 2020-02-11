@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="PhoneBook Page Test Suite">
-    <test verbose="2" preserve-order="true" name="PhoneBook Page Test">
+    <test verbose="2" preserve-order="true" name="PhoneBook Page Test" thread-count="4" parallel="methods">
         <groups>
             <run>
                 <include name="phonebookPageTests"></include>
