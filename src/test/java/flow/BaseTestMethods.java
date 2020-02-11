@@ -13,6 +13,8 @@ import java.util.Random;
 public class BaseTestMethods extends eFonApp {
 
     public void waitUntilAlertDisappear(){
+        basePage.getIsLoadingSpinner().waitUntil(Condition.disappear,10000);
+        basePage.getIsLoadingSpinner().shouldNotBe(Condition.visible);
         alertPopup.getAlertDialog().waitUntil(Condition.disappear,10000);
         alertPopup.getAlertDialog().shouldNotBe(Condition.visible);
         Selenide.sleep(1000);
@@ -98,22 +100,23 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserDeleted(user);
     }
 
-    public void uploadPhoneBook(int numberOfEntriesInFile){
-        Phonebook phonebook = new Phonebook(numberOfEntriesInFile);
+    public void uploadPhoneBook(Phonebook phonebook){
         phonebook.createExcelPhonebookFile();
         basePage.getTabPhonebook().click();
         phonebookPage.validatePageTitle("Phonebook");
         phonebookPage.uploadFile(phonebook.getfileName());
-        phonebookPage.validateUploadedNumbers(numberOfEntriesInFile);
-        excelFileWorker.deleteFile(phonebook.getfileName());;
+        phonebookPage.validateUploadedNumbers(phonebook.getArr().length);
+        excelFileWorker.deleteFile(phonebook.getfileName());
     }
 
     public void deletePhonebook(){
-        basePage.getTabPhonebook().click();
-        waitUntilAlertDisappear();
-        phonebookPage.getButtonDeletePhoneBook().click();
-        confirmationPopup.getYesButton().click();
-        phonebookPage.checkIfPhonebookWasDeleted();
+        refreshPage();
+        if (!(phonebookPage.getListNumbers().filterBy(Condition.text("No Items")).size()==1)){
+            basePage.getTabPhonebook().click();
+            phonebookPage.getButtonDeletePhoneBook().click();
+            confirmationPopup.getYesButton().click();
+            phonebookPage.checkIfPhonebookWasDeleted();
+        }
     }
 
     public void addSingleAbbrevNumber(String abbrevNum){

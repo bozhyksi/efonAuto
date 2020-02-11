@@ -17,6 +17,7 @@ public class BasePage extends Fields {
     private String dropdownHelpItemSupportRequestXpath = "//*[@class=\"dropdown open\"]//a[text()='Support request']";
     private String linkUserNameXpath = "//div[@class=\"col-xs-7\"]//a[@href=\"/portal/contact-data\"]";
     private String dropdownItemsPerPageXpath = "//span[text()=\"Items per page\"]/following-sibling::select";
+    private String isLoadingSpinnerXpath = "//ng2-loading-spinner";
 
     //Administration panel
     private String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
@@ -40,6 +41,9 @@ public class BasePage extends Fields {
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+    public SelenideElement getIsLoadingSpinner() {
+        return field(isLoadingSpinnerXpath);
+    }
 
     public SelenideElement getDropdownItemsPerPage() {
         return field(dropdownItemsPerPageXpath);

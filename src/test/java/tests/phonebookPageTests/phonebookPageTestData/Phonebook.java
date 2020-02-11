@@ -14,7 +14,7 @@ public class Phonebook extends BaseTestMethods {
     private String number;
     private String name;
     private String shortDial;
-    private String path = "AutoTestPhonebook.xlsx";
+    private String path = "AutoTestPhonebook_"+getRandomString(3)+".xlsx";
 
     public Phonebook(int entryNumber) {
         this.arr = new Phonebook[entryNumber];

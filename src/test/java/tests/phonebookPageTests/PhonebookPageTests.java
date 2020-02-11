@@ -53,23 +53,27 @@ public class PhonebookPageTests extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
     public void VerifyIfUserIsAbleToRestorePhonebookFromDatabase(){
         int numberOfEntries = 10;
+        Phonebook phonebook = new Phonebook(numberOfEntries);
 
-        step("Login the test env");
-        login();
+        try {
+            step("Login the test env");
+            login();
 
-        step("Prepare phonebook file and upload it");
-        uploadPhoneBook(numberOfEntries);
+            step("Prepare phonebook file and upload it");
+            uploadPhoneBook(phonebook);
 
-        step("Delete uploaded phonebook");
-        deletePhonebook();
+            step("Delete uploaded phonebook");
+            deletePhonebook();
 
-        step("Restore phonebook from dataBase and verify iff all numbers were restored");
-        phonebookPage.getButtonRestore().click();
-        confirmationPopup.getYesButton().click();
-        phonebookPage.validateUploadedNumbers(numberOfEntries);
-
-        step("Delete restored phonebook");
-        deletePhonebook();
+            step("Restore phonebook from dataBase and verify iff all numbers were restored");
+            phonebookPage.getButtonRestore().click();
+            confirmationPopup.getYesButton().click();
+            phonebookPage.validateUploadedNumbers(numberOfEntries);
+        } finally {
+            step("Delete restored phonebook");
+            deletePhonebook();
+            excelFileWorker.deleteFile(phonebook.getfileName());
+        }
     }
 
     @Description("Verify if user is able to download phonebook")
@@ -78,13 +82,14 @@ public class PhonebookPageTests extends BaseTestMethods {
         try {
             step("Prepare test data");
             int numberOfEnriesInFile = 10;
+            Phonebook phonebook = new Phonebook(numberOfEnriesInFile);
             List<Phonebook> phonebooks;
 
             step("Log in the system as VPBX admin");
             login();
 
             step("Goto Phonebook tab Upload new phonebook file");
-            uploadPhoneBook(numberOfEnriesInFile);
+            uploadPhoneBook(phonebook);
 
             step("Download phonebook");
             phonebookPage.downloadPhonebook();
