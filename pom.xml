@@ -13,8 +13,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <aspectj.version>1.8.10</aspectj.version>
 
-        <suitName>regression</suitName>
-        <folder>regression</folder>
+        <path>regression</path>
     </properties>
 
     <build>
@@ -42,7 +41,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-                    <suiteXmlFiles>src\test\java\testSuitsXML\${folder}\${suitName}.xml</suiteXmlFiles>
+                    <suiteXmlFiles>src\test\java\testSuitsXML\${path}.xml</suiteXmlFiles>
                     <systemProperties>
                         <property>
                             <name>allure.results.directory</name>

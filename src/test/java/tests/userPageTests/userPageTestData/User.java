@@ -4,8 +4,8 @@ import flow.BaseTestMethods;
 
 public class User extends BaseTestMethods {
     private String title = "Mr";
-    private String firstName = "AutoTest_"+getRandomString(5);
-    private String lastName = "AutoTest_"+getRandomString(5);
+    private String firstName = getRandomString(5);
+    private String lastName = getRandomString(5);
     private String loginEmail = getRandomEmail();
     private String UseDiffContactEmail = getRandomEmail();
     private String VoiceEmail = getRandomEmail();

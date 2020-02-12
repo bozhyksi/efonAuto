@@ -1,7 +1,7 @@
 package pages.userPage.userPagePopup.configureUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.conditions.Text;
 import pages.userPage.UserPage;
 
 public class ConfigureUserBasePopup extends UserPage {
@@ -68,6 +68,6 @@ public class ConfigureUserBasePopup extends UserPage {
     //</editor-fold>
 
     public void validatePopupTitle(String expected){
-        getPopupTitle().shouldHave(Text.value(expected));
+        getPopupTitle().shouldHave(Condition.text(expected));
     }
 }

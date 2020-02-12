@@ -24,12 +24,12 @@ Run the tests from the console:
     prod  (?? not configured yet);
 
 
-3. Execute appropriate suit: mvn clean test -D<folder> -D<suitName><press enter>
+3. Execute appropriate suit: mvn clean test -D<path><press enter>
 
 -<folder> and <suitName> set to one of the following:
-    -Dfolder=pageSuits -DsuitName=loginPage(or other page name);
-    -Dfolder=regression -DsuitName=regression;
-    -Dfolder=smoke -DsuitName=smoke;
+    -Dpath=pageSuits/loginPage(or other page name);
+    -Dpath=regression/regression;
+    -Dpath=smoke/smoke;
 
 
 4. Allure Reporting. To generate allure-report exec the following commands:

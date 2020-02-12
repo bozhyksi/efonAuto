@@ -65,6 +65,9 @@ public class UserPageTests extends BaseTestMethods {
         step("Preparing test data object - User");
         User user = new User();
 
+        step("Log in the system");
+        login();
+
         step("Create new user");
         createUser(user);
 
@@ -78,8 +81,8 @@ public class UserPageTests extends BaseTestMethods {
         userPage.checkIfUserDeleted(user);
     }
 
-    @Description("Check if the system shows correct user's data on EDIT mode")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
+    //@Description("Check if the system shows correct user's data on EDIT mode")
+    //@Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"}, invocationCount = 3) -- blocked by bug
     public void CheckIfVpbxAdminIsAbleToEditUsers(){
         step("Preparing test data, creating new object - User");
         User user = new User();
@@ -106,5 +109,4 @@ public class UserPageTests extends BaseTestMethods {
 
         //not finished is blocked by a bug
     }
-
 }

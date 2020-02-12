@@ -74,6 +74,7 @@ public class BaseTestMethods extends eFonApp {
         basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");
         userPage.getButtonCreateNewUser().click();
+        createUserPopup.getInputFirstName().waitUntil(Condition.appears,10000);
         createUserPopup.getPopupTitle().getText().equals("Create user");
         createUserPopup.selectTitle(user.getTitle());
         createUserPopup.fillFirstName(user.getFirstName());
@@ -98,6 +99,20 @@ public class BaseTestMethods extends eFonApp {
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
         userPage.checkIfUserDeleted(user);
+    }
+
+    public void deleteAllCustomerUsers(){
+        String userName;
+        basePage.getTabUser().click();
+        while (userPage.getListUserNames().size()>0){
+            userName = userPage.getListUserNames().get(0).getText();
+            if (!userName.contains("No Items")){
+                userPage.deleteUserButtonClick(userName);
+                confirmationPopup.getYesButton().click();
+                waitUntilAlertDisappear();
+            }else break;
+        }
+        userPage.getListUserNames().shouldHaveSize(1).shouldHave(CollectionCondition.texts("No Items"));
     }
 
     public void uploadPhoneBook(Phonebook phonebook){

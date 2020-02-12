@@ -69,9 +69,10 @@ public class PhonebookPageTests extends BaseTestMethods {
             phonebookPage.getButtonRestore().click();
             confirmationPopup.getYesButton().click();
             phonebookPage.validateUploadedNumbers(numberOfEntries);
-        } finally {
             step("Delete restored phonebook");
             deletePhonebook();
+
+        } finally {
             excelFileWorker.deleteFile(phonebook.getfileName());
         }
     }
@@ -98,13 +99,12 @@ public class PhonebookPageTests extends BaseTestMethods {
             phonebooks = excelFileWorker.readExcelFile("phonebook.xls",new PhonebookRowMapper(), new Phonebook());
             Assert.assertEquals(phonebooks.size()-1, numberOfEnriesInFile);
 
-            for (Phonebook entry: phonebooks) {
-                System.out.println(entry.toString());
-            }
+            step("Delete test data");
+            deletePhonebook();
+
         } finally {
             step("Delete test data - delete downloaded .xlsx file");
             excelFileWorker.deleteFile("phonebook.xls");
-            deletePhonebook();
         }
     }
 
