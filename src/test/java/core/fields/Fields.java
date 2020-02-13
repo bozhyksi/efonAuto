@@ -1,6 +1,7 @@
 package core.fields;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
@@ -57,7 +58,7 @@ public class Fields implements IFields {
 
         for (int i = 0; i < parentList.size(); i++) {
             if (parentList.get(i).text().contains(parentName)) {
-                return childList.get(i);
+                return childList.get(i).waitUntil(Condition.visible,15000).waitUntil(Condition.appears,15000);
             }
         }
         try {

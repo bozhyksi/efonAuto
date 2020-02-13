@@ -30,7 +30,7 @@ public class BasePage extends Fields {
     private String tabAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers\"]";
     private String tabCallPickUpsXpath = "//a[@href=\"/portal/call-intercept-groups\"]";
     private String tabFileManagementXpath = "//a[@href=\"/portal/file-management\"]";
-    private String tabCallForwardingXpath = "href=\"/portal/call-forwarding\"";
+    private String tabCallForwardingXpath = "//a[@href=\"/portal/call-forwarding\"]";
     private String tabHuntGroupsXpath = "//a[@href=\"/portal/hunt-groups\"]";
     private String tabConferenceCallsXpath = "//a[@href=\"/portal/conference-calls\"]";
     private String tabQueuesXpath = "//a[@href=\"/portal/call-queues\"]";

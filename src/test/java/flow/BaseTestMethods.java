@@ -22,6 +22,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void refreshPage(){
         Selenide.refresh();
+        waitUntilAlertDisappear();
     }
 
     public String getRandomEmail() {
@@ -98,6 +99,7 @@ public class BaseTestMethods extends eFonApp {
         basePage.getTabUser().click();
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
         userPage.checkIfUserDeleted(user);
     }
 
