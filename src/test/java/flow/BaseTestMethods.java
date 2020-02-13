@@ -7,6 +7,7 @@ import core.configuration.preparations.eFonApp;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
+import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 
 import java.util.Random;
 
@@ -212,5 +213,26 @@ public class BaseTestMethods extends eFonApp {
         callPickUpPage.deletePickUpGroup(groupName);
         confirmationPopup.getYesButton().click();
         callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(0));
+    }
+
+    public void createConferenceCall(Conference conference){
+        basePage.getTabConferenceCalls().click();
+        conferenceCallsPage.getButtonNewConferenceCall().click();
+        waitUntilAlertDisappear();
+        createNewConfCallPopup.getInputName().setValue(conference.getName());
+        createNewConfCallPopup.getDropdownConferenceCallNum().selectOption(1);
+        conference.setConferenceNumber(createNewConfCallPopup.getDropdownConferenceCallNum().getSelectedText());
+        createNewConfCallPopup.getInputPin().setValue(conference.getPin());
+        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conference.getLanguage());
+        createNewConfCallPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
+    public void deleteConferenceCall(String confName){
+        basePage.getTabConferenceCalls().click();
+        conferenceCallsPage.getButtonDeleteByName(confName).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        conferenceCallsPage.getListNames().filterBy(Condition.text(confName)).shouldHaveSize(0);
     }
 }

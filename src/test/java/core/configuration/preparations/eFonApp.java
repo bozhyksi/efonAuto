@@ -13,6 +13,8 @@ import pages.basePage.basePopup.ConfirmationPopup;
 import pages.callForwardingPage.CallForwardingPage;
 import pages.callPickUpPage.CallPickUpPage;
 import pages.callPickUpPage.callPickUpPopup.GroupCallPickupPopup;
+import pages.conferenceCallsPage.ConferenceCallsPage;
+import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCallPopup;
 import pages.faxPage.FaxPage;
 import pages.loginPage.LoginPage;
 import pages.phonebookPage.PhonebookPage;
@@ -44,4 +46,6 @@ public class eFonApp extends PreparationsForRun{
     public CallPickUpPage callPickUpPage = new CallPickUpPage();
     public GroupCallPickupPopup groupCallPickupPopup = new GroupCallPickupPopup();
     public CallForwardingPage callForwardingPage = new CallForwardingPage();
+    public ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
+    public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
 }
