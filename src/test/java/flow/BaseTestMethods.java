@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
@@ -13,28 +14,28 @@ import java.util.Random;
 
 public class BaseTestMethods extends eFonApp {
 
-    public void waitUntilAlertDisappear(){
-        basePage.getIsLoadingSpinner().waitUntil(Condition.disappear,10000);
+    public void waitUntilAlertDisappear() {
+        basePage.getIsLoadingSpinner().waitUntil(Condition.disappear, 10000);
         basePage.getIsLoadingSpinner().shouldNotBe(Condition.visible);
-        alertPopup.getAlertDialog().waitUntil(Condition.disappear,10000);
+        alertPopup.getAlertDialog().waitUntil(Condition.disappear, 10000);
         alertPopup.getAlertDialog().shouldNotBe(Condition.visible);
         Selenide.sleep(1000);
     }
 
-    public void refreshPage(){
+    public void refreshPage() {
         Selenide.refresh();
         waitUntilAlertDisappear();
     }
 
     public String getRandomEmail() {
-        return "L"+getRandomString(8)+"@email.com";
+        return "L" + getRandomString(8) + "@email.com";
     }
 
-    public String getRandomPassword(){
-        return "L"+getRandomString(5)+"123!!!+++";
+    public String getRandomPassword() {
+        return "L" + getRandomString(5) + "123!!!+++";
     }
 
-    public String getRandomString(int length){
+    public String getRandomString(int length) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -43,7 +44,7 @@ public class BaseTestMethods extends eFonApp {
         return String.valueOf(sb);
     }
 
-    public String getRandomNumber(int length){
+    public String getRandomNumber(int length) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -52,18 +53,18 @@ public class BaseTestMethods extends eFonApp {
         return String.valueOf(sb);
     }
 
-    public String getRandomNumber(int min, int max){
+    public String getRandomNumber(int min, int max) {
         Random r = new Random();
         return String.valueOf(r.nextInt((max - min) + 1) + min);
     }
 
-    public String getRandomPhone(String prefix){
+    public String getRandomPhone(String prefix) {
         if (prefix.equals("+")) return prefix + getRandomNumber(11);
-        else return "00"+getRandomNumber(11);
+        else return "00" + getRandomNumber(11);
     }
 
-    public String getRandomPhone(){
-        return "00"+getRandomNumber(11);
+    public String getRandomPhone() {
+        return "00" + getRandomNumber(11);
     }
 
     public void login() {
@@ -72,11 +73,11 @@ public class BaseTestMethods extends eFonApp {
         loginPage.getButtonLogin().click();
     }
 
-    public void createUser(User user){
+    public void createUser(User user) {
         basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");
         userPage.getButtonCreateNewUser().click();
-        createUserPopup.getInputFirstName().waitUntil(Condition.appears,10000);
+        createUserPopup.getInputFirstName().waitUntil(Condition.appears, 10000);
         createUserPopup.getPopupTitle().getText().equals("Create user");
         createUserPopup.selectTitle(user.getTitle());
         createUserPopup.fillFirstName(user.getFirstName());
@@ -96,7 +97,7 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserExistsInTheList(user);
     }
 
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         basePage.getTabUser().click();
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
@@ -104,21 +105,21 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserDeleted(user);
     }
 
-    public void deleteAllCustomerUsers(){
+    public void deleteAllCustomerUsers() {
         String userName;
         basePage.getTabUser().click();
-        while (userPage.getListUserNames().size()>0){
+        while (userPage.getListUserNames().size() > 0) {
             userName = userPage.getListUserNames().get(0).getText();
-            if (!userName.contains("No Items")){
+            if (!userName.contains("No Items")) {
                 userPage.deleteUserButtonClick(userName);
                 confirmationPopup.getYesButton().click();
                 waitUntilAlertDisappear();
-            }else break;
+            } else break;
         }
         userPage.getListUserNames().shouldHaveSize(1).shouldHave(CollectionCondition.texts("No Items"));
     }
 
-    public void uploadPhoneBook(Phonebook phonebook){
+    public void uploadPhoneBook(Phonebook phonebook) {
         phonebook.createExcelPhonebookFile();
         basePage.getTabPhonebook().click();
         phonebookPage.validatePageTitle("Phonebook");
@@ -127,9 +128,9 @@ public class BaseTestMethods extends eFonApp {
         excelFileWorker.deleteFile(phonebook.getfileName());
     }
 
-    public void deletePhonebook(){
+    public void deletePhonebook() {
         refreshPage();
-        if (!(phonebookPage.getListNumbers().filterBy(Condition.text("No Items")).size()==1)){
+        if (!(phonebookPage.getListNumbers().filterBy(Condition.text("No Items")).size() == 1)) {
             basePage.getTabPhonebook().click();
             phonebookPage.getButtonDeletePhoneBook().click();
             confirmationPopup.getYesButton().click();
@@ -137,7 +138,7 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void addSingleAbbrevNumber(String abbrevNum){
+    public void addSingleAbbrevNumber(String abbrevNum) {
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
@@ -146,7 +147,7 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.checkIfAbbrevNumberExistsInList(abbrevNum);
     }
 
-    public void deleteSingleAbbrevNumber(String abbrevNum){
+    public void deleteSingleAbbrevNumber(String abbrevNum) {
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
@@ -155,23 +156,24 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum);
     }
 
-    public void deleteAllAbbrevNumbers(){
+    public void deleteAllAbbrevNumbers() {
         String data;
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        refreshPage();
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
         while (abbreviatedNumbers.getListNo().size() > 0) {
             data = abbreviatedNumbers.getListNo().get(0).getText();
             if (data.equals("No Items")) break;
-            if (!abbreviatedNumbers.getButtonDeleteByNum(data).exists()){
+            if (!abbreviatedNumbers.getButtonDeleteByNum(data).exists()) {
                 makeAbbrevNumberUnused(data);
-                basePage.getTabUser().click();//temporary overcome because of bug
+                refreshPage();
             }
             deleteSingleAbbrevNumber(data);
         }
     }
 
-    public void createAbbrevNumberRange(AbbreviatedDiallingTestData obj){
+    public void createAbbrevNumberRange(AbbreviatedDiallingTestData obj) {
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addRangeAbbrevNumber(obj.getFromNumber(), obj.getUntilNumber());
@@ -179,13 +181,13 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.checkIfAbbrevNumberRangeCreated(obj);
     }
 
-    public void makeAbbrevNumberUnused(String shortNumber){
+    public void makeAbbrevNumberUnused(String shortNumber) {
         abbreviatedNumbers.editSingleAbbrevNumber(shortNumber);
         popupAssignAbbrevDial.getRadioUnused().click();
         popupAssignAbbrevDial.getButtonSave().click();
     }
 
-    public void configFaxForNewUser(User user){
+    public void configFaxForNewUser(User user) {
         login();
         createUser(user);
         basePage.getTabFax().click();
@@ -197,7 +199,7 @@ public class BaseTestMethods extends eFonApp {
         alertPopup.getAlertDialog().should(Condition.appears);
     }
 
-    public void createCallPickUpGroup(String groupName, String abbrevNum){
+    public void createCallPickUpGroup(String groupName, String abbrevNum) {
         basePage.getTabCallPickUps().click();
         callPickUpPage.getButtonNewGroup().click();
         groupCallPickupPopup.getInputName().setValue(groupName);
@@ -209,13 +211,13 @@ public class BaseTestMethods extends eFonApp {
         callPickUpPage.getListAbbrevDial().filterBy(Condition.text(abbrevNum)).shouldHave(CollectionCondition.size(1));
     }
 
-    public void deleteCallPickUpGroup(String groupName){
+    public void deleteCallPickUpGroup(String groupName) {
         callPickUpPage.deletePickUpGroup(groupName);
         confirmationPopup.getYesButton().click();
         callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(0));
     }
 
-    public void createConferenceCall(Conference conference){
+    public void createConferenceCall(Conference conference) {
         basePage.getTabConferenceCalls().click();
         conferenceCallsPage.getButtonNewConferenceCall().click();
         waitUntilAlertDisappear();
@@ -228,11 +230,33 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
     }
 
-    public void deleteConferenceCall(String confName){
+    public void deleteConferenceCall(String confName) {
         basePage.getTabConferenceCalls().click();
         conferenceCallsPage.getButtonDeleteByName(confName).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         conferenceCallsPage.getListNames().filterBy(Condition.text(confName)).shouldHaveSize(0);
+    }
+
+    public void createIVR(IVRtestData ivr) {
+        basePage.getTabIVRs().click();
+        ivrPage.getButtonNewIvr().click();
+        ivrPagePopup.getInputName().setValue(ivr.getIvrName());
+        ivrPagePopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
+        ivrPagePopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
+        ivrPagePopup.getDropdownSelectIvrNumber().selectOption(1);
+        ivr.setIvrNumber(ivrPagePopup.getDropdownSelectIvrNumber().getSelectedText());
+        ivrPagePopup.getDropdownSelectAnnounc().selectOption(1);
+        ivr.setIvrAnnounce(ivrPagePopup.getDropdownSelectAnnounc().getSelectedText());
+        ivrPagePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+    }
+
+    public void deleteIVR(String name) {
+        ivrPage.getButtonDeleteIvrByName(name).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        ivrPage.getListName().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
     }
 }

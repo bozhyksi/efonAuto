@@ -3,6 +3,8 @@ package core.configuration.preparations;
 import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
+import pages.IVRpage.IVRpage;
+import pages.IVRpage.IVRpagePopup.IVRpagePopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
 import pages.abbreviatedDialling.ManageAbbreviatedNumbers;
@@ -48,4 +50,6 @@ public class eFonApp extends PreparationsForRun{
     public CallForwardingPage callForwardingPage = new CallForwardingPage();
     public ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
+    public IVRpage ivrPage = new IVRpage();
+    public IVRpagePopup ivrPagePopup = new IVRpagePopup();
 }

@@ -1,0 +1,96 @@
+package tests.IVRpageTests;
+
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
+import core.customListeners.CustomListeners;
+import core.retryAnalyzer.RetryAnalyzer;
+import flow.BaseTestMethods;
+import io.qameta.allure.Description;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import tests.IVRpageTests.IVRtestData.IVRtestData;
+
+import static io.qameta.allure.Allure.step;
+
+@Listeners(CustomListeners.class)
+
+public class IVRpageTests extends BaseTestMethods {
+
+    @Description("Verify if user can create new IVR")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
+    private void VerifyIfUserCanCreateNewIvr(){
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+
+        step("Log in the system");
+        login();
+
+        step("Goto IVR page");
+        basePage.getTabIVRs().click();
+
+        step("Click \"New IVR\" button");
+        ivrPage.getButtonNewIvr().click();
+
+        step("Fill in \"Name\" field");
+        ivrPagePopup.getInputName().setValue(ivr.getIvrName());
+
+        step("Fill in \"Display Nane\" field");
+        ivrPagePopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
+
+        step("Select English language");
+        ivrPagePopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
+
+        step("Select number");
+        ivrPagePopup.getDropdownSelectIvrNumber().selectOption(1);
+
+        step("Select announcement");
+        ivrPagePopup.getDropdownSelectAnnounc().selectOption(1);
+
+        step("Save all changes");
+        ivrPagePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+
+        step("Check if IVR is displayed in the grid");
+        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+
+        step("Delete created IVR");
+        ivrPage.getButtonDeleteIvrByName(ivr.getIvrName()).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+
+        step("Check if IVR was deleted in the grid");
+        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.size(0));
+    }
+
+    @Description("Verify if user can EDIT new IVR")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
+    public void VerifyIfUserCanEditNewIvr(){
+        step("Prepare test data - create IVR object");
+        String displName = getRandomString(10);
+        IVRtestData ivr = new IVRtestData();
+
+        step("Log in the system");
+        login();
+
+        step("Create new IVR");
+        createIVR(ivr);
+
+        step("Click edit button");
+        ivrPage.getButtonEditIvrByName(ivr.getIvrName()).click();
+        waitUntilAlertDisappear();
+
+        step("Display name");
+        ivrPagePopup.getInputDisplayName().setValue(displName);
+
+        step("Save changed data");
+        ivrPagePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        ivrPagePopup.getButtonClose().click();
+
+        step("Check if saved data are displayed correctly in the grid");
+        ivrPage.getListDisplayName().filterBy(Condition.text(displName)).shouldHave(CollectionCondition.sizeGreaterThan(0));
+
+        step("Delete created test data");
+        deleteIVR(ivr.getIvrName());
+    }
+}

@@ -26,7 +26,7 @@ public class BasePage extends Fields {
     private String tabSubscriptionsXpath = "//a[@href=\"/portal/abos\"]";
     private String tabLastCallsXpath = "//a[@href=\"/portal/last-calls\"]";
     private String tabFaxXpath = "//a[@href=\"/portal/fax\"]";
-    private String tabIVRsXpath = "//a[@href=\"/portal/ivrs\"";
+    private String tabIVRsXpath = "//a[@href=\"/portal/ivrs\"]";
     private String tabAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers\"]";
     private String tabCallPickUpsXpath = "//a[@href=\"/portal/call-intercept-groups\"]";
     private String tabFileManagementXpath = "//a[@href=\"/portal/file-management\"]";
