@@ -6,21 +6,26 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
+
+import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 
 @Listeners(CustomListeners.class)
 
 public class IVRpageTests extends BaseTestMethods {
+    private ArrayList<IVRtestData> ivrList = new ArrayList<>();
 
     @Description("Verify if user can create new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
     private void VerifyIfUserCanCreateNewIvr(){
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
+        ivrList.add(ivr);
 
         step("Log in the system");
         login();
@@ -68,6 +73,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Prepare test data - create IVR object");
         String displName = getRandomString(10);
         IVRtestData ivr = new IVRtestData();
+        ivrList.add(ivr);
 
         step("Log in the system");
         login();
@@ -92,5 +98,12 @@ public class IVRpageTests extends BaseTestMethods {
 
         step("Delete created test data");
         deleteIVR(ivr.getIvrName());
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void cleanUpIVR(){
+        startBrowser();
+        deleteIVRlist(ivrList);
+        closeBrowser();
     }
 }

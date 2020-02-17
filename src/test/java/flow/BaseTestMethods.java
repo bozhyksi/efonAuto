@@ -10,6 +10,7 @@ import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 
+import java.util.List;
 import java.util.Random;
 
 public class BaseTestMethods extends eFonApp {
@@ -258,5 +259,15 @@ public class BaseTestMethods extends eFonApp {
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         ivrPage.getListName().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
+    }
+
+    public void deleteIVRlist(List<IVRtestData> ivrList){
+        login();
+        basePage.getTabIVRs().click();
+        for (IVRtestData ivr: ivrList) {
+            if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
+                deleteIVR(ivr.getIvrName());
+            }
+        }
     }
 }

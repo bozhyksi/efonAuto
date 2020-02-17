@@ -36,6 +36,7 @@ public class DriverConfigurator {
         options.addArguments("--auto-open-devtools-for-tabs");
         options.setExperimentalOption("prefs", chromePrefs);
         Configuration.timeout = maxTimeWait;
+        Configuration.fastSetValue = true;
         return options;
     }
 }
