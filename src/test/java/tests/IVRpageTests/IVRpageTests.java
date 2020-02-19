@@ -22,7 +22,7 @@ public class IVRpageTests extends BaseTestMethods {
 
     @Description("Verify if user can create new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
-    private void VerifyIfUserCanCreateNewIvr(){
+    public void VerifyIfUserCanCreateNewIvr(){
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
         ivrList.add(ivr);
@@ -101,9 +101,10 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @AfterClass(alwaysRun = true)
-    public void cleanUpIVR(){
+    private void cleanUp(){
         startBrowser();
-        deleteIVRlist(ivrList);
+        login();
+        ivrCleanUp(ivrList);
         closeBrowser();
     }
 }

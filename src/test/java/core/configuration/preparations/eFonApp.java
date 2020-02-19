@@ -18,6 +18,9 @@ import pages.callPickUpPage.callPickUpPopup.GroupCallPickupPopup;
 import pages.conferenceCallsPage.ConferenceCallsPage;
 import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCallPopup;
 import pages.faxPage.FaxPage;
+import pages.huntGroupPage.HuntGroupPage;
+import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
+import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 import pages.loginPage.LoginPage;
 import pages.phonebookPage.PhonebookPage;
 import pages.userPage.UserPage;
@@ -52,4 +55,7 @@ public class eFonApp extends PreparationsForRun{
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
     public IVRpage ivrPage = new IVRpage();
     public IVRpagePopup ivrPagePopup = new IVRpagePopup();
+    public HuntGroupPage huntGroupPage = new HuntGroupPage();
+    public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
+    public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();
 }

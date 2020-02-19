@@ -6,6 +6,7 @@ import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
@@ -255,18 +256,61 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteIVR(String name) {
+        basePage.getTabIVRs().click();
         ivrPage.getButtonDeleteIvrByName(name).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         ivrPage.getListName().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
     }
 
-    public void deleteIVRlist(List<IVRtestData> ivrList){
-        login();
+    public void createHuntGroup(HuntGroup huntGroup){
+        basePage.getTabHuntGroups().click();
+        huntGroupPage.getButtonCreateNewHuntGroup().click();
+        waitUntilAlertDisappear();
+        createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
+        createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
+        createHuntGroupPopup.getDropdownNumber().selectOption(1);
+        createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
+        createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
+        createHuntGroupPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+    }
+
+    public void deleteHuntGroup(String name){
+        basePage.getTabHuntGroups().click();
+        huntGroupPage.getButtonDeleteByName(name).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        huntGroupPage.getListNames().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
+    }
+
+    public void ivrCleanUp(List<IVRtestData> ivrList){
         basePage.getTabIVRs().click();
+        waitUntilAlertDisappear();
         for (IVRtestData ivr: ivrList) {
             if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
                 deleteIVR(ivr.getIvrName());
+            }
+        }
+    }
+
+    public void huntGroupCleanUp(List<HuntGroup> huntGroupList){
+        basePage.getTabHuntGroups().click();
+        waitUntilAlertDisappear();
+        for (HuntGroup huntGroup: huntGroupList) {
+            if (huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).size()>0){
+                deleteHuntGroup(huntGroup.getHuntGroupName());
+            }
+        }
+    }
+
+    public void userCleanUp(List<User> userList){
+        basePage.getTabUser().click();
+        waitUntilAlertDisappear();
+        for (User user: userList) {
+            if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
+                deleteUser(user);
             }
         }
     }
