@@ -4,7 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 import java.util.HashMap;
 
@@ -75,7 +75,7 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         getButtonDeleteByNum(shortNum).click();
     }
 
-    public void checkIfAbbrevNumberRangeCreated(AbbreviatedDiallingTestData obj){
+    public void checkIfAbbrevNumberRangeCreated(AbbreviatedDialling obj){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getListNo().shouldHave(CollectionCondition.size(obj.getShortNumbersArray().size()));
     }

@@ -1,9 +1,9 @@
 package pages.basePage.basePopup;
 
 import com.codeborne.selenide.SelenideElement;
-import pages.basePage.BasePage;
 
-public class ConfirmationPopup extends BasePage {
+public class ConfirmationPopup extends BasePopup {
+
     private String titleConfirmationPopupXpath = "//div[@class=\"modal-content\"]//h3";
     private String buttonDoNotSaveXpath = "//div[@class=\"modal-content\"]//button[text()='Do not save' or text()='Yes']";
     private String buttonContinueWorkingXpath = "//div[@class=\"modal-content\"]//button[text()='Continue working' or text()='No']";

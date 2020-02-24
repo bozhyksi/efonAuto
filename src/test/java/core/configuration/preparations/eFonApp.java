@@ -23,6 +23,9 @@ import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 import pages.loginPage.LoginPage;
 import pages.phonebookPage.PhonebookPage;
+import pages.queuesPage.ConfigureQueueTab;
+import pages.queuesPage.QueuesBasePage;
+import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.userPage.UserPage;
 import pages.userPage.userPagePopup.CreateUserPopup;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
@@ -58,4 +61,7 @@ public class eFonApp extends PreparationsForRun{
     public HuntGroupPage huntGroupPage = new HuntGroupPage();
     public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
     public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();
+    public QueuesBasePage queuesBasePage = new QueuesBasePage();
+    public ConfigureQueueTab configureQueueTab = new ConfigureQueueTab();
+    public CreateNewQueuePopup createNewQueuePopup = new CreateNewQueuePopup();
 }

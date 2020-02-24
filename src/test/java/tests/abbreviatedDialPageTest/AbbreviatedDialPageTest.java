@@ -7,7 +7,7 @@ import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 import java.util.HashMap;
 
@@ -47,7 +47,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddShortNumberInRangeOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
-        AbbreviatedDiallingTestData shortNums = new AbbreviatedDiallingTestData(201, 210);
+        AbbreviatedDialling shortNums = new AbbreviatedDialling(201, 210);
 
         step("Login the system");
         login();

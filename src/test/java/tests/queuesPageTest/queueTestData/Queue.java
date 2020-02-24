@@ -1,0 +1,295 @@
+package tests.queuesPageTest.queueTestData;
+
+import flow.BaseTestMethods;
+
+import java.util.Random;
+
+public class Queue extends BaseTestMethods {
+    enum RuleForFindingAgent{
+        RingAll("Ring all"),
+        Random("Random"),
+        RandomWeighting("Random weighting"),
+        Linear("Linear"),
+        FewestСalls("Fewest calls"),
+        RoundRobinWithMemory("Round-robin with memory");
+
+        private String rule;
+
+        RuleForFindingAgent(String rule){
+            this.rule = rule;
+        }
+
+        public String getRule() {
+            return rule;
+        }
+
+        public static RuleForFindingAgent getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+    enum MaxWaitTime{
+        _10("10"),
+        _20("20"),
+        _25("25"),
+        _30("30"),
+        _40("40"),
+        _45("45"),
+        _50("50"),
+        _55("55");
+
+        private String waitTime;
+
+        MaxWaitTime(String waitTime){
+            this.waitTime = waitTime;
+        }
+
+        public String getWaitTime() {
+            return waitTime;
+        }
+
+        public static MaxWaitTime getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+    enum Priority{
+        veryLow("Very low"),
+        low("Low"),
+        medium("Medium"),
+        high("High"),
+        veryHigh("Very High");
+
+        private String prior;
+
+        Priority(String prior){
+            this.prior = prior;
+        }
+
+        public String getPrior() {
+            return prior;
+        }
+
+        public static Priority getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+    enum TimeoutForCallingAnAgent{
+        _5("5"),
+        _7("7"),
+        _10("10"),
+        _12("12"),
+        _15("15"),
+        _17("17"),
+        _20("20");
+
+        private String timeOut;
+
+        TimeoutForCallingAnAgent(String timeOut){
+            this.timeOut = timeOut;
+        }
+
+        public static TimeoutForCallingAnAgent getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+
+        public String getTimeOut() {
+            return timeOut;
+        }
+    }
+
+    enum WaitingTimeBeforeNextAttempt{
+        _1("1"),
+        _2("2"),
+        _3("3"),
+        _4("4"),
+        _5("5"),
+        _8("8"),
+        _10("10"),
+        _12("12"),
+        _15("15"),
+        _18("18"),
+        _20("20"),
+        _25("25"),
+        _30("30"),
+        _35("35"),
+        _45("45"),
+        _50("50"),
+        _60("60"),
+        _90("90"),
+        _120("120"),
+        _180("180");
+
+        private String wait;
+
+        WaitingTimeBeforeNextAttempt(String wait){
+            this.wait = wait;
+        }
+
+        public String getWait() {
+            return wait;
+        }
+
+        public static WaitingTimeBeforeNextAttempt getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+
+    }
+
+    enum WaitingTimeBeforeNextCall{
+        _0("0"),
+        _5("5"),
+        _10("10"),
+        _15("15"),
+        _20("20"),
+        _25("25"),
+        _30("30"),
+        _40("40"),
+        _45("45");
+
+        private String wait;
+
+        WaitingTimeBeforeNextCall(String wait){
+            this.wait = wait;
+        }
+
+        public static WaitingTimeBeforeNextCall getRandomVal(){
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+
+        public String getWait() {
+            return wait;
+        }
+    }
+
+    enum RecordCalls{
+        Yes,
+        No;
+
+        public static String getRandomVal(){
+            Random random = new Random();
+            return String.valueOf(values()[random.nextInt(values().length)]);
+        }
+    }
+
+    private String name;
+    private String maxWaitTime;
+    private String subscription;
+    private String manager;
+    private String reporter;
+    private String logInOut;
+    private String priority;
+    private String waitingMusic;
+    private String filenameAnnouncement;
+    private String announcementFrequency;
+    private String ruleForFindingAgent;
+    private String timeoutForCalling;
+    private String waitingTimeBeforeNextAttempt;
+    private String waitingTimeBeforeNextCall;
+    private String recordCalls;
+
+    public Queue(){
+        this.name = getRandomString(10);
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+    }
+
+    public String getRecordCalls() {
+        return recordCalls;
+    }
+
+    public String getWaitingTimeBeforeNextCall() {
+        return waitingTimeBeforeNextCall;
+    }
+
+    public String getWaitingTimeBeforeNextAttempt() {
+        return waitingTimeBeforeNextAttempt;
+    }
+
+    public String getTimeoutForCalling() {
+        return timeoutForCalling;
+    }
+
+    public String getRuleForFindingAgent() {
+        return ruleForFindingAgent;
+    }
+
+    public void setSubscription(String subscription) {
+        this.subscription = subscription.replaceAll("\\s","");
+    }
+
+    public String getSubscription() {
+        return subscription;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setReporter(String reporter) {
+        this.reporter = reporter.replaceAll("\\s","");
+    }
+
+    public String getReporter() {
+        return reporter;
+    }
+
+    public void setLogInOut(String logInOut) {
+        this.logInOut = logInOut.replaceAll("\\s","");
+    }
+
+    public String getLogInOut() {
+        return logInOut;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMaxWaitTime() {
+        return maxWaitTime;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setWaitingMusic(String waitingMusic) {
+        this.waitingMusic = waitingMusic.replaceAll("\\s","");
+    }
+
+    public String getWaitingMusic() {
+        return waitingMusic;
+    }
+
+    public String getFilenameAnnouncement() {
+        return filenameAnnouncement;
+    }
+
+    public void setFilenameAnnouncement(String filenameAnnouncement) {
+        this.filenameAnnouncement = filenameAnnouncement.replaceAll("\\s","");
+    }
+
+    public String getAnnouncementFrequency() {
+        return announcementFrequency;
+    }
+
+
+}

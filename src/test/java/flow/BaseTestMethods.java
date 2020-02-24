@@ -5,7 +5,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
-import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDiallingTestData;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.userPageTests.userPageTestData.User;
@@ -175,7 +175,7 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void createAbbrevNumberRange(AbbreviatedDiallingTestData obj) {
+    public void createAbbrevNumberRange(AbbreviatedDialling obj) {
         basePage.getTabAbbreviatedDialling().click();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addRangeAbbrevNumber(obj.getFromNumber(), obj.getUntilNumber());

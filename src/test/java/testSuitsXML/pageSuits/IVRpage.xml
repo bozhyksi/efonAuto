@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="IVRpageTests Suite">
+    <test verbose="2" preserve-order="true" name="IVRpageTests">
+        <groups>
+            <run>
+                <include name="IVRpageTests"></include>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.IVRpageTests.IVRpageTests"></class>
+        </classes>
+    </test>
+</suite>
