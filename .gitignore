@@ -11,3 +11,4 @@ build/
 /src/test/java/testSuitsXML/testng.xml
 /tempTestData/phonebook.xlsx
 /AutoTestPhonebook.xlsx
+/f.txt

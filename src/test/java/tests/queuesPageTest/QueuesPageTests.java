@@ -2,9 +2,7 @@ package tests.queuesPageTest;
 
 import core.customListeners.CustomListeners;
 import flow.BaseTestMethods;
-import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -20,8 +18,8 @@ public class QueuesPageTests extends BaseTestMethods {
     ArrayList<User> usersList = new ArrayList<>();
     ArrayList<AbbreviatedDialling> abbrevNumsList = new ArrayList<>();
 
-    @Description("Verify if user can create new Queue")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"})
+    //@Description("Verify if user can create new Queue")
+    //@Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"})
     public void VerifyIfUserCanCreateNewQueue(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();

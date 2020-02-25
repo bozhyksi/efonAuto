@@ -57,7 +57,7 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure Calls with suppressed numbers")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression","conferenceCallsPage"},invocationCount = 3)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"},invocationCount = 3)
     public void VerifyIfUserCanConfigureCallsWithSuppressedNumbers(){
         step("Preparing test data");
         Conference conference = new Conference();

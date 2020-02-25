@@ -7,7 +7,7 @@ public class CallForwardingPage extends BasePage {
     //<editor-fold desc="Locators">
     private String dropdownMyNumbersXpath = "//h3[text()=\"My numbers\"]//following-sibling::select";
 
-    private String checkboxAfterXpath = "//span[text()=\"After\"]//preceding-sibling::input";
+    private String checkboxAfterXpath = "//span[contains(text(),\"After\")]//preceding-sibling::input";
     private String inputDelayXpath = "//input[@formcontrolname=\"delay\"]";
     private String dropdownAfterForwardToXpath = "//span[text()=\"After\"]//ancestor::section//select[@formcontrolname=\"forwardTo\"]";
     private String inputAfterPhoneXpath = "//span[text()=\"After\"]//ancestor::section//input[@formcontrolname=\"number\"]";

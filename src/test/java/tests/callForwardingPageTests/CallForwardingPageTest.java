@@ -55,7 +55,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         refreshPage();
 
         step("Verify if all entered data was saved");
-        callForwardingPage.getCheckboxAfter().shouldBe(Condition.enabled);
+        callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         callForwardingPage.getInputDelay().shouldHave(Condition.value(delay));
         callForwardingPage.getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
         callForwardingPage.getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
@@ -101,6 +101,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         refreshPage();
 
         step("Verify if all entered data was saved");
+        callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         callForwardingPage.getDropdownIfbusyForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
         callForwardingPage.getInputIfbusyPhone().shouldHave(Condition.value(forwardToPhone));
 
@@ -145,6 +146,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         refreshPage();
 
         step("Verify if all entered data was saved");
+        callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         callForwardingPage.getDropdownDeviceForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
         callForwardingPage.getInputDevicePhone().shouldHave(Condition.value(forwardToPhone));
 
@@ -186,6 +188,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         refreshPage();
 
         step("Verify if all entered data was saved");
+        callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         callForwardingPage.getDropdownSupprNumForwardTo().getSelectedOption().shouldHave(Condition.value("VOICEMAIL"));
 
         step("Delete test data - delete user");
