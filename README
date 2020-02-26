@@ -33,7 +33,7 @@ Run the tests from the console:
 
 
 4. Allure Reporting. To generate allure-report exec the following commands:
-    - mvn clean test -D<folder> -D<suitName><press enter>
+    - mvn clean test -Dpath=smoke/smoke <press enter>
     - mvn allure : serve
 
 

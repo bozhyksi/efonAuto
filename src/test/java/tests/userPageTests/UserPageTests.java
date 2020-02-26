@@ -15,7 +15,7 @@ import static io.qameta.allure.Allure.step;
 public class UserPageTests extends BaseTestMethods {
 
     @Description("Check if VPBX admin is able to create users")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests", "ttt"})
     public void CheckIfVpbxAdminIsAbleToCreateUsers(){
         step("Preparing test data object - User");
         User user = new User();
