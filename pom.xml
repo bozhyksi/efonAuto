@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aspectj.version>1.9.1</aspectj.version>
+        <aspectj.version>1.8.10</aspectj.version>
         <jackson.version>2.5.2</jackson.version>
         <allure.version>2.13.0</allure.version>
 
