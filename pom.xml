@@ -15,7 +15,7 @@
         <jackson.version>2.5.2</jackson.version>
         <allure.version>2.13.0</allure.version>
 
-        <path>regression</path>
+        <path>regression\regression.xml</path>
     </properties>
 
     <build>
@@ -43,7 +43,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-                    <suiteXmlFiles>src\test\java\testSuitsXML\${path}.xml</suiteXmlFiles>
+                    <suiteXmlFiles>src\test\java\testSuitsXML\${path}</suiteXmlFiles>
                     <systemProperties>
                         <property>
                             <name>allure.results.directory</name>
@@ -138,7 +138,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <baseUrl>http://192.168.102.162:9090/portal/login</baseUrl>
+                <baseUrl>https://epro.test/gga_new/login</baseUrl>
                 <login>AutoTest@AutoTest.aa</login>
                 <password>Login123!!!</password>
                 <dB.jdbc.driver>com.mysql.cj.jdbc.Driver</dB.jdbc.driver>
@@ -150,6 +150,15 @@
 
         <profile>
             <id>prod</id>
+            <properties>
+                <baseUrl></baseUrl>
+                <login>AutoTest@AutoTest.aa</login>
+                <password>Login123!!!</password>
+                <dB.jdbc.driver>com.mysql.cj.jdbc.Driver</dB.jdbc.driver>
+                <dB.url>jdbc:mysql://192.168.101.240:3306/webadmin_20170426?serverTimezone=UTC&amp;pinGlobalTxToPhysicalConnection=true</dB.url>
+                <dB.login>root</dB.login>
+                <dB.password>root</dB.password>
+            </properties>
 
         </profile>
 
