@@ -8,6 +8,7 @@ import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
+import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 
@@ -311,6 +312,52 @@ public class BaseTestMethods extends eFonApp {
         for (User user: userList) {
             if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
                 deleteUser(user);
+            }
+        }
+    }
+
+    public void createQueue(Queue queue){
+        basePage.getTabQueues().click();
+        queuesBasePage.getTabConfigureQueues().click();
+        configureQueueTab.getButtonCreateNewQueue().click();
+        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
+        createNewQueuePopup.getDropdownSubscription().selectOption(1);
+        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
+        createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
+        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
+        createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
+        queue.setWaitingMusic(createNewQueuePopup.getDropdownWaitingMusic().getSelectedText());
+        createNewQueuePopup.getDropdownFileNameAnnounc().selectOption(1);
+        queue.setFilenameAnnouncement(createNewQueuePopup.getDropdownFileNameAnnounc().getSelectedText());
+        createNewQueuePopup.getDropdownAnnounFreq().selectOptionByValue(queue.getAnnouncementFrequency());
+        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
+        createNewQueuePopup.getDropdownTimeOutForCall().selectOptionByValue(queue.getTimeoutForCalling());
+        createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
+        createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
+        createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
+        createNewQueuePopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+    }
+
+    public void deleteQueue(String queueName){
+        configureQueueTab.getButtonDeleteQueueByName(queueName).click();
+        confirmationPopup.getYesButton().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+        configureQueueTab.getFieldQueueNameByText(queueName).shouldNot(Condition.exist);
+    }
+
+    public void queueCleanUp(List<Queue> queueList){
+        if (!basePage.getPageTitle().equals("Queues")){
+            basePage.getTabQueues().click();
+            queuesBasePage.getTabConfigureQueues().click();
+        }
+        waitUntilAlertDisappear();
+        for (Queue queue: queueList) {
+            if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
+                deleteQueue(queue.getName());
             }
         }
     }

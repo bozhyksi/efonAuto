@@ -4,21 +4,26 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 
 @Listeners({CustomListeners.class})
 
 public class UserPageTests extends BaseTestMethods {
+    ArrayList<User> userArrayList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests", "ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests",})
     public void CheckIfVpbxAdminIsAbleToCreateUsers(){
         step("Preparing test data object - User");
         User user = new User();
+        userArrayList.add(user);
 
         step("Log in the system as VPBX admin and goto Users tab");
         login();
@@ -64,6 +69,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckifVpbxAdminisAbletoDeleteUsers(){
         step("Preparing test data object - User");
         User user = new User();
+        userArrayList.add(user);
 
         step("Log in the system");
         login();
@@ -82,10 +88,11 @@ public class UserPageTests extends BaseTestMethods {
     }
 
     //@Description("Check if the system shows correct user's data on EDIT mode")
-    //@Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"}, invocationCount = 3) -- blocked by bug
+    //@Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"}) -- blocked by bug
     public void CheckIfVpbxAdminIsAbleToEditUsers(){
         step("Preparing test data, creating new object - User");
         User user = new User();
+        userArrayList.add(user);
 
         step("Login the test environment");
         login();
@@ -108,5 +115,13 @@ public class UserPageTests extends BaseTestMethods {
         nameTabConfigUserPopup.validateDiffContactEmail(user.getUseDiffContactEmail());
 
         //not finished is blocked by a bug
+    }
+
+    @AfterClass(alwaysRun = true)
+    private void CleanUp(){
+        startBrowser();
+        login();
+        userCleanUp(userArrayList);
+        closeBrowser();
     }
 }

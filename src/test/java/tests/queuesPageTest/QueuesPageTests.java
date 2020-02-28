@@ -1,8 +1,13 @@
 package tests.queuesPageTest;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
+import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
+import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -18,16 +23,14 @@ public class QueuesPageTests extends BaseTestMethods {
     ArrayList<User> usersList = new ArrayList<>();
     ArrayList<AbbreviatedDialling> abbrevNumsList = new ArrayList<>();
 
-    //@Description("Verify if user can create new Queue")
-    //@Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"})
+    @Description("Verify if user can create new Queue")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
     public void VerifyIfUserCanCreateNewQueue(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
         User user1 = new User();
         User user2 = new User();
-        AbbreviatedDialling abbrevNum = new AbbreviatedDialling("277");
 
-        abbrevNumsList.add(abbrevNum);
         queuesList.add(queue);
         usersList.add(user1);
         usersList.add(user2);
@@ -35,8 +38,9 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Log in the system");
         login();
 
-        step("Create single short number");
-        //addSingleAbbrevNumber(singleShortNum.getSingleShortNum());
+        step("Create test users");
+        createUser(user1);
+        createUser(user2);
 
         step("Navigate to the Queue page, Configure tab");
         basePage.getTabQueues().click();
@@ -48,23 +52,20 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Fill in \"Queue name\" field");
         createNewQueuePopup.getInputQueueName().setValue(queue.getName());
 
+        step("Select \"Subscription\"");
+        createNewQueuePopup.getDropdownSubscription().selectOption(1);
+        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
+
         step("Select random value from \"Max. waiting time for customer service\" dropdown");
         createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
 
         step("Select manager");
         queue.setManager(user1.getFullName());
-        createNewQueuePopup.getDropdownManager().selectOptionContainingText("AAA");
-        //createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManager());
+        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManager());
 
         step("Select reporter");
         queue.setReporter(user2.getFullName());
-        //createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
-        createNewQueuePopup.getDropdownReporter().selectOptionContainingText("BBB");
-
-        step("Select \"Login/logout\"");
-        queue.setLogInOut(abbrevNum.getSingleShortNum());
-        //createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(queue.getLogInOut());
-        createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText("12");
+        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
 
         step("Set priority value");
         createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
@@ -94,5 +95,35 @@ public class QueuesPageTests extends BaseTestMethods {
 
         step("Select \"Record calls\"");
         createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
+
+        step("Save Changes");
+        createNewQueuePopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Verify if Queue was created");
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+
+        step("Delete created Queue");
+        configureQueueTab.getButtonDeleteQueueByName(queue.getName()).click();
+        confirmationPopup.getYesButton().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Verify if Queue was created");
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).shouldNot(Condition.exist);
+
+        step("Delete created users");
+        deleteUser(user1);
+        deleteUser(user2);
+    }
+
+    @AfterClass(alwaysRun = true)
+    private void cleanUp(){
+        startBrowser();
+        login();
+        queueCleanUp(queuesList);
+        userCleanUp(usersList);
+        closeBrowser();
     }
 }

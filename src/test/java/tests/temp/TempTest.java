@@ -1,11 +1,13 @@
 package tests.temp;
 
 import flow.BaseTestMethods;
-import tests.queuesPageTest.queueTestData.Queue;
+import org.testng.annotations.Test;
 
 public class TempTest extends BaseTestMethods {
-    public static void main(String[] args) {
-        Queue queue = new Queue();
-        System.out.println(queue);
+
+    @Test
+    public void ttt(){
+        login();
+        deleteAllAbbrevNumbers();
     }
 }

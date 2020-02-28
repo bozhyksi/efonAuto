@@ -138,7 +138,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <baseUrl>https://epro.test/gga_new/login</baseUrl>
+                <baseUrl>http://192.168.102.162:9090/portal/login</baseUrl>
                 <login>AutoTest@AutoTest.aa</login>
                 <password>Login123!!!</password>
                 <dB.jdbc.driver>com.mysql.cj.jdbc.Driver</dB.jdbc.driver>

@@ -60,7 +60,7 @@ public class Queue extends BaseTestMethods {
         low("Low"),
         medium("Medium"),
         high("High"),
-        veryHigh("Very High");
+        veryHigh("Very high");
 
         private String prior;
 
@@ -150,8 +150,8 @@ public class Queue extends BaseTestMethods {
         _20("20"),
         _25("25"),
         _30("30"),
-        _40("40"),
-        _45("45");
+        _45("45"),
+        _60("60");
 
         private String wait;
 
@@ -244,7 +244,7 @@ public class Queue extends BaseTestMethods {
     }
 
     public void setReporter(String reporter) {
-        this.reporter = reporter.replaceAll("\\s","");
+        this.reporter = reporter;
     }
 
     public String getReporter() {

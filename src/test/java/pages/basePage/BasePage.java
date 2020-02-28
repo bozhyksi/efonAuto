@@ -6,6 +6,8 @@ import core.fields.Fields;
 public class BasePage extends Fields {
 
     //<editor-fold desc="//-- BasePage Locators --//">
+    private String pageTitleXpath = "//h1";
+
     //Error alert
     private String alertErrorMsgXpath = "//div[@class=\"toast-top-right toast-container\"]";
 
@@ -21,26 +23,30 @@ public class BasePage extends Fields {
 
     //Administration panel
     private String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
-    private String tabUserXpath = "//a[@href=\"/portal/user\"]";
-    private String tabNumbersXpath = "//a[@href=\"/portal/numbers\"]";
-    private String tabSubscriptionsXpath = "//a[@href=\"/portal/abos\"]";
-    private String tabLastCallsXpath = "//a[@href=\"/portal/last-calls\"]";
-    private String tabFaxXpath = "//a[@href=\"/portal/fax\"]";
-    private String tabIVRsXpath = "//a[@href=\"/portal/ivrs\"]";
-    private String tabAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers\"]";
-    private String tabCallPickUpsXpath = "//a[@href=\"/portal/call-intercept-groups\"]";
-    private String tabFileManagementXpath = "//a[@href=\"/portal/file-management\"]";
-    private String tabCallForwardingXpath = "//a[@href=\"/portal/call-forwarding\"]";
-    private String tabHuntGroupsXpath = "//a[@href=\"/portal/hunt-groups\"]";
-    private String tabConferenceCallsXpath = "//a[@href=\"/portal/conference-calls\"]";
-    private String tabQueuesXpath = "//a[@href=\"/portal/call-queues\"]";
-    private String tabEndDevicesXpath = "//a[@href=\"/portal/end-devices\"]";
-    private String tabRecordedCallsXpath = "//a[@href=\"/portal/recorded-calls\"]";
-    private String tabContactDataXpath = "//a[@href=\"/portal/contact-data\"][text()='Contact data']";
-    private String tabPhonebookXpath = "//a[@href=\"/portal/phonebook\"][text()='Phonebook']";
+    private String tabUserXpath = "//a[@id=\"menu-11\"]";
+    private String tabNumbersXpath = "//a[@id=\"menu-12\"]";
+    private String tabSubscriptionsXpath = "//a[@id=\"menu-14\"]";
+    private String tabLastCallsXpath = "//a[@id=\"menu-15\"]";
+    private String tabFaxXpath = "//a[@id=\"menu-16\"]";
+    private String tabIVRsXpath = "//a[@id=\"menu-17\"]";
+    private String tabAbbreviatedNumbersXpath = "//a[@id=\"menu-18\"]";
+    private String tabCallPickUpsXpath = "//a[@id=\"menu-19\"]";
+    private String tabFileManagementXpath = "//a[@id=\"menu-20\"]";
+    private String tabCallForwardingXpath = "//a[@id=\"menu-21\"]";
+    private String tabHuntGroupsXpath = "//a[@id=\"menu-24\"]";
+    private String tabConferenceCallsXpath = "//a[@id=\"menu-25\"]";
+    private String tabQueuesXpath = "//a[@id=\"menu-26\"]";
+    private String tabEndDevicesXpath = "//a[@id=\"menu-29\"]";
+    private String tabRecordedCallsXpath = "//a[@id=\"menu-31\"]";
+    private String tabContactDataXpath = "//a[@id=\"menu-33\"]";
+    private String tabPhonebookXpath = "//a[@id=\"menu-32\"]";
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+    public SelenideElement getPageTitle() {
+        return field(pageTitleXpath);
+    }
+
     public SelenideElement getIsLoadingSpinner() {
         return field(isLoadingSpinnerXpath);
     }
@@ -129,4 +135,5 @@ public class BasePage extends Fields {
         return field(buttonLogoutXpath);
     }
     //</editor-fold>
+
 }
