@@ -1,7 +1,5 @@
 package tests.huntGroupPageTest;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -10,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.userPageTests.userPageTestData.User;
 
@@ -23,6 +22,7 @@ import static tests.huntGroupPageTest.huntGroupTestData.HuntGroup.TimerLevels.*;
 public class HuntGroupsPageTests extends BaseTestMethods {
     ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
     ArrayList<User> usersList = new ArrayList<>();
+    ArrayList<FileManagementTestData> filesList = new ArrayList<>();
 
     @Description("Verify if user can create/delete Hunt Group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "huntGroupsPageTests"})
@@ -68,7 +68,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if new Hunt Group appeared in the grid");
-        huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should().exists();
 
         step("Delete created Hunt Group");
         huntGroupPage.getButtonDeleteByName(huntGroup.getHuntGroupName()).click();
@@ -76,7 +76,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Check if Hunt Group was deleted");
-        huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).shouldHave(CollectionCondition.size(0));
+        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).shouldNot().exists();
 
         step("Delete created user");
         deleteUser(user);
@@ -170,10 +170,15 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     public void VerifyIfUserCanEditHuntGroupAndConfigureStandardTimers(){
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
+        FileManagementTestData file = new FileManagementTestData();
         huntGroupsList.add(huntGroup);
+        filesList.add(file);
 
         step("Login the system");
         login();
+
+        step("Upload announcement file");
+        uploadAnnouncementFile(file);
 
         step("Create Hunt Group");
         createHuntGroup(huntGroup);
@@ -217,6 +222,8 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
         step("Save Hunt group");
         createHuntGroupPopup.getButtonSave().click();
+
+        //test mot finished
     }
 
     @AfterClass(alwaysRun = true)
@@ -224,6 +231,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         startBrowser();
         login();
         userCleanUp(usersList);
+        announcementCleanUp(filesList);
         huntGroupCleanUp(huntGroupsList);
         closeBrowser();
     }

@@ -20,6 +20,7 @@ import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCal
 import pages.contactDataPage.ContactDataPage;
 import pages.endDevicesPage.EndDevicesPage;
 import pages.faxPage.FaxPage;
+import pages.fileManagementPage.AnnouncementDisplayPage;
 import pages.fileManagementPage.FileManagementBasePage;
 import pages.fileManagementPage.MusicOnHoldPage;
 import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
@@ -82,4 +83,5 @@ public class eFonApp extends PreparationsForRun{
     public ContactDataPage contactDataPage = new ContactDataPage();
     public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
     public EditFileManagementPopup editFileManagPopup = new EditFileManagementPopup();
+    public AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
 }

@@ -9,7 +9,7 @@ public class HuntGroupPage extends BasePage {
     private String buttonCreateNewHuntGroupXpath = "//a[text()='New hunt group']";
     private String buttonDeleteByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteHuntGroup\"]";
     private String buttonEditByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editHuntGroup\"]";
-    private String listNamesXpath = "//table[@role=\"grid\"]//td[1]/div[1]";
+    private String fieldNameByTextXpath = "//table[@role=\"grid\"]//td[1]/div[1][text()[contains(.,\"%s\")]]";
     private String listNumberXpath = "//table[@role=\"grid\"]//td[3]";
     private String dropdownHuntGroupNumberXpath = "//h3[text()=\"Hunt Group numbers\"]//following-sibling::select";
     private String checkboxBlockIncomingCallsXpath = "//label[text()=\"Block incoming calls\"]//input";
@@ -33,8 +33,8 @@ public class HuntGroupPage extends BasePage {
         return field(String.format(buttonEditByNameXpath, name));
     }
 
-    public ElementsCollection getListNames() {
-        return fields(listNamesXpath);
+    public SelenideElement getfieldNameByText(String name) {
+        return field(String.format(fieldNameByTextXpath, name));
     }
 
     public ElementsCollection getListNumber() {

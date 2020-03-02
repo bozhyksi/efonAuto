@@ -2,8 +2,6 @@ package pages.fileManagementPage;
 
 import com.codeborne.selenide.SelenideElement;
 
-import java.io.File;
-
 public class MusicOnHoldPage extends FileManagementBasePage {
     //<editor-fold desc="Locators">
     private String pageTitleXpath = "//music-on-hold//h1";
@@ -15,10 +13,6 @@ public class MusicOnHoldPage extends FileManagementBasePage {
     //<editor-fold desc="get\set">
     public SelenideElement getPageTitle() {
         return field(pageTitleXpath);
-    }
-
-    public void uploadMusicOnHoldFile(String filePath){
-        getInputFileUpload().uploadFile(new File(filePath));
     }
 
     public SelenideElement getFieldNameByText(String name) {

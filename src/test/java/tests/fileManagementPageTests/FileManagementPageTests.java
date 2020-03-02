@@ -34,7 +34,7 @@ public class FileManagementPageTests extends BaseTestMethods {
         fileManagementBasePage.getTabMusicOnHold().click();
 
         step("Upload test .WAV file");
-        musicOnHoldPage.uploadMusicOnHoldFile(testFile.getFilePath());
+        musicOnHoldPage.uploadFile(testFile.getFilePath());
 
         step("Fill name for uploaded file");
         musicOnHoldPage.getInputName().setValue(testFile.getFileName());
@@ -57,7 +57,7 @@ public class FileManagementPageTests extends BaseTestMethods {
         musicOnHoldPage.getFieldNameByText(testFile.getFileName()).shouldNot(Condition.exist);
     }
 
-    @Description("VerifyIfUserCanEditNameOfMusicOnHoldFile")
+    @Description("Verify if user can edit name of music on hold file")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "fileManagementPageTests"})
     public void VerifyIfUserCanEditNameOfMusicOnHoldFile(){
         step("Prepare test data");
@@ -88,10 +88,51 @@ public class FileManagementPageTests extends BaseTestMethods {
         deleteMusicOnHoldFile(file.getFileName());
     }
 
+    @Description("Verify if user can upload announcement file")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "fileManagementPageTests"})
+    public void VerifyIfUserCanUploadAnnouncementFile(){
+        step("Prepare test data");
+        FileManagementTestData file = new FileManagementTestData();
+        fileArrayList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Goto to File management -> Announcement display");
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabAnnouncementDisplay().click();
+
+        step("Upload file");
+        announcementDisplayPage.getButtonUploadFile().click();
+        announcementDisplayPage.uploadFile(file.getFilePath());
+
+        step("Fill name for uploaded file");
+        announcementDisplayPage.getInputName().setValue(file.getFileName());
+
+        step("Save changes");
+        announcementDisplayPage.getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage(); // temp fix because of the bug
+
+        step("Check if file was uploaded");
+        announcementDisplayPage.getFieldNameByText(file.getFileName()).should(Condition.exist);
+
+        step("Delete uploaded file");
+        announcementDisplayPage.getButtonDeleteByName(file.getFileName()).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Verify if file was deleted and is not shown in the grid");
+        announcementDisplayPage.getFieldNameByText(file.getFileName()).shouldNot(Condition.exist);
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();
+        announcementCleanUp(fileArrayList);
         mohCleanUp(fileArrayList);
         closeBrowser();
     }

@@ -99,6 +99,7 @@ public class BaseTestMethods extends eFonApp {
         user.setCallsRecordingDirection(createUserPopup.activateCallRecordings());
         //createUserPopup.activateFaxDispatch(user.getInputLocalHeaderInfo());
         createUserPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
         userPage.checkIfUserExistsInTheList(user);
     }
 
@@ -277,7 +278,7 @@ public class BaseTestMethods extends eFonApp {
         createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
         createHuntGroupPopup.getButtonSave().click();
         waitUntilAlertDisappear();
-        huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
     }
 
     public void deleteHuntGroup(String name){
@@ -285,7 +286,7 @@ public class BaseTestMethods extends eFonApp {
         huntGroupPage.getButtonDeleteByName(name).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
-        huntGroupPage.getListNames().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
+        huntGroupPage.getfieldNameByText(name).shouldNot(Condition.exist);
     }
 
     public void ivrCleanUp(List<IVRtestData> ivrList){
@@ -302,7 +303,7 @@ public class BaseTestMethods extends eFonApp {
         basePage.getTabHuntGroups().click();
         waitUntilAlertDisappear();
         for (HuntGroup huntGroup: huntGroupList) {
-            if (huntGroupPage.getListNames().filterBy(Condition.text(huntGroup.getHuntGroupName())).size()>0){
+            if (huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).exists()){
                 deleteHuntGroup(huntGroup.getHuntGroupName());
             }
         }
@@ -367,7 +368,7 @@ public class BaseTestMethods extends eFonApp {
     public void uploadMusicOnHoldFile(FileManagementTestData file){
         basePage.getTabFileManagement().click();
         fileManagementBasePage.getTabMusicOnHold().click();
-        musicOnHoldPage.uploadMusicOnHoldFile(file.getFilePath());
+        musicOnHoldPage.uploadFile(file.getFilePath());
         musicOnHoldPage.getInputName().setValue(file.getFileName());
         musicOnHoldPage.getButtonSave().click();
         confirmationPopup.getYesButton().click();
@@ -401,6 +402,40 @@ public class BaseTestMethods extends eFonApp {
         for (AbbreviatedDialling num: abbrevDialList) {
             if (abbreviatedNumbers.getFieldNumberByText(num.getSingleShortNum()).exists()){
                 deleteSingleAbbrevNumber(num.getSingleShortNum());
+            }
+        }
+    }
+
+    public void uploadAnnouncementFile(FileManagementTestData file){
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabAnnouncementDisplay().click();
+        announcementDisplayPage.getButtonUploadFile().click();
+        announcementDisplayPage.uploadFile(file.getFilePath());
+        announcementDisplayPage.getInputName().setValue(file.getFileName());
+        announcementDisplayPage.getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage(); // temp fix because of the bug
+        announcementDisplayPage.getFieldNameByText(file.getFileName()).should(Condition.exist);
+    }
+
+    public void deleteAnnouncementFile(String fileName){
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabAnnouncementDisplay().click();
+        announcementDisplayPage.getButtonDeleteByName(fileName).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        announcementDisplayPage.getFieldNameByText(fileName).shouldNot(Condition.exist);
+    }
+
+    public void announcementCleanUp(List<FileManagementTestData> filesList){
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabAnnouncementDisplay().click();
+        waitUntilAlertDisappear();
+        for (FileManagementTestData file: filesList) {
+            if (announcementDisplayPage.getFieldNameByText(file.getFileName()).exists()){
+                deleteAnnouncementFile(file.getFileName());
             }
         }
     }

@@ -3,6 +3,8 @@ package pages.fileManagementPage;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
 
+import java.io.File;
+
 public class FileManagementBasePage extends BasePage {
     //<editor-fold desc="Locators">
     private String inputNameXpath = "//input[@formcontrolname=\"displayName\"]";
@@ -33,4 +35,8 @@ public class FileManagementBasePage extends BasePage {
         return field(buttonSaveXpath);
     }
     //</editor-fold>
+
+    public void uploadFile(String filePath){
+        getInputFileUpload().uploadFile(new File(filePath));
+    }
 }

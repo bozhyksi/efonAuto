@@ -10,6 +10,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
 import java.util.ArrayList;
 
@@ -19,16 +20,22 @@ import static io.qameta.allure.Allure.step;
 
 public class IVRpageTests extends BaseTestMethods {
     private ArrayList<IVRtestData> ivrList = new ArrayList<>();
+    private ArrayList<FileManagementTestData> filesList = new ArrayList<>();
 
     @Description("Verify if user can create new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
     public void VerifyIfUserCanCreateNewIvr(){
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
         ivrList.add(ivr);
+        filesList.add(file);
 
         step("Log in the system");
         login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
 
         step("Goto IVR page");
         basePage.getTabIVRs().click();
@@ -65,18 +72,26 @@ public class IVRpageTests extends BaseTestMethods {
 
         step("Check if IVR was deleted in the grid");
         ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.size(0));
+
+        step("Delete announcement file");
+        deleteAnnouncementFile(file.getFileName());
     }
 
     @Description("Verify if user can EDIT new IVR")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"}, enabled = false)// test ignored because of the b ug
     public void VerifyIfUserCanEditNewIvr(){
         step("Prepare test data - create IVR object");
         String displName = getRandomString(10);
         IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
         ivrList.add(ivr);
+        filesList.add(file);
 
         step("Log in the system");
         login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
 
         step("Create new IVR");
         createIVR(ivr);
@@ -98,6 +113,9 @@ public class IVRpageTests extends BaseTestMethods {
 
         step("Delete created test data");
         deleteIVR(ivr.getIvrName());
+
+        step("Delete announcement file");
+        deleteAnnouncementFile(file.getFileName());
     }
 
     @AfterClass(alwaysRun = true)
@@ -105,6 +123,7 @@ public class IVRpageTests extends BaseTestMethods {
         startBrowser();
         login();
         ivrCleanUp(ivrList);
+        announcementCleanUp(filesList);
         closeBrowser();
     }
 }
