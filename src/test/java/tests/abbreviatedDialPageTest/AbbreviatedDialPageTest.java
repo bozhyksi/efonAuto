@@ -6,14 +6,11 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static io.qameta.allure.Allure.step;
 
@@ -27,7 +24,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddOneShortNumberOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
-        AbbreviatedDialling abbrevNum = new AbbreviatedDialling(getRandomNumber(201, 299));
+        AbbreviatedDialling abbrevNum = new AbbreviatedDialling(getRandomNumber(250, 299));
 
         step("Login the system");
         login();
@@ -56,14 +53,17 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddShortNumberInRangeOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
-        AbbreviatedDialling shortNums = new AbbreviatedDialling(201, 210);
+        AbbreviatedDialling shortNums = new AbbreviatedDialling(201, 205);
+        for (String num: shortNums.getShortNumbersArray()) {
+            abbrevDialList.add(new AbbreviatedDialling(num));
+        }
 
         step("Login the system");
         login();
+        abbrevNumsCleanUp(abbrevDialList);
 
         step("Go to Abbreviated dialling -> Manage abbreviated numbers page and create short numbers from range");
         basePage.getTabAbbreviatedDialling().click();
-        deleteAllAbbrevNumbers();
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addRangeAbbrevNumber(shortNums.getFromNumber(), shortNums.getUntilNumber());
         waitUntilAlertDisappear();
@@ -73,17 +73,17 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         abbreviatedNumbers.checkIfAbbrevNumberRangeCreated(shortNums);
 
         step("Delete all test data - delete all short numbers");
-        deleteAllAbbrevNumbers();
-        abbreviatedNumbers.getListNo().shouldHave(CollectionCondition.size(1)).shouldHave(CollectionCondition.texts("No Items"));
+        abbrevNumsCleanUp(abbrevDialList);
     }
 
-    //@Description("Check if user can Edit Abbreviated number and Assign it to Internal user")
-    //@Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"}) TEST IGNORED UNTIL BUG FIXED
+    @Description("Check if user can Edit Abbreviated number and Assign it to Internal user")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "abbreviatedDialPageTest"}, enabled = false) //TEST IGNORED UNTIL BUG FIXED
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToInternalUser() {
         step("Prepare test data");
-        String singleShortNumber = getRandomNumber(201, 299);
+        AbbreviatedDialling shorNum = new AbbreviatedDialling(getRandomNumber(255, 260));
         User user = new User();
         userArrayList.add(user);
+        abbrevDialList.add(shorNum);
 
         step("Login the system");
         login();
@@ -92,11 +92,11 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         createUser(user);
 
         step("Add single Abbreviated Number");
-        deleteAllAbbrevNumbers();
-        addSingleAbbrevNumber(singleShortNumber);
+        abbrevNumsCleanUp(abbrevDialList);
+        addSingleAbbrevNumber(shorNum.getSingleShortNum());
 
         step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbers.editSingleAbbrevNumber(singleShortNumber);
+        abbreviatedNumbers.editSingleAbbrevNumber(shorNum.getSingleShortNum());
 
         step("Assign short number to user");
         popupAssignAbbrevDial.getRadioInternalUser().click();
@@ -110,62 +110,57 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         abbreviatedNumbers.getListFirstName().filterBy(Condition.text(user.getFirstName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
 
         step("Clear test data - delete user");
-        deleteAllAbbrevNumbers();
+        abbrevNumsCleanUp(abbrevDialList);
         deleteUser(user);
     }
 
     @Description("Check if user can Edit Abbreviated number and Assign it to External user")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToExternalUser() {
         step("Prepare test data");
-        HashMap<String, String> dat = new HashMap<String, String>() {{
-            put("shortNumber", getRandomNumber(201, 299));
-            put("extPhoneNum", getRandomPhone());
-            put("lastName", getRandomString(5));
-            put("firstName", getRandomString(5));
-            put("company", getRandomString(10));
-        }};
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(getRandomNumber(245,249));
 
         step("Login the system");
         login();
 
         step("Add single Abbreviated Number");
-        addSingleAbbrevNumber(dat.get("shortNumber"));
+        abbrevNumsCleanUp(abbrevDialList);
+        addSingleAbbrevNumber(shortNum.getSingleShortNum());
         waitUntilAlertDisappear();
 
         step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
+        abbreviatedNumbers.editSingleAbbrevNumber(shortNum.getSingleShortNum());
 
         step("Select External number radio");
         popupAssignAbbrevDial.getRadioExternalNumber().click();
 
         step("Fill in External number phone");
-        popupAssignAbbrevDial.getInputExternalNumber().setValue(dat.get("extPhoneNum"));
+        popupAssignAbbrevDial.getInputExternalNumber().setValue(shortNum.getExtPhoneNum());
 
         step("Fill in Last name");
-        popupAssignAbbrevDial.getInputLastName().setValue(dat.get("lastName"));
+        popupAssignAbbrevDial.getInputLastName().setValue(shortNum.getLastName());
 
         step("Fill in First name");
-        popupAssignAbbrevDial.getInputFirstName().setValue(dat.get("firstName"));
+        popupAssignAbbrevDial.getInputFirstName().setValue(shortNum.getFirstName());
 
         step("Fill in Company and save all changes");
-        popupAssignAbbrevDial.getInputCompany().setValue(dat.get("company"));
+        popupAssignAbbrevDial.getInputCompany().setValue(shortNum.getCompany());
         popupAssignAbbrevDial.getButtonSave().click();
         refreshPage();//temporary overcome because of bug
 
         step("Check if External user info is displayed in the Abbreviated dialling grid");
-        abbreviatedNumbers.checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(dat);
+        abbreviatedNumbers.checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(shortNum);
 
         step("Edit short dial, make it unUsed and Delete");
-        abbreviatedNumbers.editSingleAbbrevNumber(dat.get("shortNumber"));
+        abbreviatedNumbers.editSingleAbbrevNumber(shortNum.getSingleShortNum());
         popupAssignAbbrevDial.getRadioUnused().click();
         popupAssignAbbrevDial.getButtonSave().click();
         refreshPage();//temporary overcome because of bug
-        deleteSingleAbbrevNumber(dat.get("shortNumber"));
+        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
 
         step("Delete test data - delete all short numbers");
         refreshPage();
-        deleteAllAbbrevNumbers();
+        abbrevNumsCleanUp(abbrevDialList);
     }
 
     @AfterClass(alwaysRun = true)
@@ -173,6 +168,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         startBrowser();
         login();
         userCleanUp(userArrayList);
+        abbrevNumsCleanUp(abbrevDialList);
         closeBrowser();
     }
 }

@@ -20,7 +20,9 @@ import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCal
 import pages.contactDataPage.ContactDataPage;
 import pages.endDevicesPage.EndDevicesPage;
 import pages.faxPage.FaxPage;
-import pages.fileManagementPage.FileManagementPage;
+import pages.fileManagementPage.FileManagementBasePage;
+import pages.fileManagementPage.MusicOnHoldPage;
+import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
 import pages.huntGroupPage.HuntGroupPage;
 import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
@@ -74,8 +76,10 @@ public class eFonApp extends PreparationsForRun{
     public NumbersPage numbersPage = new NumbersPage();
     public SubscriptionsPage subscriptionsPage = new SubscriptionsPage();
     public LastCallsPage lastCallsPage = new LastCallsPage();
-    public FileManagementPage fileManagementPage = new FileManagementPage();
+    public FileManagementBasePage fileManagementBasePage = new FileManagementBasePage();
     public EndDevicesPage endDevicesPage = new EndDevicesPage();
     public RecordedCallsPage recordedCallsPage = new RecordedCallsPage();
     public ContactDataPage contactDataPage = new ContactDataPage();
+    public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
+    public EditFileManagementPopup editFileManagPopup = new EditFileManagementPopup();
 }

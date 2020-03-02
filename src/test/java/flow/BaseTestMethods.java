@@ -6,12 +6,14 @@ import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -358,6 +360,47 @@ public class BaseTestMethods extends eFonApp {
         for (Queue queue: queueList) {
             if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
                 deleteQueue(queue.getName());
+            }
+        }
+    }
+
+    public void uploadMusicOnHoldFile(FileManagementTestData file){
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabMusicOnHold().click();
+        musicOnHoldPage.uploadMusicOnHoldFile(file.getFilePath());
+        musicOnHoldPage.getInputName().setValue(file.getFileName());
+        musicOnHoldPage.getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        musicOnHoldPage.getFieldNameByText(file.getFileName()).should(Condition.exist);
+    }
+
+    public void deleteMusicOnHoldFile(String MOHfileName){
+        musicOnHoldPage.getButtonDeleteByName(MOHfileName).click();
+        confirmationPopup.getYesButton().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+        musicOnHoldPage.getFieldNameByText(MOHfileName).shouldNot(Condition.exist);
+    }
+
+    public void mohCleanUp(List<FileManagementTestData> filesList){
+        basePage.getTabFileManagement().click();
+        fileManagementBasePage.getTabMusicOnHold().click();
+        waitUntilAlertDisappear();
+        for (FileManagementTestData file: filesList) {
+            if (musicOnHoldPage.getFieldNameByText(file.getFileName()).exists()){
+                deleteMusicOnHoldFile(file.getFileName());
+            }
+        }
+    }
+
+    public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
+        basePage.getTabAbbreviatedDialling().click();
+        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        waitUntilAlertDisappear();
+        for (AbbreviatedDialling num: abbrevDialList) {
+            if (abbreviatedNumbers.getFieldNumberByText(num.getSingleShortNum()).exists()){
+                deleteSingleAbbrevNumber(num.getSingleShortNum());
             }
         }
     }

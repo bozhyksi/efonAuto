@@ -5,20 +5,26 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 
 @Listeners(CustomListeners.class)
 
 public class FaxPageTests extends BaseTestMethods {
+    ArrayList<User> userArrayList = new ArrayList<>();
+
     @Description("Verify if user can Fax for newly created user")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "faxPageTests"})
-    public void VerifyIfUserCanFaxForNewlyCreatedUser() {
+    public void VerifyIfUserCanСonfigureFaxForNewlyCreatedUser() {
         step("Prepare test data - create test user object");
         User user = new User();
+        userArrayList.add(user);
 
         step("Login");
         login();
@@ -48,5 +54,13 @@ public class FaxPageTests extends BaseTestMethods {
         step("Delete test data - delete test user");
         refreshPage();
         deleteUser(user);
+    }
+
+    @AfterClass(alwaysRun = true)
+    private void cleanUp(){
+        startBrowser();
+        login();
+        userCleanUp(userArrayList);
+        closeBrowser();
     }
 }

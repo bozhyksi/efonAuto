@@ -1,5 +1,7 @@
 package pages.basePage;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
 
@@ -7,6 +9,7 @@ public class BasePage extends Fields {
 
     //<editor-fold desc="//-- BasePage Locators --//">
     private String pageTitleXpath = "//h1";
+    private String alertDialogXpath = "//div[@role=\"alertdialog\"]";
 
     //Error alert
     private String alertErrorMsgXpath = "//div[@class=\"toast-top-right toast-container\"]";
@@ -43,6 +46,12 @@ public class BasePage extends Fields {
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+
+
+    public SelenideElement getAlertDialog() {
+        return field(alertDialogXpath);
+    }
+
     public SelenideElement getPageTitle() {
         return field(pageTitleXpath);
     }
@@ -135,5 +144,13 @@ public class BasePage extends Fields {
         return field(buttonLogoutXpath);
     }
     //</editor-fold>
+
+    public void waitUntilAlertDisappear() {
+        getIsLoadingSpinner().waitUntil(Condition.disappear, 10000);
+        getIsLoadingSpinner().shouldNotBe(Condition.visible);
+        getAlertDialog().waitUntil(Condition.disappear, 10000);
+        getAlertDialog().shouldNotBe(Condition.visible);
+        Selenide.sleep(1000);
+    }
 
 }

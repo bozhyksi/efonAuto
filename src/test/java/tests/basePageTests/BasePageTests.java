@@ -57,7 +57,7 @@ public class BasePageTests extends BaseTestMethods {
 
         step("Check if user can open \"File management\" tab");
         basePage.getTabFileManagement().click();
-        Assert.assertEquals(fileManagementPage.getPageTitle().text(), MainMenu.fileManagement.getTabName());
+        Assert.assertEquals(fileManagementBasePage.getPageTitle().text(), MainMenu.fileManagement.getTabName());
 
         step("Check if user can open \"Forwarding\" tab");
         basePage.getTabCallForwarding().click();
