@@ -5,15 +5,19 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 
 @Listeners(CustomListeners.class)
 
 public class CallForwardingPageTest extends BaseTestMethods {
+    ArrayList<User> usersList = new ArrayList<>();
 
     @Description("Verify if user can configure After section in call forwarding")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
@@ -21,6 +25,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         step("Prepare test data");
         String delay = getRandomNumber(2);
         User user = new User();
+        usersList.add(user);
         String forwardToPhone = getRandomPhone();
 
         step("Log in the system");
@@ -70,6 +75,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         step("Prepare test data");
         String delay = getRandomNumber(2);
         User user = new User();
+        usersList.add(user);
         String forwardToPhone = getRandomPhone();
 
         step("Log in the system");
@@ -115,6 +121,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
         step("Prepare test data");
         String delay = getRandomNumber(2);
         User user = new User();
+        usersList.add(user);
         String forwardToPhone = getRandomPhone();
 
         step("Log in the system");
@@ -155,11 +162,12 @@ public class CallForwardingPageTest extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Calls with suppressed numbers\" section in call forwarding")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage","ttt"})
     public void VerifyIfUserCanConfigureCallsWithSuppressedNumbersSectionInCallForwarding(){
         step("Prepare test data");
         String delay = getRandomNumber(2);
         User user = new User();
+        usersList.add(user);
         String forwardToPhone = getRandomPhone();
 
         step("Log in the system");
@@ -170,6 +178,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
 
         step("Goto forwarding tab");
         basePage.getTabCallForwarding().click();
+        waitUntilAlertDisappear();
 
         step("Select number");
         callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -186,6 +195,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
 
         step("Refresh page");
         refreshPage();
+        waitUntilAlertDisappear();
 
         step("Verify if all entered data was saved");
         callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -193,5 +203,19 @@ public class CallForwardingPageTest extends BaseTestMethods {
 
         step("Delete test data - delete user");
         deleteUser(user);
+    }
+
+    @AfterClass(alwaysRun = true)
+    private void cleanUp(){
+        startBrowser();
+        login();
+        try {
+            userCleanUp(usersList);
+        } catch (Throwable e) {
+
+        } finally {
+            closeBrowser();
+        }
+
     }
 }

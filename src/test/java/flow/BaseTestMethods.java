@@ -24,7 +24,7 @@ public class BaseTestMethods extends eFonApp {
         basePage.getIsLoadingSpinner().shouldNotBe(Condition.visible);
         alertPopup.getAlertDialog().waitUntil(Condition.disappear, 10000);
         alertPopup.getAlertDialog().shouldNotBe(Condition.visible);
-        Selenide.sleep(1000);
+        Selenide.sleep(500);
     }
 
     public void refreshPage() {
@@ -105,6 +105,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void deleteUser(User user) {
         basePage.getTabUser().click();
+        waitUntilAlertDisappear();
         userPage.deleteUserButtonClick(user.getFullName());
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
@@ -155,10 +156,17 @@ public class BaseTestMethods extends eFonApp {
 
     public void deleteSingleAbbrevNumber(String abbrevNum) {
         basePage.getTabAbbreviatedDialling().click();
+        waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+        waitUntilAlertDisappear();
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
+        if (!abbreviatedNumbers.getButtonDeleteByNum(abbrevNum).exists()) {
+            makeAbbrevNumberUnused(abbrevNum);
+            refreshPage();
+        }
         abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum);
         confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
         abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum);
     }
 
@@ -189,8 +197,10 @@ public class BaseTestMethods extends eFonApp {
 
     public void makeAbbrevNumberUnused(String shortNumber) {
         abbreviatedNumbers.editSingleAbbrevNumber(shortNumber);
+        waitUntilAlertDisappear();
         popupAssignAbbrevDial.getRadioUnused().click();
         popupAssignAbbrevDial.getButtonSave().click();
+        waitUntilAlertDisappear();
     }
 
     public void configFaxForNewUser(User user) {
@@ -261,6 +271,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void deleteIVR(String name) {
         basePage.getTabIVRs().click();
+        waitUntilAlertDisappear();
         ivrPage.getButtonDeleteIvrByName(name).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
@@ -283,6 +294,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void deleteHuntGroup(String name){
         basePage.getTabHuntGroups().click();
+        waitUntilAlertDisappear();
         huntGroupPage.getButtonDeleteByName(name).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
@@ -345,6 +357,9 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteQueue(String queueName){
+        basePage.getTabQueues().click();
+        queuesBasePage.getTabConfigureQueues().click();
+        waitUntilAlertDisappear();
         configureQueueTab.getButtonDeleteQueueByName(queueName).click();
         confirmationPopup.getYesButton().click();
         refreshPage();
@@ -355,9 +370,10 @@ public class BaseTestMethods extends eFonApp {
     public void queueCleanUp(List<Queue> queueList){
         if (!basePage.getPageTitle().equals("Queues")){
             basePage.getTabQueues().click();
+            waitUntilAlertDisappear();
             queuesBasePage.getTabConfigureQueues().click();
+            waitUntilAlertDisappear();
         }
-        waitUntilAlertDisappear();
         for (Queue queue: queueList) {
             if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
                 deleteQueue(queue.getName());
@@ -386,6 +402,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void mohCleanUp(List<FileManagementTestData> filesList){
         basePage.getTabFileManagement().click();
+        waitUntilAlertDisappear();
         fileManagementBasePage.getTabMusicOnHold().click();
         waitUntilAlertDisappear();
         for (FileManagementTestData file: filesList) {
@@ -397,6 +414,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
         basePage.getTabAbbreviatedDialling().click();
+        waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         waitUntilAlertDisappear();
         for (AbbreviatedDialling num: abbrevDialList) {
@@ -431,6 +449,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void announcementCleanUp(List<FileManagementTestData> filesList){
         basePage.getTabFileManagement().click();
+        waitUntilAlertDisappear();
         fileManagementBasePage.getTabAnnouncementDisplay().click();
         waitUntilAlertDisappear();
         for (FileManagementTestData file: filesList) {

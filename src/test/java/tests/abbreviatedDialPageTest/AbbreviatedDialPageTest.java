@@ -6,11 +6,14 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static io.qameta.allure.Allure.step;
 
@@ -167,8 +170,14 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     private void cleanUp(){
         startBrowser();
         login();
-        userCleanUp(userArrayList);
-        abbrevNumsCleanUp(abbrevDialList);
-        closeBrowser();
+        try {
+            userCleanUp(userArrayList);
+        } catch (Throwable e) {
+            abbrevNumsCleanUp(abbrevDialList);
+        }
+        finally {
+            closeBrowser();
+        }
+
     }
 }

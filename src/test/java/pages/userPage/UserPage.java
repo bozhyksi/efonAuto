@@ -73,7 +73,6 @@ public class UserPage extends BasePage {
 
     public void checkIfUserDeleted(User user){
         getListUserNames().filterBy(Condition.text(user.getFullName())).shouldHave(CollectionCondition.size(0));
-        getListNumbers().filterBy(Condition.text(user.getPhoneNumber())).shouldHave(CollectionCondition.size(0));
     }
 
     public void deleteUserButtonClick(String userName){

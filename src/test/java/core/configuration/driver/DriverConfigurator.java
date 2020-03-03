@@ -35,6 +35,7 @@ public class DriverConfigurator {
         options.addArguments("--disable-notifications");
         options.addArguments("--auto-open-devtools-for-tabs");
         options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--disable-application-cache");
         options.setExperimentalOption("prefs", chromePrefs);
         Configuration.timeout = maxTimeWait;
         Configuration.fastSetValue = true;
