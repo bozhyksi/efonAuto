@@ -92,7 +92,7 @@ public class IVRtestData extends BaseTestMethods {
         this.parameter = parameter;
     }
 
-    public String getParameterPhoneExternal() {
+    public String getParameter() {
         return this.parameter;
     }
 

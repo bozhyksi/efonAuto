@@ -78,7 +78,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can EDIT new IVR")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"}, enabled = false)// test ignored because of the bug
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
     public void VerifyIfUserCanEditNewIvr(){
         step("Prepare test data - create IVR object");
         String displName = getRandomString(10);
@@ -106,7 +106,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Save changed data");
         createNewIvrPopup.getButtonSave().click();
         waitUntilAlertDisappear();
-        createNewIvrPopup.getButtonClose().click();
+        refreshPage();
 
         step("Check if saved data are displayed correctly in the grid");
         ivrPage.getListDisplayName().filterBy(Condition.text(displName)).shouldHave(CollectionCondition.sizeGreaterThan(0));
@@ -119,7 +119,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Call to external subscriber\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)// test ignored because of the bug
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureIvrActions(){
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
@@ -147,20 +147,28 @@ public class IVRpageTests extends BaseTestMethods {
         ivr.setParameter(getRandomPhone());
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).selectOptionByValue(ivr.getAction());
 
-        step("Enter parament value");
-        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).setValue(ivr.getParameterPhoneExternal());
+        step("Enter parameter value");
+        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).setValue(ivr.getParameter());
 
         step("Save changes");
         createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if all data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getText().contains(ivr.getParameter());
+        refreshPage();
         waitUntilAlertDisappear();
 
         step("CleanUp test data");
         deleteIVR(ivr.getIvrName());
         deleteAnnouncementFile(file.getFileName());
-
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();

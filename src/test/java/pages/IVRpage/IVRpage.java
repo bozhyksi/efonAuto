@@ -68,7 +68,7 @@ public class IVRpage extends BasePage {
         if (active) getCheckboxActiveByEventNumber(eventNum).click();
         getDropdownActionByEventNumber(eventNum).selectOptionByValue(action);
         if (ivrAction == IVRtestData.IvrActions.PHONE_EXTERNAL){
-            getInputParameterByEventNumber(eventNum).setValue(ivrObj.getParameterPhoneExternal());
+            getInputParameterByEventNumber(eventNum).setValue(ivrObj.getParameter());
         }else {
             getDropdownParameterByEventNumber(eventNum).selectOption(getRandomDropDownOption(String.format(dropdownParameterByEventNumberXpath, eventNum)));
         }
