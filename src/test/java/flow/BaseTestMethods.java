@@ -257,14 +257,14 @@ public class BaseTestMethods extends eFonApp {
     public void createIVR(IVRtestData ivr) {
         basePage.getTabIVRs().click();
         ivrPage.getButtonNewIvr().click();
-        ivrPagePopup.getInputName().setValue(ivr.getIvrName());
-        ivrPagePopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
-        ivrPagePopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
-        ivrPagePopup.getDropdownSelectIvrNumber().selectOption(1);
-        ivr.setIvrNumber(ivrPagePopup.getDropdownSelectIvrNumber().getSelectedText());
-        ivrPagePopup.getDropdownSelectAnnounc().selectOption(1);
-        ivr.setIvrAnnounce(ivrPagePopup.getDropdownSelectAnnounc().getSelectedText());
-        ivrPagePopup.getButtonSave().click();
+        createNewIvrPopup.getInputName().setValue(ivr.getIvrName());
+        createNewIvrPopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
+        createNewIvrPopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
+        createNewIvrPopup.getDropdownSelectIvrNumber().selectOption(1);
+        ivr.setIvrNumber(createNewIvrPopup.getDropdownSelectIvrNumber().getSelectedText());
+        createNewIvrPopup.getDropdownSelectAnnounc().selectOption(1);
+        ivr.setIvrAnnounce(createNewIvrPopup.getDropdownSelectAnnounc().getSelectedText());
+        createNewIvrPopup.getButtonSave().click();
         waitUntilAlertDisappear();
         ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
     }
@@ -302,12 +302,17 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void ivrCleanUp(List<IVRtestData> ivrList){
-        basePage.getTabIVRs().click();
-        waitUntilAlertDisappear();
-        for (IVRtestData ivr: ivrList) {
-            if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
-                deleteIVR(ivr.getIvrName());
+        try {
+            basePage.getTabIVRs().click();
+            waitUntilAlertDisappear();
+            for (IVRtestData ivr: ivrList) {
+                if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
+                    deleteIVR(ivr.getIvrName());
+                }
             }
+        } catch (Throwable e) {
+            System.out.println("ivrCleanUp failed");
+            e.printStackTrace();
         }
     }
 
@@ -322,18 +327,25 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void userCleanUp(List<User> userList){
-        basePage.getTabUser().click();
-        waitUntilAlertDisappear();
-        for (User user: userList) {
-            if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
-                deleteUser(user);
+        try {
+            basePage.getTabUser().click();
+            waitUntilAlertDisappear();
+            for (User user: userList) {
+                if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
+                    deleteUser(user);
+                }
             }
+        } catch (Throwable e) {
+            System.out.println("userCleanUp failed");
+            e.printStackTrace();
         }
     }
 
     public void createQueue(Queue queue){
         basePage.getTabQueues().click();
+        waitUntilAlertDisappear();
         queuesBasePage.getTabConfigureQueues().click();
+        waitUntilAlertDisappear();
         configureQueueTab.getButtonCreateNewQueue().click();
         createNewQueuePopup.getInputQueueName().setValue(queue.getName());
         createNewQueuePopup.getDropdownSubscription().selectOption(1);
@@ -351,8 +363,8 @@ public class BaseTestMethods extends eFonApp {
         createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
         createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
         createNewQueuePopup.getButtonSave().click();
-        refreshPage();
         waitUntilAlertDisappear();
+        refreshPage();
         configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
     }
 
@@ -368,16 +380,21 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void queueCleanUp(List<Queue> queueList){
-        if (!basePage.getPageTitle().equals("Queues")){
-            basePage.getTabQueues().click();
-            waitUntilAlertDisappear();
-            queuesBasePage.getTabConfigureQueues().click();
-            waitUntilAlertDisappear();
-        }
-        for (Queue queue: queueList) {
-            if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
-                deleteQueue(queue.getName());
+        try {
+            if (!basePage.getPageTitle().equals("Queues")){
+                basePage.getTabQueues().click();
+                waitUntilAlertDisappear();
+                queuesBasePage.getTabConfigureQueues().click();
+                waitUntilAlertDisappear();
             }
+            for (Queue queue: queueList) {
+                if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
+                    deleteQueue(queue.getName());
+                }
+            }
+        } catch (Throwable e) {
+            System.out.println("queueCleanUp failed");
+            e.printStackTrace();
         }
     }
 
@@ -401,26 +418,36 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void mohCleanUp(List<FileManagementTestData> filesList){
-        basePage.getTabFileManagement().click();
-        waitUntilAlertDisappear();
-        fileManagementBasePage.getTabMusicOnHold().click();
-        waitUntilAlertDisappear();
-        for (FileManagementTestData file: filesList) {
-            if (musicOnHoldPage.getFieldNameByText(file.getFileName()).exists()){
-                deleteMusicOnHoldFile(file.getFileName());
+        try {
+            basePage.getTabFileManagement().click();
+            waitUntilAlertDisappear();
+            fileManagementBasePage.getTabMusicOnHold().click();
+            waitUntilAlertDisappear();
+            for (FileManagementTestData file: filesList) {
+                if (musicOnHoldPage.getFieldNameByText(file.getFileName()).exists()){
+                    deleteMusicOnHoldFile(file.getFileName());
+                }
             }
+        } catch (Throwable e) {
+            System.out.println("mohCleanUp failed");
+            e.printStackTrace();
         }
     }
 
     public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
-        basePage.getTabAbbreviatedDialling().click();
-        waitUntilAlertDisappear();
-        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        waitUntilAlertDisappear();
-        for (AbbreviatedDialling num: abbrevDialList) {
-            if (abbreviatedNumbers.getFieldNumberByText(num.getSingleShortNum()).exists()){
-                deleteSingleAbbrevNumber(num.getSingleShortNum());
+        try {
+            basePage.getTabAbbreviatedDialling().click();
+            waitUntilAlertDisappear();
+            abbrevDialBasePage.getTabAbbreviatedNumbers().click();
+            waitUntilAlertDisappear();
+            for (AbbreviatedDialling num: abbrevDialList) {
+                if (abbreviatedNumbers.getFieldNumberByText(num.getSingleShortNum()).exists()){
+                    deleteSingleAbbrevNumber(num.getSingleShortNum());
+                }
             }
+        } catch (Exception e) {
+            System.out.println("abbrevNumsCleanUp failed");
+            e.printStackTrace();
         }
     }
 
@@ -448,14 +475,19 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void announcementCleanUp(List<FileManagementTestData> filesList){
-        basePage.getTabFileManagement().click();
-        waitUntilAlertDisappear();
-        fileManagementBasePage.getTabAnnouncementDisplay().click();
-        waitUntilAlertDisappear();
-        for (FileManagementTestData file: filesList) {
-            if (announcementDisplayPage.getFieldNameByText(file.getFileName()).exists()){
-                deleteAnnouncementFile(file.getFileName());
+        try {
+            basePage.getTabFileManagement().click();
+            waitUntilAlertDisappear();
+            fileManagementBasePage.getTabAnnouncementDisplay().click();
+            waitUntilAlertDisappear();
+            for (FileManagementTestData file: filesList) {
+                if (announcementDisplayPage.getFieldNameByText(file.getFileName()).exists()){
+                    deleteAnnouncementFile(file.getFileName());
+                }
             }
+        } catch (Throwable e) {
+            System.out.println("announcementCleanUp failed");
+            e.printStackTrace();
         }
     }
 }

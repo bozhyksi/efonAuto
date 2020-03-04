@@ -118,6 +118,75 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteUser(user2);
     }
 
+    @Description("Verify if user can edit Queue")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"},enabled = false) //test disabled because bug
+    public void VerifyIfUserCanEditQueue(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user1 = new User();
+        User user2 = new User();
+
+        queuesList.add(queue);
+        usersList.add(user1);
+        usersList.add(user2);
+
+        step("Log in the system");
+        login();
+
+        step("Create test users");
+        createUser(user1);
+        createUser(user2);
+
+        step("Create new Queue");
+        createQueue(queue);
+
+        step("Open edit popup, click edit button");
+        configureQueueTab.getButtonEditQueueByName(queue.getName()).click();
+        waitUntilAlertDisappear();
+
+        step("Select manager");
+        queue.setManager(user1.getFullName());
+        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManager());
+
+        step("Select reporter");
+        queue.setReporter(user2.getFullName());
+        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
+
+        step("Change \"Max. waiting time for customer\" field value");
+        queue.setMaxWaitTime(Queue.MaxWaitTime.getRandomVal().getWaitTime());
+        createNewQueuePopup.getDropdownMaxWaintingTime().setValue(queue.getMaxWaitTime());
+
+        step("Change \"Priority\" drop down value");
+        queue.setPriority(Queue.Priority.getRandomVal().getPrior());
+        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
+
+        step("Change \"Set Rule For Finding Agent\" drop down value");
+        queue.setRuleForFindingAgent(Queue.RuleForFindingAgent.getRandomVal().getRule());
+        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
+
+        step("Save made changes");
+        createNewQueuePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+
+        step("Verify if Queue exists in grid");
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+
+        step("Open edit popup, click edit button");
+        configureQueueTab.getButtonEditQueueByName(queue.getName()).click();
+        waitUntilAlertDisappear();
+
+        step("Verify if all made changes were saved");
+        createNewQueuePopup.getDropdownMaxWaintingTime().getSelectedText().contains(queue.getMaxWaitTime());
+        createNewQueuePopup.getDropdownPriority().getSelectedText().contains(queue.getPriority());
+        createNewQueuePopup.getDropdownRulesForFindAgent().getSelectedText().contains(queue.getRuleForFindingAgent());
+        createNewQueuePopup.getButtonCancel().click();
+
+        step("Clear test data");
+        deleteQueue(queue.getName());
+        deleteUser(user1);
+        deleteUser(user2);
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();

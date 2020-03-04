@@ -34,6 +34,7 @@ import pages.phonebookPage.PhonebookPage;
 import pages.queuesPage.ConfigureQueueTab;
 import pages.queuesPage.QueuesBasePage;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
+import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import pages.recordedCallPage.RecordedCallsPage;
 import pages.subscriptionsPage.SubscriptionsPage;
 import pages.userPage.UserPage;
@@ -67,7 +68,7 @@ public class eFonApp extends PreparationsForRun{
     public ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
     public IVRpage ivrPage = new IVRpage();
-    public IVRpagePopup ivrPagePopup = new IVRpagePopup();
+    public IVRpagePopup createNewIvrPopup = new IVRpagePopup();
     public HuntGroupPage huntGroupPage = new HuntGroupPage();
     public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
     public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();
@@ -84,4 +85,5 @@ public class eFonApp extends PreparationsForRun{
     public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
     public EditFileManagementPopup editFileManagPopup = new EditFileManagementPopup();
     public AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
+    public QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
 }

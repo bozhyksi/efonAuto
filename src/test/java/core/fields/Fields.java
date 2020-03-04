@@ -1,10 +1,10 @@
 package core.fields;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.Random;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -73,5 +73,12 @@ public class Fields implements IFields {
     public SelenideElement getChildren(String parent, int id, String child, int childId) {
         locator = parent + "[" + id + "]" + child;
         return $$(By.xpath(locator)).get(childId);
+    }
+
+    public int getRandomDropDownOption(String xpath){
+        Select obj = new Select(WebDriverRunner.getWebDriver().findElement(By.xpath(xpath)));
+        int size = obj.getOptions().size();
+        Random random = new Random();
+        return random.nextInt(size);
     }
 }

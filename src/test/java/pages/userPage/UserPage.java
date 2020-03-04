@@ -68,7 +68,6 @@ public class UserPage extends BasePage {
 
     public void checkIfUserExistsInTheList(User user){
         getListUserNames().filterBy(Condition.text(user.getFullName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
-        getListNumbers().filterBy(Condition.text(user.getPhoneNumber())).shouldHave(CollectionCondition.sizeGreaterThan(0));
     }
 
     public void checkIfUserDeleted(User user){

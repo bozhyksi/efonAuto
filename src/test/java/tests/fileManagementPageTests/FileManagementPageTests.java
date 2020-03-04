@@ -132,12 +132,8 @@ public class FileManagementPageTests extends BaseTestMethods {
     private void cleanUp(){
         startBrowser();
         login();
-        try {
-            announcementCleanUp(fileArrayList);
-        } catch (Throwable e){
-            mohCleanUp(fileArrayList);
-        }finally{
-            closeBrowser();
-        }
+        announcementCleanUp(fileArrayList);
+        mohCleanUp(fileArrayList);
+        closeBrowser();
     }
 }

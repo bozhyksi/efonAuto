@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.phonebookPageTests.phonebookPageTestData.PhonebookRowMapper;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.qameta.allure.Allure.step;
@@ -17,12 +19,13 @@ import static io.qameta.allure.Allure.step;
 @Listeners(CustomListeners.class)
 
 public class PhonebookPageTests extends BaseTestMethods {
+    ArrayList<File> fileArrayList = new ArrayList<>();
 
     @Description("Verify if user is able to upload xlsx phonebook")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
     public void VerifyIfUserIsAbleToUploadXlsxPhonebook(){
         Phonebook phonebook;
-        step("Preparing test data. Create phonebook.xlsx file with 20 entries");
+        step("Preparing test data. Create phonebook.xlsx file with 10 entries");
         int numberOfPhones = 10;
         phonebook = new Phonebook(numberOfPhones);
         phonebook.createExcelPhonebookFile();
@@ -121,7 +124,7 @@ public class PhonebookPageTests extends BaseTestMethods {
 
         step("Check if example file was downloaded");
         try {
-            excelFileWorker.checkIfFileExists("excelimport_phonebook_example.xls");
+            Assert.assertTrue(excelFileWorker.checkIfFileExists("excelimport_phonebook_example.xls"), "Example file not found");
         } finally {
             step("Delete example file");
             excelFileWorker.deleteFile("excelimport_phonebook_example.xls");

@@ -1,9 +1,9 @@
 package pages.queuesPage.queuePagePopups;
 
 import com.codeborne.selenide.SelenideElement;
-import pages.queuesPage.ConfigureQueueTab;
+import pages.basePage.basePopup.BasePopup;
 
-public class CreateNewQueuePopup extends ConfigureQueueTab {
+public class CreateNewQueuePopup extends BasePopup {
     //<editor-fold desc="Locators">
     private String fieldNameXpath = "//label[text()=\"Name:\"]/following-sibling::div";
     private String inputQueueNameXpath = "//input[@formcontrolname=\"queueName\"]";

@@ -19,7 +19,7 @@ public class UserPageTests extends BaseTestMethods {
     ArrayList<User> userArrayList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests",})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
     public void CheckIfVpbxAdminIsAbleToCreateUsers(){
         step("Preparing test data object - User");
         User user = new User();
@@ -87,8 +87,8 @@ public class UserPageTests extends BaseTestMethods {
         userPage.checkIfUserDeleted(user);
     }
 
-    //@Description("Check if the system shows correct user's data on EDIT mode")
-    //@Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"}) -- blocked by bug
+    @Description("Check if the system shows correct user's data on EDIT mode")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"},enabled = false) //-- blocked by bug
     public void CheckIfVpbxAdminIsAbleToEditUsers(){
         step("Preparing test data, creating new object - User");
         User user = new User();

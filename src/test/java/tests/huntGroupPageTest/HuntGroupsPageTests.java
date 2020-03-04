@@ -230,9 +230,19 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     private void cleanUp(){
         startBrowser();
         login();
-        userCleanUp(usersList);
-        announcementCleanUp(filesList);
-        huntGroupCleanUp(huntGroupsList);
-        closeBrowser();
+        try {
+            huntGroupCleanUp(huntGroupsList);
+            userCleanUp(usersList);
+            announcementCleanUp(filesList);
+        } catch (Throwable e) {
+            try {
+                userCleanUp(usersList);
+                announcementCleanUp(filesList);
+            } catch (Throwable ex) {
+                announcementCleanUp(filesList);
+            }
+        } finally {
+            closeBrowser();
+        }
     }
 }

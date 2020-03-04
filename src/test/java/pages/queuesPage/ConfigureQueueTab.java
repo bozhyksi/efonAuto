@@ -13,7 +13,7 @@ public class ConfigureQueueTab extends QueuesBasePage {
     private String buttonEditQueueByNameXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"editQueue\"]";
     private String fieldQueueNameByTextXpath = "//table//td[text()=\"%s\"][1]";
     private String fieldQueueManagerByTextXpath = "//table//td[text()=\"%s\"][4]";
-    private String buttonEditAgentsQueueXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"editAgentsQueue\"]";
+    private String buttonEditAgentsQueueByTextXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"editAgentsQueue\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
@@ -41,8 +41,8 @@ public class ConfigureQueueTab extends QueuesBasePage {
         return field(buttonCreateNewQueueXpath);
     }
 
-    public SelenideElement getButtonEditQueueByName() {
-        return field(buttonEditQueueByNameXpath);
+    public SelenideElement getButtonEditQueueByName(String name) {
+        return field(String.format(buttonEditQueueByNameXpath, name));
     }
 
     public SelenideElement getFieldQueueNameByText(String txt) {
@@ -53,8 +53,8 @@ public class ConfigureQueueTab extends QueuesBasePage {
         return field(String.format(fieldQueueManagerByTextXpath,txt));
     }
 
-    public SelenideElement getButtonEditAgentsQueue() {
-        return field(buttonEditAgentsQueueXpath);
+    public SelenideElement getButtonEditAgentsQueueByText(String name) {
+        return field(String.format(buttonEditAgentsQueueByTextXpath,name));
     }
     //</editor-fold>
 }

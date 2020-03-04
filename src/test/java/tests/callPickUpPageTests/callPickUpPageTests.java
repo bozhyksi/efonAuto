@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import static io.qameta.allure.Allure.step;
 
 public class callPickUpPageTests extends BaseTestMethods {
+
     @Description("Check if user can create new Call Pick Up group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callPickUpPageTests"})
     public void CheckIfUserCanCreateNewCallPickUpGroup() {

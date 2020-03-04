@@ -13,7 +13,6 @@ import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import static io.qameta.allure.Allure.step;
 
@@ -170,14 +169,8 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     private void cleanUp(){
         startBrowser();
         login();
-        try {
-            userCleanUp(userArrayList);
-        } catch (Throwable e) {
-            abbrevNumsCleanUp(abbrevDialList);
-        }
-        finally {
-            closeBrowser();
-        }
-
+        userCleanUp(userArrayList);
+        abbrevNumsCleanUp(abbrevDialList);
+        closeBrowser();
     }
 }

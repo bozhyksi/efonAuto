@@ -5,7 +5,7 @@ import flow.BaseTestMethods;
 import java.util.Random;
 
 public class Queue extends BaseTestMethods {
-    enum RuleForFindingAgent{
+    public enum RuleForFindingAgent{
         RingAll("Ring all"),
         Random("Random"),
         RandomWeighting("Random weighting"),
@@ -29,7 +29,7 @@ public class Queue extends BaseTestMethods {
         }
     }
 
-    enum MaxWaitTime{
+    public enum MaxWaitTime{
         _10("10"),
         _20("20"),
         _25("25"),
@@ -55,7 +55,7 @@ public class Queue extends BaseTestMethods {
         }
     }
 
-    enum Priority{
+    public enum Priority{
         veryLow("Very low"),
         low("Low"),
         medium("Medium"),
@@ -179,6 +179,7 @@ public class Queue extends BaseTestMethods {
         }
     }
 
+    //<editor-fold desc="properties">
     private String name;
     private String maxWaitTime;
     private String subscription;
@@ -194,6 +195,7 @@ public class Queue extends BaseTestMethods {
     private String waitingTimeBeforeNextAttempt;
     private String waitingTimeBeforeNextCall;
     private String recordCalls;
+    //</editor-fold>
 
     public Queue(){
         this.name = getRandomString(10);
@@ -205,6 +207,20 @@ public class Queue extends BaseTestMethods {
         this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
         this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
         this.recordCalls = RecordCalls.getRandomVal();
+    }
+
+    //<editor-fold desc="get\set">
+
+    public void setMaxWaitTime(String maxWaitTime) {
+        this.maxWaitTime = maxWaitTime;
+    }
+
+    public void setRuleForFindingAgent(String ruleForFindingAgent) {
+        this.ruleForFindingAgent = ruleForFindingAgent;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     public String getRecordCalls() {
@@ -290,6 +306,7 @@ public class Queue extends BaseTestMethods {
     public String getAnnouncementFrequency() {
         return announcementFrequency;
     }
+    //</editor-fold>
 
 
 }

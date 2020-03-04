@@ -209,13 +209,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
     private void cleanUp(){
         startBrowser();
         login();
-        try {
-            userCleanUp(usersList);
-        } catch (Throwable e) {
-
-        } finally {
-            closeBrowser();
-        }
-
+        userCleanUp(usersList);
+        closeBrowser();
     }
 }
