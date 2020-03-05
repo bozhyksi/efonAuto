@@ -98,4 +98,13 @@ public class CreateNewQueuePopup extends BasePopup {
         return field(buttonCancelXpath);
     }
     //</editor-fold>
+
+    public void selectRandomSubscriptionForQueue(){
+        getRandomDropDownOption(getDropdownSubscription());
+    }
+
+    public void selectRandomWaitingMusic(){
+        getRandomDropDownOption(getDropdownWaitingMusic());
+    }
+
 }

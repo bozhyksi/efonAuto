@@ -49,4 +49,8 @@ public class IVRpagePopup extends IVRpage {
         return field(buttonCancelXpath);
     }
     //</editor-fold>
+
+    public void selectIvrNumber(){
+        getDropdownSelectIvrNumber().selectOption(getRandomDropDownOption(dropdownSelectIvrNumberXpath));
+    }
 }

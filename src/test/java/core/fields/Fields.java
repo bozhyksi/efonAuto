@@ -81,4 +81,11 @@ public class Fields implements IFields {
         Random random = new Random();
         return random.nextInt(size);
     }
+
+    public void getRandomDropDownOption(SelenideElement dd){
+        Select obj = new Select(dd);
+        int size = obj.getOptions().size();
+        Random random = new Random();
+        dd.selectOption(random.nextInt(size));
+    }
 }

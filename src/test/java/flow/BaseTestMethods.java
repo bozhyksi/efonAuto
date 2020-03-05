@@ -254,15 +254,15 @@ public class BaseTestMethods extends eFonApp {
         conferenceCallsPage.getListNames().filterBy(Condition.text(confName)).shouldHaveSize(0);
     }
 
-    public void createIVR(IVRtestData ivr) {
+    public void createIVR(IVRtestData ivr, FileManagementTestData file) {
         basePage.getTabIVRs().click();
         ivrPage.getButtonNewIvr().click();
         createNewIvrPopup.getInputName().setValue(ivr.getIvrName());
         createNewIvrPopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
         createNewIvrPopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
-        createNewIvrPopup.getDropdownSelectIvrNumber().selectOption(1);
+        createNewIvrPopup.selectIvrNumber();
         ivr.setIvrNumber(createNewIvrPopup.getDropdownSelectIvrNumber().getSelectedText());
-        createNewIvrPopup.getDropdownSelectAnnounc().selectOption(1);
+        createNewIvrPopup.getDropdownSelectAnnounc().selectOptionContainingText(file.getFileName());
         ivr.setIvrAnnounce(createNewIvrPopup.getDropdownSelectAnnounc().getSelectedText());
         createNewIvrPopup.getButtonSave().click();
         waitUntilAlertDisappear();
@@ -284,7 +284,7 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
         createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
         createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
-        createHuntGroupPopup.getDropdownNumber().selectOption(1);
+        createHuntGroupPopup.selectRandomNumber();
         createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
         createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
         createHuntGroupPopup.getButtonSave().click();
@@ -317,12 +317,17 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void huntGroupCleanUp(List<HuntGroup> huntGroupList){
-        basePage.getTabHuntGroups().click();
-        waitUntilAlertDisappear();
-        for (HuntGroup huntGroup: huntGroupList) {
-            if (huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).exists()){
-                deleteHuntGroup(huntGroup.getHuntGroupName());
+        try {
+            basePage.getTabHuntGroups().click();
+            waitUntilAlertDisappear();
+            for (HuntGroup huntGroup: huntGroupList) {
+                if (huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).exists()){
+                    deleteHuntGroup(huntGroup.getHuntGroupName());
+                }
             }
+        } catch (Throwable e) {
+            System.out.println("huntGroupCleanUp failed");
+            e.printStackTrace();
         }
     }
 
@@ -348,7 +353,7 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
         configureQueueTab.getButtonCreateNewQueue().click();
         createNewQueuePopup.getInputQueueName().setValue(queue.getName());
-        createNewQueuePopup.getDropdownSubscription().selectOption(1);
+        createNewQueuePopup.selectRandomSubscriptionForQueue();
         queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
         createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
         createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());

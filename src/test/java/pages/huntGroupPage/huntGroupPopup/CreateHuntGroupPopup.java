@@ -171,4 +171,8 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         return field(String.format(selectedAuthorizedUser, name));
     }
     //</editor-fold>
+
+    public void selectRandomNumber(){
+        getDropdownNumber().selectOption(getRandomDropDownOption(dropdownNumberXpath));
+    }
 }

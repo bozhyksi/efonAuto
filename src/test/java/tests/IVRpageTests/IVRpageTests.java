@@ -11,20 +11,29 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_1;
+import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_2;
+import static tests.IVRpageTests.IVRtestData.IVRtestData.IvrActions.*;
 
 @Listeners(CustomListeners.class)
 
 public class IVRpageTests extends BaseTestMethods {
     private ArrayList<IVRtestData> ivrList = new ArrayList<>();
     private ArrayList<FileManagementTestData> filesList = new ArrayList<>();
+    private ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
+    private ArrayList<Queue> queueList = new ArrayList<>();
+    private ArrayList<User> usersList = new ArrayList<>();
 
     @Description("Verify if user can create new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
-    public void VerifyIfUserCanCreateNewIvr(){
+    public void VerifyIfUserCanCreateNewIvr() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
         FileManagementTestData file = new FileManagementTestData();
@@ -79,7 +88,7 @@ public class IVRpageTests extends BaseTestMethods {
 
     @Description("Verify if user can EDIT new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
-    public void VerifyIfUserCanEditNewIvr(){
+    public void VerifyIfUserCanEditNewIvr() {
         step("Prepare test data - create IVR object");
         String displName = getRandomString(10);
         IVRtestData ivr = new IVRtestData();
@@ -94,7 +103,7 @@ public class IVRpageTests extends BaseTestMethods {
         uploadAnnouncementFile(file);
 
         step("Create new IVR");
-        createIVR(ivr);
+        createIVR(ivr, file);
 
         step("Click edit button");
         ivrPage.getButtonEditIvrByName(ivr.getIvrName()).click();
@@ -120,7 +129,7 @@ public class IVRpageTests extends BaseTestMethods {
 
     @Description("Verify if user can configure \"Call to external subscriber\" ivr action")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
-    public void VerifyIfUserCanConfigureIvrActions(){
+    public void VerifyIfUserCanConfigureIvrActions() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
         FileManagementTestData file = new FileManagementTestData();
@@ -134,7 +143,7 @@ public class IVRpageTests extends BaseTestMethods {
         uploadAnnouncementFile(file);
 
         step("Create IVR");
-        createIVR(ivr);
+        createIVR(ivr, file);
 
         step("Click edit button");
         ivrPage.editIVR(ivr.getIvrName());
@@ -168,11 +177,301 @@ public class IVRpageTests extends BaseTestMethods {
         deleteAnnouncementFile(file.getFileName());
     }
 
+    @Description("Verify if user can configure \"Hunt Group\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigureHuntGroupIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+        HuntGroup huntGroup = new HuntGroup();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+        huntGroupsList.add(huntGroup);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create Hunt Group");
+        createHuntGroup(huntGroup);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_1, RINGRUF, huntGroup);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterHuntGroup());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteAnnouncementFile(file.getFileName());
+    }
+
+    @Description("Verify if user can configure \"Queues\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)// cannot select Queue in the IVR need to investigate
+    public void VerifyIfUserCanConfigureQueuesIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+        Queue queue = new Queue();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+        queueList.add(queue);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create Hunt Group");
+        createQueue(queue);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_1, CALL_CENTER_QUEUE, queue);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterQueue());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteQueue(queue.getName());
+        deleteAnnouncementFile(file.getFileName());
+
+    }
+
+    @Description("Verify if user can configure \"Call to direct number\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigureCallToDirectNumberIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+        User user = new User();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+        usersList.add(user);
+
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create Hunt Group");
+        createUser(user);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_2, PHONE_DIRECT, user);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterPhoneDirect());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteUser(user);
+        deleteAnnouncementFile(file.getFileName());
+    }
+
+    @Description("Verify if user can configure \"Call to External number\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigureCallToExternalNumberIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_2, PHONE_EXTERNAL);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getText().contains(ivr.getParameterExtTelNumber());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteAnnouncementFile(file.getFileName());
+    }
+
+    @Description("Verify if user can configure \"Voicemail: no announcement\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigureVoicemailNoAnnouncementIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_2, VM_NO_ANNOUNCE);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteAnnouncementFile(file.getFileName());
+    }
+
+    @Description("Verify if user can configure \"Play file and hang up\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigurePlayFileAndHangUpIvrAction() {
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Click edit button");
+        ivrPage.editIVR(ivr.getIvrName());
+
+        step("Configure HuntGroup action");
+        createNewIvrPopup.configureAction(ivr, Event_2, PLAY_HANGUP, file);
+
+        step("Save changes");
+        createNewIvrPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if data was saved");
+        ivrPage.editIVR(ivr.getIvrName());
+        waitUntilAlertDisappear();
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
+        createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterPlayAndHangUp());
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteAnnouncementFile(file.getFileName());
+    }
+
     @AfterClass(alwaysRun = true)
-    private void cleanUp(){
+    private void cleanUp() {
         startBrowser();
         login();
         ivrCleanUp(ivrList);
+        userCleanUp(usersList);
+        huntGroupCleanUp(huntGroupsList);
+        queueCleanUp(queueList);
         announcementCleanUp(filesList);
         closeBrowser();
     }

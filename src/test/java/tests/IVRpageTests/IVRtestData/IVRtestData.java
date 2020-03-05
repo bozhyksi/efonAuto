@@ -54,6 +54,7 @@ public class IVRtestData extends BaseTestMethods {
         it,
         fr;
     }
+
     private String ivrName;
     private String ivrDisplName;
     private String ivrLanguage;
@@ -63,13 +64,84 @@ public class IVRtestData extends BaseTestMethods {
     private String eventNumber;
     private boolean active;
     private String action;
+    private String parameterExtTelNumber;
+    private String parameterHuntGroup;
+    private String parameterPhoneDirect;
+    private String parameterPhoneInternal;
+    private String parameterIVR;
+    private String parameterPlayAndHangUp;
+    private String parameterQueue;
+
 
     public IVRtestData(){
         this.ivrName = getRandomString(10);
         this.ivrDisplName = getRandomString(10);
         this.ivrLanguage = Language.en.toString();
-        this.eventNumber = getRandomNumber(0,9);
         this.active = true;
+        this.parameterExtTelNumber = getRandomPhone();
+    }
+
+    //<editor-fold desc="get\set">
+
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public void setEventNumber(String eventNumber) {
+        this.eventNumber = eventNumber;
+    }
+
+    public void setParameterQueue(String parameterQueue) {
+        this.parameterQueue = parameterQueue;
+    }
+
+    public String getParameterQueue() {
+        return parameterQueue;
+    }
+
+    public void setParameterPlayAndHangUp(String parameterPlayAndHangUp) {
+        this.parameterPlayAndHangUp = parameterPlayAndHangUp;
+    }
+
+    public String getParameterPlayAndHangUp() {
+        return parameterPlayAndHangUp;
+    }
+
+    public String getParameterIVR() {
+        return parameterIVR;
+    }
+
+    public void setParameterIVR(String parameterIVR) {
+        this.parameterIVR = parameterIVR;
+    }
+
+    public void setParameterPhoneInternal(String parameterPhoneInternal) {
+        this.parameterPhoneInternal = parameterPhoneInternal;
+    }
+
+    public String getParameterPhoneInternal() {
+        return parameterPhoneInternal;
+    }
+
+    public void setParameterPhoneDirect(String parameterPhoneDirect) {
+        this.parameterPhoneDirect = parameterPhoneDirect;
+    }
+
+    public String getParameterPhoneDirect() {
+        return parameterPhoneDirect;
+    }
+
+    public void setParameterHuntGroup(String parameterHuntGroup) {
+        this.parameterHuntGroup = parameterHuntGroup;
+    }
+
+    public String getParameterHuntGroup() {
+        return parameterHuntGroup;
+    }
+
+    public String getParameterExtTelNumber() {
+        return parameterExtTelNumber;
     }
 
     public void setAction(IvrActions action) {
@@ -123,4 +195,5 @@ public class IVRtestData extends BaseTestMethods {
     public void setIvrAnnounce(String ivrAnnounce) {
         this.ivrAnnounce = ivrAnnounce.replaceAll("\\s","");
     }
+    //</editor-fold>
 }
