@@ -5,12 +5,12 @@ import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.phonebookPageTests.phonebookPageTestData.PhonebookRowMapper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +19,16 @@ import static io.qameta.allure.Allure.step;
 @Listeners(CustomListeners.class)
 
 public class PhonebookPageTests extends BaseTestMethods {
-    ArrayList<File> fileArrayList = new ArrayList<>();
+    ArrayList<Phonebook> phonebookList = new ArrayList<>();
 
     @Description("Verify if user is able to upload xlsx phonebook")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
     public void VerifyIfUserIsAbleToUploadXlsxPhonebook(){
-        Phonebook phonebook;
         step("Preparing test data. Create phonebook.xlsx file with 10 entries");
         int numberOfPhones = 10;
-        phonebook = new Phonebook(numberOfPhones);
+        Phonebook phonebook = new Phonebook(numberOfPhones);
+        phonebookList.add(phonebook);
+
         phonebook.createExcelPhonebookFile();
         try {
             step("Log in the system as VPBX admin and goto Phonebook tab");
@@ -47,7 +48,7 @@ public class PhonebookPageTests extends BaseTestMethods {
             phonebookPage.checkIfPhonebookWasDeleted();
         } finally {
             step("Delete test excel file");
-            excelFileWorker.deleteFile(phonebook.getfileName());
+            //excelFileWorker.deleteFile(phonebook.getfileName());
         }
 
     }
@@ -57,6 +58,7 @@ public class PhonebookPageTests extends BaseTestMethods {
     public void VerifyIfUserIsAbleToRestorePhonebookFromDatabase(){
         int numberOfEntries = 10;
         Phonebook phonebook = new Phonebook(numberOfEntries);
+        phonebookList.add(phonebook);
 
         try {
             step("Login the test env");
@@ -87,6 +89,7 @@ public class PhonebookPageTests extends BaseTestMethods {
             step("Prepare test data");
             int numberOfEnriesInFile = 10;
             Phonebook phonebook = new Phonebook(numberOfEnriesInFile);
+            phonebookList.add(phonebook);
             List<Phonebook> phonebooks;
 
             step("Log in the system as VPBX admin");
@@ -129,5 +132,10 @@ public class PhonebookPageTests extends BaseTestMethods {
             step("Delete example file");
             excelFileWorker.deleteFile("excelimport_phonebook_example.xls");
         }
+    }
+
+    @AfterClass(alwaysRun = true)
+    private void cleanUp(){
+        phoneBookExcelCleanUp(phonebookList);
     }
 }

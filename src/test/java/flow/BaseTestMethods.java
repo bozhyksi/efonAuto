@@ -501,4 +501,12 @@ public class BaseTestMethods extends eFonApp {
             e.printStackTrace();
         }
     }
+
+    public void phoneBookExcelCleanUp(List<Phonebook> phonebookList){
+        for (Phonebook phonebook: phonebookList) {
+            if (excelFileWorker.checkIfFileExists(phonebook.getfileName())){
+                excelFileWorker.deleteFile(phonebook.getfileName());
+            }
+        }
+    }
 }
