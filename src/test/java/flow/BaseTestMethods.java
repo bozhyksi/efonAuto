@@ -78,6 +78,12 @@ public class BaseTestMethods extends eFonApp {
         loginPage.getButtonLogin().click();
     }
 
+    public void login(String login, String pass) {
+        loginPage.fillInLogin(login);
+        loginPage.fillInPassword(pass);
+        loginPage.getButtonLogin().click();
+    }
+
     public void createUser(User user) {
         basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");

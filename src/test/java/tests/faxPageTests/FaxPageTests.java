@@ -36,7 +36,7 @@ public class FaxPageTests extends BaseTestMethods {
         basePage.getTabFax().click();
 
         step("Select phone number for fax");
-        faxPage.getDropdownSelectNumber().selectOption(0);
+        faxPage.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
 
         step("Click configure button");
         faxPage.getEditButton().click();
@@ -49,10 +49,10 @@ public class FaxPageTests extends BaseTestMethods {
 
         step("Save Changes and validate");
         faxPage.getButtonSave().click();
+        waitUntilAlertDisappear();
         alertPopup.getAlertDialog().should(Condition.appears);
 
         step("Delete test data - delete test user");
-        refreshPage();
         deleteUser(user);
     }
 
