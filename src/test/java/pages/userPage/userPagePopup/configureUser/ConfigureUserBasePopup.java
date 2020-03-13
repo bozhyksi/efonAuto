@@ -19,9 +19,19 @@ public class ConfigureUserBasePopup extends UserPage {
     private String tabSecurityXpath = "//div[@role=\"dialog\"]//a[text()='Security']";
     private String tabAnnouncementsXpath = "//div[@role=\"dialog\"]//a[text()='Announcements']";
     private String buttonCloseXpath = "//div[@role=\"dialog\"]//button[text()='Close']";
+    private String buttonSaveXpath = "//form//button[text()=\"Save\"]";
+    private String buttonCancelXpath = "//form//button[text()=\"Cancel\"]";
     //</editor-fold>
 
     //<editor-fold desc="//-- ConfigureUserBasePopup get\set methods --//">
+    public SelenideElement getButtonCancel() {
+        return field(buttonCancelXpath);
+    }
+
+    public SelenideElement getButtonSave() {
+        return field(buttonSaveXpath);
+    }
+
     public SelenideElement getPopupTitle() {
         return field(popupTitleXpath);
     }
