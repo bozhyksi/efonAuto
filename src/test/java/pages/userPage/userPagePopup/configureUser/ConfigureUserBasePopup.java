@@ -6,7 +6,7 @@ import pages.userPage.UserPage;
 
 public class ConfigureUserBasePopup extends UserPage {
     //<editor-fold desc="//-- Configure user Locators --//">
-    private String popupTitleXpath = "//div[@role=\"dialog\"]//h3";
+    private String popupTitleXpath = "//div[@role=\"dialog\"]//h1";
     private String textUserNameXpath = "//div[@role=\"dialog\"]//label[text()='User name']/following-sibling::div";
     private String textNumberXpath = "//div[@role=\"dialog\"]//label[text()='Number']/following-sibling::div";
     private String textEndDevicesXpath = "//div[@role=\"dialog\"]//label[text()='End devices']/following-sibling::div";

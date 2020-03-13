@@ -6,7 +6,7 @@ import pages.userPage.UserPage;
 public class CreateUserPopup extends UserPage {
 
     //<editor-fold desc="//-- CreateUserPopup Locators --//">
-    private String popupTitleXpath = "//div[@class=\"modal-header\"]//h2";
+    private String popupTitleXpath = "//div[@class=\"modal-header\"]//h1";
     private String dropdownTitleXpath = "//create-user//select[@formcontrolname=\"salutation\"]";
     private String inputFirstNameXpath = "//create-user//input[@formcontrolname=\"firstName\"]";
     private String inputLastNameXpath = "//create-user//input[@formcontrolname=\"lastName\"]";
@@ -29,9 +29,14 @@ public class CreateUserPopup extends UserPage {
     private String buttonCancelXpath = "//button[text()='Cancel']";
     private String buttonCloseXpath = "//button[@aria-label=\"Close\"]";
     private String inputLocalHeaderInfoXpath="//input[@formcontrolname=\"localHeaderInfo\"]";
+    private String selectedEndDeviceXpath = "//create-user//span[@class=\"selected-item\"]";
     //</editor-fold>
 
     //<editor-fold desc="//-- CreateUserPopup get/set methods --//">
+    public SelenideElement getSelectedEndDevice() {
+        return field(selectedEndDeviceXpath);
+    }
+
     public SelenideElement getInputLocalHeaderInfo() {
         return field(inputLocalHeaderInfoXpath);
     }
@@ -142,12 +147,12 @@ public class CreateUserPopup extends UserPage {
     }
 
     public String selectNumber(){
-        getDropdownNumber().selectOption(getRandomDropDownOption(dropdownNumberXpath));
+        getRandomDropDownOption(getDropdownNumber());
         return getDropdownNumber().getSelectedText();
     }
 
     public void selectEndDevices(){
-        getDropdownEndDevices().selectOption(getRandomDropDownOption(dropdownEndDevicesXpath));
+        getRandomDropDownOption(getDropdownEndDevices());
     }
 
     public void fillInDiffContactEmail(String email){
@@ -174,6 +179,10 @@ public class CreateUserPopup extends UserPage {
     public void activateFaxDispatch(String val){
         getcheckboxActivateFaxDispatch().click();
         getInputLocalHeaderInfo().setValue(val);
+    }
+
+    public String getSelectedEndDeviceName(){
+        return getSelectedEndDevice().getText();
     }
 
 }

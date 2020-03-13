@@ -5,13 +5,13 @@ import com.codeborne.selenide.SelenideElement;
 
 public class NameTabConfigUserPopup extends ConfigureUserBasePopup{
     //<editor-fold desc="//-- NameTabConfigUserPopup Locators --//">
-    private String dropdownTitleXpath = "//select[@formcontrolname=\"salutation\"]";
-    private String inputFirstNameXpath = "//input[@formcontrolname=\"firstName\"]";
-    private String inputLastNameXpath = "//input[@formcontrolname=\"lastName\"]";
-    private String inputLoginEmailXpath = "//create-user//input[@formcontrolname=\"loginEmail\"]";
-    private String checkboxUseDiffContactEmailXpath = "input[@formcontrolname=\"useDifferentContactEmail\"]";
-    private String inputDiffContactEmailXpath = "//input[@formcontrolname=\"differentContactEmail\"]";
-    private String buttonSaveXpath = "//button[text()='Save']";
+    private String dropdownTitleXpath = "//form//select[@formcontrolname=\"salutation\"]";
+    private String inputFirstNameXpath = "//form//input[@formcontrolname=\"firstName\"]";
+    private String inputLastNameXpath = "//form//input[@formcontrolname=\"lastName\"]";
+    private String inputLoginEmailXpath = "//form//input[@formcontrolname=\"loginEmail\"]";
+    private String checkboxUseDiffContactEmailXpath = "//form//input[@formcontrolname=\"useDifferentContactEmail\"]";
+    private String inputDiffContactEmailXpath = "//form//input[@formcontrolname=\"differentContactEmail\"]";
+    private String buttonSaveXpath = "//form//button[text()='Save']";
     //</editor-fold>
 
     //<editor-fold desc="//-- NameTabConfigUserPopup get\set methods --//">

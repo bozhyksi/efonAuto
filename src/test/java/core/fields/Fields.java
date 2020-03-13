@@ -88,4 +88,10 @@ public class Fields implements IFields {
         Random random = new Random();
         dd.selectOption(random.nextInt(size));
     }
+
+    public int getRandomNumber(int min, int max) {
+        Random r = new Random();
+        int res = r.nextInt((max - min) + 1) + min;
+        return res;
+    }
 }

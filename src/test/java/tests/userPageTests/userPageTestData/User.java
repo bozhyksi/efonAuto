@@ -14,6 +14,15 @@ public class User extends BaseTestMethods {
     private String permittedDestinationNumbers;
     private String callsRecordingDirection;
     private String inputLocalHeaderInfo = getRandomString(10);
+    private String forwardDelay;
+
+    public String getForwardDelay() {
+        return forwardDelay;
+    }
+
+    public void setForwardDelay(String forwardDelay) {
+        this.forwardDelay = forwardDelay;
+    }
 
     public String getInputLocalHeaderInfo() {
         return inputLocalHeaderInfo;

@@ -162,7 +162,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Calls with suppressed numbers\" section in call forwarding")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage","ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
     public void VerifyIfUserCanConfigureCallsWithSuppressedNumbersSectionInCallForwarding(){
         step("Prepare test data");
         String delay = getRandomNumber(2);

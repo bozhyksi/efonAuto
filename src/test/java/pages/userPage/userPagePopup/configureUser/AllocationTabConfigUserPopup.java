@@ -1,6 +1,8 @@
 package pages.userPage.userPagePopup.configureUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.testng.Assert;
 
 public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     //<editor-fold desc="Locators">
@@ -16,9 +18,14 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     private String checkboxHasFinanceXpath = "//form//input[@formcontrolname=\"roleFinance\"]";
     private String checkboxCallsRecordingXpath = "//form//input[@formcontrolname=\"activateCallRecording\"]";
     private String dropdownCallsRecordingXpath = "//form//select[@formcontrolname=\"callRecordingDirection\"]";
+    private String selectedEndDeviceXpath = "//form//span[contains(@class,\"selected-item\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getSelectedEndDevice() {
+        return field(selectedEndDeviceXpath);
+    }
+
     public SelenideElement getCheckboxVoicemailEmail() {
         return field(checkboxVoicemailEmailXpath);
     }
@@ -67,4 +74,36 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
         return field(dropdownCallsRecordingXpath);
     }
     //</editor-fold>
+
+    public void validateVoicemailEmail(String expR){
+        Assert.assertEquals(getInputVoicemailEmail().getText(), expR, "Voicemail e-mail does not match.");
+    }
+
+    public void validateNumber(String expR){
+        getDropdownNumber().getSelectedText().contains(expR);
+    }
+
+    public void validateEndDevice (String expR){
+        getSelectedEndDevice().text().contains(expR);
+    }
+
+    public void validateBusyOnBusy (){
+        getCheckboxBusyOnBusy().shouldBe(Condition.selected);
+    }
+
+    public void validatePermittedDestinationNumbers (String expR){
+        getDropdownPermittedDestination().getSelectedText().contains(expR);
+    }
+
+    public void validateActivateSMSservices (){
+        getCheckboxActivateSms().shouldBe(Condition.selected);
+    }
+
+    public void validateCallsRecording (){
+        getCheckboxCallsRecording().shouldBe(Condition.selected);
+    }
+
+    public void validateCallsRecordingDirection(String expR){
+        getDropdownCallsRecording().getSelectedText().contains(expR);
+    }
 }

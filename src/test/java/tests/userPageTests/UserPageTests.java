@@ -87,9 +87,9 @@ public class UserPageTests extends BaseTestMethods {
         userPage.checkIfUserDeleted(user);
     }
 
-    @Description("Check if the system shows correct user's data on EDIT mode")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"},enabled = false) //-- blocked by bug
-    public void CheckIfVpbxAdminIsAbleToEditUsers(){
+    @Description("Check if the system shows correct user's data on edit popup - \"NAME\" tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfTheSystemShowsCorrectUserDataOnEditPopupNameTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
         userArrayList.add(user);
@@ -101,7 +101,7 @@ public class UserPageTests extends BaseTestMethods {
         createUser(user);
 
         step("Open user's EDIT mode, and goto Name tab");
-        userPage.getButtonConfigUser().click();
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
         configureUserBasePopup.getTabName().click();
 
         step("Validate popup Title");
@@ -114,10 +114,77 @@ public class UserPageTests extends BaseTestMethods {
         nameTabConfigUserPopup.validateLoginEmail(user.getLoginEmail());
         nameTabConfigUserPopup.validateDiffContactEmail(user.getUseDiffContactEmail());
 
-        //not finished is blocked by a bug
+        step("Close edit popup, and refresh page");
+        nameTabConfigUserPopup.getButtonClose().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test user");
+        deleteUser(user);
     }
 
-    @AfterClass(alwaysRun = true)
+    @Description("Check if the system shows correct user's data on edit popup - \"ALLOCATIONS\" tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfTheSystemShowsCorrectUserDataOnEditPopupALLOCATIONSTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto Name tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabAllocations().click();
+
+        step("Validate if ALLOCATIONS tab shows correct data of earlier created user");
+        //allocationTabConfigUserPopup.validateVoicemailEmail(user.getVoiceEmail()); -- looks like a bug in DOM
+        allocationTabConfigUserPopup.validateNumber(user.getPhoneNumber());
+        allocationTabConfigUserPopup.validateEndDevice(user.getEndDevices());
+        //allocationTabConfigUserPopup.validateBusyOnBusy();  -- bug created
+        allocationTabConfigUserPopup.validatePermittedDestinationNumbers(user.getPermittedDestinationNumbers());
+        allocationTabConfigUserPopup.validateActivateSMSservices();
+        allocationTabConfigUserPopup.getCheckboxCallsRecording();
+        allocationTabConfigUserPopup.validateCallsRecordingDirection(user.getCallsRecordingDirection());
+
+        step("Close edit popup, and refresh page");
+        allocationTabConfigUserPopup.getButtonClose().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test user");
+        deleteUser(user);
+    }
+
+    @Description("Check if the system allows to configure data on FORWARDING tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests", "callForwardingPage"})
+    public void CheckIfTheSystemAllowsToConfigureDataOnForwardingTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto FORWARDING tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabForwarding().click();
+
+        step("Select number in \"My numbers\" drop-down");
+        forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+
+
+    }
+
+
+
+    @AfterClass(alwaysRun = true, enabled = false)
     private void CleanUp(){
         startBrowser();
         login();

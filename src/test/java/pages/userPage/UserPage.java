@@ -18,9 +18,19 @@ public class UserPage extends BasePage {
     private String buttonBlockUserXpath = "//*[@role=\"grid\"]//a[@id=\"blockUserButton\"]";
     private String buttonConfigUserXpath = "//*[@role=\"grid\"]//a[@id=\"editUserButton\"]";
     private String buttonDeleteUserXpath = "//*[@role=\"grid\"]//a[@id=\"deleteUserButton\"]";
+    private String buttonConfigUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editUserButton\"]";
+    private String buttonDeleteUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteUserButton\"]";
     //</editor-fold>
 
     //<editor-fold desc="//-- UserPage get/set methods --//">
+    public SelenideElement getButtonDeleteUserByName(String name) {
+        return field(String.format(buttonDeleteUserByNameXpath, name));
+    }
+
+    public SelenideElement getButtonConfigUserByName(String name) {
+        return field(String.format(buttonConfigUserByNameXpath, name));
+    }
+
     public SelenideElement getButtonDeleteUser() {
         return field(buttonDeleteUserXpath);
     }
