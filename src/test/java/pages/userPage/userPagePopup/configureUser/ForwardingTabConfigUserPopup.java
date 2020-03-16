@@ -103,8 +103,8 @@ public class ForwardingTabConfigUserPopup extends ConfigureUserBasePopup {
         return field(dropdownMyNumbersXpath);
     }
 
-    public String getInputForwardDelayXpath() {
-        return inputForwardDelayXpath;
+    public SelenideElement getInputForwardDelay() {
+        return field(inputForwardDelayXpath);
     }
 
     public SelenideElement getCheckboxAfter() {

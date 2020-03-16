@@ -15,6 +15,34 @@ public class User extends BaseTestMethods {
     private String callsRecordingDirection;
     private String inputLocalHeaderInfo = getRandomString(10);
     private String forwardDelay;
+    private String forwardToPhone = getRandomPhone();
+    private String manualStatusSubj = getRandomString(20);
+    private String manualStatusDataFrom = getDate("DAY",1);
+    private String manualStatusDataTo = getDate("YEAR", 1);;
+    private String afterDelay = getRandomNumber(2);
+
+    //<editor-fold desc="get\set">
+
+
+    public String getAfterDelay() {
+        return afterDelay;
+    }
+
+    public String getManualStatusDataTo() {
+        return manualStatusDataTo;
+    }
+
+    public String getManualStatusDataFrom() {
+        return manualStatusDataFrom;
+    }
+
+    public String getManualStatusSubj() {
+        return manualStatusSubj;
+    }
+
+    public String getForwardToPhone() {
+        return forwardToPhone;
+    }
 
     public String getForwardDelay() {
         return forwardDelay;
@@ -87,4 +115,5 @@ public class User extends BaseTestMethods {
     public String getFullName(){
         return lastName+" "+firstName;
     }
+    //</editor-fold>
 }

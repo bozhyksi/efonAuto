@@ -1,5 +1,6 @@
 package tests.userPageTests;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -160,7 +161,7 @@ public class UserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if the system allows to configure data on FORWARDING tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests", "callForwardingPage"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "userPageTests", "callForwardingPage"}, invocationCount = 5)
     public void CheckIfTheSystemAllowsToConfigureDataOnForwardingTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
@@ -179,12 +180,58 @@ public class UserPageTests extends BaseTestMethods {
         step("Select number in \"My numbers\" drop-down");
         forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
 
+        step("Configure \"After\" section");
+        forwardingTabConfigUserPopup.getCheckboxAfter().click();
+        forwardingTabConfigUserPopup.getInputForwardDelay().setValue(user.getAfterDelay());
+        forwardingTabConfigUserPopup.getDropdownForwardTo().selectOptionContainingText("Phone");
+        forwardingTabConfigUserPopup.getInputForwardToPhone().setValue(user.getForwardToPhone());
 
+        step("Configure \"If Busy\" section");
+        forwardingTabConfigUserPopup.getCheckboxIfBusy().click();
+        forwardingTabConfigUserPopup.getDropdownIfBusy().selectOptionContainingText("Phone");
+        forwardingTabConfigUserPopup.getInputIfBusyPhone().setValue(user.getForwardToPhone());
+
+        step("Configure \"Manual status\" section");
+        forwardingTabConfigUserPopup.getCheckboxManualStatus().click();
+        forwardingTabConfigUserPopup.getInputManualSubject().setValue(user.getManualStatusSubj());
+        forwardingTabConfigUserPopup.getDropdownManualStatusForwardTo().selectOptionContainingText("Voicemail temporary unavailable");
+        forwardingTabConfigUserPopup.getInputDateFrom().setValue(user.getManualStatusDataFrom());
+        forwardingTabConfigUserPopup.getInputDateTo().setValue(user.getManualStatusDataTo());
+
+        step("Save all made changes");
+        forwardingTabConfigUserPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Open the same user for edit and check if data was saved on \"After\" section");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabForwarding().click();
+        forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+        forwardingTabConfigUserPopup.getCheckboxAfter().shouldBe(Condition.selected);
+        forwardingTabConfigUserPopup.getInputForwardDelay().shouldHave(Condition.value(user.getAfterDelay()));
+        forwardingTabConfigUserPopup.getInputForwardToPhone().shouldHave(Condition.value(user.getForwardToPhone()));
+
+        step("Check if data was saved on \"If busy\" section");
+        forwardingTabConfigUserPopup.getCheckboxIfBusy().shouldBe(Condition.selected);
+        forwardingTabConfigUserPopup.getInputIfBusyPhone().shouldHave(Condition.value(user.getForwardToPhone()));
+
+        step("Check if data was saved on \"Manual status\" section");
+        forwardingTabConfigUserPopup.getCheckboxManualStatus().shouldBe(Condition.selected);
+        forwardingTabConfigUserPopup.getInputManualSubject().shouldHave(Condition.value(user.getManualStatusSubj()));
+        forwardingTabConfigUserPopup.getInputDateFrom().shouldHave(Condition.value(user.getManualStatusDataFrom()));
+        forwardingTabConfigUserPopup.getInputDateTo().shouldHave(Condition.value(user.getManualStatusDataTo()));
+
+
+        step("Close popup and refresh the page");
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete created test user");
+        deleteUser(user);
     }
 
 
-
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void CleanUp(){
         startBrowser();
         login();
