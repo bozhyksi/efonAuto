@@ -161,7 +161,7 @@ public class UserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if the system allows to configure data on FORWARDING tab")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "userPageTests", "callForwardingPage"}, invocationCount = 5)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests", "callForwardingPage"})
     public void CheckIfTheSystemAllowsToConfigureDataOnForwardingTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
@@ -225,6 +225,66 @@ public class UserPageTests extends BaseTestMethods {
         step("Close popup and refresh the page");
         refreshPage();
         waitUntilAlertDisappear();
+
+        step("Delete created test user");
+        deleteUser(user);
+    }
+
+    @Description("Check if the configured data on FORWARDING tab(edit user popup) appears on Call Forwarding")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests", "callForwardingPage"})
+    public void CheckIfTheConfiguredDataOnForwardingTabAppearsOnCallForwarding(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto FORWARDING tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabForwarding().click();
+
+        step("Select number in \"My numbers\" drop-down");
+        forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+
+        step("Configure \"After\" section");
+        forwardingTabConfigUserPopup.getCheckboxAfter().click();
+        forwardingTabConfigUserPopup.getInputForwardDelay().setValue(user.getAfterDelay());
+        forwardingTabConfigUserPopup.getDropdownForwardTo().selectOptionContainingText("Phone");
+        forwardingTabConfigUserPopup.getInputForwardToPhone().setValue(user.getForwardToPhone());
+
+        step("Configure \"If Busy\" section");
+        forwardingTabConfigUserPopup.getCheckboxIfBusy().click();
+        forwardingTabConfigUserPopup.getDropdownIfBusy().selectOptionContainingText("Phone");
+        forwardingTabConfigUserPopup.getInputIfBusyPhone().setValue(user.getForwardToPhone());
+
+        step("Configure \"Manual status\" section");
+        forwardingTabConfigUserPopup.getCheckboxManualStatus().click();
+        forwardingTabConfigUserPopup.getInputManualSubject().setValue(user.getManualStatusSubj());
+        forwardingTabConfigUserPopup.getDropdownManualStatusForwardTo().selectOptionContainingText("Voicemail temporary unavailable");
+        forwardingTabConfigUserPopup.getInputDateFrom().setValue(user.getManualStatusDataFrom());
+        forwardingTabConfigUserPopup.getInputDateTo().setValue(user.getManualStatusDataTo());
+
+        step("Save all made changes");
+        forwardingTabConfigUserPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Goto Call Forwarding tab");
+        basePage.getTabCallForwarding().click();
+
+        step("Select user's phone in \"My numbers\" drop down");
+        callForwardingPage.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+
+        step("Verify if data from user popup is shown correctly on Call Forwarding tab");
+        callForwardingPage.getInputAfterPhone().shouldHave(Condition.value(user.getForwardToPhone()));
+        callForwardingPage.getInputIfbusyPhone().shouldHave(Condition.value(user.getForwardToPhone()));
+        callForwardingPage.getInputAbsent().shouldHave(Condition.value(user.getManualStatusSubj()));
+        callForwardingPage.getInputDateFrom().shouldHave(Condition.value(user.getManualStatusDataFrom()));
+        callForwardingPage.getInputDateUntil().shouldHave(Condition.value(user.getManualStatusDataTo()));
 
         step("Delete created test user");
         deleteUser(user);
