@@ -20,9 +20,23 @@ public class User extends BaseTestMethods {
     private String manualStatusDataFrom = getDate("DAY",1);
     private String manualStatusDataTo = getDate("YEAR", 1);;
     private String afterDelay = getRandomNumber(2);
+    private String voicemailPinCode = getRandomNumber(4);
+    private String voicemailEmail = getRandomEmail();
+    private String voicemailSalutation = getRandomString(15);
 
     //<editor-fold desc="get\set">
 
+    public String getVoicemailSalutation() {
+        return voicemailSalutation;
+    }
+
+    public String getVoicemailEmail() {
+        return voicemailEmail;
+    }
+
+    public String getVoicemailPinCode() {
+        return voicemailPinCode;
+    }
 
     public String getAfterDelay() {
         return afterDelay;

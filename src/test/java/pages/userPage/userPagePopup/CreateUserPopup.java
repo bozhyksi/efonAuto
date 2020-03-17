@@ -147,12 +147,14 @@ public class CreateUserPopup extends UserPage {
     }
 
     public String selectNumber(){
-        getRandomDropDownOption(getDropdownNumber());
+        //getRandomDropDownOption(getDropdownNumber());
+        getDropdownNumber().selectOption(index.getAndIncrement());
         return getDropdownNumber().getSelectedText();
     }
 
     public void selectEndDevices(){
-        getRandomDropDownOption(getDropdownEndDevices());
+        //getRandomDropDownOption(getDropdownEndDevices());
+        getDropdownEndDevices().selectOption(index.getAndIncrement());
     }
 
     public void fillInDiffContactEmail(String email){

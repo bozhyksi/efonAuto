@@ -24,6 +24,10 @@ public class ConfigureUserBasePopup extends UserPage {
     //</editor-fold>
 
     //<editor-fold desc="//-- ConfigureUserBasePopup get\set methods --//">
+    public SelenideElement getTabVoiceMail() {
+        return field(tabVoiceMailXpath);
+    }
+
     public SelenideElement getButtonCancel() {
         return field(buttonCancelXpath);
     }

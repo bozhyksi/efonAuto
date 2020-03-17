@@ -39,10 +39,7 @@ import pages.recordedCallPage.RecordedCallsPage;
 import pages.subscriptionsPage.SubscriptionsPage;
 import pages.userPage.UserPage;
 import pages.userPage.userPagePopup.CreateUserPopup;
-import pages.userPage.userPagePopup.configureUser.AllocationTabConfigUserPopup;
-import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
-import pages.userPage.userPagePopup.configureUser.ForwardingTabConfigUserPopup;
-import pages.userPage.userPagePopup.configureUser.NameTabConfigUserPopup;
+import pages.userPage.userPagePopup.configureUser.*;
 
 public class eFonApp extends PreparationsForRun{
 
@@ -90,4 +87,5 @@ public class eFonApp extends PreparationsForRun{
     public QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
     public AllocationTabConfigUserPopup allocationTabConfigUserPopup = new AllocationTabConfigUserPopup();
     public ForwardingTabConfigUserPopup forwardingTabConfigUserPopup = new ForwardingTabConfigUserPopup();
+    public VoicemailTabConfigUserPopup voicemailTabConfigUserPopup = new VoicemailTabConfigUserPopup();
 }

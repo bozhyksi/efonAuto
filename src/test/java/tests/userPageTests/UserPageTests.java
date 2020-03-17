@@ -290,9 +290,61 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
+    @Description("Check if the configured data on VOICEMAIL tab(edit user popup)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfTheConfiguredDataOnVoicemailTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
 
-    @AfterClass(alwaysRun = true)
-    private void CleanUp(){
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto VOICEMAIL tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabVoiceMail().click();
+
+        step("Select user number from \"Select number\" drop-down");
+        voicemailTabConfigUserPopup.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
+
+        step("Click edit button in \"Voicemail retrieval/delivery\" section");
+        voicemailTabConfigUserPopup.getButtonVoicemailEdit().click();
+
+        step("Fill in PIN code");
+        voicemailTabConfigUserPopup.getInputPinCode().setValue(user.getVoicemailPinCode());
+
+        step("Fill in E-mail for voice message delivery");
+        voicemailTabConfigUserPopup.getInputEmailForVoice().setValue(user.getVoicemailEmail());
+
+        step("Fill in Salutation");
+        voicemailTabConfigUserPopup.getInputSalutation().setValue(user.getVoicemailSalutation());
+        voicemailTabConfigUserPopup.getCheckboxYes().click();
+
+        step("Save all changes");
+        voicemailTabConfigUserPopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Open created User for edit and verify if entered data was saved");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabVoiceMail().click();
+        voicemailTabConfigUserPopup.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
+        voicemailTabConfigUserPopup.getButtonVoicemailEdit().click();
+        voicemailTabConfigUserPopup.getInputEmailForVoice().shouldHave(Condition.value(user.getVoicemailEmail()));
+        voicemailTabConfigUserPopup.getInputSalutation().shouldHave(Condition.value(user.getVoicemailSalutation()));
+        voicemailTabConfigUserPopup.getInputPinCode().shouldHave(Condition.value(user.getVoicemailPinCode()));
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete created test user");
+        deleteUser(user);
+    }
+
+    @AfterClass(alwaysRun = true,enabled = false)
+    private void сleanUp(){
         startBrowser();
         login();
         userCleanUp(userArrayList);

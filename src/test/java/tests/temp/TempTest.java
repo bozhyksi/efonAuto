@@ -1,22 +1,54 @@
 package tests.temp;
 
 import flow.BaseTestMethods;
+import org.testng.annotations.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TempTest extends BaseTestMethods {
-    public static void main(String[] args) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date data = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(data);
-        calendar.add(Calendar.DATE, 10);
+    AtomicInteger index = new AtomicInteger(0);
 
-        data = calendar.getTime();
-
-        String date = formatter.format(data);
-        System.out.println(date);
+    private int atom(){
+        return index.getAndIncrement();
     }
+
+    @Test(groups = {"ttt"})
+    public void t1(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t2(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t3(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t4(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t5(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t6(){
+        System.out.println(atom());
+    }
+
+    @Test(groups = {"ttt"})
+    public void t7(){
+        System.out.println(atom());
+    }
+
+
+
+
+
 }

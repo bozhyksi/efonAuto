@@ -5,7 +5,11 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BasePage extends Fields {
+
+    public AtomicInteger index = new AtomicInteger(1);
 
     //<editor-fold desc="//-- BasePage Locators --//">
     private String pageTitleXpath = "//h1";
