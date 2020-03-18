@@ -400,7 +400,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.
+        //configureUserBasePopup.
 
 
 
