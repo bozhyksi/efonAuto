@@ -8,6 +8,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import static io.qameta.allure.Allure.step;
 
 public class UserPageTests extends BaseTestMethods {
     ArrayList<User> userArrayList = new ArrayList<>();
+    //ArrayList<FileManagementTestData> filesArrayList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
@@ -341,6 +343,67 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Delete created test user");
         deleteUser(user);
+    }
+
+    @Description("Check if user can upload voicemail announcement files on ANNOUNCEMENTS tab(edit user popup)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfUserCanUploadVoicemailAnnouncementFilesOnAnnouncementsTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        FileManagementTestData announcFile = new FileManagementTestData();
+
+        //filesArrayList.add(announcFile);
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabAnnouncements().click();
+
+        step("Upload new announcement file");
+        announcementsTabConfigUserPopup.getButtonUploadFile().click();
+        announcementsTabConfigUserPopup.uploadAnnouncementFile(announcFile.getFilePath());
+        announcementsTabConfigUserPopup.getInputName().setValue(announcFile.getFileName());
+        announcementsTabConfigUserPopup.getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Check if file was uploaded");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabAnnouncements().click();
+        announcementsTabConfigUserPopup.getFieldAnnouncementName(announcFile.getFileName()).should(Condition.exist);
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test user");
+        deleteUser(user);
+    }
+
+    @Description("Check if user can configure Fax tab(edit user popup)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfUserCanConfigureFaxTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.
+
+
+
     }
 
     @AfterClass(alwaysRun = true,enabled = false)
