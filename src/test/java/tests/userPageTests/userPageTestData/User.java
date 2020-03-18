@@ -23,8 +23,14 @@ public class User extends BaseTestMethods {
     private String voicemailPinCode = getRandomNumber(4);
     private String voicemailEmail = getRandomEmail();
     private String voicemailSalutation = getRandomString(15);
+    private String faxEmail = getRandomEmail();
 
     //<editor-fold desc="get\set">
+
+
+    public String getFaxEmail() {
+        return faxEmail;
+    }
 
     public String getVoicemailSalutation() {
         return voicemailSalutation;

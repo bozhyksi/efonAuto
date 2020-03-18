@@ -24,6 +24,12 @@ public class ConfigureUserBasePopup extends UserPage {
     //</editor-fold>
 
     //<editor-fold desc="//-- ConfigureUserBasePopup get\set methods --//">
+
+
+    public SelenideElement getTabUserFax() {
+        return field(tabFaxXpath);
+    }
+
     public SelenideElement getTabVoiceMail() {
         return field(tabVoiceMailXpath);
     }

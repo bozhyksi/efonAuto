@@ -398,12 +398,37 @@ public class UserPageTests extends BaseTestMethods {
         step("Create new user");
         createUser(user);
 
-        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
+        step("Open user's EDIT mode, and goto FAX tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        //configureUserBasePopup.
+        configureUserBasePopup.getTabUserFax().click();
 
+        step("Select user number from \"Select number\" drop-down");
+        faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
 
+        step("Click edit button");
+        faxTabConfigUserPopup.getButtonEditFax().click();
 
+        step("Fill in Email input");
+        faxTabConfigUserPopup.getInputEmail().setValue(user.getFaxEmail());
+
+        step("Select TIFF and PDF and save changes");
+        faxTabConfigUserPopup.getCheckboxTiffAndPdf().click();
+        faxTabConfigUserPopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Check if configuration was saved");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        configureUserBasePopup.getTabUserFax().click();
+        faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+        faxTabConfigUserPopup.getButtonEditFax().click();
+        faxTabConfigUserPopup.getCheckboxTiffAndPdf().shouldBe(Condition.selected);
+        faxTabConfigUserPopup.getInputEmail().shouldHave(Condition.value(user.getFaxEmail()));
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test user");
+        deleteUser(user);
     }
 
     @AfterClass(alwaysRun = true,enabled = false)
