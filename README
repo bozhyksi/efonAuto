@@ -2,9 +2,9 @@ eFon Test Automation Framework overview:
 
 *Programming language - Java 8;
 *Integrated development environment - IntelliJ Idea Community 2019.3.1;
-*Web automation framework - Selenide 5.6.0(wrapper for Selenium WebDriver);
-*Testing framework - TestNG 6.14.3;
-*Build automationfolder= tool - Maven;
+*Web automation framework - Selenide (wrapper for Selenium WebDriver);
+*Testing framework - TestNG ;
+*Build tool - Maven;
 *Test reporting tool - Allure;
 
 

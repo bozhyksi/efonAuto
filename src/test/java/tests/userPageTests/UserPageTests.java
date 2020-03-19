@@ -400,6 +400,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto FAX tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
         configureUserBasePopup.getTabUserFax().click();
 
         step("Select user number from \"Select number\" drop-down");
@@ -419,6 +420,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Check if configuration was saved");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
         configureUserBasePopup.getTabUserFax().click();
         faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         faxTabConfigUserPopup.getButtonEditFax().click();
@@ -430,6 +432,55 @@ public class UserPageTests extends BaseTestMethods {
         step("Delete test user");
         deleteUser(user);
     }
+
+    @Description("Check if fax configuration made on edit user popup is shown on Fax tab in main menu")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfFaxConfigurationMadeOnEditUserPopupIsShownOnFaxTabInMainMenu(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto FAX tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
+        configureUserBasePopup.getTabUserFax().click();
+
+        step("Select user number from \"Select number\" drop-down");
+        faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+
+        step("Click edit button");
+        faxTabConfigUserPopup.getButtonEditFax().click();
+
+        step("Fill in Email input");
+        faxTabConfigUserPopup.getInputEmail().setValue(user.getFaxEmail());
+
+        step("Select TIFF and PDF and save changes");
+        faxTabConfigUserPopup.getCheckboxTiffAndPdf().click();
+        faxTabConfigUserPopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Goto main ment FAX tab and verify if configured data is shown for appropriate number");
+        basePage.getTabFax().click();
+        waitUntilAlertDisappear();
+        faxPage.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
+        faxPage.getEditButton().click();
+        faxPage.getInputEmail().shouldHave(Condition.value(user.getFaxEmail()));
+        faxPage.getCheckboxTiffAndPDF().shouldBe(Condition.selected);
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test user");
+        deleteUser(user);
+    }
+
+
 
     @AfterClass(alwaysRun = true,enabled = false)
     private void сleanUp(){

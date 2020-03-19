@@ -2,6 +2,7 @@ package core.configuration.driver;
 
 import com.codeborne.selenide.Configuration;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,7 +15,8 @@ public class DriverConfigurator {
     private final int maxTimeWait = 15000;
 
     private WebDriver createChromeDriver() {
-        ChromeDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().clearPreferences();
+        WebDriverManager.chromedriver().setup();
         return driver = new ChromeDriver(chromeOptions());
     }
 
@@ -33,7 +35,7 @@ public class DriverConfigurator {
         options.addArguments("--start-maximized");
         options.addArguments("--test-type");
         options.addArguments("--disable-notifications");
-        options.addArguments("--auto-open-devtools-for-tabs");
+        //options.addArguments("--auto-open-devtools-for-tabs");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-application-cache");
         options.setExperimentalOption("prefs", chromePrefs);
