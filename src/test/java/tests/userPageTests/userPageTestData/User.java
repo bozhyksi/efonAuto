@@ -93,7 +93,7 @@ public class User extends BaseTestMethods {
     }
 
     public void setEndDevices(String endDevices) {
-        this.endDevices = endDevices;
+        this.endDevices = endDevices.substring(0,endDevices.length()-2);
     }
 
     public String getEndDevices() {

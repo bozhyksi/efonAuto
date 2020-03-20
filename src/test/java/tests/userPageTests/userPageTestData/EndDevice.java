@@ -114,4 +114,5 @@ public class EndDevice extends BaseTestMethods  {
     public void setEndDevSuppressed(String endDevSuppressed) {
         this.endDevSuppressed = endDevSuppressed;
     }
+
 }

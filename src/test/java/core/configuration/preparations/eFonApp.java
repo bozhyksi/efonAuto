@@ -90,4 +90,5 @@ public class eFonApp extends PreparationsForRun{
     public VoicemailTabConfigUserPopup voicemailTabConfigUserPopup = new VoicemailTabConfigUserPopup();
     public AnnouncementsTabConfigUserPopup announcementsTabConfigUserPopup = new AnnouncementsTabConfigUserPopup();
     public FaxTabConfigUserPopup faxTabConfigUserPopup = new FaxTabConfigUserPopup();
+    public EndDeviceTabConfigUserPopup endDeviceTabConfigUserPopup = new EndDeviceTabConfigUserPopup();
 }

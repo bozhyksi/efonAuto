@@ -9,6 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.userPageTests.userPageTestData.EndDevice;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
@@ -480,7 +481,60 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
+    @Description("Check if can make configurations on END-DEVICE tab(edit user popup)")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "userPageTests"})
+    public void CheckIfCanMakeConfigurationsOnEnddeviceTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        EndDevice endDevice = new EndDevice();
+        userArrayList.add(user);
 
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto FAX tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
+        configureUserBasePopup.getTabEndDevices().click();
+
+        step("Select end device");
+        endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
+
+        step("Set name");
+        endDeviceTabConfigUserPopup.getInputNameEndDev().setValue(endDevice.getEndDevName());
+
+        step("Set User Id");
+        endDeviceTabConfigUserPopup.getInputUserIdEndDev().setValue(endDevice.getEndDevUserId());
+
+        step("Set password");
+        endDeviceTabConfigUserPopup.getButtonEditPassEndDev().click();
+        endDeviceTabConfigUserPopup.getInputPasswordEndDev().setValue(endDevice.getEndDevPass());
+        endDeviceTabConfigUserPopup.getButtonSavePass().click();
+
+        step("Select codec");
+        endDeviceTabConfigUserPopup.getDropdownCodecsEndDev().selectOptionContainingText(endDevice.getEndDevCodec());
+
+        step("Set language");
+        endDeviceTabConfigUserPopup.getDropdownLanguageEndDev().selectOptionContainingText(endDevice.getEndDevPhoneLanguage());
+
+        step("Set DisplayName");
+        endDeviceTabConfigUserPopup.getinputDispNameEndDev().setValue(endDevice.getEndDevDisplayName());
+
+        step("Select Outgoing Number");
+        endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().selectOption(1);
+        endDevice.setEndDevOutgoingNumber(endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue());
+
+        step("Set Location");
+        endDeviceTabConfigUserPopup.getInputLocationEndDev().setValue(endDevice.getEndDevLocation());
+
+        step("Save all made changes");
+        endDeviceTabConfigUserPopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+    }
 
     @AfterClass(alwaysRun = true,enabled = false)
     private void сleanUp(){
