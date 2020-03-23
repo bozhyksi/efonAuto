@@ -482,7 +482,7 @@ public class UserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if can make configurations on END-DEVICE tab(edit user popup)")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "userPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
     public void CheckIfCanMakeConfigurationsOnEnddeviceTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
@@ -495,7 +495,7 @@ public class UserPageTests extends BaseTestMethods {
         step("Create new user");
         createUser(user);
 
-        step("Open user's EDIT mode, and goto FAX tab");
+        step("Open user's EDIT mode, and goto END DEVICES tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
         waitUntilAlertDisappear();
         configureUserBasePopup.getTabEndDevices().click();
@@ -515,10 +515,10 @@ public class UserPageTests extends BaseTestMethods {
         endDeviceTabConfigUserPopup.getButtonSavePass().click();
 
         step("Select codec");
-        endDeviceTabConfigUserPopup.getDropdownCodecsEndDev().selectOptionContainingText(endDevice.getEndDevCodec());
+        endDeviceTabConfigUserPopup.getDropdownCodecsEndDev().selectOptionByValue(endDevice.getEndDevCodec());
 
         step("Set language");
-        endDeviceTabConfigUserPopup.getDropdownLanguageEndDev().selectOptionContainingText(endDevice.getEndDevPhoneLanguage());
+        endDeviceTabConfigUserPopup.getDropdownLanguageEndDev().selectOptionByValue(endDevice.getEndDevPhoneLanguage());
 
         step("Set DisplayName");
         endDeviceTabConfigUserPopup.getinputDispNameEndDev().setValue(endDevice.getEndDevDisplayName());
@@ -532,11 +532,31 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Save all made changes");
         endDeviceTabConfigUserPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
         refreshPage();
         waitUntilAlertDisappear();
+
+        step("Edit created user and goto End Devices tab");
+        userPage.getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
+        configureUserBasePopup.getTabEndDevices().click();
+
+        step("Check if all made changes were saved");
+        //endDeviceTabConfigUserPopup.getInputNameEndDev().shouldHave(Condition.text(endDevice.getEndDevName()));
+        //endDeviceTabConfigUserPopup.getInputUserIdEndDev().shouldHave(Condition.text(endDevice.getEndDevUserId()));
+        endDeviceTabConfigUserPopup.getDropdownCodecsEndDev().getSelectedValue().contains(endDevice.getEndDevCodec());
+        endDeviceTabConfigUserPopup.getDropdownLanguageEndDev().getSelectedValue().contains(endDevice.getEndDevPhoneLanguage());
+        endDeviceTabConfigUserPopup.getinputDispNameEndDev().shouldHave(Condition.value(endDevice.getEndDevDisplayName()));
+        endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(endDevice.getEndDevOutgoingNumber());
+        endDeviceTabConfigUserPopup.getInputLocationEndDev().shouldHave(Condition.value(endDevice.getEndDevLocation()));
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test data");
+        userCleanUp(userArrayList);
     }
 
-    @AfterClass(alwaysRun = true,enabled = false)
+    @AfterClass(alwaysRun = true)
     private void сleanUp(){
         startBrowser();
         login();

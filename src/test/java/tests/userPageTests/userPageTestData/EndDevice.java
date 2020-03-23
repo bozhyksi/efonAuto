@@ -20,10 +20,13 @@ public class EndDevice extends BaseTestMethods  {
             this.value = codecValue;
         }
 
-        public static String getRandomVal(){
+        private static Codecs getRandomVal(){
             Random random = new Random();
-            return values()[random.nextInt(values().length)].toString();
+            return values()[random.nextInt(values().length)];
         }
+         public static String getCodec(){
+            return getRandomVal().value;
+         }
     }
 
     public enum Language{
@@ -53,10 +56,10 @@ public class EndDevice extends BaseTestMethods  {
         endDevName = "EndDevice" + getRandomString(10);
         endDevUserId = getRandomNumber(10);
         endDevPass = getRandomPassword();
-        endDevCodec = Codecs.getRandomVal();
+        endDevCodec = Codecs.getCodec();
         endDevPhoneLanguage = Language.getRandomVal();
         endDevDisplayName = getRandomString(15);
-        endDevLocation = getRandomNumber(4);
+        endDevLocation = "8306";
     }
 
     public String getEndDevCallPickups() {

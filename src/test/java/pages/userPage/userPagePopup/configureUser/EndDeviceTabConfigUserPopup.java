@@ -16,9 +16,16 @@ public class EndDeviceTabConfigUserPopup extends ConfigureUserBasePopup {
     private String inputDispNameEndDevXpath = "//edit-user//end-device-detail//input[@formcontrolname=\"displayName\"]";
     private String dropdownOutgoingNumEndDevXpath = "//edit-user//end-device-detail//select[@formcontrolname=\"outgoingNumber\"]";
     private String inputLocationEndDevXpath = "//edit-user//end-device-detail//input[@formcontrolname=\"emergencyLocation\"]";
+    private String buttonSaveXpath = "//div[@class=\"modal-body\"]//button[text()=\"Save\"]";
+    private String buttonCancelXpath = "//div[@class=\"modal-body\"]//button[text()=\"Cancel\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+    public SelenideElement getButtonSave() {
+        return field(buttonSaveXpath);
+    }
+
     public SelenideElement getDropdownSelectEndDevice() {
         return field(dropdownSelectEndDeviceXpath);
     }
