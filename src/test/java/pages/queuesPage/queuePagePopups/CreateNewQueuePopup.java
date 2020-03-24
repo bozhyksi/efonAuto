@@ -100,6 +100,7 @@ public class CreateNewQueuePopup extends BasePopup {
     //</editor-fold>
 
     public void selectRandomSubscriptionForQueue(){
+        waitUntilAlertDisappear();
         getRandomDropDownOption(getDropdownSubscription());
     }
 

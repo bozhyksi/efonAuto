@@ -119,7 +119,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can edit Queue")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"},enabled = false) //test disabled because bug
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
     public void VerifyIfUserCanEditQueue(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();

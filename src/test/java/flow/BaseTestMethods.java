@@ -406,7 +406,22 @@ public class BaseTestMethods extends eFonApp {
         createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
         createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
         createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
-        createNewQueuePopup.getButtonSave().click();
+        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+    }
+
+    public void createQueueOnlyRequiredFields(Queue queue){
+        basePage.getTabQueues().click();
+        waitUntilAlertDisappear();
+        queuesBasePage.getTabConfigureQueues().click();
+        waitUntilAlertDisappear();
+        configureQueueTab.getButtonCreateNewQueue().click();
+        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
+        createNewQueuePopup.selectRandomSubscriptionForQueue();
+        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
+        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
         waitUntilAlertDisappear();
         refreshPage();
         configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);

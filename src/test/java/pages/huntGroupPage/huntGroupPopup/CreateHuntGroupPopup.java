@@ -3,8 +3,30 @@ package pages.huntGroupPage.huntGroupPopup;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import pages.huntGroupPage.HuntGroupPage;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.queuesPageTest.queueTestData.Queue;
 
 public class CreateHuntGroupPopup extends HuntGroupPage {
+    private int level = 1;
+
+    public enum QueueActions {
+        NumberEndDevice("0"),
+        VoicemailUnavailable("1"),
+        Announcements("2"),
+        VoicemailBusy("3"),
+        VoicemailNoAnnouncement("4"),
+        Queue("5");
+
+        private String value;
+
+        QueueActions(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 
     //<editor-fold desc="Locators">
     //Edit hunt group section
@@ -40,17 +62,71 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     private String dropdownTimerGroupXpath = "//label[text()=\"Huntgroup timer group\"]/following-sibling::div/select";
     private String buttonAddXpath = "//button[text()=\"Add\"]";
     private String checkboxCallRecordingXpath = "//label[text()=\"Calls recording\"]/following-sibling::div//input";
-    private String buttonSaveXpath ="//*[@class=\"modal-footer\"]//button[text()=\"Save\"]";
+    private String buttonSaveXpath = "//*[@class=\"modal-footer\"]//button[text()=\"Save\"]";
     private String buttonCancelXpath = "//*[@class=\"modal-footer\"]//button[text()=\"Cancel\"]";
     private String buttonCloseXpath = "//button[@aria-label=\"Close\"]";
     private String dropdownAccountXpath = "//select[@id=\"accountSelect\"]";
     private String inputNumberXpath = "//input[@id=\"numberSelection\"]";
+
+    private String dropdownActionTypeByLabelXpath = "//label[contains(text(),\"%s\")]//parent::div//following-sibling::div/select[@formcontrolname=\"queueActionType\"]";
+    private String dropDownEndDevicesByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//select[@id=\"accountSelect\"]";
+    private String inputNumberByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//input[@id=\"numberSelection\"]";
+    private String inputDelayByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//input[@formcontrolname=\"delay\"]";
+    private String dropdownAnnouncementIdByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//select[@formcontrolname=\"announcementId\"]";
+    private String dropdownQueueIdByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//select[@formcontrolname=\"callCenterQueueName\"]";
+    private String buttonDeleteByLabelXpath = "//label[contains(text(),\"%s\")]//ancestor::hunt-group-timer-queue-action//a[@id=\"deleteQueueAction\"]";
+
+    private String inputFullDayNameXpath = "//input[@formcontrolname=\"timerQueueName\"]";
+    private String inputFullDayDateXpath = "//input[@formcontrolname=\"dates\"]";
+    private String buttonEditFullDayXpath = "//dt[text()=\"Full days\"]/parent::dl//i[contains(@class,\"fa-cog\")]//parent::a";
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getButtonEditFullDay() {
+        return field(buttonEditFullDayXpath);
+    }
+
+    public SelenideElement getInputFullDayDate() {
+        return field(inputFullDayDateXpath);
+    }
+
+    public SelenideElement getInputFullDayName() {
+        return field(inputFullDayNameXpath);
+    }
+
+    public SelenideElement getButtonDeleteByLabel(String level) {
+        return field(String.format(buttonDeleteByLabelXpath, level));
+    }
+
+    public SelenideElement getDropdownQueueIdByLabel(String level) {
+        return field(String.format(dropdownQueueIdByLabelXpath, level));
+    }
+
+    public SelenideElement getDropdownAnnouncementIdByLabel(String level) {
+        return field(String.format(dropdownAnnouncementIdByLabelXpath, level));
+    }
+
+    public SelenideElement getInputDelayByLabel(String level) {
+        return field(String.format(inputDelayByLabelXpath, level));
+    }
+
+    public SelenideElement getInputNumberByLabel(String level) {
+        return field(String.format(inputNumberByLabelXpath, level));
+    }
+
+    public SelenideElement getDropDownEndDevicesByLabel(String level) {
+        return field(String.format(dropDownEndDevicesByLabelXpath, level));
+    }
+
+    public SelenideElement getDropdownActionTypeByLabel(String level) {
+        return field(String.format(dropdownActionTypeByLabelXpath, level));
+    }
+
     public SelenideElement getInputNumber() {
         return field(inputNumberXpath);
     }
+
     public SelenideElement getDropdownAccount() {
         return field(dropdownAccountXpath);
     }
@@ -172,7 +248,45 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     }
     //</editor-fold>
 
-    public void selectRandomNumber(){
-        getDropdownNumber().selectOption(getRandomDropDownOption(dropdownNumberXpath));
+    public void selectRandomNumber() {
+        //getDropdownNumber().selectOption(getRandomDropDownOption(dropdownNumberXpath));
+        getDropdownNumber().selectOption(index.getAndIncrement());
     }
+
+    public void configureLevel(String delay, QueueActions actionValue, String number) {
+        String levelNumber = String.valueOf(level);
+        getButtonAddNewStep().click();
+        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
+        getDropDownEndDevicesByLabel(levelNumber).selectOption(1);
+        getInputNumberByLabel(levelNumber).setValue(number);
+        level++;
+    }
+
+    public void configureLevel(String delay, QueueActions actionValue) {
+        String levelNumber = String.valueOf(level);
+        getButtonAddNewStep().click();
+        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
+        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        level++;
+    }
+
+    public void configureLevel(String delay, QueueActions actionValue, FileManagementTestData file) {
+        String levelNumber = String.valueOf(level);
+        getButtonAddNewStep().click();
+        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
+        getDropdownAnnouncementIdByLabel(levelNumber).selectOptionContainingText(file.getFileName());
+        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        level++;
+    }
+
+    public void configureLevel(String delay, QueueActions actionValue, Queue queue) {
+        String levelNumber = String.valueOf(level);
+        getButtonAddNewStep().click();
+        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
+        getDropdownQueueIdByLabel(levelNumber).selectOptionContainingText(queue.getName());
+        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        level++;
+    }
+
 }

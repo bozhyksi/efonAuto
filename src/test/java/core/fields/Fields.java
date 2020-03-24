@@ -85,8 +85,9 @@ public class Fields implements IFields {
     public void getRandomDropDownOption(SelenideElement dd){
         Select obj = new Select(dd);
         int size = obj.getOptions().size();
-        Random random = new Random();
-        dd.selectOption(random.nextInt(size));
+        //Random random = new Random();
+        //dd.selectOption(random.nextInt(size));
+        dd.selectOption(getRandomNumber(1,size-1));
     }
 
     public int getRandomNumber(int min, int max) {

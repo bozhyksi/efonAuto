@@ -2,53 +2,16 @@ package tests.temp;
 
 import flow.BaseTestMethods;
 import org.testng.annotations.Test;
+import tests.queuesPageTest.queueTestData.Queue;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TempTest extends BaseTestMethods {
-    AtomicInteger index = new AtomicInteger(0);
-
-    private int atom(){
-        return index.getAndIncrement();
+    @Test
+    public void sss(){
+        login();
+        Queue queue = new Queue();
+        createQueue(queue);
     }
-
-    @Test(groups = {"ttt"})
-    public void t1(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t2(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t3(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t4(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t5(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t6(){
-        System.out.println(atom());
-    }
-
-    @Test(groups = {"ttt"})
-    public void t7(){
-        System.out.println(atom());
-    }
-
-
-
-
 
 }

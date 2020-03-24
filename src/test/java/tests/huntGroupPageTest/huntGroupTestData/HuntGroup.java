@@ -36,6 +36,11 @@ public class HuntGroup extends BaseTestMethods {
     private String relevantAccount;
     private String backUpNumber;
 
+    //Full days
+    private String fullDayName;
+    private String fullDayDate;
+    private String fullDayPhoneNumber;
+
     public HuntGroup(){
         //Edit hunt group section
         this.huntGroupLanguage = "en";
@@ -49,6 +54,23 @@ public class HuntGroup extends BaseTestMethods {
 
         //If end devices not available (not registered) section
         this.backUpNumber = getRandomPhone();
+
+        //Full days
+        this.fullDayName = getRandomString(10);
+        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
+        fullDayPhoneNumber = getRandomPhone();
+    }
+
+    public String getFullDayPhoneNumber() {
+        return fullDayPhoneNumber;
+    }
+
+    public String getFullDayDate() {
+        return fullDayDate;
+    }
+
+    public String getFullDayName() {
+        return fullDayName;
     }
 
     public String getHuntGroupDisplayName() {

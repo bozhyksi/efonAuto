@@ -2,9 +2,10 @@ package pages.huntGroupPage.huntGroupPopup;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import pages.huntGroupPage.HuntGroupPage;
 import pages.userPage.userPagePopup.CreateUserPopup;
 
-public class AddFullDaysPopup extends CreateUserPopup {
+public class AddFullDaysPopup extends CreateHuntGroupPopup {
     //<editor-fold desc="Locators">
     private String buttonAddNewStepXpath = "//div[@id=\"systemModal\"]//button[text()=\"+ Add new step\"]";
     private String buttonCancelXpath = "//div[@id=\"systemModal\"]//button[text()=\"Cancel\"]";
@@ -14,9 +15,17 @@ public class AddFullDaysPopup extends CreateUserPopup {
     private String dropdownListNumbersXpath = "//div[@id=\"systemModal\"]//input[@id=\"numberSelection\"]";
     private String buttonListDeleteLevelXpath = "//div[@id=\"systemModal\"]//a[@id=\"deleteQueueAction\"]";
     private String buttonCloseXpath = "//div[@id=\"systemModal\"]//button[@aria-label=\"Close\"]";
+    private String buttonSaveXpath = "//div[@id=\"systemModal\"]//*[@class=\"modal-footer\"]//button[text()=\"Save\"]";
+
+
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getButtonSave() {
+        return field(buttonSaveXpath);
+    }
+
     public SelenideElement getButtonAddNewStep() {
         return field(buttonAddNewStepXpath);
     }

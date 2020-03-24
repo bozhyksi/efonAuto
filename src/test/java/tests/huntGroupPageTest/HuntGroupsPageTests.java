@@ -1,5 +1,6 @@
 package tests.huntGroupPageTest;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -8,13 +9,21 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
+
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Queue;
+
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.NumberEndDevice;
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailBusy;
 import static tests.huntGroupPageTest.huntGroupTestData.HuntGroup.TimerLevels.*;
 
 @Listeners(CustomListeners.class)
@@ -23,10 +32,11 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
     ArrayList<User> usersList = new ArrayList<>();
     ArrayList<FileManagementTestData> filesList = new ArrayList<>();
+    ArrayList<Queue> queueArrayList = new ArrayList<>();
 
     @Description("Verify if user can create/delete Hunt Group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "huntGroupsPageTests"})
-    public void VerifyIfUserCanCreateHuntGroup(){
+    public void VerifyIfUserCanCreateHuntGroup() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
         User user = new User();
@@ -84,7 +94,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
     @Description("Verify if user can edit hunt group and configure Voicemail")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
-    public void VerifyIfUserCanEditHuntGroupAndConfigureVoicemail(){
+    public void VerifyIfUserCanEditHuntGroupAndConfigureVoicemail() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
@@ -124,7 +134,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
     @Description("Verify if user can edit hunt group and configure \"If end devices not available (not registered)\" section")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
-    public void VerifyIfUserCanEditHuntGroupAndConfigureIfEndDevicesNotAvailableSection(){
+    public void VerifyIfUserCanEditHuntGroupAndConfigureIfEndDevicesNotAvailableSection() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
@@ -167,7 +177,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
     @Description("Verify if user can edit hunt group and configure \"Standard Timers\"")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
-    public void VerifyIfUserCanEditHuntGroupAndConfigureStandardTimers(){
+    public void VerifyIfUserCanEditHuntGroupAndConfigureStandardTimers() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
         FileManagementTestData file = new FileManagementTestData();
@@ -192,7 +202,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
         step("Configure Level_1 Number/end device");
         createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(0).selectOptionByValue(NumberEndDevice.getLevel());
+        createHuntGroupPopup.getDropdownListActionType().get(0).selectOptionByValue(HuntGroup.TimerLevels.NumberEndDevice.getLevel());
         createHuntGroupPopup.getDropdownAccount().selectOption(1);
         createHuntGroupPopup.getInputNumber().setValue(huntGroup.getBackUpNumber());
 
@@ -203,13 +213,13 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
         step("Configure Level_3 Announcements");
         createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(2).selectOptionByValue(Announcements.getLevel());
+        createHuntGroupPopup.getDropdownListActionType().get(2).selectOptionByValue(HuntGroup.TimerLevels.Announcements.getLevel());
         createHuntGroupPopup.getDropdownListAnnouncmentId().get(0).selectOption(0);
         createHuntGroupPopup.getInputListDelay().get(1).setValue("12");
 
         step("Configure Level_4 VoicemailBusy");
         createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(3).selectOptionByValue(VoicemailBusy.getLevel());
+        createHuntGroupPopup.getDropdownListActionType().get(3).selectOptionByValue(HuntGroup.TimerLevels.VoicemailBusy.getLevel());
         createHuntGroupPopup.getInputListDelay().get(2).setValue("12");
 
         step("Configure Level_4 VoicemailNoAnnouncement");
@@ -226,23 +236,85 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         //test mot finished
     }
 
+    @Description("Verify if user can configure \"Full days groups\"")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void VerifyIfUserCanConfigureFullDaysGroups() {
+        step("Prepare test data");
+        HuntGroup huntGroup = new HuntGroup();
+        Queue queue = new Queue();
+        FileManagementTestData announcement = new FileManagementTestData();
+
+        filesList.add(announcement);
+        huntGroupsList.add(huntGroup);
+        queueArrayList.add(queue);
+
+        step("Login the system");
+        login();
+
+        step("");
+        uploadAnnouncementFile(announcement);
+
+        step("Create Queue");
+        //createQueue(queue);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Create Hunt Group");
+        createHuntGroup(huntGroup);
+
+        step("Open created Hunt group for edit");
+        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+
+        step("Select full days in \"Huntgroup timer group\" drop-down");
+        createHuntGroupPopup.getButtonAdd().click();
+
+        step("Fill in Full Days name");
+        addFullDaysPopup.getInputFullDay().setValue(huntGroup.getFullDayName());
+
+        step("Fill in dates");
+        addFullDaysPopup.getInputDates().setValue(huntGroup.getFullDayDate());
+
+        step("Configure 1 Level: Immediately for NumberEndDevice");
+        addFullDaysPopup.configureLevel("12", NumberEndDevice, huntGroup.getFullDayPhoneNumber());
+
+        step("Configure 2 Level for VoiceMail busy");
+        addFullDaysPopup.configureLevel("26", VoicemailBusy);
+
+        step("Configure 3 Level for Queues");
+        addFullDaysPopup.configureLevel("15", Queue, queue);
+
+        step("Configure 4 Level for Announcements");
+        addFullDaysPopup.configureLevel("44", Announcements, announcement);
+
+        step("Save Full Days configuration");
+        addFullDaysPopup.getButtonSave().click();
+        createHuntGroupPopup.getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Check if full days were saved");
+        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+        createHuntGroupPopup.getButtonEditFullDay().shouldBe(Condition.visible,Condition.enabled).click();
+        createHuntGroupPopup.getInputFullDayName().shouldHave(Condition.value(huntGroup.getFullDayName()));
+        createHuntGroupPopup.getInputFullDayDate().shouldHave(Condition.value(huntGroup.getFullDayDate()));
+        refreshPage();
+        waitUntilAlertDisappear();
+
+        step("Delete test data");
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteAnnouncementFile(announcement.getFileName());
+        deleteQueue(queue.getName());
+    }
+
     @AfterClass(alwaysRun = true)
-    private void cleanUp(){
+    private void cleanUp() {
         startBrowser();
         login();
-        try {
-            huntGroupCleanUp(huntGroupsList);
-            userCleanUp(usersList);
-            announcementCleanUp(filesList);
-        } catch (Throwable e) {
-            try {
-                userCleanUp(usersList);
-                announcementCleanUp(filesList);
-            } catch (Throwable ex) {
-                announcementCleanUp(filesList);
-            }
-        } finally {
-            closeBrowser();
-        }
+        huntGroupCleanUp(huntGroupsList);
+        userCleanUp(usersList);
+        queueCleanUp(queueArrayList);
+        announcementCleanUp(filesList);
+        closeBrowser();
     }
 }
