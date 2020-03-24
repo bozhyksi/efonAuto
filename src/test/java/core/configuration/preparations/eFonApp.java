@@ -35,6 +35,8 @@ import pages.queuesPage.ConfigureQueueTab;
 import pages.queuesPage.QueuesBasePage;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
+import pages.recordedCallPage.RecordedCallConfigurationPage;
+import pages.recordedCallPage.RecordedCallOverviewPage;
 import pages.recordedCallPage.RecordedCallsPage;
 import pages.subscriptionsPage.SubscriptionsPage;
 import pages.userPage.UserPage;
@@ -91,4 +93,6 @@ public class eFonApp extends PreparationsForRun{
     public AnnouncementsTabConfigUserPopup announcementsTabConfigUserPopup = new AnnouncementsTabConfigUserPopup();
     public FaxTabConfigUserPopup faxTabConfigUserPopup = new FaxTabConfigUserPopup();
     public EndDeviceTabConfigUserPopup endDeviceTabConfigUserPopup = new EndDeviceTabConfigUserPopup();
+    public RecordedCallOverviewPage recordedCallOverviewPage = new RecordedCallOverviewPage();
+    public RecordedCallConfigurationPage recordedCallConfigPage = new RecordedCallConfigurationPage();
 }

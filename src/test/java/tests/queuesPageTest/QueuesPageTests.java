@@ -1,10 +1,14 @@
 package tests.queuesPageTest;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.WebDriverRunner;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -12,6 +16,7 @@ import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
@@ -185,6 +190,50 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteQueue(queue.getName());
         deleteUser(user1);
         deleteUser(user2);
+    }
+
+    @Description("Check if user can configure Queue for agents")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"} ,enabled = false)
+    public void CheckIfUserCanConfigureQueueForAgents(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user1 = new User();
+        User user2 = new User();
+
+        queuesList.add(queue);
+        usersList.add(user1);
+        usersList.add(user2);
+
+        step("Log in the system");
+        login();
+
+/*        step("Create test users");
+        createUser(user1);
+        createUser(user2);
+
+        step("Create new Queue");
+        createQueue(queue);*/
+
+        step("Open Queue for agents popup");
+        basePage.getTabQueues().click();
+        configureQueueTab.getButtonEditAgentsQueueByText("asd").click();
+
+        step("Move agent");
+        //queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd").dragAndDropTo(queueForAgentsPopup.getSectionSelected());
+
+        //new Actions(WebDriverRunner.getWebDriver()).dragAndDrop(queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd"),queueForAgentsPopup.getSectionSelected()).perform();
+
+/*        Actions act = new Actions(WebDriverRunner.getWebDriver());
+
+        act.dragAndDrop(from, to).build().perform();*/
+
+
+        WebElement from = queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd");
+        WebElement to = queueForAgentsPopup.getSectionSelected();
+        Actions builder = new Actions(WebDriverRunner.getWebDriver());
+        builder.clickAndHold(from).moveToElement(to).release(to).build().perform();
+
+
     }
 
     @AfterClass(alwaysRun = true)
