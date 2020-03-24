@@ -29,7 +29,7 @@ public class CreateUserPopup extends UserPage {
     private String buttonCancelXpath = "//button[text()='Cancel']";
     private String buttonCloseXpath = "//button[@aria-label=\"Close\"]";
     private String inputLocalHeaderInfoXpath="//input[@formcontrolname=\"localHeaderInfo\"]";
-    private String selectedEndDeviceXpath = "//create-user//span[@class=\"selected-item\"]";
+    private String selectedEndDeviceXpath = "//create-user//span[contains(@class,\"selected-item\")]";
     //</editor-fold>
 
     //<editor-fold desc="//-- CreateUserPopup get/set methods --//">
