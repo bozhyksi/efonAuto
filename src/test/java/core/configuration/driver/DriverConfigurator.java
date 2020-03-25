@@ -35,6 +35,7 @@ public class DriverConfigurator {
         options.addArguments("--start-maximized");
         options.addArguments("--test-type");
         options.addArguments("--disable-notifications");
+        options.addArguments("--disable-features=VizDisplayCompositor");
         //options.addArguments("--auto-open-devtools-for-tabs");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-application-cache");
