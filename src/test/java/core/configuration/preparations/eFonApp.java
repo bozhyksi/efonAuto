@@ -26,6 +26,7 @@ import pages.fileManagementPage.MusicOnHoldPage;
 import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
 import pages.huntGroupPage.HuntGroupPage;
 import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
+import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 import pages.lastCallsPage.LastCallsPage;
 import pages.loginPage.LoginPage;
@@ -95,4 +96,5 @@ public class eFonApp extends PreparationsForRun{
     public EndDeviceTabConfigUserPopup endDeviceTabConfigUserPopup = new EndDeviceTabConfigUserPopup();
     public RecordedCallOverviewPage recordedCallOverviewPage = new RecordedCallOverviewPage();
     public RecordedCallConfigurationPage recordedCallConfigPage = new RecordedCallConfigurationPage();
+    public AddFurtherTimePopup addFurtherTimePopup = new AddFurtherTimePopup();
 }

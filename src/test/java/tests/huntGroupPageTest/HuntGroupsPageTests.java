@@ -299,13 +299,85 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         createHuntGroupPopup.getInputFullDayName().shouldHave(Condition.value(huntGroup.getFullDayName()));
         createHuntGroupPopup.getInputFullDayDate().shouldHave(Condition.value(huntGroup.getFullDayDate()));
         refreshPage();
-        waitUntilAlertDisappear();
 
         step("Delete test data");
         deleteHuntGroup(huntGroup.getHuntGroupName());
         deleteAnnouncementFile(announcement.getFileName());
         deleteQueue(queue.getName());
     }
+
+    @Description("Verify if user can configure \"Further Time groups\"")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void VerifyIfUserCanConfigureFurtherTimeGroups(){
+        step("Prepare test data");
+        HuntGroup huntGroup = new HuntGroup();
+        Queue queue = new Queue();
+        FileManagementTestData announcement = new FileManagementTestData();
+
+        filesList.add(announcement);
+        huntGroupsList.add(huntGroup);
+        queueArrayList.add(queue);
+
+        step("Login the system");
+        login();
+
+        step("");
+        uploadAnnouncementFile(announcement);
+
+        step("Create Queue");
+        //createQueue(queue);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Create Hunt Group");
+        createHuntGroup(huntGroup);
+
+        step("Open created Hunt group for edit");
+        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+
+        step("Select Time in Huntgroup timer group dropdown and click Add button");
+        createHuntGroupPopup.getDropdownTimerGroup().selectOptionContainingText("Time");
+        createHuntGroupPopup.getButtonAdd().click();
+        waitUntilAlertDisappear();
+
+        step("Fill in timers");
+        addFurtherTimePopup.fillInTimers(huntGroup);
+
+        step("Configure 1 Level: Immediately for NumberEndDevice");
+        addFurtherTimePopup.configureLevel("12", NumberEndDevice, huntGroup.getFullDayPhoneNumber());
+
+        step("Configure 2 Level for VoiceMail busy");
+        addFurtherTimePopup.configureLevel("26", VoicemailBusy);
+
+        step("Configure 3 Level for Queues");
+        addFurtherTimePopup.configureLevel("15", Queue, queue);
+
+        step("Configure 4 Level for Announcements");
+        addFurtherTimePopup.configureLevel("44", Announcements, announcement);
+
+        step("Save all changes");
+        addFurtherTimePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        createHuntGroupPopup.getButtonSave().click();
+        refreshPage();
+
+        step("Edit created HuntGroup");
+        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+
+        step("Check if Timers were saved");
+        createHuntGroupPopup.getButtonEditFurtherTime().click();
+        createHuntGroupPopup.checkIfFurtherTimersSaved(huntGroup);
+        refreshPage();
+
+        step("Delete test data");
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteAnnouncementFile(announcement.getFileName());
+        deleteQueue(queue.getName());
+    }
+
+
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {

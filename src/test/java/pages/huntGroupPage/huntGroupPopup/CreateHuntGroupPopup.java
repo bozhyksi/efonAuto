@@ -1,9 +1,11 @@
 package pages.huntGroupPage.huntGroupPopup;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import pages.huntGroupPage.HuntGroupPage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 
 public class CreateHuntGroupPopup extends HuntGroupPage {
@@ -59,7 +61,7 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     private String inputListNumbersXpath = "//input[@formcontrolname=\"numbers\"]";
     private String dropdownListAnnouncmentIdXpath = "//select[@formcontrolname=\"announcementId\"]";
     private String dropdownListQueueIdXpath = "//select[@formcontrolname=\"callCenterQueueName\"]";
-    private String dropdownTimerGroupXpath = "//label[text()=\"Huntgroup timer group\"]/following-sibling::div/select";
+    private String dropdownTimerGroupXpath = "//select[@id=\"timerGroupSelect\"]";
     private String buttonAddXpath = "//button[text()=\"Add\"]";
     private String checkboxCallRecordingXpath = "//label[text()=\"Calls recording\"]/following-sibling::div//input";
     private String buttonSaveXpath = "//*[@class=\"modal-footer\"]//button[text()=\"Save\"]";
@@ -80,9 +82,57 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     private String inputFullDayDateXpath = "//input[@formcontrolname=\"dates\"]";
     private String buttonEditFullDayXpath = "//dt[text()=\"Full days\"]/parent::dl//i[contains(@class,\"fa-cog\")]//parent::a";
 
+    private String inputTimeNameXpath = "//input[@formcontrolname=\"timerQueueName\"]";
+    private String inputMondayXpath = "//label[text()=\"Monday\"]/following-sibling::div/input";
+    private String inputTuesdayXpath = "//label[text()=\"Tuesday\"]/following-sibling::div/input";
+    private String inputWednesdayXpath = "//label[text()=\"Wednesday\"]/following-sibling::div/input";
+    private String inputThursdayXpath = "//label[text()=\"Thursday\"]/following-sibling::div/input";
+    private String inputFridayXpath = "//label[text()=\"Friday\"]/following-sibling::div/input";
+    private String inputSaturdayXpath = "//label[text()=\"Saturday\"]/following-sibling::div/input";
+    private String inputSundayXpath = "//label[text()=\"Sunday\"]/following-sibling::div/input";
+    private String buttonEditFurtherTimeXpath = "//dt[text()=\"Time\"]/parent::dl//i[contains(@class,\"fa-cog\")]//parent::a";
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getButtonEditFurtherTime() {
+        return field(buttonEditFurtherTimeXpath);
+    }
+
+    public SelenideElement getInputSunday() {
+        return field(inputSundayXpath);
+    }
+
+    public SelenideElement getInputSaturday() {
+        return field(inputSaturdayXpath);
+    }
+
+    public SelenideElement getInputFriday() {
+        return field(inputFridayXpath);
+    }
+
+    public SelenideElement getInputThursday() {
+        return field(inputThursdayXpath);
+    }
+
+    public SelenideElement getInputWednesday() {
+        return field(inputWednesdayXpath);
+    }
+
+    public SelenideElement getInputTuesday() {
+        return field(inputTuesdayXpath);
+    }
+
+    public SelenideElement getInputMonday() {
+        return field(inputMondayXpath);
+    }
+
+    public SelenideElement getInputTimeName() {
+        return field(inputTimeNameXpath);
+    }
+
     public SelenideElement getButtonEditFullDay() {
         return field(buttonEditFullDayXpath);
     }
@@ -287,6 +337,17 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getDropdownQueueIdByLabel(levelNumber).selectOptionContainingText(queue.getName());
         if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
         level++;
+    }
+
+    public void checkIfFurtherTimersSaved(HuntGroup huntGroup){
+        getInputTimeName().shouldHave(Condition.value(huntGroup.getFurtherTimeName()));
+        getInputMonday().shouldHave(Condition.value(huntGroup.getFurtherTimeMonday()));
+        getInputTuesday().shouldHave(Condition.value(huntGroup.getFurtherTimeTuesday()));
+        getInputWednesday().shouldHave(Condition.value(huntGroup.getFurtherTimeWednesday()));
+        getInputThursday().shouldHave(Condition.value(huntGroup.getFurtherTimeThursday()));
+        getInputFriday().shouldHave(Condition.value(huntGroup.getFurtherTimeWednesday()));
+        getInputSaturday().shouldHave(Condition.value(huntGroup.getFurtherTimeSaturday()));
+        getInputSaturday().shouldHave(Condition.value(huntGroup.getFurtherTimeSunday()));
     }
 
 }

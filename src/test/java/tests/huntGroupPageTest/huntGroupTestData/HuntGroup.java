@@ -20,6 +20,7 @@ public class HuntGroup extends BaseTestMethods {
         }
     }
 
+    //<editor-fold desc="properties">
     //Edit hunt group section
     private String huntGroupNumber;
     private String huntGroupLanguage;
@@ -41,6 +42,17 @@ public class HuntGroup extends BaseTestMethods {
     private String fullDayDate;
     private String fullDayPhoneNumber;
 
+    //Further time
+    private String furtherTimeName = getRandomString(15);
+    private String furtherTimeMonday = "08:00-11:15;13:30-15:00;";
+    private String furtherTimeTuesday = "08:00-13:00;14:00-18:00;";
+    private String furtherTimeWednesday = "08:00-13:00;14:00-18:00;";
+    private String furtherTimeThursday = "08:00-11:15;13:30-15:00;";
+    private String furtherTimeFriday = "08:00-13:00;14:00-18:00;";
+    private String furtherTimeSaturday = "08:00-13:00;14:00-18:00;";
+    private String furtherTimeSunday = "08:00-13:00;14:00-18:00;";
+    //</editor-fold>
+
     public HuntGroup(){
         //Edit hunt group section
         this.huntGroupLanguage = "en";
@@ -59,6 +71,41 @@ public class HuntGroup extends BaseTestMethods {
         this.fullDayName = getRandomString(10);
         this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
         fullDayPhoneNumber = getRandomPhone();
+    }
+
+    //<editor-fold desc="get\set">
+
+
+    public String getFurtherTimeSunday() {
+        return furtherTimeSunday;
+    }
+
+    public String getFurtherTimeSaturday() {
+        return furtherTimeSaturday;
+    }
+
+    public String getFurtherTimeFriday() {
+        return furtherTimeFriday;
+    }
+
+    public String getFurtherTimeThursday() {
+        return furtherTimeThursday;
+    }
+
+    public String getFurtherTimeWednesday() {
+        return furtherTimeWednesday;
+    }
+
+    public String getFurtherTimeTuesday() {
+        return furtherTimeTuesday;
+    }
+
+    public String getFurtherTimeMonday() {
+        return furtherTimeMonday;
+    }
+
+    public String getFurtherTimeName() {
+        return furtherTimeName;
     }
 
     public String getFullDayPhoneNumber() {
@@ -124,5 +171,6 @@ public class HuntGroup extends BaseTestMethods {
     public void setHuntGroupAuthorizedUsers(String huntGroupAuthorizedUsers) {
         this.huntGroupAuthorizedUsers = huntGroupAuthorizedUsers;
     }
+    //</editor-fold>
 }
 
