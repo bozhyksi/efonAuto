@@ -50,4 +50,26 @@ public class RecordedCallsPageTests extends BaseTestMethods {
         recordedCallConfigPage.getInputUser().shouldHave(Condition.value(recordedCall.getUser()));
         recordedCallConfigPage.getInputPassword().shouldHave(Condition.value(recordedCall.getPass()));
     }
+
+    @Description("Verify if user can search recorded calls on Recorded calls overview")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "recordedCallsPageTests"})
+    public void VerifyIfUserCanSearchRecordedCallsOnRecordedCallsOverview(){
+        step("Prepare test data");
+        RecordedCalls recordedCall = new RecordedCalls();
+
+        step("Login as navigate to Recorded Calls -> Overview");
+        login();
+        basePage.getTabRecordedCalls().click();
+        recordedCallsPage.getTabRecCallsOverview().click();
+
+        step("Fill in Search field");
+        //recordedCallOverviewPage.getInputSearch().setValue("");
+        recordedCallOverviewPage.getInputFromDate().setValue(recordedCall.getFromDate()).pressTab();
+        recordedCallOverviewPage.getInputUntilDate().setValue(recordedCall.getUntilDate()).pressTab();
+        recordedCallOverviewPage.getButtonSearch().click();
+
+        step("Verify search results");
+        //test in not finished, need to add search results
+
+    }
 }
