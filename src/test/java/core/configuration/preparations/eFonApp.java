@@ -97,4 +97,5 @@ public class eFonApp extends PreparationsForRun{
     public RecordedCallOverviewPage recordedCallOverviewPage = new RecordedCallOverviewPage();
     public RecordedCallConfigurationPage recordedCallConfigPage = new RecordedCallConfigurationPage();
     public AddFurtherTimePopup addFurtherTimePopup = new AddFurtherTimePopup();
+
 }

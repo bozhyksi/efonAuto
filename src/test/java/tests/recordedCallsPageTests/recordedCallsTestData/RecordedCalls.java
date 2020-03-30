@@ -9,10 +9,21 @@ public class RecordedCalls extends BaseTestMethods {
     private String user = getRandomString(15);
     private String pass = getRandomPassword();
     private String path = "\\eFonAuto\\proj_EFON\\efonAuto";
-    private String untilDate = "2020-03-26 00:00";
+    private String untilDate = getDate();
     private String fromDate = "2015-08-01 00:00";
     private String searchData = "";
 
+    private String sourceNumber1 = "044225787888";
+    private String sourceNumber2 = "00451245789900";
+
+
+    public String getSourceNumber1() {
+        return sourceNumber1;
+    }
+
+    public String getSourceNumber2() {
+        return sourceNumber2;
+    }
 
     public String getSearchData() {
         return searchData;

@@ -4,14 +4,19 @@ import flow.BaseTestMethods;
 import org.testng.annotations.Test;
 import tests.queuesPageTest.queueTestData.Queue;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TempTest extends BaseTestMethods {
-    @Test
-    public void sss(){
-        login();
-        Queue queue = new Queue();
-        createQueue(queue);
+    //@Test
+    public static void main(String[] args) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
+        Date currentDate = new Date();
+        String date = formatter.format(currentDate);
+        System.out.println(date);
+
     }
 
 }

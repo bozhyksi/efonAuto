@@ -63,13 +63,14 @@ public class RecordedCallsPageTests extends BaseTestMethods {
         recordedCallsPage.getTabRecCallsOverview().click();
 
         step("Fill in Search field");
-        //recordedCallOverviewPage.getInputSearch().setValue("");
         recordedCallOverviewPage.getInputFromDate().setValue(recordedCall.getFromDate()).pressTab();
         recordedCallOverviewPage.getInputUntilDate().setValue(recordedCall.getUntilDate()).pressTab();
         recordedCallOverviewPage.getButtonSearch().click();
+        waitUntilAlertDisappear();
 
         step("Verify search results");
-        //test in not finished, need to add search results
-
+        recordedCallOverviewPage.getFieldsFoundElements().shouldHaveSize(2);
+        recordedCallOverviewPage.getFieldSourceByNumber(recordedCall.getSourceNumber1()).should(Condition.exist);
+        recordedCallOverviewPage.getFieldSourceByNumber(recordedCall.getSourceNumber2()).should(Condition.exist);
     }
 }
