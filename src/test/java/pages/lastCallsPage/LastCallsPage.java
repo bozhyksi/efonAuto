@@ -15,10 +15,14 @@ public class LastCallsPage extends BasePage {
     private String inputFromDateXpath = "//label[text()=\"From\"]//following-sibling::div/input";
     private String inputToDateXpath = "//label[text()=\"To\"]//following-sibling::div/input";
     private String inputMonthXpath = "//label[text()=\"Month\"]//following-sibling::div/input";
+    private String fieldDestinationNumberXpath = "//tbody//td[contains(text(),\"%s\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
+    public SelenideElement getFieldDestinationNumber(String name) {
+        return field(String.format(fieldDestinationNumberXpath, name));
+    }
 
     public SelenideElement getInputMonth() {
         return field(inputMonthXpath);

@@ -1,5 +1,6 @@
 package tests.lastCallsPageTests;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -14,7 +15,7 @@ import static io.qameta.allure.Allure.step;
 
 public class LastCallsPageTests extends BaseTestMethods {
 
-    @Description("Verify if user can get last calls by MISSED numbers")
+    @Description("Verify if user can search MISSED last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"})
     public void VerifyIfUserCanGetLastCallsByMissingNumbers(){
         step("Prepare test data");
@@ -36,9 +37,12 @@ public class LastCallsPageTests extends BaseTestMethods {
         lastCallsPage.getButtonSearch().click();
         waitUntilAlertDisappear();
 
+        step("Verify search results");
+        missedCallsTab.getFieldDestinationNumber(lastCalls.getDesctinationNumber()).should(Condition.exist);
+        alertPopup.getAlertDialog().shouldNotBe(Condition.appear,Condition.visible);
     }
 
-    @Description("Verify if user can get last calls by Incoming numbers")
+    @Description("Verify if user can search INCOMING last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"})
     public void VerifyIfUserCanGetLastCallsByIncomingNumbers(){
         step("Prepare test data");
@@ -60,9 +64,12 @@ public class LastCallsPageTests extends BaseTestMethods {
         lastCallsPage.getButtonSearch().click();
         waitUntilAlertDisappear();
 
+        step("Verify search results");
+        incomingCallsTab.getFieldDestinationNumber(lastCalls.getDesctinationNumber()).should(Condition.exist);
+        alertPopup.getAlertDialog().shouldNotBe(Condition.appear,Condition.visible);
     }
 
-    @Description("Verify if user can get last calls by OUTGOING numbers")
+    @Description("Verify if user can search OUTGOING last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"})
     public void VerifyIfUserCanGetLastCallsByOutgoingNumbers(){
         step("Prepare test data");
@@ -83,6 +90,10 @@ public class LastCallsPageTests extends BaseTestMethods {
         step("Click Search and verify found data");
         lastCallsPage.getButtonSearch().click();
         waitUntilAlertDisappear();
+
+        step("Verify search results");
+        outgoingCallsTab.getFieldDestinationNumber(lastCalls.getDesctinationNumber()).should(Condition.exist);
+        alertPopup.getAlertDialog().shouldNotBe(Condition.appear,Condition.visible);
 
     }
 
@@ -106,6 +117,7 @@ public class LastCallsPageTests extends BaseTestMethods {
         step("Click Search and verify found data");
         lastCallsPage.getButtonSearch().click();
         waitUntilAlertDisappear();
+        alertPopup.getAlertDialog().shouldNotBe(Condition.appear,Condition.visible);
 
     }
 

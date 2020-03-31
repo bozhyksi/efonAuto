@@ -9,6 +9,11 @@ public class LastCallsTestData extends BaseTestMethods {
     private String fromDate = "2015-04-21 12:58";
     private String toDate = getDate();
     private String monthDate = getCurrentMonth();
+    private String desctinationNumber = "0218567";
+
+    public String getDesctinationNumber() {
+        return desctinationNumber;
+    }
 
     public String getFromDate() {
         return fromDate;

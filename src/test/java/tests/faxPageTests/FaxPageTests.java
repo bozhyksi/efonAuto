@@ -19,7 +19,7 @@ import static io.qameta.allure.Allure.step;
 public class FaxPageTests extends BaseTestMethods {
     ArrayList<User> userArrayList = new ArrayList<>();
 
-    @Description("Verify if user can Fax for newly created user")
+    @Description("Verify if user can configure Fax for newly created user")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "faxPageTests"})
     public void VerifyIfUserCanСonfigureFaxForNewlyCreatedUser() {
         step("Prepare test data - create test user object");

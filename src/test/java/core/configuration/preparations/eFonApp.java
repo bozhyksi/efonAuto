@@ -28,7 +28,10 @@ import pages.huntGroupPage.HuntGroupPage;
 import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
 import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
+import pages.lastCallsPage.IncomingCallsTab;
 import pages.lastCallsPage.LastCallsPage;
+import pages.lastCallsPage.MissedCallsTab;
+import pages.lastCallsPage.OutgoingCallsTab;
 import pages.loginPage.LoginPage;
 import pages.numbersPage.NumbersPage;
 import pages.phonebookPage.PhonebookPage;
@@ -97,5 +100,7 @@ public class eFonApp extends PreparationsForRun{
     public RecordedCallOverviewPage recordedCallOverviewPage = new RecordedCallOverviewPage();
     public RecordedCallConfigurationPage recordedCallConfigPage = new RecordedCallConfigurationPage();
     public AddFurtherTimePopup addFurtherTimePopup = new AddFurtherTimePopup();
-
+    public IncomingCallsTab incomingCallsTab = new IncomingCallsTab();
+    public MissedCallsTab missedCallsTab = new MissedCallsTab();
+    public OutgoingCallsTab outgoingCallsTab = new OutgoingCallsTab();
 }
