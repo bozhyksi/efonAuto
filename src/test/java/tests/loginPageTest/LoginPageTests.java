@@ -40,7 +40,7 @@ public class LoginPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can NOT login with incorrect credentials")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"},enabled = false)
     public void VerifyIfUserCanNotLoginWithIncorrectCredentials(){
         step("Fill in Login with incorrect data");
         loginPage.fillInLogin(getRandomEmail());
