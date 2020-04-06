@@ -12,9 +12,12 @@ import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
+import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static io.qameta.allure.Allure.step;
 
 public class BaseTestMethods extends eFonApp {
 
@@ -100,6 +103,10 @@ public class BaseTestMethods extends eFonApp {
         else return "00" + getRandomNumber(11);
     }
 
+    public String getRandomPhone(String prefix, int length) {
+        return prefix + getRandomNumber(length);
+    }
+
     public String getRandomPhone() {
         return "00" + getRandomNumber(11);
     }
@@ -107,6 +114,12 @@ public class BaseTestMethods extends eFonApp {
     public void login() {
         loginPage.fillInLogin(getLogin());
         loginPage.fillInPassword(getPassword());
+        loginPage.getButtonLogin().click();
+    }
+
+    public void loginAsLowLevelUser(){
+        loginPage.fillInLogin(getLowLevelUserLogin());
+        loginPage.fillInPassword(getLowLevelUserPassword());
         loginPage.getButtonLogin().click();
     }
 
@@ -556,5 +569,48 @@ public class BaseTestMethods extends eFonApp {
                 excelFileWorker.deleteFile(phonebook.getfileName());
             }
         }
+    }
+
+    public void deleteAddressBook(String addressBookPhone){
+        basePageLowLevelUser.getTabSendSms().click();
+        sendSmsBaseUserPage.getTabAddressBook().click();
+        addressBookUserPage.getButtonDeleteByText(addressBookPhone).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        addressBookUserPage.getFieldMobileNumberByText(addressBookPhone).shouldNot(Condition.exist);
+    }
+
+    public void addressBookCleanUp(List<AddressBookTestData> addressBookList){
+        try {
+            basePageLowLevelUser.getTabSendSms().click();
+            sendSmsBaseUserPage.getTabAddressBook().click();
+            for (AddressBookTestData entry: addressBookList) {
+                if (configureQueueTab.getFieldQueueNameByText(entry.getMobileNumber()).exists()){
+                    deleteAddressBook(entry.getMobileNumber());
+                }
+            }
+        } catch (Throwable e) {
+            System.out.println("addressBookCleanUp failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void createAddressBookEntry(AddressBookTestData addressBook){
+
+        basePageLowLevelUser.getTabSendSms().click();
+        sendSmsBaseUserPage.getTabAddressBook().click();
+        step("Click Add button");
+        addressBookUserPage.getButtonAdd().click();
+
+        step("Fill in all Address Book required fields");
+        createSmsAddressPopup.fillInAllAddressBookRequiredFields(addressBook);
+
+        step("Save all data");
+        createSmsAddressPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+
+        step("Validate if entry was created");
+        addressBookUserPage.validateIfEntryWasCreated(addressBook);
     }
 }

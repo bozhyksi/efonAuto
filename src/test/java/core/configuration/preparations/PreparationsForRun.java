@@ -24,6 +24,14 @@ public class PreparationsForRun extends DriverConfigurator {
         return baseUrl;
     }
 
+    public String getLowLevelUserLogin(){
+        return readProperty("lowLevelUserLogin", "core.properties");
+    }
+
+    public String getLowLevelUserPassword(){
+        return readProperty("lowLevelUserPassword", "core.properties");
+    }
+
     @BeforeMethod(alwaysRun = true)
     public void startBrowser(){
         WebDriverRunner.setWebDriver(getDriver());

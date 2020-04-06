@@ -3,6 +3,12 @@ package core.configuration.preparations;
 import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
+import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
+import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
+import lowLevelUserPages.sendSmsPageLowLevelUser.SendTextMessageUserPage;
+import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.CreateSmsAddressPopup;
+import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
 import pages.IVRpage.IVRpage;
 import pages.IVRpage.IVRpagePopup.IVRpagePopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
@@ -103,4 +109,10 @@ public class eFonApp extends PreparationsForRun{
     public IncomingCallsTab incomingCallsTab = new IncomingCallsTab();
     public MissedCallsTab missedCallsTab = new MissedCallsTab();
     public OutgoingCallsTab outgoingCallsTab = new OutgoingCallsTab();
+    public BasePageLowLevelUser basePageLowLevelUser = new BasePageLowLevelUser();
+    public SendSmsBaseUserPage sendSmsBaseUserPage = new SendSmsBaseUserPage();
+    public SendTextMessageUserPage sendTextMessageUserPage = new SendTextMessageUserPage();
+    public AddressBookUserPage addressBookUserPage = new AddressBookUserPage();
+    public SmsConfirmationPopup smsConfirmationPopup = new SmsConfirmationPopup();
+    public CreateSmsAddressPopup createSmsAddressPopup = new CreateSmsAddressPopup();
 }

@@ -10,9 +10,16 @@ public class SendTextMessageUserPage extends SendSmsBaseUserPage {
     private String fieldSelectedItemXpath = "//span[@class=\"selected-item\"]";
     private String inputSmsTextAreaXpath = "//textarea[@id=\"message\"]";
     private String buttonSendXpath = "//button[text()=\"Send\"]";
+    private String dropdownAddressBookXpath = "//label[text()=\"Select numbers from AddressBook\"]//following-sibling::div/select";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getDropdownAddressBook() {
+        return field(dropdownAddressBookXpath);
+    }
+
     public SelenideElement getDropdownSenderName() {
         return field(dropdownSenderNameXpath);
     }

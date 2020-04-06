@@ -151,6 +151,8 @@
                 <dB.url>jdbc:mysql://192.168.101.240:3306/webadmin_20170426?serverTimezone=UTC&amp;pinGlobalTxToPhysicalConnection=true</dB.url>
                 <dB.login>root</dB.login>
                 <dB.password>root</dB.password>
+                <lowLevelUserLogin>AutoTestUser@aa.aa</lowLevelUserLogin>
+                <lowLevelUserPassword>Login123!!!</lowLevelUserPassword>
             </properties>
         </profile>
 
