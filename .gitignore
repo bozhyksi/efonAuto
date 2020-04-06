@@ -13,6 +13,6 @@ build/
 /AutoTestPhonebook.xlsx
 /f.txt
 /debug.log
-src/test/resources/allure/environment.properties
+/src/test/resources/allure/environment.properties
 
 
