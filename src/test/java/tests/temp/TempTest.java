@@ -12,7 +12,7 @@ public class TempTest extends BaseTestMethods {
     //@Test
     public static void main(String[] args) {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:");
         Date currentDate = new Date();
         String date = formatter.format(currentDate);
         System.out.println(date);

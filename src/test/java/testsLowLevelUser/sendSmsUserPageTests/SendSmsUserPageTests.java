@@ -167,6 +167,7 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         sendTextMessageUserPage.checkValidationMessage("00000000");
         sendTextMessageUserPage.checkValidationMessage("asd0000");
         sendTextMessageUserPage.checkValidationMessage("076a123456");
+        sendTextMessageUserPage.checkValidationMessage("          ");
     }
 
     @AfterClass(alwaysRun = true)

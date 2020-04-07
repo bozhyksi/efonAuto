@@ -15,4 +15,9 @@ public class BasePageLowLevelUser extends BasePage {
     public SelenideElement getTabSendSms() {
         return field(tabSendSmsXpath);
     }
+
+    @Override
+    public SelenideElement getTabFax() {
+        return super.getTabFax();
+    }
 }

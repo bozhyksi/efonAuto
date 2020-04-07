@@ -3,6 +3,8 @@ package lowLevelUserPages.faxPageLowLevelUser;
 import com.codeborne.selenide.SelenideElement;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 
+import java.io.File;
+
 public class SendFaxUserPage extends FaxesBaseUserPage {
     //<editor-fold desc="locators">
     private String dropdownOutgoingNumberXpath = "//select[@formcontrolname=\"outgoingNumber\"]";
@@ -11,6 +13,7 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
     private String buttonSendXpath = "//button[text()=\"Send\"]";
     private String fieldRecipientByNumberXpath = "//tbody//td[contains(text(),\"%s\")]";
     private String fieldCreatedDateXpathXpath = "//tbody//td[4]";
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
@@ -37,5 +40,14 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
     public SelenideElement getFieldCreatedDate() {
         return field(fieldCreatedDateXpathXpath);
     }
+
+    public SelenideElement getSenderByText(String text){
+        return field(String.format(fieldRecipientByNumberXpath,text));
+    }
     //</editor-fold>
+
+    public void uploadFaxFile(String filePath){
+        getInputFileTobeSent().uploadFile(new File(filePath));
+        waitUntilAlertDisappear();
+    }
 }
