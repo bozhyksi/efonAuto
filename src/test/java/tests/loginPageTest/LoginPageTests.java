@@ -15,8 +15,7 @@ import static io.qameta.allure.Allure.step;
 public class LoginPageTests extends BaseTestMethods {
 
     @Description("Verify if user can Login/LogOut with correct credentials")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"},
-            testName = "Verify if user can Login/LogOut with correct credentials")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "loginPageTests"})
     public void loginTest(){
         step("Fill in Login");
         loginPage.fillInLogin(getLogin());
