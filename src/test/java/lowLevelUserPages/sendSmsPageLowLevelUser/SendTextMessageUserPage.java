@@ -1,5 +1,6 @@
 package lowLevelUserPages.sendSmsPageLowLevelUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
 public class SendTextMessageUserPage extends SendSmsBaseUserPage {
@@ -11,10 +12,13 @@ public class SendTextMessageUserPage extends SendSmsBaseUserPage {
     private String inputSmsTextAreaXpath = "//textarea[@id=\"message\"]";
     private String buttonSendXpath = "//button[text()=\"Send\"]";
     private String dropdownAddressBookXpath = "//label[text()=\"Select numbers from AddressBook\"]//following-sibling::div/select";
+    private String fieldValidationMessageRecipientNumberXpath = "//input[@formcontrolname=\"phoneNumbersInput\"]//following-sibling::span[contains(text(),\"Input doesn't match pattern\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
-
+    public SelenideElement getFieldValidationMessageRecipientNumber() {
+        return field(fieldValidationMessageRecipientNumberXpath);
+    }
 
     public SelenideElement getDropdownAddressBook() {
         return field(dropdownAddressBookXpath);
@@ -44,4 +48,11 @@ public class SendTextMessageUserPage extends SendSmsBaseUserPage {
         return field(buttonSendXpath);
     }
     //</editor-fold>
+
+    public void checkValidationMessage(String number){
+        getInputRecipientNumber().clear();
+        getInputRecipientNumber().setValue(number);
+        getInputRecipientNumber().pressTab();
+        getFieldValidationMessageRecipientNumber().should(Condition.exist,Condition.appear,Condition.visible);
+    }
 }

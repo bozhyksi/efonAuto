@@ -24,7 +24,7 @@ public class LoginPageTests extends BaseTestMethods {
         loginPage.fillInPassword(getPassword());
 
         step("Click Login button");
-        loginPage.getButtonLogin().click();
+        //loginPage.getButtonLogin().click();
 
         step("Verify if user was logged in");
         basePage.getButtonLogout().shouldBe(visible);

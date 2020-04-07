@@ -150,6 +150,25 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         deleteAddressBook(addressBook.getMobileNumber());
     }
 
+    @Description("Check validation of the Recipient number input")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
+    public void CheckValidationOfTheRecipientNumberInput(){
+        step("Login as low-level user");
+        loginAsLowLevelUser();
+
+        step("Go to Send SMS page");
+        basePageLowLevelUser.getTabSendSms().click();
+        sendSmsBaseUserPage.getTabSendTextMessage().click();
+
+        step("Check validation of the Recipient number input");
+        sendTextMessageUserPage.checkValidationMessage("123");
+        sendTextMessageUserPage.checkValidationMessage("0441234567");
+        sendTextMessageUserPage.checkValidationMessage("07622225558987");
+        sendTextMessageUserPage.checkValidationMessage("00000000");
+        sendTextMessageUserPage.checkValidationMessage("asd0000");
+        sendTextMessageUserPage.checkValidationMessage("076a123456");
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
