@@ -1,6 +1,7 @@
 package tests.userPageTests;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -364,23 +365,26 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabAnnouncements().click();
+        waitUntilAlertDisappear();
+        configureUserBasePopup.getTabAnnouncements().shouldBe(Condition.visible,Condition.exist,Condition.appear,Condition.enabled).click();
+
 
         step("Upload new announcement file");
         announcementsTabConfigUserPopup.getButtonUploadFile().click();
         announcementsTabConfigUserPopup.uploadAnnouncementFile(announcFile.getFilePath());
+        waitUntilAlertDisappear();
         announcementsTabConfigUserPopup.getInputName().setValue(announcFile.getFileName());
         announcementsTabConfigUserPopup.getButtonSave().click();
         confirmationPopup.getYesButton().click();
-        refreshPage();
         waitUntilAlertDisappear();
+        announcementsTabConfigUserPopup.getButtonClose().click();
 
         step("Check if file was uploaded");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabAnnouncements().click();
+        waitUntilAlertDisappear();
+        configureUserBasePopup.getTabAnnouncements().shouldBe(Condition.visible,Condition.exist,Condition.appear,Condition.enabled).click();
         announcementsTabConfigUserPopup.getFieldAnnouncementName(announcFile.getFileName()).should(Condition.exist);
         refreshPage();
-        waitUntilAlertDisappear();
 
         step("Delete test user");
         deleteUser(user);
