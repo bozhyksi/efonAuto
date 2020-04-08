@@ -1,5 +1,6 @@
 package lowLevelUserPages.faxPageLowLevelUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 
@@ -13,10 +14,15 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
     private String buttonSendXpath = "//button[text()=\"Send\"]";
     private String fieldRecipientByNumberXpath = "//tbody//td[contains(text(),\"%s\")]";
     private String fieldCreatedDateXpathXpath = "//tbody//td[4]";
-
+    private String fieldInputRequiredDestNumberXpath = "//input[@formcontrolname=\"destinationNumber\"]//following-sibling::span[text()=\"Input required\" or text()=\"Input doesn't match pattern\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+    public SelenideElement getFieldInputRequiredDestNumber() {
+        return field(fieldInputRequiredDestNumberXpath);
+    }
+
     public SelenideElement getDropdownOutgoingNumber() {
         return field(dropdownOutgoingNumberXpath);
     }
@@ -49,5 +55,13 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
     public void uploadFaxFile(String filePath){
         getInputFileTobeSent().uploadFile(new File(filePath));
         waitUntilAlertDisappear();
+    }
+
+    public void validateDestinationNumber(String input){
+        getInputDestinationNumber().clear();
+        getInputDestinationNumber().setValue(input);
+        getInputDestinationNumber().pressTab();
+        getFieldInputRequiredDestNumber().should(Condition.appear,Condition.visible,Condition.exist);
+
     }
 }

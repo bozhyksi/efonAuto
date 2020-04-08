@@ -49,4 +49,24 @@ public class FaxUserPageTests extends BaseTestMethods {
         sendFaxUserPage.getSenderByText(fax.getOutgoingNumber()).shouldBe(Condition.visible, Condition.exist);
     }
 
+    @Description("Check validation of the Destination number input")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
+    public void CheckValidationOfTheDestinationNumberInput(){
+
+        step("Login as low-level user");
+        loginAsLowLevelUser();
+
+        step("Go to Send Fax page");
+        basePageLowLevelUser.getTabFax().click();
+        faxesBaseUserPage.getTabFaxSend().click();
+        waitUntilAlertDisappear();
+
+        step("Validate Destination number");
+        sendFaxUserPage.validateDestinationNumber("   ");
+        sendFaxUserPage.validateDestinationNumber("0123456");
+        sendFaxUserPage.validateDestinationNumber("04412378");
+        sendFaxUserPage.validateDestinationNumber("asd");
+        sendFaxUserPage.validateDestinationNumber("0481234aa");
+        sendFaxUserPage.validateDestinationNumber("0381234567");
+    }
 }
