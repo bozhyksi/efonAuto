@@ -4,7 +4,20 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import pages.userPage.UserPage;
 
+import static com.codeborne.selenide.Condition.*;
+
 public class ConfigureUserBasePopup extends UserPage {
+    public enum Tabs{
+        NAME,
+        ALLOCATIONS,
+        FAX,
+        FORWARDING,
+        VOICEMAIL,
+        ENDDEVICE,
+        SECURITY,
+        ANNOUNCEMENTS;
+    }
+
     //<editor-fold desc="//-- Configure user Locators --//">
     private String popupTitleXpath = "//div[@role=\"dialog\"]//h1";
     private String textUserNameXpath = "//div[@role=\"dialog\"]//label[text()='User name']/following-sibling::div";
@@ -89,5 +102,39 @@ public class ConfigureUserBasePopup extends UserPage {
 
     public void validatePopupTitle(String expected){
         getPopupTitle().shouldHave(Condition.text(expected));
+    }
+
+    private SelenideElement getTabElement(Tabs tabName){
+        switch (tabName){
+            case FAX:
+                return getTabUserFax();
+            case NAME:
+                return getTabName();
+            case SECURITY:
+                return getTabSecurity();
+            case ENDDEVICE:
+                return getTabEndDevices();
+            case VOICEMAIL:
+                return getTabVoiceMail();
+            case FORWARDING:
+                return getTabForwarding();
+            case ALLOCATIONS:
+                return getTabAllocations();
+            case ANNOUNCEMENTS:
+                return getTabAnnouncements();
+            default:
+                return getTabAnnouncements();
+        }
+    }
+
+    public void goToTab(Tabs tabName){
+        waitUntilAlertDisappear();
+        getTabElement(tabName).shouldBe(visible,enabled,appear,appears,exist);
+        getTabElement(tabName).waitUntil(visible,500);
+        getTabElement(tabName).waitUntil(Condition.enabled,500);
+        getTabElement(tabName).waitUntil(Condition.appears,500);
+        getTabElement(tabName).waitUntil(Condition.appear,500);
+        getTabElement(tabName).click();
+        waitUntilAlertDisappear();
     }
 }

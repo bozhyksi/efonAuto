@@ -9,6 +9,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
 import tests.userPageTests.userPageTestData.User;
@@ -16,6 +17,7 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
 
 @Listeners({CustomListeners.class})
 
@@ -107,7 +109,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto Name tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabName().click();
+        configureUserBasePopup.goToTab(NAME);
 
         step("Validate popup Title");
         configureUserBasePopup.validatePopupTitle("Configure user");
@@ -143,7 +145,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto Name tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabAllocations().click();
+        configureUserBasePopup.goToTab(ALLOCATIONS);
 
         step("Validate if ALLOCATIONS tab shows correct data of earlier created user");
         //allocationTabConfigUserPopup.validateVoicemailEmail(user.getVoiceEmail()); -- looks like a bug in DOM
@@ -179,7 +181,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto FORWARDING tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabForwarding().click();
+        configureUserBasePopup.goToTab(FORWARDING);
 
         step("Select number in \"My numbers\" drop-down");
         forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -209,7 +211,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open the same user for edit and check if data was saved on \"After\" section");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabForwarding().click();
+        configureUserBasePopup.goToTab(FORWARDING);
         forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         forwardingTabConfigUserPopup.getCheckboxAfter().shouldBe(Condition.selected);
         forwardingTabConfigUserPopup.getInputForwardDelay().shouldHave(Condition.value(user.getAfterDelay()));
@@ -249,7 +251,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto FORWARDING tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabForwarding().click();
+        configureUserBasePopup.goToTab(FORWARDING);
 
         step("Select number in \"My numbers\" drop-down");
         forwardingTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -309,7 +311,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto VOICEMAIL tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabVoiceMail().click();
+        configureUserBasePopup.goToTab(VOICEMAIL);
 
         step("Select user number from \"Select number\" drop-down");
         voicemailTabConfigUserPopup.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
@@ -334,7 +336,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open created User for edit and verify if entered data was saved");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.getTabVoiceMail().click();
+        configureUserBasePopup.goToTab(VOICEMAIL);
         voicemailTabConfigUserPopup.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
         voicemailTabConfigUserPopup.getButtonVoicemailEdit().click();
         voicemailTabConfigUserPopup.getInputEmailForVoice().shouldHave(Condition.value(user.getVoicemailEmail()));
@@ -365,8 +367,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabAnnouncements().shouldBe(Condition.visible,Condition.exist,Condition.appear,Condition.enabled).click();
+        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
 
 
         step("Upload new announcement file");
@@ -381,8 +382,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Check if file was uploaded");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabAnnouncements().shouldBe(Condition.visible,Condition.exist,Condition.appear,Condition.enabled).click();
+        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
         announcementsTabConfigUserPopup.getFieldAnnouncementName(announcFile.getFileName()).should(Condition.exist);
         refreshPage();
 
@@ -405,8 +405,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto FAX tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabUserFax().click();
+        configureUserBasePopup.goToTab(FAX);
 
         step("Select user number from \"Select number\" drop-down");
         faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -425,8 +424,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Check if configuration was saved");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabUserFax().click();
+        configureUserBasePopup.goToTab(FAX);
         faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         faxTabConfigUserPopup.getButtonEditFax().click();
         faxTabConfigUserPopup.getCheckboxTiffAndPdf().shouldBe(Condition.selected);
@@ -453,8 +451,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto FAX tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabUserFax().click();
+        configureUserBasePopup.goToTab(FAX);
 
         step("Select user number from \"Select number\" drop-down");
         faxTabConfigUserPopup.getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
@@ -468,8 +465,8 @@ public class UserPageTests extends BaseTestMethods {
         step("Select TIFF and PDF and save changes");
         faxTabConfigUserPopup.getCheckboxTiffAndPdf().click();
         faxTabConfigUserPopup.getButtonSave().click();
-        refreshPage();
         waitUntilAlertDisappear();
+        refreshPage();
 
         step("Goto main ment FAX tab and verify if configured data is shown for appropriate number");
         basePage.getTabFax().click();
@@ -501,8 +498,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto END DEVICES tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabEndDevices().click();
+        configureUserBasePopup.goToTab(ENDDEVICE);
 
         step("Select end device");
         endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
@@ -538,23 +534,20 @@ public class UserPageTests extends BaseTestMethods {
         endDeviceTabConfigUserPopup.getButtonSave().click();
         waitUntilAlertDisappear();
         refreshPage();
-        waitUntilAlertDisappear();
 
         step("Edit created user and goto End Devices tab");
         userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-        configureUserBasePopup.getTabEndDevices().click();
+        configureUserBasePopup.goToTab(ENDDEVICE);
 
         step("Check if all made changes were saved");
-        //endDeviceTabConfigUserPopup.getInputNameEndDev().shouldHave(Condition.text(endDevice.getEndDevName()));
-        //endDeviceTabConfigUserPopup.getInputUserIdEndDev().shouldHave(Condition.text(endDevice.getEndDevUserId()));
+        endDeviceTabConfigUserPopup.getInputNameEndDev().shouldHave(Condition.value(endDevice.getEndDevName()));
+        endDeviceTabConfigUserPopup.getInputUserIdEndDev().shouldHave(Condition.value(endDevice.getEndDevUserId()));
         endDeviceTabConfigUserPopup.getDropdownCodecsEndDev().getSelectedValue().contains(endDevice.getEndDevCodec());
         endDeviceTabConfigUserPopup.getDropdownLanguageEndDev().getSelectedValue().contains(endDevice.getEndDevPhoneLanguage());
         endDeviceTabConfigUserPopup.getinputDispNameEndDev().shouldHave(Condition.value(endDevice.getEndDevDisplayName()));
         endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(endDevice.getEndDevOutgoingNumber());
         endDeviceTabConfigUserPopup.getInputLocationEndDev().shouldHave(Condition.value(endDevice.getEndDevLocation()));
         refreshPage();
-        waitUntilAlertDisappear();
 
         step("Delete test data");
         userCleanUp(userArrayList);
