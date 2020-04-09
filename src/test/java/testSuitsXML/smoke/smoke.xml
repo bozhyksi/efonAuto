@@ -9,6 +9,7 @@
         </groups>
         <packages>
             <package name="tests.*"></package>
+            <package name="testsLowLevelUser.*"></package>
         </packages>
     </test>
 </suite>
