@@ -3,6 +3,7 @@ package pages.huntGroupPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 public class HuntGroupPage extends BasePage {
     //<editor-fold desc="Locators">
@@ -69,4 +70,9 @@ public class HuntGroupPage extends BasePage {
         return field(buttonSaveXpath);
     }
     //</editor-fold>
+
+    public void editHuntGroup(HuntGroup huntGroup){
+        getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+    }
 }

@@ -32,6 +32,4 @@ public class BasePageTestsData extends BaseTestMethods {
             return tabName;
         }
     }
-
-
 }

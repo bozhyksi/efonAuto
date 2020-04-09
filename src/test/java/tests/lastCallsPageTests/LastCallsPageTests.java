@@ -97,8 +97,8 @@ public class LastCallsPageTests extends BaseTestMethods {
 
     }
 
-    @Description("Verify if user can get last calls by OUTGOING BY MONTH numbers")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"})
+    @Description("Verify if user can get last calls by OUTGOING BY MONTH numbers - TEST DISABLED DUE TO UI CHANGES")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"},enabled = false)
     public void VerifyIfUserCanGetLastCallsByOutgoingByMonthNumbers(){
         step("Prepare test data");
         LastCallsTestData lastCalls = new LastCallsTestData();

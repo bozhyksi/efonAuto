@@ -11,6 +11,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 
+import static com.codeborne.selenide.Condition.*;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Queue;
 
@@ -133,7 +134,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can edit hunt group and configure \"If end devices not available (not registered)\" section")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "huntGroupsPageTests"})
     public void VerifyIfUserCanEditHuntGroupAndConfigureIfEndDevicesNotAvailableSection() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
@@ -146,8 +147,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         createHuntGroup(huntGroup);
 
         step("Open created Hunt group for edit");
-        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
-        waitUntilAlertDisappear();
+        huntGroupPage.editHuntGroup(huntGroup);
 
         step("Click \"Edit If end devices not available (not registered)\" button");
         createHuntGroupPopup.getButtonSubmitRelevantAccount().click();
@@ -166,7 +166,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if Relevant account was saved correctly");
-        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        huntGroupPage.editHuntGroup(huntGroup);
         createHuntGroupPopup.getButtonSubmitRelevantAccount().click();
         Assert.assertEquals(huntGroup.getRelevantAccount(), createHuntGroupPopup.getDropdownRelevantAccount().getSelectedText());
         createHuntGroupPopup.getButtonClose().click();
@@ -295,7 +295,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         step("Check if full days were saved");
         huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
         waitUntilAlertDisappear();
-        createHuntGroupPopup.getButtonEditFullDay().shouldBe(Condition.visible,Condition.enabled).click();
+        createHuntGroupPopup.getButtonEditFullDay().shouldBe(visible,Condition.enabled).click();
         createHuntGroupPopup.getInputFullDayName().shouldHave(Condition.value(huntGroup.getFullDayName()));
         createHuntGroupPopup.getInputFullDayDate().shouldHave(Condition.value(huntGroup.getFullDayDate()));
         refreshPage();

@@ -11,6 +11,26 @@ public class BasePage extends Fields {
 
     public AtomicInteger index = new AtomicInteger(1);
 
+    public enum MenuTabsBasePage{
+        USER,
+        NUMBERS,
+        SUBSCRIPTIONS,
+        LAST_CALLS,
+        FAX,
+        IVRs,
+        ABBREVIATED_DIALING,
+        CALL_PICKUPs,
+        FILE_MANAGEMENT,
+        CALL_FORWARDING,
+        HUNT_GROUPS,
+        CONFERENCE_CALLS,
+        QUEUES,
+        END_DEVICES,
+        RECORDED_CALLs,
+        PHONEBOOK,
+        CONTACT_DATA;
+    }
+
     //<editor-fold desc="//-- BasePage Locators --//">
     private String pageTitleXpath = "//h1";
     private String alertDialogXpath = "//div[@role=\"alertdialog\"]";
@@ -154,7 +174,35 @@ public class BasePage extends Fields {
         getIsLoadingSpinner().shouldNotBe(Condition.visible);
         getAlertDialog().waitUntil(Condition.disappear, 10000);
         getAlertDialog().shouldNotBe(Condition.visible);
-        Selenide.sleep(1000);
+        Selenide.sleep(500);
+    }
+
+    private SelenideElement getMenuTab(MenuTabsBasePage tabName){
+        switch (tabName){
+            case FAX: return getTabFax();
+            case IVRs: return getTabIVRs();
+            case USER: return getTabUser();
+            case QUEUES: return getTabQueues();
+            case NUMBERS: return getTabNumbers();
+            case PHONEBOOK: return getTabPhonebook();
+            case LAST_CALLS: return getTabLastCalls();
+            case END_DEVICES: return getTabEndDevices();
+            case HUNT_GROUPS: return  getTabHuntGroups();
+            case CALL_PICKUPs: return getTabCallPickUps();
+            case CONTACT_DATA: return getTabContactData();
+            case SUBSCRIPTIONS: return getTabSubscriptions();
+            case RECORDED_CALLs: return getTabRecordedCalls();
+            case CALL_FORWARDING: return getTabCallForwarding();
+            case FILE_MANAGEMENT: return getTabFileManagement();
+            case CONFERENCE_CALLS: return getTabConferenceCalls();
+            case ABBREVIATED_DIALING: return getTabAbbreviatedDialling();
+            default: return getTabUser();
+        }
+    }
+
+    public void goToMenuTab(MenuTabsBasePage tabName){
+        getMenuTab(tabName).click();
+        waitUntilAlertDisappear();
     }
 
 }

@@ -9,6 +9,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
@@ -18,6 +19,7 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_1;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_2;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.IvrActions.*;
@@ -47,7 +49,7 @@ public class IVRpageTests extends BaseTestMethods {
         uploadAnnouncementFile(file);
 
         step("Goto IVR page");
-        basePage.getTabIVRs().click();
+        basePage.goToMenuTab(IVRs);
 
         step("Click \"New IVR\" button");
         ivrPage.getButtonNewIvr().click();
@@ -129,7 +131,7 @@ public class IVRpageTests extends BaseTestMethods {
 
     @Description("Verify if user can configure \"Call to external subscriber\" ivr action")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
-    public void VerifyIfUserCanConfigureIvrActions() {
+    public void VerifyIfUserCanConfigureCallExternalNumberAction() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
         FileManagementTestData file = new FileManagementTestData();
@@ -148,16 +150,8 @@ public class IVRpageTests extends BaseTestMethods {
         step("Click edit button");
         ivrPage.editIVR(ivr.getIvrName());
 
-        step("Make random event active");
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).click();
-
-        step("Select action");
-        ivr.setAction(IVRtestData.IvrActions.PHONE_EXTERNAL);
-        ivr.setParameter(getRandomPhone());
-        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).selectOptionByValue(ivr.getAction());
-
-        step("Enter parameter value");
-        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).setValue(ivr.getParameter());
+        step("Configure Call to external subscriber action");
+        ivrPage.configureAction(ivr,Event_1, PHONE_EXTERNAL);
 
         step("Save changes");
         createNewIvrPopup.getButtonSave().click();
@@ -168,7 +162,7 @@ public class IVRpageTests extends BaseTestMethods {
         ivrPage.editIVR(ivr.getIvrName());
         createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
-        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getText().contains(ivr.getParameter());
+        createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getValue().contains(ivr.getParameterExtTelNumber());
         refreshPage();
         waitUntilAlertDisappear();
 
@@ -229,7 +223,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)// cannot select Queue in the IVR need to investigate
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureQueuesIvrAction() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();

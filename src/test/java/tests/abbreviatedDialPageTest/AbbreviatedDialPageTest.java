@@ -79,7 +79,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     }
 
     @Description("Check if user can Edit Abbreviated number and Assign it to Internal user")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "abbreviatedDialPageTest"}, enabled = false) //TEST IGNORED UNTIL BUG FIXED
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "abbreviatedDialPageTest"})
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToInternalUser() {
         step("Prepare test data");
         AbbreviatedDialling shorNum = new AbbreviatedDialling(getRandomNumber(255, 260));

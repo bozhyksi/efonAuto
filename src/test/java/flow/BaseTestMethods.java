@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -18,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.FILE_MANAGEMENT;
+import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
 public class BaseTestMethods extends eFonApp {
 
@@ -331,7 +334,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void createHuntGroup(HuntGroup huntGroup){
-        basePage.getTabHuntGroups().click();
+        basePage.goToMenuTab(HUNT_GROUPS);
         huntGroupPage.getButtonCreateNewHuntGroup().click();
         waitUntilAlertDisappear();
         createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
@@ -345,11 +348,12 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteHuntGroup(String name){
-        basePage.getTabHuntGroups().click();
+        basePage.goToMenuTab(HUNT_GROUPS);
         waitUntilAlertDisappear();
         huntGroupPage.getButtonDeleteByName(name).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
+        refreshPage();
         huntGroupPage.getfieldNameByText(name).shouldNot(Condition.exist);
     }
 
@@ -524,7 +528,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void uploadAnnouncementFile(FileManagementTestData file){
-        basePage.getTabFileManagement().click();
+        basePage.goToMenuTab(FILE_MANAGEMENT);
         fileManagementBasePage.getTabAnnouncementDisplay().click();
         announcementDisplayPage.getButtonUploadFile().click();
         announcementDisplayPage.uploadFile(file.getFilePath());
