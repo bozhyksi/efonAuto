@@ -6,12 +6,14 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -20,6 +22,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
 
 @Listeners(CustomListeners.class)
 
@@ -207,33 +210,64 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Log in the system");
         login();
 
-/*        step("Create test users");
-        createUser(user1);
-        createUser(user2);
-
-        step("Create new Queue");
-        createQueue(queue);*/
-
         step("Open Queue for agents popup");
-        basePage.getTabQueues().click();
+        basePage.goToMenuTab(QUEUES);
         configureQueueTab.getButtonEditAgentsQueueByText("asd").click();
 
         step("Move agent");
-        //queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd").dragAndDropTo(queueForAgentsPopup.getSectionSelected());
+        String script = "(function( $ ) {" +
+                "    $.fn.simulateDragDrop = function(options) {" +
+                "        return this.each(function() {" +
+                "            new $.simulateDragDrop(this, options);" +
+                "        });" +
+                "    };" +
+                "    $.simulateDragDrop = function(elem, options) {" +
+                "        this.options = options;" +
+                "        this.simulateEvent(elem, options);" +
+                "    };" +
+                "    $.extend($.simulateDragDrop.prototype, {" +
+                "        simulateEvent: function(elem, options) {" +
+                "            /*Simulating drag start*/" +
+                "            var type = 'dragstart';" +
+                "            var event = this.createEvent(type);" +
+                "            this.dispatchEvent(elem, type, event);" +
+                "            /*Simulating drop*/" +
+                "            type = 'drop';" +
+                "            var dropEvent = this.createEvent(type, {});" +
+                "            dropEvent.dataTransfer = event.dataTransfer;" +
+                "            this.dispatchEvent($(options.dropTarget)[0], type, dropEvent);" +
+                "            /*Simulating drag end*/" +
+                "            type = 'dragend';" +
+                "            var dragEndEvent = this.createEvent(type, {});" +
+                "            dragEndEvent.dataTransfer = event.dataTransfer;" +
+                "            this.dispatchEvent(elem, type, dragEndEvent);" +
+                "        }," +
+                "        createEvent: function(type) {" +
+                "            var event = document.createEvent(\"CustomEvent\");" +
+                "            event.initCustomEvent(type, true, true, null);" +
+                "            event.dataTransfer = {" +
+                "                data: {" +
+                "                }," +
+                "                setData: function(type, val){" +
+                "                    this.data[type] = val;" +
+                "                }," +
+                "                getData: function(type){" +
+                "                    return this.data[type];" +
+                "                }" +
+                "            };" +
+                "            return event;" +
+                "        }," +
+                "        dispatchEvent: function(elem, type, event) {" +
+                "            if(elem.dispatchEvent) {" +
+                "                elem.dispatchEvent(event);" +
+                "            }else if( elem.fireEvent ) {" +
+                "                elem.fireEvent(\"on\"+type, event);" +
+                "            }" +
+                "        }" +
+                "    });" +
+                "})(jQuery);";
 
-        //new Actions(WebDriverRunner.getWebDriver()).dragAndDrop(queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd"),queueForAgentsPopup.getSectionSelected()).perform();
-
-/*        Actions act = new Actions(WebDriverRunner.getWebDriver());
-
-        act.dragAndDrop(from, to).build().perform();*/
-
-
-        WebElement from = queueForAgentsPopup.getFieldNotSelectedAgentByName("asdd");
-        WebElement to = queueForAgentsPopup.getSectionSelected();
-        Actions builder = new Actions(WebDriverRunner.getWebDriver());
-        builder.clickAndHold(from).moveToElement(to).release(to).build().perform();
-
-
+        ((JavascriptExecutor)driver).executeScript(script+"$('#column-a').simulateDragDrop({ dropTarget: '#column-b'});" );
     }
 
     @AfterClass(alwaysRun = true)

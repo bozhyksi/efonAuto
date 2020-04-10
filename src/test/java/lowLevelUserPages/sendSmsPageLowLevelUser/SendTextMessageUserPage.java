@@ -53,6 +53,7 @@ public class SendTextMessageUserPage extends SendSmsBaseUserPage {
         getInputRecipientNumber().clear();
         getInputRecipientNumber().setValue(number);
         getInputRecipientNumber().pressTab();
+        waitUntilAlertDisappear();
         getFieldValidationMessageRecipientNumber().should(Condition.exist,Condition.appear,Condition.visible);
     }
 }

@@ -2,7 +2,7 @@ package testsLowLevelUser.faxUserPageTests.faxUserPageTestData;
 
 import flow.BaseTestMethods;
 
-public class FaxTestData extends BaseTestMethods {
+public class SendFaxTestData extends BaseTestMethods {
     private String outgoingNumberValue = getRandomNumber(1,30)+": Object";
     private String outgoingNumber;
     private String destinationNumber = getRandomPhone("044",7);
@@ -30,3 +30,4 @@ public class FaxTestData extends BaseTestMethods {
     }
 
 }
+

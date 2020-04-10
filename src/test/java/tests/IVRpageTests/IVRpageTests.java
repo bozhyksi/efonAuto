@@ -34,7 +34,7 @@ public class IVRpageTests extends BaseTestMethods {
     private ArrayList<User> usersList = new ArrayList<>();
 
     @Description("Verify if user can create new IVR")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "IVRpageTests"})
     public void VerifyIfUserCanCreateNewIvr() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();

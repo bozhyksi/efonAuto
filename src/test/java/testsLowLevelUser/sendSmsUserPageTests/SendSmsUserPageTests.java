@@ -111,7 +111,7 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         addressBookUserPage.validateIfEntryWasCreated(addressBook2);
 
         step("Clear test date - delete test address book entry");
-        deleteAddressBook(addressBook.getMobileNumber());
+        deleteAddressBook(addressBook2.getMobileNumber());
     }
 
     @Description("Check if user can send sms using address book entries as recipients")

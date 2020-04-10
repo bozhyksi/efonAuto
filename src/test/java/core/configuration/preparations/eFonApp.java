@@ -4,6 +4,7 @@ import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
@@ -119,4 +120,5 @@ public class eFonApp extends PreparationsForRun{
     public CreateSmsAddressPopup createSmsAddressPopup = new CreateSmsAddressPopup();
     public FaxesBaseUserPage faxesBaseUserPage = new FaxesBaseUserPage();
     public SendFaxUserPage sendFaxUserPage = new SendFaxUserPage();
+    public FaxSettingUserPage faxSettingUserPage = new FaxSettingUserPage();
 }

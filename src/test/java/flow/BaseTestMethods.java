@@ -532,6 +532,7 @@ public class BaseTestMethods extends eFonApp {
         fileManagementBasePage.getTabAnnouncementDisplay().click();
         announcementDisplayPage.getButtonUploadFile().click();
         announcementDisplayPage.uploadFile(file.getFilePath());
+        waitUntilAlertDisappear();
         announcementDisplayPage.getInputName().setValue(file.getFileName());
         announcementDisplayPage.getButtonSave().click();
         confirmationPopup.getYesButton().click();
