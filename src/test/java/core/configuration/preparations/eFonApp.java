@@ -4,6 +4,7 @@ import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
@@ -121,4 +122,5 @@ public class eFonApp extends PreparationsForRun{
     public FaxesBaseUserPage faxesBaseUserPage = new FaxesBaseUserPage();
     public SendFaxUserPage sendFaxUserPage = new SendFaxUserPage();
     public FaxSettingUserPage faxSettingUserPage = new FaxSettingUserPage();
+    public DashboardUserPage dashboardUserPage = new DashboardUserPage();
 }

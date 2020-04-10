@@ -97,29 +97,4 @@ public class LastCallsPageTests extends BaseTestMethods {
 
     }
 
-    @Description("Verify if user can get last calls by OUTGOING BY MONTH numbers - TEST DISABLED DUE TO UI CHANGES")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "lastCallsPageTests"},enabled = false)
-    public void VerifyIfUserCanGetLastCallsByOutgoingByMonthNumbers(){
-        step("Prepare test data");
-        LastCallsTestData lastCalls = new LastCallsTestData();
-
-        step("Login the system");
-        login();
-
-        step("Goto Last Calls -> Incoming numbers");
-        basePage.getTabLastCalls().click();
-        lastCallsPage.getTabOutgoingByMonth().click();
-
-        step("Fill in search parameters");
-        lastCallsPage.getCheckboxAllNumbers().click();
-        lastCallsPage.getInputMonth().setValue(lastCalls.getMonthDate());
-
-        step("Click Search and verify found data");
-        lastCallsPage.getButtonSearch().click();
-        waitUntilAlertDisappear();
-        alertPopup.getAlertDialog().shouldNotBe(Condition.appear,Condition.visible);
-
-    }
-
-
 }
