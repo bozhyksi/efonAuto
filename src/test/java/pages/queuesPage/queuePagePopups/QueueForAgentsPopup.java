@@ -23,8 +23,8 @@ public class QueueForAgentsPopup extends BasePopup {
         return field(String.format(fieldNotSelectedAgentByNameXpath, name));
     }
 
-    public SelenideElement getFieldSelectedAgentByName() {
-        return field(fieldSelectedAgentByNameXpath);
+    public SelenideElement getFieldSelectedAgentByName(String name) {
+        return field(String.format(fieldSelectedAgentByNameXpath,name));
     }
 
     public SelenideElement getButtonSave() {
