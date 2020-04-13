@@ -57,11 +57,13 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
         waitUntilAlertDisappear();
     }
 
-    public void validateDestinationNumber(String input){
-        getInputDestinationNumber().clear();
-        getInputDestinationNumber().setValue(input);
-        getInputDestinationNumber().pressTab();
-        getFieldInputRequiredDestNumber().should(Condition.appear,Condition.visible,Condition.exist);
+    public void validateDestinationNumber(String ... inputs){
+        for (String input : inputs) {
+            getInputDestinationNumber().clear();
+            getInputDestinationNumber().setValue(input);
+            getInputDestinationNumber().pressTab();
+            getFieldInputRequiredDestNumber().should(Condition.appear,Condition.visible,Condition.exist);
+        }
 
     }
 }

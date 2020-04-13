@@ -167,6 +167,17 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserDeleted(user);
     }
 
+    public void deleteUser(User ... users) {
+        basePage.getTabUser().click();
+        waitUntilAlertDisappear();
+        for (User user: users) {
+            userPage.deleteUserButtonClick(user.getFullName());
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            userPage.checkIfUserDeleted(user);
+        }
+    }
+
     public void deleteAllCustomerUsers() {
         String userName;
         basePage.getTabUser().click();

@@ -65,13 +65,7 @@ public class FaxUserPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Validate Destination number");
-        sendFaxUserPage.validateDestinationNumber("   ");
-        sendFaxUserPage.validateDestinationNumber("0123456");
-        sendFaxUserPage.validateDestinationNumber("04412378");
-        sendFaxUserPage.validateDestinationNumber("asd");
-        sendFaxUserPage.validateDestinationNumber("0481234aa");
-        sendFaxUserPage.validateDestinationNumber("+380441234567");
-        sendFaxUserPage.validateDestinationNumber("+380677851465");
+        sendFaxUserPage.validateDestinationNumber("   ","0123456", "04412378","asd","0481234aa","+380441234567", "+380677851465");
     }
 
     @Description("Check if user can configure Fax2Email settings")

@@ -201,28 +201,34 @@ public class QueuesPageTests extends BaseTestMethods {
     @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"} )
     public void CheckIfUserCanConfigureQueueForAgents(){
         step("Prepare test data - users, queue instances");
-        //Queue queue = new Queue();
-        //User user1 = new User();
-        //User user2 = new User();
+        Queue queue = new Queue();
+        User user1 = new User();
+        User user2 = new User();
 
-        //queuesList.add(queue);
-        //usersList.add(user1);
-        //usersList.add(user2);
+        queuesList.add(queue);
+        usersList.add(user1);
+        usersList.add(user2);
 
         step("Log in the system");
         login();
 
+        step("Create test data - Queue, Users");
+        createQueue(queue);
+        createUser(user1);
+        createUser(user2);
+
         step("Open Queue for agents popup");
         basePage.goToMenuTab(QUEUES);
-        configureQueueTab.getButtonEditAgentsQueueByText("1111").click();
 
-        step("Move agent");
-        WebElement element = getDriver().findElement(By.cssSelector(".list-item"));
-        WebElement dragTo = getDriver().findElement(By.cssSelector(".list-group-dragAndDrop"));
+        step("Add agent");
+        queueForAgentsPopup.addAgentToQueue(queue, user1, user2);
 
+        step("Check if agents were added");
+        queueForAgentsPopup.validateAddedAgents(queue, user1, user2);
 
-
-
+        step("Clean test data");
+        deleteQueue(queue.getName());
+        deleteUser(user1,user2);
     }
 
 

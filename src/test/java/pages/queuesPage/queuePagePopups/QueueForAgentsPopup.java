@@ -1,9 +1,16 @@
 package pages.queuesPage.queuePagePopups;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.basePopup.BasePopup;
+import pages.queuesPage.ConfigureQueueTab;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
 
-public class QueueForAgentsPopup extends BasePopup {
+import static com.codeborne.selenide.Condition.exist;
+import static core.workers.javaScriptExecutor.JavaScriptExecutor.executeDragDropScript;
+
+public class QueueForAgentsPopup extends ConfigureQueueTab {
     //<editor-fold desc="Locations">
     private String popupTitleXpath = "//div[@class=\"modal-content\"]//h3";
     private String fieldNotSelectedAgentByNameXpath = "//h2[text()=\"Not selected\"]//parent::div//section/div[text()[contains(.,\"%s\")]]";
@@ -44,4 +51,24 @@ public class QueueForAgentsPopup extends BasePopup {
     }
 
     //</editor-fold>
+
+    public void addAgentToQueue(Queue queue, User ... users){
+        getButtonEditAgentsQueueByText(queue.getName()).click();
+        waitUntilAlertDisappear();
+        for (User user:users) {
+            executeDragDropScript(getFieldNotSelectedAgentByName(user.getFirstName()), getSectionSelected());
+        }
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
+    public void validateAddedAgents(Queue queue, User ... users){
+        getButtonEditAgentsQueueByText(queue.getName()).click();
+        waitUntilAlertDisappear();
+        for (User user: users) {
+            getFieldSelectedAgentByName(user.getFirstName()).should(exist);
+            waitUntilAlertDisappear();
+        }
+        getButtonCancel().click();
+    }
 }
