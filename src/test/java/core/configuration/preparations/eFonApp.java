@@ -13,6 +13,10 @@ import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendTextMessageUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.CreateSmsAddressPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
+import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
+import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.IVRpage.IVRpage;
 import pages.IVRpage.IVRpagePopup.IVRpagePopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
@@ -123,4 +127,8 @@ public class eFonApp extends PreparationsForRun{
     public SendFaxUserPage sendFaxUserPage = new SendFaxUserPage();
     public FaxSettingUserPage faxSettingUserPage = new FaxSettingUserPage();
     public DashboardUserPage dashboardUserPage = new DashboardUserPage();
+    public VoicemailBaseUserPage voicemailBaseUserPage = new VoicemailBaseUserPage();
+    public VoicemailSettingUserPage voicemailSettingUserPage = new VoicemailSettingUserPage();
+    public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
+    public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
 }

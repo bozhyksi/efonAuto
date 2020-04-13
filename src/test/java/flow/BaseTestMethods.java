@@ -4,7 +4,6 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
-import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -18,7 +17,10 @@ import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestDat
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
+import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
 import static pages.basePage.BasePage.MenuTabsBasePage.FILE_MANAGEMENT;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
@@ -562,6 +564,15 @@ public class BaseTestMethods extends eFonApp {
         announcementDisplayPage.getFieldNameByText(fileName).shouldNot(Condition.exist);
     }
 
+    public void deleteAnnouncementLowLevelUser(FileManagementTestData announcement){
+        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
+        voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
+        announcementsUserPage.getButtonDeleteByName(announcement.getFileName()).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        announcementsUserPage.getFieldNameByText(announcement.getFileName()).shouldNot(exist);
+    }
+
     public void announcementCleanUp(List<FileManagementTestData> filesList){
         try {
             basePage.getTabFileManagement().click();
@@ -577,6 +588,32 @@ public class BaseTestMethods extends eFonApp {
             System.out.println("announcementCleanUp failed");
             e.printStackTrace();
         }
+    }
+
+    public void lowLevelUserAnnouncementCleanUp(List<FileManagementTestData> filesList){
+        try {
+            basePageLowLevelUser.goToMenuTab(VOICEMAIL);
+            waitUntilAlertDisappear();
+            voicemailBaseUserPage.getTabAnnouncements().click();
+            waitUntilAlertDisappear();
+            for (FileManagementTestData file: filesList) {
+                if (announcementsUserPage.getFieldNameByText(file.getFileName()).exists()){
+                    deleteAnnouncementLowLevelUser(file);
+                }
+            }
+        } catch (Throwable e) {
+            System.out.println("Low-LevelUser Announcement CleanUp failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void lowLevelUserUploadAnnouncement(FileManagementTestData announcement){
+        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
+        voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
+        announcementsUserPage.uploadAnnouncementFile(announcement);
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        announcementsUserPage.validateIfAnnouncementExcists(announcement);
     }
 
     public void phoneBookExcelCleanUp(List<Phonebook> phonebookList){

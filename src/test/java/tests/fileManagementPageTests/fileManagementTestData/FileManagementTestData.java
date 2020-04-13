@@ -26,4 +26,8 @@ public class FileManagementTestData extends BaseTestMethods {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+    public String rename(){
+        return this.fileName = getRandomString(15);
+    }
 }
