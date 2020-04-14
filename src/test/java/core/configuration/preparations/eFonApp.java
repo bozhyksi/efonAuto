@@ -6,6 +6,7 @@ import core.workers.excelWorker.ExcelFileWorker;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
+import lowLevelUserPages.endDevicesLowLevelUserPage.EndDevicesUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
@@ -133,4 +134,5 @@ public class eFonApp extends PreparationsForRun{
     public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
     public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
     public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
+    public EndDevicesUserPage endDevicesUserPage = new EndDevicesUserPage();
 }

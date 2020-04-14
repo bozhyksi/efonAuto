@@ -1,7 +1,6 @@
 package tests.userPageTests.userPageTestData;
 
 import flow.BaseTestMethods;
-import tests.queuesPageTest.queueTestData.Queue;
 
 import java.util.Random;
 
@@ -50,7 +49,8 @@ public class EndDevice extends BaseTestMethods  {
     private String endDevOutgoingNumber;
     private String endDevCallPickups;
     private String endDevLocation;
-    private String endDevSuppressed;
+    private boolean endDevSuppressedYES;
+    private boolean endDevSuppressedNO;
 
     public EndDevice() {
         endDevName = "EndDevice" + getRandomString(10);
@@ -94,8 +94,8 @@ public class EndDevice extends BaseTestMethods  {
         return endDevPhoneLanguage;
     }
 
-    public String getEndDevSuppressed() {
-        return endDevSuppressed;
+    public boolean getEndDevSuppressedYES() {
+        return endDevSuppressedYES;
     }
 
     public String getEndDevUserId() {
@@ -114,8 +114,15 @@ public class EndDevice extends BaseTestMethods  {
         this.endDevCodec = endDevCodec;
     }
 
-    public void setEndDevSuppressed(String endDevSuppressed) {
-        this.endDevSuppressed = endDevSuppressed;
+    public void setEndDevSuppressedYES(boolean endDevSuppressedYES) {
+        this.endDevSuppressedYES = endDevSuppressedYES;
     }
 
+    public boolean getEndDevSuppressedNO(){
+        return this.endDevSuppressedNO;
+    }
+
+    public void setEndDevSuppressedNO(boolean endDevSuppressedNO) {
+        this.endDevSuppressedNO = endDevSuppressedNO;
+    }
 }
