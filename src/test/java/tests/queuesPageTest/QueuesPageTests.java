@@ -222,7 +222,7 @@ public class QueuesPageTests extends BaseTestMethods {
         login();
 
         step("Create test data - Queue, Users");
-        createQueue(queue);
+        createQueueOnlyRequiredFields(queue);
         createUser(user1);
         createUser(user2);
 

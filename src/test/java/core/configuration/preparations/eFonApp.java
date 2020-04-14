@@ -3,6 +3,7 @@ package core.configuration.preparations;
 import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
+import core.workers.javaScriptExecutor.JavaScriptExecutor;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
@@ -69,6 +70,7 @@ public class eFonApp extends PreparationsForRun{
     public BasePage basePage = new BasePage();
     public DataBaseWorker dataBaseWorker = new DataBaseWorker();
     public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
+    public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 
     public ConfirmationPopup confirmationPopup = new ConfirmationPopup();
     public AlertPopup alertPopup = new AlertPopup();
