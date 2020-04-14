@@ -40,6 +40,7 @@ public class DashboardUserPageTests extends BaseTestMethods {
 
         step("Check Send text message widget");
         dashboardUserPage.checkWidgetButton(SEND_TEXT_MESSAGE, SEND_SMS);
+        dashboardUserPage.checkWidgetButton(ADDRESS_BOOK, SEND_SMS);
 
         step("Check End devices widget");
         dashboardUserPage.checkWidgetButton(MY_END_DEVICES, END_DEVICES);

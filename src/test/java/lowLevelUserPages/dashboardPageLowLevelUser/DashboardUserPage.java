@@ -14,7 +14,9 @@ public class DashboardUserPage extends BasePageLowLevelUser {
         SHOW_ALL_VOICEMAIL_MESSAGES("Show all voicemail messages"),
         SHOW_QUEUE_STATUS("Show queue status"),
         SEND_TEXT_MESSAGE("Send text message"),
-        MY_END_DEVICES("My end devices");
+        MY_END_DEVICES("My end devices"),
+        ADDRESS_BOOK("Address book");
+
 
         private String buttonName;
 
