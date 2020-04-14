@@ -177,6 +177,12 @@ public class BasePage extends Fields {
         Selenide.sleep(500);
     }
 
+    public void refreshPage() {
+        Selenide.refresh();
+        waitUntilAlertDisappear();
+    }
+
+
     private SelenideElement getMenuTab(MenuTabsBasePage tabName){
         switch (tabName){
             case FAX: return getTabFax();

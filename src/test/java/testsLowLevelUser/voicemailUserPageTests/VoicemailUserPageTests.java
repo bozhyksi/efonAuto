@@ -4,6 +4,7 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -14,8 +15,7 @@ import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
-import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.VOICEMAIL_SETTING;
 
 @Listeners(CustomListeners.class)
@@ -56,8 +56,8 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         loginAsLowLevelUser();
 
         step("Goto Announcements");
-        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
-        voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
+        basePageLowLevelUser.goToMenuTab(VOICEMAIL).goToMenuTab(ANNOUNCEMENTS);
+        //voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
 
         step("Upload Announcements file");
         announcementsUserPage.uploadAnnouncementFile(announcement);

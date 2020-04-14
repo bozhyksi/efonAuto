@@ -2,6 +2,9 @@ package lowLevelUserPages.basePageLowLevelUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
+import org.apache.poi.ss.formula.functions.T;
 import pages.basePage.BasePage;
 
 import static com.codeborne.selenide.Condition.*;
@@ -10,7 +13,9 @@ public class BasePageLowLevelUser extends BasePage {
     public enum MenuTabsLowLevelUser{
         SEND_SMS,
         VOICEMAIL,
-        DASHBOARD;
+        DASHBOARD,
+        ANNOUNCEMENTS,
+        VOICEMAIL_SETTING;
     }
     public enum PageTitles{
         OVERVIEW("Overview"),
@@ -36,6 +41,9 @@ public class BasePageLowLevelUser extends BasePage {
     }
 
     //<editor-fold desc="locators">
+    private String tabVoicemailXpath = "//a[contains(@href,\"/voicemail/overview\")]";
+    private String tabVoicemailSettingXpath = "//a[contains(@href,\"/voicemail/settings\")]";
+    private String tabAnnouncementsXpath = "//a[contains(@href,\"/voicemail/announcements\")]";
     private String tabVoiceMailXpath = "//a[@id=\"menu-22\"]";
     private String tabSendSmsXpath  = "//a[@id=\"menu-23\"]";
     private String tabDashboardXpath = "//a[@id=\"menu-10\"]";
@@ -59,6 +67,18 @@ public class BasePageLowLevelUser extends BasePage {
         return field(tabSendSmsXpath);
     }
 
+    public SelenideElement getTabVoicemail() {
+        return field(tabVoicemailXpath);
+    }
+
+    public SelenideElement getTabVoicemailSetting() {
+        return field(tabVoicemailSettingXpath);
+    }
+
+    public SelenideElement getTabAnnouncements() {
+        return field(tabAnnouncementsXpath);
+    }
+
     @Override
     public SelenideElement getTabFax() {
         return super.getTabFax();
@@ -70,17 +90,20 @@ public class BasePageLowLevelUser extends BasePage {
         super.goToMenuTab(tabName);
     }
 
-    public void goToMenuTab(MenuTabsLowLevelUser tabName) {
+    public BasePageLowLevelUser goToMenuTab(MenuTabsLowLevelUser tabName) {
         getTab(tabName).click();
         waitUntilAlertDisappear();
+        return this;
     }
 
     private SelenideElement getTab(MenuTabsLowLevelUser tab){
         switch (tab){
-            case VOICEMAIL: return getTabVoiceMail();
-            case SEND_SMS: return getTabSendSms();
+            case VOICEMAIL:return getTabVoiceMail();
+            case SEND_SMS:return getTabSendSms();
             case DASHBOARD: return getTabDashboard();
-            default: return getTabSendSms();
+            case ANNOUNCEMENTS: return getTabAnnouncements();
+            case VOICEMAIL_SETTING: return getTabVoicemailSetting();
+            default: return getTabDashboard();
         }
     }
 

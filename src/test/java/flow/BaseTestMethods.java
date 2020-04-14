@@ -21,8 +21,7 @@ import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
-import static pages.basePage.BasePage.MenuTabsBasePage.FILE_MANAGEMENT;
-import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
+import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
@@ -666,4 +665,15 @@ public class BaseTestMethods extends eFonApp {
         step("Validate if entry was created");
         addressBookUserPage.validateIfEntryWasCreated(addressBook);
     }
+
+    public void lowLevelUserCallForwardingCleanUp(){
+        basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
+        if (callForwardingPage.getCheckboxAfter().isSelected())callForwardingPage.getCheckboxAfter().click();
+        if (callForwardingPage.getCheckboxIfbusy().isSelected())callForwardingPage.getCheckboxIfbusy().click();
+        if (callForwardingPage.getCheckboxDeviceUnavailable().isSelected())callForwardingPage.getCheckboxDeviceUnavailable().click();
+        if (callForwardingPage.getCheckboxSuppressedNumbers().isSelected())callForwardingPage.getCheckboxSuppressedNumbers().click();
+        callForwardingPage.getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
 }

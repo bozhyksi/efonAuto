@@ -4,6 +4,7 @@ import core.fields.Fields;
 import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
@@ -131,4 +132,5 @@ public class eFonApp extends PreparationsForRun{
     public VoicemailSettingUserPage voicemailSettingUserPage = new VoicemailSettingUserPage();
     public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
     public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
+    public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
 }
