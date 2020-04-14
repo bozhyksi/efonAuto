@@ -51,6 +51,6 @@ public class IVRpagePopup extends IVRpage {
     //</editor-fold>
 
     public void selectIvrNumber(){
-        getDropdownSelectIvrNumber().selectOption(getRandomDropDownOption(dropdownSelectIvrNumberXpath));
+        getDropdownSelectIvrNumber().selectOption(1);
     }
 }

@@ -11,6 +11,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -32,9 +33,10 @@ public class IVRpageTests extends BaseTestMethods {
     private ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
     private ArrayList<Queue> queueList = new ArrayList<>();
     private ArrayList<User> usersList = new ArrayList<>();
+    private ArrayList<AbbreviatedDialling> shortNumList = new ArrayList<>();
 
     @Description("Verify if user can create new IVR")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "IVRpageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
     public void VerifyIfUserCanCreateNewIvr() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
@@ -223,33 +225,44 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureQueuesIvrAction() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
         FileManagementTestData file = new FileManagementTestData();
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(10, 99);
         Queue queue = new Queue();
+        User user = new User();
 
         ivrList.add(ivr);
         filesList.add(file);
         queueList.add(queue);
+        shortNumList.add(shortNum);
+        usersList.add(user);
 
         step("Log in the system");
         login();
 
+        step("Create test user");
+        createUser(user);
+
+        step("Add single short number");
+        addSingleAbbrevNumber(shortNum.getSingleShortNum());
+
         step("Upload announcement");
         uploadAnnouncementFile(file);
 
-        step("Create Hunt Group");
-        createQueue(queue);
+        step("Create Queue and add Agent");
+        createQueue(queue,shortNum);
+        addAgentToQueue(queue,user);
 
         step("Create IVR");
         createIVR(ivr, file);
 
-        step("Click edit button");
+        step("Click edit IVR button");
         ivrPage.editIVR(ivr.getIvrName());
 
-        step("Configure HuntGroup action");
+        step("Configure Queue action");
         createNewIvrPopup.configureAction(ivr, Event_1, CALL_CENTER_QUEUE, queue);
 
         step("Save changes");
@@ -269,8 +282,10 @@ public class IVRpageTests extends BaseTestMethods {
 
         step("CleanUp test data");
         deleteIVR(ivr.getIvrName());
+        deleteUser(user);
         deleteQueue(queue.getName());
         deleteAnnouncementFile(file.getFileName());
+        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
 
     }
 

@@ -35,6 +35,7 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     public void addSingleAbbrevNumber(String shortNumber){
         getInputAdd().setValue(shortNumber);
+        waitUntilAlertDisappear();
         getButtonAdd().click();
     }
 

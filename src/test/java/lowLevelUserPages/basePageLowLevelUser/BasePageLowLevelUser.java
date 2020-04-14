@@ -86,8 +86,9 @@ public class BasePageLowLevelUser extends BasePage {
     //</editor-fold>
 
     @Override
-    public void goToMenuTab(MenuTabsBasePage tabName) {
+    public BasePage goToMenuTab(MenuTabsBasePage tabName) {
         super.goToMenuTab(tabName);
+        return this;
     }
 
     public BasePageLowLevelUser goToMenuTab(MenuTabsLowLevelUser tabName) {

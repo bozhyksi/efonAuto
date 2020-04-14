@@ -17,6 +17,7 @@ import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestDat
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
@@ -119,12 +120,14 @@ public class BaseTestMethods extends eFonApp {
         loginPage.fillInLogin(getLogin());
         loginPage.fillInPassword(getPassword());
         loginPage.getButtonLogin().click();
+        waitUntilAlertDisappear();
     }
 
     public void loginAsLowLevelUser(){
         loginPage.fillInLogin(getLowLevelUserLogin());
         loginPage.fillInPassword(getLowLevelUserPassword());
         loginPage.getButtonLogin().click();
+        waitUntilAlertDisappear();
     }
 
     public void login(String login, String pass) {
@@ -213,8 +216,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void addSingleAbbrevNumber(String abbrevNum) {
-        basePage.getTabAbbreviatedDialling().click();
-        abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
+        basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
         manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
         waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
@@ -322,8 +324,9 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void createIVR(IVRtestData ivr, FileManagementTestData file) {
-        basePage.getTabIVRs().click();
+        basePage.goToMenuTab(IVRs);
         ivrPage.getButtonNewIvr().click();
+        waitUntilAlertDisappear();
         createNewIvrPopup.getInputName().setValue(ivr.getIvrName());
         createNewIvrPopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
         createNewIvrPopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
@@ -331,7 +334,7 @@ public class BaseTestMethods extends eFonApp {
         ivr.setIvrNumber(createNewIvrPopup.getDropdownSelectIvrNumber().getSelectedText());
         createNewIvrPopup.getDropdownSelectAnnounc().selectOptionContainingText(file.getFileName());
         ivr.setIvrAnnounce(createNewIvrPopup.getDropdownSelectAnnounc().getSelectedText());
-        createNewIvrPopup.getButtonSave().click();
+        createNewIvrPopup.getButtonSave().shouldBe(enabled).click();
         waitUntilAlertDisappear();
         ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
     }
@@ -371,8 +374,8 @@ public class BaseTestMethods extends eFonApp {
 
     public void ivrCleanUp(List<IVRtestData> ivrList){
         try {
-            basePage.getTabIVRs().click();
-            waitUntilAlertDisappear();
+            refreshPage();
+            basePage.goToMenuTab(IVRs);
             for (IVRtestData ivr: ivrList) {
                 if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
                     deleteIVR(ivr.getIvrName());
@@ -386,8 +389,8 @@ public class BaseTestMethods extends eFonApp {
 
     public void huntGroupCleanUp(List<HuntGroup> huntGroupList){
         try {
-            basePage.getTabHuntGroups().click();
-            waitUntilAlertDisappear();
+            refreshPage();
+            basePage.goToMenuTab(HUNT_GROUPS);
             for (HuntGroup huntGroup: huntGroupList) {
                 if (huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).exists()){
                     deleteHuntGroup(huntGroup.getHuntGroupName());
@@ -401,8 +404,8 @@ public class BaseTestMethods extends eFonApp {
 
     public void userCleanUp(List<User> userList){
         try {
-            basePage.getTabUser().click();
-            waitUntilAlertDisappear();
+            refreshPage();
+            basePage.goToMenuTab(USER);
             for (User user: userList) {
                 if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
                     deleteUser(user);
@@ -415,14 +418,36 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void createQueue(Queue queue){
-        basePage.getTabQueues().click();
-        waitUntilAlertDisappear();
-        queuesBasePage.getTabConfigureQueues().click();
-        waitUntilAlertDisappear();
+        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab.getButtonCreateNewQueue().click();
         createNewQueuePopup.getInputQueueName().setValue(queue.getName());
         createNewQueuePopup.selectRandomSubscriptionForQueue();
         queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
+        createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
+        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
+        createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
+        queue.setWaitingMusic(createNewQueuePopup.getDropdownWaitingMusic().getSelectedText());
+        createNewQueuePopup.getDropdownFileNameAnnounc().selectOption(1);
+        queue.setFilenameAnnouncement(createNewQueuePopup.getDropdownFileNameAnnounc().getSelectedText());
+        createNewQueuePopup.getDropdownAnnounFreq().selectOptionByValue(queue.getAnnouncementFrequency());
+        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
+        createNewQueuePopup.getDropdownTimeOutForCall().selectOptionByValue(queue.getTimeoutForCalling());
+        createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
+        createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
+        createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
+        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+    }
+
+    public void createQueue(Queue queue, AbbreviatedDialling shortNum){
+        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
+        configureQueueTab.getButtonCreateNewQueue().click();
+        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
+        createNewQueuePopup.selectRandomSubscriptionForQueue();
+        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
+        createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
         createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
         createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
         createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
@@ -457,23 +482,18 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteQueue(String queueName){
-        basePage.getTabQueues().click();
-        queuesBasePage.getTabConfigureQueues().click();
-        waitUntilAlertDisappear();
+        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab.getButtonDeleteQueueByName(queueName).click();
         confirmationPopup.getYesButton().click();
-        refreshPage();
         waitUntilAlertDisappear();
         configureQueueTab.getFieldQueueNameByText(queueName).shouldNot(Condition.exist);
     }
 
     public void queueCleanUp(List<Queue> queueList){
         try {
+            refreshPage();
             if (!basePage.getPageTitle().equals("Queues")){
-                basePage.getTabQueues().click();
-                waitUntilAlertDisappear();
-                queuesBasePage.getTabConfigureQueues().click();
-                waitUntilAlertDisappear();
+                basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
             }
             for (Queue queue: queueList) {
                 if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
@@ -540,8 +560,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void uploadAnnouncementFile(FileManagementTestData file){
-        basePage.goToMenuTab(FILE_MANAGEMENT);
-        fileManagementBasePage.getTabAnnouncementDisplay().click();
+        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
         announcementDisplayPage.getButtonUploadFile().click();
         announcementDisplayPage.uploadFile(file.getFilePath());
         waitUntilAlertDisappear();
@@ -554,8 +573,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteAnnouncementFile(String fileName){
-        basePage.getTabFileManagement().click();
-        fileManagementBasePage.getTabAnnouncementDisplay().click();
+        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
         announcementDisplayPage.getButtonDeleteByName(fileName).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
@@ -574,10 +592,8 @@ public class BaseTestMethods extends eFonApp {
 
     public void announcementCleanUp(List<FileManagementTestData> filesList){
         try {
-            basePage.getTabFileManagement().click();
-            waitUntilAlertDisappear();
-            fileManagementBasePage.getTabAnnouncementDisplay().click();
-            waitUntilAlertDisappear();
+            refreshPage();
+            basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
             for (FileManagementTestData file: filesList) {
                 if (announcementDisplayPage.getFieldNameByText(file.getFileName()).exists()){
                     deleteAnnouncementFile(file.getFileName());
@@ -674,6 +690,12 @@ public class BaseTestMethods extends eFonApp {
         if (callForwardingPage.getCheckboxSuppressedNumbers().isSelected())callForwardingPage.getCheckboxSuppressedNumbers().click();
         callForwardingPage.getButtonSave().click();
         waitUntilAlertDisappear();
+    }
+
+    public void addAgentToQueue(Queue queue, User user){
+        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
+        queueForAgentsPopup.addAgentToQueue(queue, user);
+        queueForAgentsPopup.validateAddedAgents(queue,user);
     }
 
 }

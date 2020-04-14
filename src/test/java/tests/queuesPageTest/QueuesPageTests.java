@@ -135,10 +135,12 @@ public class QueuesPageTests extends BaseTestMethods {
         Queue queue = new Queue();
         User user1 = new User();
         User user2 = new User();
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(10,99);
 
         queuesList.add(queue);
         usersList.add(user1);
         usersList.add(user2);
+        abbrevNumsList.add(shortNum);
 
         step("Log in the system");
         login();
@@ -146,6 +148,9 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Create test users");
         createUser(user1);
         createUser(user2);
+
+        step("Add short number");
+        addSingleAbbrevNumber(shortNum.getSingleShortNum());
 
         step("Create new Queue");
         createQueue(queue);
@@ -161,6 +166,9 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Select reporter");
         queue.setReporter(user2.getFullName());
         createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
+
+        step("Select short dial for login/loguot");
+        createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
 
         step("Change \"Max. waiting time for customer\" field value");
         queue.setMaxWaitTime(Queue.MaxWaitTime.getRandomVal().getWaitTime());
@@ -195,10 +203,11 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteQueue(queue.getName());
         deleteUser(user1);
         deleteUser(user2);
+        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
     }
 
     @Description("Check if user can configure Queue for agents")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "smoke", "queuePageTest"} )
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"} )
     public void CheckIfUserCanConfigureQueueForAgents(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -239,6 +248,7 @@ public class QueuesPageTests extends BaseTestMethods {
         login();
         queueCleanUp(queuesList);
         userCleanUp(usersList);
+        abbrevNumsCleanUp(abbrevNumsList);
         closeBrowser();
     }
 }
