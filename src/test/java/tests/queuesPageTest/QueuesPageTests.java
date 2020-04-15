@@ -240,8 +240,6 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteUser(user1,user2);
     }
 
-
-
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();

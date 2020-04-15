@@ -22,6 +22,8 @@ import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.IVRpage.IVRpage;
 import pages.IVRpage.IVRpagePopup.IVRpagePopup;
+import pages.IVRpage.blockListSection.BlockListSection;
+import pages.IVRpage.blockListSection.BlocklistPopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
 import pages.abbreviatedDialling.ManageAbbreviatedNumbers;
@@ -137,4 +139,6 @@ public class eFonApp extends PreparationsForRun{
     public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
     public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
     public EndDevicesUserPage endDevicesUserPage = new EndDevicesUserPage();
+    public BlockListSection blockListSection = new BlockListSection();
+    public BlocklistPopup blocklistPopup = new BlocklistPopup();
 }

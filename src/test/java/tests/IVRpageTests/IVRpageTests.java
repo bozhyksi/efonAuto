@@ -225,7 +225,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "IVRpageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)
     public void VerifyIfUserCanConfigureQueuesIvrAction() {
         step("Prepare test data - create IVR object");
         IVRtestData ivr = new IVRtestData();
@@ -472,6 +472,14 @@ public class IVRpageTests extends BaseTestMethods {
         deleteIVR(ivr.getIvrName());
         deleteAnnouncementFile(file.getFileName());
     }
+
+    @Description("Verify if user can configure Block list section on IVR Page")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanConfigureBlockListSectionOnIvrPage(){
+
+    }
+
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {

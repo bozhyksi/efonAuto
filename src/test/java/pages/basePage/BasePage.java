@@ -82,9 +82,19 @@ public class BasePage extends Fields {
     private String tabStatusQueuesXpath = "//a[@href=\"/portal/call-queues/status\"]";
     private String tabRecordingsXpath = "//a[@href=\"/portal/call-queues/records\"]";
     private String tabReportXpath = "//a[@href=\"/portal/call-queues/reports\"]";
+
+    //Save button
+    private String buttonSaveXpath = "//button[text()=\"Save\"]";
+
+
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+
+
+    public SelenideElement getButtonSave() {
+        return field(buttonSaveXpath);
+    }
 
     public SelenideElement getTabConfigureQueues() {
         return field(tabConfigureQueuesXpath);

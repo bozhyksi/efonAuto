@@ -135,10 +135,11 @@ public class IVRpage extends BasePage {
         getDropdownParameterByEventNumber(number).selectOptionContainingText(user.getPhoneNumber());
     }
 
-
     public void editIVR(String name){
         getButtonEditIvrByName(name).click();
         waitUntilAlertDisappear();
     }
+
+
 
 }
