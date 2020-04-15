@@ -207,7 +207,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if user can configure Queue for agents")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"} )
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"}, enabled = false)
     public void CheckIfUserCanConfigureQueueForAgents(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
