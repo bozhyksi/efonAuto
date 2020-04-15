@@ -10,6 +10,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.basePage.BasePage;
+import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -19,6 +20,8 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.selectedText;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_1;
@@ -162,7 +165,7 @@ public class IVRpageTests extends BaseTestMethods {
 
         step("Check if all data was saved");
         ivrPage.editIVR(ivr.getIvrName());
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getValue().contains(ivr.getParameterExtTelNumber());
         refreshPage();
@@ -211,7 +214,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterHuntGroup());
         refreshPage();
@@ -273,7 +276,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterQueue());
         refreshPage();
@@ -328,7 +331,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterPhoneDirect());
         refreshPage();
@@ -374,7 +377,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getInputParameterByEventNumber(ivr.getEventNumber()).getText().contains(ivr.getParameterExtTelNumber());
         refreshPage();
@@ -419,7 +422,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         refreshPage();
         waitUntilAlertDisappear();
@@ -462,7 +465,7 @@ public class IVRpageTests extends BaseTestMethods {
         step("Check if data was saved");
         ivrPage.editIVR(ivr.getIvrName());
         waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(Condition.selected);
+        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
         createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
         createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterPlayAndHangUp());
         refreshPage();
@@ -476,10 +479,103 @@ public class IVRpageTests extends BaseTestMethods {
     @Description("Verify if user can configure Block list section on IVR Page")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureBlockListSectionOnIvrPage(){
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+
+        ivrList.add(ivr);
+        filesList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Configure Block list section - select number");
+        blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());
+
+        step("Activate \"Block incoming calls\" and select \"Forward to\" option");
+        blockListSection.getCheckboxBlockIncomingCalls().click();
+        blockListSection.getDropdownForwardTo().selectOptionByValue("VOICEMAIL");
+
+        step("Activate option \"Calls with suppressed numbers\"");
+        blockListSection.getCheckboxCallsSuppressedNumbers().click();
+
+        step("Activate option \"Use blocklist\"");
+        blockListSection.getCheckboxUseBlocklist().click();
+        blockListSection.getDropdownBlocklistType().selectOptionByValue("BLOCKED_NUMBERS");
+
+        step("Save and verify");
+        blockListSection.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());
+        blockListSection.getCheckboxBlockIncomingCalls().shouldBe(selected);
+        blockListSection.getDropdownForwardTo().getSelectedValue().contains("VOICEMAIL");
+        blockListSection.getCheckboxCallsSuppressedNumbers().shouldBe(selected);
+        //blockListSection.getCheckboxUseBlocklist().shouldBe(selected);
+        //blockListSection.getDropdownBlocklistType().getSelectedValue().contains("BLOCKED_NUMBERS");
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteAnnouncementFile(file.getFileName());
 
     }
 
+    @Description("Verify if user can add/delete numbers to Block list on IVR Page")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void VerifyIfUserCanAddDeleteNumbersToBlockListOnIvrPage(){
+        step("Prepare test data - create IVR object");
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData file = new FileManagementTestData();
+        BlockListTestData blockList = new BlockListTestData();
 
+        ivrList.add(ivr);
+        filesList.add(file);
+
+        step("Log in the system");
+        login();
+
+        step("Upload announcement");
+        uploadAnnouncementFile(file);
+
+        step("Create IVR");
+        createIVR(ivr, file);
+
+        step("Configure block list");
+        configureBlockList(ivr, blockList);
+
+        step("Validate block list");
+        blockListSection.getButtonEditBlocklist().click();
+        waitUntilAlertDisappear();
+        blocklistPopup.verifyBlockListNumber(blockList);
+        blocklistPopup.getButtonClose().click();
+        waitUntilAlertDisappear();
+
+        step("Save");
+        blockListSection.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Delete number from Block list");
+        blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());
+        blockListSection.getButtonEditBlocklist().click();
+        waitUntilAlertDisappear();
+        blocklistPopup.deleteNumberFromBlockList(blockList);
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        blocklistPopup.verifyNumberDeletedFromBlockList(blockList);
+        refreshPage();
+
+        step("CleanUp test data");
+        deleteIVR(ivr.getIvrName());
+        deleteAnnouncementFile(file.getFileName());
+    }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {

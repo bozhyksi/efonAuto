@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -696,6 +697,27 @@ public class BaseTestMethods extends eFonApp {
         basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
         queueForAgentsPopup.addAgentToQueue(queue, user);
         queueForAgentsPopup.validateAddedAgents(queue,user);
+    }
+
+    public void configureBlockList(IVRtestData ivr, BlockListTestData blockList){
+        step("Configure Block list section - select number");
+        blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());
+
+        step("Activate \"Block incoming calls\" and select \"Forward to\" option");
+        blockListSection.getCheckboxBlockIncomingCalls().click();
+        blockListSection.getDropdownForwardTo().selectOptionByValue("VOICEMAIL");
+
+        step("Activate option \"Calls with suppressed numbers\"");
+        blockListSection.getCheckboxCallsSuppressedNumbers().click();
+
+        step("Activate option \"Use blocklist\"");
+        blockListSection.getCheckboxUseBlocklist().click();
+        blockListSection.getDropdownBlocklistType().selectOptionByValue("BLOCKED_NUMBERS");
+
+        step("Add numbers to Block list");
+        blockListSection.getButtonEditBlocklist().click();
+        waitUntilAlertDisappear();
+        blocklistPopup.addNumberToBlockList(blockList);
     }
 
 }

@@ -11,11 +11,22 @@ public class BlockListSection extends IVRpage {
     private String dropdownForwardToXpath = "//select[@formcontrolname=\"forwardTo\"]";
     private String checkboxUseBlocklistXpath = "//input[@formcontrolname=\"useBlockList\"]";
     private String dropdownBlocklistTypeXpath = "//select[@formcontrolname=\"blockListType\"]";
+    private String checkboxCallsSuppressedNumbersXpath = "//input[@formcontrolname=\"useSuppressedNumbers\"]";
     private String buttonEditBlocklistXpath = "//select[@formcontrolname=\"blockListType\"]/../..//i[contains(@class,\"fa-cog\")]/..";
+    private String fieldBlockedNumberByTextXpath = "//span[contains(text(),\"The following incoming numbers are blocked\")]/..//span[contains(text(),\"%s\")]";
     //</editor-fold>
 
 
     //<editor-fold desc="get\set">
+
+    public SelenideElement getFieldBlockedNumberByText(String text) {
+        return field(String.format(fieldBlockedNumberByTextXpath, text));
+    }
+
+    public SelenideElement getCheckboxCallsSuppressedNumbers() {
+        return field(checkboxCallsSuppressedNumbersXpath);
+    }
+
     public SelenideElement getDropdownNumbers() {
         return field(dropdownNumbersXpath);
     }
