@@ -5,6 +5,7 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -13,12 +14,16 @@ import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
 import java.util.ArrayList;
 
+import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.MANAGE_SENDER_NUMBERS_AND_NAMES;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.SEND_SMS;
 
 @Listeners(CustomListeners.class)
 
 public class SendSmsUserPageTests extends BaseTestMethods {
     ArrayList<AddressBookTestData> addressBookList = new ArrayList<>();
+    ArrayList<String> senderNumbersList = new ArrayList<>();
 
     @Description("Check if low-level user can Send SMS")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
@@ -168,6 +173,48 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         sendTextMessageUserPage.checkValidationMessage("asd0000");
         sendTextMessageUserPage.checkValidationMessage("076a123456");
         sendTextMessageUserPage.checkValidationMessage("          ");
+    }
+
+    @Description("Verify if user can add/delete authorized sender number")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
+    public void VerifyIfUserCanAddAuthorizedSenderNumber(){
+        step("Prepare test data");
+        String senderNumber = getRandomPhone("076",7);
+        senderNumbersList.add(senderNumber);
+
+        step("Login as low-level user");
+        loginAsLowLevelUser();
+
+        step("Goto MANAGE SENDER NUMBERS AND NAMES");
+        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
+
+        step("Click Add, open popup, set new sender number");
+        manageSenderNumbersUserPage.getButtonAdd().click();
+        waitUntilAlertDisappear();
+        newSenderNumberPopup.getInputMobileNumber().setValue(senderNumber);
+        newSenderNumberPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+
+        step("Verify if number was added as NON Authorized");
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsNonAuthorized(senderNumber);
+
+        step("Open edit popup and enter authorization code");
+        manageSenderNumbersUserPage.getButtonEditByText(senderNumber).click();
+        waitUntilAlertDisappear();
+        activateAuthorisationCodePopup.enterAuthorizationCode(senderNumber);
+        activateAuthorisationCodePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+
+        step("Verify if number was added as Authorized");
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsAuthorized(senderNumber);
+
+        step("Delete test sender number");
+        manageSenderNumbersUserPage.getButtonDeleteByText(senderNumber).click();
+        waitUntilAlertDisappear();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        manageSenderNumbersUserPage.getFiledMobileNumberByText(senderNumber).shouldNot(exist);
     }
 
     @AfterClass(alwaysRun = true)

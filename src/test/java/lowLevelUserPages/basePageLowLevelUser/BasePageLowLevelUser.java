@@ -15,7 +15,8 @@ public class BasePageLowLevelUser extends BasePage {
         VOICEMAIL,
         DASHBOARD,
         ANNOUNCEMENTS,
-        VOICEMAIL_SETTING;
+        VOICEMAIL_SETTING,
+        MANAGE_SENDER_NUMBERS_AND_NAMES;
     }
     public enum PageTitles{
         OVERVIEW("Overview"),
@@ -48,9 +49,14 @@ public class BasePageLowLevelUser extends BasePage {
     private String tabSendSmsXpath  = "//a[@id=\"menu-23\"]";
     private String tabDashboardXpath = "//a[@id=\"menu-10\"]";
     private String pageTitleXpath = "//h1[text()=\"%s\"]";
+    private String tabManageSenderNumbersXpath = "//a[contains(@href,\"sms/sms-authorization-number\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getTabManageSenderNumbers() {
+        return field(tabManageSenderNumbersXpath);
+    }
+
     public SelenideElement getTabDashboard() {
         return field(tabDashboardXpath);
     }
@@ -104,6 +110,7 @@ public class BasePageLowLevelUser extends BasePage {
             case DASHBOARD: return getTabDashboard();
             case ANNOUNCEMENTS: return getTabAnnouncements();
             case VOICEMAIL_SETTING: return getTabVoicemailSetting();
+            case MANAGE_SENDER_NUMBERS_AND_NAMES: return getTabManageSenderNumbers();
             default: return getTabDashboard();
         }
     }

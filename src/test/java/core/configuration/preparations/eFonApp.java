@@ -12,9 +12,12 @@ import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
+import lowLevelUserPages.sendSmsPageLowLevelUser.ManageSenderNumbersAndNamesUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendTextMessageUserPage;
+import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.ActivateAuthorisationCodePopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.CreateSmsAddressPopup;
+import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.NewSenderNumberPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
@@ -141,4 +144,7 @@ public class eFonApp extends PreparationsForRun{
     public EndDevicesUserPage endDevicesUserPage = new EndDevicesUserPage();
     public BlockListSection blockListSection = new BlockListSection();
     public BlocklistPopup blocklistPopup = new BlocklistPopup();
+    public ManageSenderNumbersAndNamesUserPage manageSenderNumbersUserPage = new ManageSenderNumbersAndNamesUserPage();
+    public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
+    public ActivateAuthorisationCodePopup activateAuthorisationCodePopup = new ActivateAuthorisationCodePopup();
 }
