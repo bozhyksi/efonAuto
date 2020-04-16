@@ -3,7 +3,7 @@ package testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData;
 import flow.BaseTestMethods;
 
 public class SendSmsTestData extends BaseTestMethods {
-    private String senderNumber;
+    private String senderNumber = "anonymous";
     private String recipientNumber = getRandomPhone("074",7);
     private String smsText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                              "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +

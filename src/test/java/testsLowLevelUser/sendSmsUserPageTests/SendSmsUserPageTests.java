@@ -5,7 +5,7 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
-import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -35,8 +35,7 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         loginAsLowLevelUser();
 
         step("Go to Send SMS page");
-        basePageLowLevelUser.getTabSendSms().click();
-        sendSmsBaseUserPage.getTabSendTextMessage().click();
+        basePageLowLevelUser.goToMenuTab(SEND_SMS);
 
         step("Add recipient");
         sendTextMessageUserPage.getInputRecipientNumber().setValue(sms.getRecipientNumber());
@@ -215,6 +214,59 @@ public class SendSmsUserPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
         refreshPage();
         manageSenderNumbersUserPage.getFiledMobileNumberByText(senderNumber).shouldNot(exist);
+    }
+
+    @Description("Verify \"Create new code\" button, and check if user can generate new code and use it")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
+    public void VerifyCreateNewCodeButton(){
+        step("Prepare test data");
+        String senderNumber = getRandomPhone("076",7);
+        String code1;
+        String code2;
+
+        senderNumbersList.add(senderNumber);
+
+        step("Login as low-level user");
+        loginAsLowLevelUser();
+
+        step("Add new NON Authorized sender number");
+        createNonAthorizedSmsSenderNumber(senderNumber);
+
+        step("Create new code and use it");
+        code1 = activateAuthorisationCodePopup.getAuthorizationCode(senderNumber);
+        manageSenderNumbersUserPage.getButtonCreateNewCodeByText(senderNumber).click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        code2 = activateAuthorisationCodePopup.getAuthorizationCode(senderNumber);
+        Assert.assertNotEquals(code1,code2, "verify if new code was generated after clicking Create new code");
+
+        step("Use new code, and authorize sender number");
+        authorizeSmsSenderNumber(senderNumber);
+
+        step("Clear test sender");
+        deleteSmsSenderNumber(senderNumber);
+    }
+
+    @Description("Verify if authorized senders can be used for SMS send")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
+    public void VerifyIfAuthorizedSendersCanBeUsedForSmsSend(){
+        step("Prepare test data");
+        SendSmsTestData sms = new SendSmsTestData();
+        String senderNumber = getRandomPhone("076",7);
+        sms.setSenderNumber(senderNumber);
+        senderNumbersList.add(senderNumber);
+
+        step("Login as low-level user");
+        loginAsLowLevelUser();
+
+        step("Create authorized sender");
+        createAthorizedSmsSenderNumber(senderNumber);
+
+        step("Send SMS");
+        sendSms(sms);
+
+        step("Delete test data");
+        deleteSmsSenderNumber(senderNumber);
     }
 
     @AfterClass(alwaysRun = true)

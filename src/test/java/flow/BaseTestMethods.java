@@ -14,6 +14,7 @@ import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
+import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -21,7 +22,7 @@ import java.util.*;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -718,6 +719,75 @@ public class BaseTestMethods extends eFonApp {
         blockListSection.getButtonEditBlocklist().click();
         waitUntilAlertDisappear();
         blocklistPopup.addNumberToBlockList(blockList);
+    }
+
+    public void createNonAthorizedSmsSenderNumber(String senderNumber){
+        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
+        manageSenderNumbersUserPage.getButtonAdd().click();
+        waitUntilAlertDisappear();
+        newSenderNumberPopup.getInputMobileNumber().setValue(senderNumber);
+        newSenderNumberPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsNonAuthorized(senderNumber);
+    }
+
+    public void createAthorizedSmsSenderNumber(String senderNumber){
+        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
+        manageSenderNumbersUserPage.getButtonAdd().click();
+        waitUntilAlertDisappear();
+        newSenderNumberPopup.getInputMobileNumber().setValue(senderNumber);
+        newSenderNumberPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsNonAuthorized(senderNumber);
+        manageSenderNumbersUserPage.getButtonEditByText(senderNumber).click();
+        waitUntilAlertDisappear();
+        activateAuthorisationCodePopup.enterAuthorizationCode(senderNumber);
+        activateAuthorisationCodePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsAuthorized(senderNumber);
+    }
+
+    public void authorizeSmsSenderNumber(String senderNumber){
+        manageSenderNumbersUserPage.getButtonEditByText(senderNumber).click();
+        waitUntilAlertDisappear();
+        activateAuthorisationCodePopup.enterAuthorizationCode(senderNumber);
+        activateAuthorisationCodePopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        manageSenderNumbersUserPage.verifyIfNumberAddedAsAuthorized(senderNumber);
+    }
+
+    public void deleteSmsSenderNumber(String senderNumber){
+        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
+        manageSenderNumbersUserPage.getButtonDeleteByText(senderNumber).click();
+        waitUntilAlertDisappear();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        manageSenderNumbersUserPage.getFiledMobileNumberByText(senderNumber).shouldNot(exist);
+    }
+
+    public void sendSms(SendSmsTestData sms){
+        step("Go to Send SMS page");
+        basePageLowLevelUser.goToMenuTab(SEND_SMS);
+
+        step("Select sender");
+        sendTextMessageUserPage.getDropdownSenderName().selectOptionByValue(sms.getSenderNumber());
+
+        step("Add recipient");
+        sendTextMessageUserPage.getInputRecipientNumber().setValue(sms.getRecipientNumber());
+        waitUntilAlertDisappear();
+        sendTextMessageUserPage.getButtonAddRecipient().click();
+
+        step("Fill in SMS text");
+        sendTextMessageUserPage.getInputSmsTextArea().setValue(sms.getSmsText());
+
+        step("Click Send SMS");
+        sendTextMessageUserPage.getButtonSend().click();
+        waitUntilAlertDisappear();
+
+        step("Check if SMS were sent and \"Confirmation popup appears\"");
+        smsConfirmationPopup.getTitle().shouldBe(Condition.visible,Condition.appear);
+        smsConfirmationPopup.getButtonClose().click();
     }
 
 }

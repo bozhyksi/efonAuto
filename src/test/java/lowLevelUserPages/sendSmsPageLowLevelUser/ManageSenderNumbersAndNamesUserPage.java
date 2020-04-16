@@ -13,8 +13,8 @@ public class ManageSenderNumbersAndNamesUserPage extends SendSmsBaseUserPage {
     //<editor-fold desc="locators">
     private String buttonAddXpath = "//a[text()=\"Add\"]";
     private String buttonCreateNewCodeByTextXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"generateNewCode\"]";
-    private String buttonEditByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-cog\")]";
-    private String buttonDeleteByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-trash\")]";
+    private String buttonEditByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-cog\")]/..";
+    private String buttonDeleteByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-trash\")]/..";
     private String filedMobileNumberByTextXpath = "//td[contains(text(),\"%s\")]";
     private String fieldAuthorizedByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-check\")]";
     private String fieldNonAuthorizedByTextXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-times\")]";
