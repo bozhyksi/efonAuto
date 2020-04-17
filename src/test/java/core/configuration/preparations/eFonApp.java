@@ -31,6 +31,7 @@ import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
 import pages.abbreviatedDialling.ManageAbbreviatedNumbers;
 import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDialling;
+import pages.abbreviatedDialling.abbreviatedDiallingPopup.SecretaryPopup;
 import pages.basePage.BasePage;
 import pages.basePage.basePopup.AlertPopup;
 import pages.basePage.basePopup.ConfirmationPopup;
@@ -147,4 +148,5 @@ public class eFonApp extends PreparationsForRun{
     public ManageSenderNumbersAndNamesUserPage manageSenderNumbersUserPage = new ManageSenderNumbersAndNamesUserPage();
     public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
     public ActivateAuthorisationCodePopup activateAuthorisationCodePopup = new ActivateAuthorisationCodePopup();
+    public SecretaryPopup secretaryPopup = new SecretaryPopup();
 }

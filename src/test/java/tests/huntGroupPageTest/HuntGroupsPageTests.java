@@ -400,7 +400,6 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroup(huntGroup.getHuntGroupName());
     }
 
-
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
         startBrowser();

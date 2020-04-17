@@ -5,6 +5,11 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
+
+import static com.codeborne.selenide.Condition.*;
 
 public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     //<editor-fold desc="//--  AbbreviatedNumbers locators --//">
@@ -20,9 +25,35 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     private String fieldCompanyByTextXpath = "//table//td[2][text()=\"%s\"]";
     private String fieldLastNameByTextXPath = "//table//td[3][text()=\"%s\"]";
     private String fieldFirstNameByTextXPath = "//table//td[4][text()=\"%s\"]";
+    private String checkboxBlfPickupByTextXpath = "//td[contains(text(),\"%s\")]/..//button[@id=\"toggleBlfPickUpButton\"]";
+    private String buttonSecretaryByTextXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"editShortDialSecretaries\"]";
+    private String fieldByTextXpath = "//td[contains(text(),\"%s\")]/..//td[contains(text(),\"%s\")]";
+
     //</editor-fold>
 
     //<editor-fold desc="//-- AbbreviatedNumbers get\set methods --//">
+
+    public SelenideElement getLastNameByText(String num, String text) {
+        return field(String.format(fieldByTextXpath, num,text));
+    }
+
+    public SelenideElement getFirstNameByText(String num,String text) {
+        return field(String.format(fieldByTextXpath,num,text));
+    }
+
+
+    public SelenideElement getCompanyByText(String num,String text) {
+        return field(String.format(fieldByTextXpath,num,text));
+    }
+
+    public SelenideElement getButtonSecretaryByText(String text) {
+        return field(String.format(buttonSecretaryByTextXpath, text));
+    }
+
+    public SelenideElement getCheckboxBlfPickupByText(String text) {
+        return field(String.format(checkboxBlfPickupByTextXpath, text));
+    }
+
     public SelenideElement getFieldFirstNameByText(String name) {
         return field(String.format(fieldFirstNameByTextXPath,name));
     }
@@ -102,5 +133,26 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     public void checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(AbbreviatedDialling dat){
         getFieldFirstNameByText(dat.getFirstName()).should().exists();
         getFieldLastNameByText(dat.getLastName()).should().exists();
+    }
+
+    public void checkIfAbbrevNumberAssignedToUser(User user, AbbreviatedDialling shortNumber){
+        getLastNameByText(shortNumber.getSingleShortNum(),user.getLastName()).should(exist);
+    }
+
+    public void activateBLF(AbbreviatedDialling shortNumber){
+        getCheckboxBlfPickupByText(shortNumber.getSingleShortNum()).click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        getCheckboxBlfPickupByText(shortNumber.getSingleShortNum()).shouldHave(attribute("aria-pressed","true"));
+    }
+
+    private boolean checkAbbrevNumExist(AbbreviatedDialling shortNumber){
+        waitUntilAlertDisappear();
+        for (SelenideElement entry: getListNo()) {
+            if (entry.getText().contains(shortNumber.getSingleShortNum())){
+                return true;
+            }
+        }
+        return false;
     }
 }

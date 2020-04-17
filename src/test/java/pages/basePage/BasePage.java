@@ -19,6 +19,7 @@ public class BasePage extends Fields {
         FAX,
         IVRs,
         ABBREVIATED_DIALING,
+        ABBREVIATED_NUMBERS,
         CALL_PICKUPs,
         FILE_MANAGEMENT,
         CALL_FORWARDING,
@@ -38,6 +39,7 @@ public class BasePage extends Fields {
         STATUS_QUEUES,
         RECORDINGS_QUEUES,
         REPORT_QUEUES,
+
 
     }
 
@@ -86,6 +88,7 @@ public class BasePage extends Fields {
     private String tabReportXpath = "//a[@href=\"/portal/call-queues/reports\"]";
     private String tabRecCallsOverviewXpath = "//a[contains(@href,\"recorded-calls/overview\")]";
     private String tabRecCallsConfigurationsXpath = "//a[contains(@href,\"recorded-calls/configuration\")]";
+    private String tabAbbreviatedNumberXpath = "//a[@href=\"/portal/internal-numbers/overview\"]";
 
     //Save button
     private String buttonSaveXpath = "//button[text()=\"Save\"]";
@@ -94,6 +97,11 @@ public class BasePage extends Fields {
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+
+
+    public SelenideElement getTabAbbreviatedNumber() {
+        return field(tabAbbreviatedNumberXpath);
+    }
 
     public SelenideElement getTabRecCallsOverview() {
         return field(tabRecCallsOverviewXpath);
@@ -277,6 +285,7 @@ public class BasePage extends Fields {
             case RECORDINGS_QUEUES:return getTabRecordings();
             case RECORDED_CALLs_OVERVIEW: return getTabRecCallsOverview();
             case RECORDED_CALLs_CONFIGURATIONS: return getTabRecCallsConfigurations();
+            case ABBREVIATED_NUMBERS: return getTabAbbreviatedNumber();
             default: return getTabUser();
         }
     }

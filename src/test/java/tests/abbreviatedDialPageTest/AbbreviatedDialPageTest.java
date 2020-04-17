@@ -165,6 +165,69 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         abbrevNumsCleanUp(abbrevDialList);
     }
 
+    @Description("Check if user add secretary to short number")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
+    public void CheckIfUserAddSecretaryToShortNumber(){
+        step("Prepare test data");
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(11,99);
+        User user = new User();
+        userArrayList.add(user);
+        abbrevDialList.add(shortNum);
+
+        step("Login the system");
+        login();
+
+        step("Create user");
+        createUser(user);
+
+        step("Add single Abbreviated number");
+        addSingleAbbrevNumber(shortNum.getSingleShortNum());
+
+        step("Assign created short number to created user");
+        assignAbbrevNumberToInternalUser(user,shortNum);
+
+        step("Add Secretary to short number");
+        secretaryPopup.addSecretaryToShortNumber(shortNum,user);
+
+        step("Check if secretaries were added");
+        secretaryPopup.validateAddedSecretaries(shortNum,user);
+
+        step("Delete test data - delete all short numbers");
+        refreshPage();
+        deleteUser(user);
+        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
+    }
+
+    @Description("Check if user Activate/Deactivate BLF PickUp option")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
+    public void CheckIfUserActivateDeactivateBlfPickupOption(){
+        step("Prepare test data");
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(11,99);
+        User user = new User();
+        userArrayList.add(user);
+        abbrevDialList.add(shortNum);
+
+        step("Login the system");
+        login();
+
+        step("Create user");
+        createUser(user);
+
+        step("Add single Abbreviated number");
+        addSingleAbbrevNumber(shortNum.getSingleShortNum());
+
+        step("Assign created short number to created user");
+        assignAbbrevNumberToInternalUser(user,shortNum);
+
+        step("Activate BLF PickUp and verify");
+        abbreviatedNumbers.activateBLF(shortNum);
+
+        step("Delete test data - delete all short numbers");
+        refreshPage();
+        deleteUser(user);
+        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();

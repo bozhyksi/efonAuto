@@ -226,10 +226,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteSingleAbbrevNumber(String abbrevNum) {
-        basePage.getTabAbbreviatedDialling().click();
-        waitUntilAlertDisappear();
-        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        waitUntilAlertDisappear();
+        basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(ABBREVIATED_NUMBERS);
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
         if (!abbreviatedNumbers.getButtonDeleteByNum(abbrevNum).exists()) {
             makeAbbrevNumberUnused(abbrevNum);
@@ -789,6 +786,22 @@ public class BaseTestMethods extends eFonApp {
         step("Check if SMS were sent and \"Confirmation popup appears\"");
         smsConfirmationPopup.getTitle().shouldBe(Condition.visible,Condition.appear);
         smsConfirmationPopup.getButtonClose().click();
+    }
+
+    public void assignAbbrevNumberToInternalUser(User user, AbbreviatedDialling shortNumber){
+        step("Click on Edit button and open Assign abbreviated dialling popup");
+        abbreviatedNumbers.editSingleAbbrevNumber(shortNumber.getSingleShortNum());
+
+        step("Assign short number to user");
+        popupAssignAbbrevDial.getRadioInternalUser().click();
+        popupAssignAbbrevDial.getDropdrownSelectUser().selectOptionContainingText(user.getLastName());
+        popupAssignAbbrevDial.getCheckboxForwardAsExternal().click();
+        popupAssignAbbrevDial.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+
+        step("Check if short dial was assign to the user and user's info is showed in the grid");
+        abbreviatedNumbers.checkIfAbbrevNumberAssignedToUser(user,shortNumber);
     }
 
 }
