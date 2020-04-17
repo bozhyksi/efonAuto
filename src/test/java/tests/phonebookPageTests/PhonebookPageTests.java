@@ -115,7 +115,7 @@ public class PhonebookPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user is able to download example file")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"}) // bug
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"}, enabled = false) // bug
     public void VerifyIfUserIsAbleToDownloadExample(){
         step("Log in the system as VPBX admin and goto Phonebook tab");
         login();

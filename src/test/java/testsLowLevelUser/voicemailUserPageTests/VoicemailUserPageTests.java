@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserPhone;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.VOICEMAIL_SETTING;
 
 @Listeners(CustomListeners.class)
@@ -37,10 +38,12 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         voicemailBaseUserPage.goToMenuTab(VOICEMAIL_SETTING);
 
         step("Configure Voicemail retrieval/delivery");
+        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
         voicemailSettingUserPage.fillInVoicemailRetrievalDelivery(voicemailAccess);
         refreshPage();
 
         step("Validate if Voicemail retrieval/delivery configuration saved");
+        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
         voicemailSettingUserPage.validateVoicemailRetrievalDeliveryData(voicemailAccess);
     }
 
@@ -112,10 +115,12 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         voicemailBaseUserPage.goToMenuTab(VOICEMAIL_SETTING);
 
         step("Configure Voicemail announcement settings");
+        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
         voicemailSettingUserPage.configureVoicemailAnnouncementSettings(announcement);
 
         step("Validate made changes");
         refreshPage();
+        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
         voicemailSettingUserPage.validateVoicemailAnnouncementSettings(announcement);
 
 

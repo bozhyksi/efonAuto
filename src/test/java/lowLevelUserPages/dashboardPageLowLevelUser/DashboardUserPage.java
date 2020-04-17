@@ -15,8 +15,9 @@ public class DashboardUserPage extends BasePageLowLevelUser {
         SHOW_QUEUE_STATUS("Show queue status"),
         SEND_TEXT_MESSAGE("Send text message"),
         MY_END_DEVICES("My end devices"),
-        ADDRESS_BOOK("Address book");
-
+        ADDRESS_BOOK("Address book"),
+        SHOW_HUNT_GROUPS("Show hunt groups"),
+        MANAGE_SENDER_NUMBERS_AND_NAMES("Manage sender numbers and names");
 
         private String buttonName;
 

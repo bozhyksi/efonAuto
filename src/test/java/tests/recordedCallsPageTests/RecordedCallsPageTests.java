@@ -7,48 +7,33 @@ import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.recordedCallsPageTests.recordedCallsTestData.RecordedCalls;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.RECORDED_CALLs;
+import static pages.basePage.BasePage.MenuTabsBasePage.RECORDED_CALLs_CONFIGURATIONS;
 
 @Listeners(CustomListeners.class)
 
 public class RecordedCallsPageTests extends BaseTestMethods {
 
     @Description("Verify if user can configure FTP connection on Recorded Calls")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "recordedCallsPageTests"}, enabled = false)//need valid FTP configurations for test
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "recordedCallsPageTests"})
     public void VerifyIfUserCanConfigureFtpConnectionOnRecordedCalls(){
         step("Prepare test data");
         RecordedCalls recordedCall = new RecordedCalls();
 
         step("Login as navigate to Recorded Calls");
         login();
-        basePage.getTabRecordedCalls().click();
-        recordedCallsPage.getTabRecCallsConfigurations().click();
+        basePage.goToMenuTab(RECORDED_CALLs).goToMenuTab(RECORDED_CALLs_CONFIGURATIONS);
 
         step("Activate and configure calls upload");
-        recordedCallConfigPage.getCheckboxUpload().click();
-        recordedCallConfigPage.getInputHost().setValue(recordedCall.getHost());
-        recordedCallConfigPage.getInputPort().setValue(recordedCall.getPort());
-        recordedCallConfigPage.getCheckboxUseFtp().click();
-        recordedCallConfigPage.getInputUser().setValue(recordedCall.getUser());
-        recordedCallConfigPage.getInputPassword().setValue(recordedCall.getPass());
-        recordedCallConfigPage.getInputPath().setValue(recordedCall.getPath());
-        recordedCallConfigPage.getButtonSave().click();
-        refreshPage();
-        waitUntilAlertDisappear();
+        recordedCallConfigPage.configureRecordedCallsFtpUpload(recordedCall);
 
         step("Check if all data were saved");
-        basePage.getTabRecordedCalls().click();
-        recordedCallsPage.getTabRecCallsConfigurations().click();
-
-        recordedCallConfigPage.getCheckboxUpload().shouldBe(Condition.selected);
-        recordedCallConfigPage.getInputHost().shouldHave(Condition.value(recordedCall.getHost()));
-        recordedCallConfigPage.getInputPort().shouldHave(Condition.value(recordedCall.getPort()));
-        recordedCallConfigPage.getCheckboxUseFtp().shouldBe(Condition.selected);
-        recordedCallConfigPage.getInputPath().shouldHave(Condition.value(recordedCall.getPath()));
-        recordedCallConfigPage.getInputUser().shouldHave(Condition.value(recordedCall.getUser()));
-        recordedCallConfigPage.getInputPassword().shouldHave(Condition.value(recordedCall.getPass()));
+        basePage.goToMenuTab(RECORDED_CALLs).goToMenuTab(RECORDED_CALLs_CONFIGURATIONS);
+        recordedCallConfigPage.verifyRecordedCallsFtpUploadConfiguration(recordedCall);
     }
 
     @Description("Verify if user can search recorded calls on Recorded calls overview")

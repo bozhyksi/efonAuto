@@ -1,6 +1,8 @@
 package pages.recordedCallPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import tests.recordedCallsPageTests.recordedCallsTestData.RecordedCalls;
 
 public class RecordedCallConfigurationPage extends RecordedCallsPage {
     //<editor-fold desc="locators">
@@ -53,4 +55,35 @@ public class RecordedCallConfigurationPage extends RecordedCallsPage {
         return field(buttonSaveXpath);
     }
     //</editor-fold>
+
+    public void configureRecordedCallsFtpUpload(RecordedCalls recordedCall){
+        if (getCheckboxUpload().isSelected()){
+            getCheckboxUpload().click();
+            getButtonSave().click();
+            waitUntilAlertDisappear();
+            refreshPage();
+        }
+        getCheckboxUpload().click();
+        getInputHost().setValue(recordedCall.getHost());
+        getInputPort().setValue(recordedCall.getPort());
+        getCheckboxUseFtp().click();
+        getInputUser().setValue(recordedCall.getUser());
+        getInputPassword().setValue(recordedCall.getPass());
+        getInputPath().setValue(recordedCall.getPath());
+        getButtonSave().click();
+        refreshPage();
+        waitUntilAlertDisappear();
+    }
+
+    public void verifyRecordedCallsFtpUploadConfiguration(RecordedCalls recordedCall){
+        getCheckboxUpload().shouldBe(Condition.selected);
+        getInputHost().shouldHave(Condition.value(recordedCall.getHost()));
+        getInputPort().shouldHave(Condition.value(recordedCall.getPort()));
+        getCheckboxUseFtp().shouldBe(Condition.selected);
+        getInputPath().shouldHave(Condition.value(recordedCall.getPath()));
+        getInputUser().shouldHave(Condition.value(recordedCall.getUser()));
+        getCheckboxUpload().click();
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
 }

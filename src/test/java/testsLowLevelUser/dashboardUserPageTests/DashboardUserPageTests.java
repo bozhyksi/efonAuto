@@ -44,6 +44,12 @@ public class DashboardUserPageTests extends BaseTestMethods {
 
         step("Check End devices widget");
         dashboardUserPage.checkWidgetButton(MY_END_DEVICES, END_DEVICES);
+
+        step("Check Hunt Groups widget");
+        dashboardUserPage.checkWidgetButton(SHOW_HUNT_GROUPS, HUNT_GROUPS);
+
+        step("Check Manage sender numbers and names link");
+        dashboardUserPage.checkWidgetButton(MANAGE_SENDER_NUMBERS_AND_NAMES, SEND_SMS);
     }
 
 }

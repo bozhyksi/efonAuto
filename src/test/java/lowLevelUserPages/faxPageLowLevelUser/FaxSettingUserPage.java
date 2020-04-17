@@ -55,7 +55,7 @@ public class FaxSettingUserPage extends FaxesBaseUserPage {
     }
 
     public void validateFax2EmailSettings(Fax2EmailSettingsTestData fax2EmailSettings){
-        getDropdownSelectNumber().getSelectedOption().shouldHave(text(fax2EmailSettings.getNumber()));
+        getDropdownSelectNumber().selectOptionContainingText(fax2EmailSettings.getNumber());
         getEditButton().click();
         waitUntilAlertDisappear();
         getInputEmail().shouldHave(value(fax2EmailSettings.getEmail()));

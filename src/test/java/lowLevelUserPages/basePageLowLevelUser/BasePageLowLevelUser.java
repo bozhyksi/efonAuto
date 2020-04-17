@@ -10,6 +10,8 @@ import pages.basePage.BasePage;
 import static com.codeborne.selenide.Condition.*;
 
 public class BasePageLowLevelUser extends BasePage {
+    public static String autotestUserPhone = "00451245789908";
+
     public enum MenuTabsLowLevelUser{
         SEND_SMS,
         VOICEMAIL,
@@ -28,7 +30,8 @@ public class BasePageLowLevelUser extends BasePage {
         QUEUES("Queues"),
         END_DEVICES("End devices"),
         SEND_SMS("Send SMS"),
-        CONTACT_SETTINGS("Contact settings");
+        CONTACT_SETTINGS("Contact settings"),
+        HUNT_GROUPS("Hunt Groups");
 
         private String title;
 

@@ -27,6 +27,8 @@ public class BasePage extends Fields {
         QUEUES,
         END_DEVICES,
         RECORDED_CALLs,
+        RECORDED_CALLs_CONFIGURATIONS,
+        RECORDED_CALLs_OVERVIEW,
         PHONEBOOK,
         CONTACT_DATA,
         MANAGE_ABBREVIATED_NUMBERS,
@@ -82,6 +84,8 @@ public class BasePage extends Fields {
     private String tabStatusQueuesXpath = "//a[@href=\"/portal/call-queues/status\"]";
     private String tabRecordingsXpath = "//a[@href=\"/portal/call-queues/records\"]";
     private String tabReportXpath = "//a[@href=\"/portal/call-queues/reports\"]";
+    private String tabRecCallsOverviewXpath = "//a[contains(@href,\"recorded-calls/overview\")]";
+    private String tabRecCallsConfigurationsXpath = "//a[contains(@href,\"recorded-calls/configuration\")]";
 
     //Save button
     private String buttonSaveXpath = "//button[text()=\"Save\"]";
@@ -91,6 +95,17 @@ public class BasePage extends Fields {
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
 
+    public SelenideElement getTabRecCallsOverview() {
+        return field(tabRecCallsOverviewXpath);
+    }
+
+    public SelenideElement getTabRecCallsConfigurations() {
+        return field(tabRecCallsConfigurationsXpath);
+    }
+
+    public SelenideElement getLinkFeedback() {
+        return field(linkFeedbackXpath);
+    }
 
     public SelenideElement getButtonSave() {
         return field(buttonSaveXpath);
@@ -260,6 +275,8 @@ public class BasePage extends Fields {
             case STATUS_QUEUES:return getTabStatusQueues();
             case CONFIGURE_QUEUES:return getTabConfigureQueues();
             case RECORDINGS_QUEUES:return getTabRecordings();
+            case RECORDED_CALLs_OVERVIEW: return getTabRecCallsOverview();
+            case RECORDED_CALLs_CONFIGURATIONS: return getTabRecCallsConfigurations();
             default: return getTabUser();
         }
     }

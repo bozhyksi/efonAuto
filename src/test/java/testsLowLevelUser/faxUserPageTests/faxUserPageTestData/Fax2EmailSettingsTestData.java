@@ -27,7 +27,7 @@ public class Fax2EmailSettingsTestData extends BaseTestMethods {
         }
     }
 
-    private String number = "00451245789906";
+    private String number = "00451245789908";
     private String email = getRandomEmail();
     private String faxMessageFormat = FaxMessageFormat.getRandomFormat();
 

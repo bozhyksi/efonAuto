@@ -4,11 +4,11 @@ import flow.BaseTestMethods;
 
 public class RecordedCalls extends BaseTestMethods {
 
-    private String host = "192.122.0.12";
-    private String port = getRandomNumber(4);
-    private String user = getRandomString(15);
-    private String pass = getRandomPassword();
-    private String path = "\\eFonAuto\\proj_EFON\\efonAuto";
+    private String host = "192.168.102.162";
+    private String port = "22";
+    private String user = "mhrun";
+    private String pass = "rHPO4SiOZs";
+    private String path = "\\public";
     private String untilDate = getDate();
     private String fromDate = "2015-08-01 00:00";
     private String searchData = "";
