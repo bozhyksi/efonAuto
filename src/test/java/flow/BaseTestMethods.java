@@ -357,6 +357,7 @@ public class BaseTestMethods extends eFonApp {
         createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
         createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
         createHuntGroupPopup.selectRandomNumber();
+        huntGroup.setHuntGroupNumber(createHuntGroupPopup.getDropdownNumber().getSelectedText());
         createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
         createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
         createHuntGroupPopup.getButtonSave().click();

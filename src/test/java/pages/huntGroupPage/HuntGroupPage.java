@@ -1,9 +1,12 @@
 package pages.huntGroupPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+
+import static com.codeborne.selenide.Condition.exist;
 
 public class HuntGroupPage extends BasePage {
     //<editor-fold desc="Locators">
@@ -19,9 +22,21 @@ public class HuntGroupPage extends BasePage {
     private String checkboxUseBlockListXpath = "//label[text()=\"Use blocklist\"]//input";
     private String dropdownUseBlockListXpath = "//select[@formcontrolname=\"blockListType\"]";
     private String buttonSaveXpath = "//button[text()='Save']";
+    private String fieldCallRecordingsIconByTextXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"callRecording\"]";
+    private String fieldActivatedCallRecordByTextXpath = "//td[contains(text(),\"%s\")]/..//p[text()=\"has activated calls recording\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getFieldActivatedCallRecordByText(String text) {
+        return field(String.format(fieldActivatedCallRecordByTextXpath,text));
+    }
+
+    public SelenideElement getFieldCallRecordingsIconByText(String text) {
+        return field(String.format(fieldCallRecordingsIconByTextXpath, text));
+    }
+
     public SelenideElement getButtonCreateNewHuntGroup() {
         return field(buttonCreateNewHuntGroupXpath);
     }
@@ -71,8 +86,19 @@ public class HuntGroupPage extends BasePage {
     }
     //</editor-fold>
 
+    public void openEditPopup(HuntGroup huntGroup){
+        getButtonEditByName(huntGroup.getHuntGroupName()).click();
+        waitUntilAlertDisappear();
+    }
+
     public void editHuntGroup(HuntGroup huntGroup){
         getButtonEditByName(huntGroup.getHuntGroupName()).click();
         waitUntilAlertDisappear();
+    }
+
+    public void verifyIfCallRecordingWasACtivated(HuntGroup huntGroup){
+        refreshPage();
+        getFieldCallRecordingsIconByText(huntGroup.getHuntGroupNumber()).should(exist);
+        getFieldActivatedCallRecordByText(huntGroup.getHuntGroupNumber()).should(exist);
     }
 }

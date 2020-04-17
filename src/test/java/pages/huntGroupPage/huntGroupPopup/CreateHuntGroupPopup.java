@@ -350,4 +350,10 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getInputSaturday().shouldHave(Condition.value(huntGroup.getFurtherTimeSunday()));
     }
 
+    public void activateCallRecordings(){
+        getCheckboxCallRecording().click();
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
 }

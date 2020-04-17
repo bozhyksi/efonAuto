@@ -134,7 +134,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can edit hunt group and configure \"If end devices not available (not registered)\" section")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "huntGroupsPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void VerifyIfUserCanEditHuntGroupAndConfigureIfEndDevicesNotAvailableSection() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
@@ -376,7 +376,29 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteQueue(queue.getName());
     }
 
+    @Description("Verify if user is able to configure \"Calls recording\" for HuntGroup")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void VerifyIfUserIsAbleToConfigureCallsRecording(){
+        step("Prepare test data");
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
 
+        step("Login the system");
+        login();
+
+        step("Create Hunt Group");
+        createHuntGroup(huntGroup);
+
+        step("Edit created hunt Group and activate \"Calls recording\"");
+        huntGroupPage.openEditPopup(huntGroup);
+        createHuntGroupPopup.activateCallRecordings();
+
+        step("Verify if \"Calls recording\" was activated");
+        huntGroupPage.verifyIfCallRecordingWasACtivated(huntGroup);
+
+        step("Delete test data");
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+    }
 
 
     @AfterClass(alwaysRun = true)
