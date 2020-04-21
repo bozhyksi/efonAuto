@@ -60,7 +60,9 @@ import pages.numbersPage.NumbersPage;
 import pages.phonebookPage.PhonebookPage;
 import pages.queuesPage.ConfigureQueueTab;
 import pages.queuesPage.QueuesBasePage;
+import pages.queuesPage.StatusQueueTab;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
+import pages.queuesPage.queuePagePopups.PenaltyPopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import pages.recordedCallPage.RecordedCallConfigurationPage;
 import pages.recordedCallPage.RecordedCallOverviewPage;
@@ -149,4 +151,6 @@ public class eFonApp extends PreparationsForRun{
     public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
     public ActivateAuthorisationCodePopup activateAuthorisationCodePopup = new ActivateAuthorisationCodePopup();
     public SecretaryPopup secretaryPopup = new SecretaryPopup();
+    public StatusQueueTab statusQueuePage = new StatusQueueTab();
+    public PenaltyPopup penaltyPopup = new PenaltyPopup();
 }

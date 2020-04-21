@@ -24,9 +24,14 @@ public class User extends BaseTestMethods {
     private String voicemailEmail = getRandomEmail();
     private String voicemailSalutation = getRandomString(15);
     private String faxEmail = getRandomEmail();
+    private String penalty = getRandomNumber(100,999);
 
     //<editor-fold desc="get\set">
 
+
+    public String getPenalty() {
+        return penalty;
+    }
 
     public String getFaxEmail() {
         return faxEmail;

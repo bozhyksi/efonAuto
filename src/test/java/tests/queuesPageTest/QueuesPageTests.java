@@ -1,30 +1,23 @@
 package tests.queuesPageTest;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.WebDriverRunner;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
+import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
+import static pages.basePage.BasePage.MenuTabsBasePage.STATUS_QUEUES;
+import static pages.queuesPage.StatusQueueTab.ChangeState.*;
 
 @Listeners(CustomListeners.class)
 
@@ -112,7 +105,7 @@ public class QueuesPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if Queue was created");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(exist);
 
         step("Delete created Queue");
         configureQueueTab.getButtonDeleteQueueByName(queue.getName()).click();
@@ -121,7 +114,7 @@ public class QueuesPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if Queue was created");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).shouldNot(Condition.exist);
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).shouldNot(exist);
 
         step("Delete created users");
         deleteUser(user1);
@@ -187,7 +180,7 @@ public class QueuesPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if Queue exists in grid");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
+        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(exist);
 
         step("Open edit popup, click edit button");
         configureQueueTab.getButtonEditQueueByName(queue.getName()).click();
@@ -240,7 +233,96 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteUser(user1,user2);
     }
 
-    @AfterClass(alwaysRun = true)
+    @Description("Check if user can change the Agent status Login/Logout/Wait on Status tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    public void CheckIfUserCanChangeAgentStatusOnStatusTab(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto status tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(STATUS_QUEUES);
+
+        step("Select created Queue in search drop down");
+        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
+
+        step("Verify if selected Queue agents appeared in search results");
+        statusQueuePage.getFieldAgentByText(user.getFirstName()).should(exist);
+
+        step("Change agent status and verify if status was changed correctly");
+        statusQueuePage.changeStatus(user.getFirstName(), Login);
+        statusQueuePage.changeStatus(user.getFirstName(), Pause);
+        statusQueuePage.changeStatus(user.getFirstName(), End_Pause);
+        statusQueuePage.changeStatus(user.getFirstName(), Wait);
+        statusQueuePage.changeStatus(user.getFirstName(), End_Wait);
+        statusQueuePage.changeStatus(user.getFirstName(), Logout);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+    }
+
+    @Description("Check if admin can change the Agent penalty Status tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    public void CheckIfAdminCanChangeTheAgentPenaltyStatusTab(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto status tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(STATUS_QUEUES);
+
+        step("Select created Queue in search drop down");
+        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
+
+        step("Verify if selected Queue agents appeared in search results");
+        statusQueuePage.getFieldAgentByText(user.getFirstName()).should(exist);
+
+        step("Open Penalty popup");
+        statusQueuePage.getButtonEditByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
+
+        step("Set penalty value and validate popup headers");
+        penaltyPopup.changePenaltyForAgent(user);
+        refreshPage();
+
+        step("Validate if penalty was changed");
+        statusQueuePage.getFieldPenaltyByText(user.getPenalty()).should(exist);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+
+    }
+
+
+    @AfterClass(alwaysRun = true, enabled = false)
     private void cleanUp(){
         startBrowser();
         login();
