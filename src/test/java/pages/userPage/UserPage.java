@@ -7,6 +7,8 @@ import com.codeborne.selenide.SelenideElement;
 import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.User;
 
+import javax.jws.soap.SOAPBinding;
+
 public class UserPage extends BasePage {
     //<editor-fold desc="//-- UserPage Locators --// ">
     private String pageTitleXpath = "//h1";
@@ -86,6 +88,11 @@ public class UserPage extends BasePage {
 
     public void deleteUserButtonClick(String userName){
         getChildByParentName(getListUserNames(),getListButtonDeleteUser(),userName).click();
+    }
+
+    public void openEditUserPopup(User user){
+        getButtonConfigUserByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
     }
 
 }

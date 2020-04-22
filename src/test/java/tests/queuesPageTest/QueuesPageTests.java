@@ -321,7 +321,6 @@ public class QueuesPageTests extends BaseTestMethods {
 
     }
 
-
     @AfterClass(alwaysRun = true, enabled = false)
     private void cleanUp(){
         startBrowser();

@@ -550,7 +550,44 @@ public class UserPageTests extends BaseTestMethods {
         refreshPage();
 
         step("Delete test data");
-        userCleanUp(userArrayList);
+        deleteUser(user);
+    }
+
+    @Description("Check if can select his own number as outgoing on END-DEVICE tab(edit user popup)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfCanSelectHisOwnNumberAsOutgoingOnEndDevice(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        EndDevice endDevice = new EndDevice();
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto END DEVICES tab");
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ENDDEVICE);
+
+        step("Select end device");
+        endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
+
+        step("Select user own number as outgoing on END-DEVICE tab(edit user popup)");
+        endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().selectOptionContainingText(user.getPhoneNumber());
+
+        step("Save and verify changes");
+        endDeviceTabConfigUserPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ENDDEVICE);
+        endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
+        endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(user.getPhoneNumber());
+
+        step("Clear test data");
+        deleteUser(user);
     }
 
     @AfterClass(alwaysRun = true)
