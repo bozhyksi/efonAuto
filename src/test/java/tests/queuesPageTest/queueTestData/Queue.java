@@ -5,6 +5,24 @@ import flow.BaseTestMethods;
 import java.util.Random;
 
 public class Queue extends BaseTestMethods {
+    public enum Report{
+        Overall_Call_Statistics("Overall call statistics"),
+        Daily_Call_Statistics("Daily call statistics"),
+        Hourly_Call_Statistics("Hourly call statistics"),
+        Agent_Call_Statistics("Agent call statistics"),
+        Waiting_Time_Statistics("Waiting time statistics");
+
+        private String reportType;
+
+        Report(String reportType){
+            this.reportType = reportType;
+        }
+
+        public String getReportType() {
+            return reportType;
+        }
+    }
+
     public enum RuleForFindingAgent{
         RingAll("Ring all"),
         Random("Random"),
@@ -180,6 +198,11 @@ public class Queue extends BaseTestMethods {
     }
 
     //<editor-fold desc="properties">
+
+    private String day = getDate("yyyy-MM-dd");
+    private String month = getDate("yyyy-MM", "MONTH",-3);
+    private String fromDate = getDate("yyyy-MM-dd","MONTH",-2);
+    private String toDate = getDate("yyyy-MM-dd");
     private String name;
     private String maxWaitTime;
     private String subscription;
@@ -195,6 +218,8 @@ public class Queue extends BaseTestMethods {
     private String waitingTimeBeforeNextAttempt;
     private String waitingTimeBeforeNextCall;
     private String recordCalls;
+    private String fromDateQueueRecordings;
+    private String toDateQueueRecordings;
     //</editor-fold>
 
     public Queue(){
@@ -207,9 +232,37 @@ public class Queue extends BaseTestMethods {
         this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
         this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
         this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
     }
 
     //<editor-fold desc="get\set">
+
+
+    public String getMonth() {
+        return month;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+
+    public String getToDateQueueRecordings() {
+        return toDateQueueRecordings;
+    }
+
+    public String getFromDateQueueRecordings() {
+        return fromDateQueueRecordings;
+    }
 
     public void setMaxWaitTime(String maxWaitTime) {
         this.maxWaitTime = maxWaitTime;
@@ -308,5 +361,8 @@ public class Queue extends BaseTestMethods {
     }
     //</editor-fold>
 
-
 }
+
+
+
+

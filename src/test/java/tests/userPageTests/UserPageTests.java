@@ -482,7 +482,7 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
-    @Description("Check if can make configurations on END-DEVICE tab(edit user popup)")
+    @Description("Check if user can make configurations on END-DEVICE tab(edit user popup)")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
     public void CheckIfCanMakeConfigurationsOnEnddeviceTab(){
         step("Preparing test data, creating new object - User");
@@ -553,7 +553,7 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
-    @Description("Check if can select his own number as outgoing on END-DEVICE tab(edit user popup)")
+    @Description("Check if user can select his own number as outgoing on END-DEVICE tab(edit user popup)")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
     public void CheckIfCanSelectHisOwnNumberAsOutgoingOnEndDevice(){
         step("Preparing test data, creating new object - User");

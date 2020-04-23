@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.queuesPage.ReportsQueueTab;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -14,10 +15,12 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
+import static io.qameta.allure.Allure.addStreamAttachmentAsync;
 import static io.qameta.allure.Allure.step;
-import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
-import static pages.basePage.BasePage.MenuTabsBasePage.STATUS_QUEUES;
+import static pages.basePage.BasePage.MenuTabsBasePage.*;
+import static pages.queuesPage.ReportsQueueTab.ReportBy.*;
 import static pages.queuesPage.StatusQueueTab.ChangeState.*;
+import static tests.queuesPageTest.queueTestData.Queue.Report.Overall_Call_Statistics;
 
 @Listeners(CustomListeners.class)
 
@@ -275,7 +278,7 @@ public class QueuesPageTests extends BaseTestMethods {
         deleteQueue(queue.getName());
     }
 
-    @Description("Check if admin can change the Agent penalty Status tab")
+    @Description("Check if admin can change the Agent penalty on Status tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
     public void CheckIfAdminCanChangeTheAgentPenaltyStatusTab(){
         step("Prepare test data - users, queue instances");
@@ -321,7 +324,141 @@ public class QueuesPageTests extends BaseTestMethods {
 
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @Description("Check if admin can search Queue for recordings")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void CheckIfAdminSearchQueueForRecordings(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto status tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(RECORDINGS_QUEUES);
+
+        step("Select created queue in the dropdown");
+        recordingsQueuePage.getDropdownQueueDisplayName().selectOptionContainingText(queue.getName());
+
+        step("Select agent in the proper dropdown");
+        recordingsQueuePage.getDropdownAgent().selectOptionContainingText(user.getLastName());
+
+        step("Fill in From/To date");
+        recordingsQueuePage.getInputFrom().setValue(queue.getFromDateQueueRecordings());
+        recordingsQueuePage.getInputTo().setValue(queue.getToDateQueueRecordings());
+
+        step("Click search and validate the results");
+        recordingsQueuePage.getButtonSearch().click();
+        waitUntilAlertDisappear();
+        recordingsQueuePage.getFieldByName("No Items").should(exist);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+    }
+
+    @Description("Check if VPBX admin can create Report by Day")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void CheckIfVpbxAdminCanCreateReportByDay(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto REPORTS tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
+
+        step("Check if user can create daily reports");
+        reportsQueuePage.createReportForEveryType(Day,queue,user);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+    }
+
+    @Description("Check if VPBX admin can create Report by Month")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void CheckIfVpbxAdminCanCreateReportByMonth(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto REPORTS tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
+
+        step("Check if user can create daily reports");
+        reportsQueuePage.createReportForEveryType(Month,queue,user);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+    }
+
+    @Description("Check if VPBX admin can create Report by Period")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void CheckIfVpbxAdminCanCreateReportByPeriod(){
+        step("Prepare test data - users, queue instances");
+        Queue queue = new Queue();
+        User user = new User();
+        queuesList.add(queue);
+        usersList.add(user);
+
+        step("Log in the system");
+        login();
+
+        step("Create test data - Queue, Users");
+        createUser(user);
+        createQueueOnlyRequiredFields(queue);
+
+        step("Add agent to queue");
+        addAgentToQueue(queue,user);
+
+        step("Goto REPORTS tab");
+        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
+
+        step("Check if user can create daily reports");
+        reportsQueuePage.createReportForEveryType(Period,queue,user);
+
+        step("Clean test data");
+        deleteUser(user);
+        deleteQueue(queue.getName());
+    }
+
+
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();

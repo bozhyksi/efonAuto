@@ -58,9 +58,7 @@ import pages.lastCallsPage.OutgoingCallsTab;
 import pages.loginPage.LoginPage;
 import pages.numbersPage.NumbersPage;
 import pages.phonebookPage.PhonebookPage;
-import pages.queuesPage.ConfigureQueueTab;
-import pages.queuesPage.QueuesBasePage;
-import pages.queuesPage.StatusQueueTab;
+import pages.queuesPage.*;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.queuesPage.queuePagePopups.PenaltyPopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
@@ -153,4 +151,6 @@ public class eFonApp extends PreparationsForRun{
     public SecretaryPopup secretaryPopup = new SecretaryPopup();
     public StatusQueueTab statusQueuePage = new StatusQueueTab();
     public PenaltyPopup penaltyPopup = new PenaltyPopup();
+    public RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
+    public ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
 }

@@ -35,6 +35,39 @@ public class BaseTestMethods extends eFonApp {
         return date;
     }
 
+    public String getDate(String format){
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        Date currentDate = new Date();
+        String date = formatter.format(currentDate);
+        return date;
+    }
+
+    public String getDate(String format, String timeValue, int amount){
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        switch (timeValue){
+            case "DAY":
+                calendar.add(Calendar.DATE, amount);
+                calendar.add(Calendar.HOUR,amount);
+                break;
+            case "MONTH":
+                calendar.add(Calendar.MONTH, amount);
+                calendar.add(Calendar.HOUR,amount);
+                break;
+            case "YEAR":
+                calendar.add(Calendar.YEAR, amount);
+                calendar.add(Calendar.HOUR,amount);
+                break;
+            default:
+                break;
+        }
+        currentDate = calendar.getTime();
+        String date = formatter.format(currentDate);
+        return date;
+    }
+
     public String getDate(String timeValue, int amount){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date currentDate = new Date();

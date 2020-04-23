@@ -7,6 +7,9 @@ import core.fields.Fields;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exist;
+
 public class BasePage extends Fields {
 
     public AtomicInteger index = new AtomicInteger(1);
