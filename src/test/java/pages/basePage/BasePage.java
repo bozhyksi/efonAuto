@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Condition.exist;
 
 public class BasePage extends Fields {
 
-    public AtomicInteger index = new AtomicInteger(1);
+    public static AtomicInteger index = new AtomicInteger(1);
 
     public enum MenuTabsBasePage{
         USER,

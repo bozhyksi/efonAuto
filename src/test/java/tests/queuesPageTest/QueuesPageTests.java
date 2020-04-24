@@ -325,7 +325,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if admin can search Queue for recordings")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
     public void CheckIfAdminSearchQueueForRecordings(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -368,7 +368,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Day")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
     public void CheckIfVpbxAdminCanCreateReportByDay(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -398,7 +398,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Month")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
     public void CheckIfVpbxAdminCanCreateReportByMonth(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -428,7 +428,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Period")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
     public void CheckIfVpbxAdminCanCreateReportByPeriod(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();

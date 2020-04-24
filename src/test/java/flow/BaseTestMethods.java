@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
@@ -210,6 +211,7 @@ public class BaseTestMethods extends eFonApp {
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         userPage.checkIfUserDeleted(user);
+        BasePage.index.decrementAndGet();
     }
 
     public void deleteUser(User ... users) {

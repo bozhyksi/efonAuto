@@ -588,6 +588,7 @@ public class UserPageTests extends BaseTestMethods {
         configureUserBasePopup.goToTab(ENDDEVICE);
         endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
         endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(user.getPhoneNumber());
+        refreshPage();
 
         step("Clear test data");
         deleteUser(user);
