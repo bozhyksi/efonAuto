@@ -11,6 +11,7 @@ import lowLevelUserPages.endDevicesLowLevelUserPage.EndDevicesUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
+import lowLevelUserPages.queuesLowLevelUserPage.queuePopups.QueueForAgentsUserPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.ManageSenderNumbersAndNamesUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
@@ -153,5 +154,7 @@ public class eFonApp extends PreparationsForRun{
     public PenaltyPopup penaltyPopup = new PenaltyPopup();
     public RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
     public ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
+    public QueueForAgentsUserPopup queueForAgentsLowLevelUserPopup = new QueueForAgentsUserPopup();
+
 
 }

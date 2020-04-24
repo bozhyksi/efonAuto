@@ -18,15 +18,15 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
-import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
-import static pages.basePage.BasePage.MenuTabsBasePage.USER;
+import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
+import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.FAX;
 
 @Listeners({CustomListeners.class})
 
 public class UserPageTests extends BaseTestMethods {
     ArrayList<User> userArrayList = new ArrayList<>();
-    //ArrayList<FileManagementTestData> filesArrayList = new ArrayList<>();
+    ArrayList<FileManagementTestData> filesArrayList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
@@ -665,13 +665,46 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
+    @Description("Check if marked as Ringback announcement appears on File management")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfMarkedAsRingbackAnnouncementAppearsOnFileManagement(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        FileManagementTestData announcFile = new FileManagementTestData();
 
+        userArrayList.add(user);
+        filesArrayList.add(announcFile);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab. Upload announcement.");
+        uploadAnnouncementForUserOnEditPopup(user,announcFile);
+
+        step("Edit uploaded ANNOUNCEMENTS and mark it as Ringback");
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup.activateRingbackOption(announcFile);
+        configureUserBasePopup.getButtonClose().click();
+
+
+        step("Check if announcement file appeared on File management");
+        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
+        deleteAnnouncementFile(announcFile.getFileName());
+
+        step("Clear test data");
+        deleteUser(user);
+    }
 
     @AfterClass(alwaysRun = true)
     private void сleanUp(){
         startBrowser();
         login();
         userCleanUp(userArrayList);
+        announcementCleanUp(filesArrayList);
         closeBrowser();
     }
 }

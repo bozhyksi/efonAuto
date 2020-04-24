@@ -78,6 +78,14 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         waitUntilAlertDisappear();
     }
 
+    public void activateRingbackOption(FileManagementTestData announcFile){
+        getButtonEditUserAnnouncementsByName(announcFile.getFileName()).click();
+        waitUntilAlertDisappear();
+        configureAnnouncementPopup.getInputRingback().click();
+        configureAnnouncementPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
 
     private class ConfigureAnnouncementPopup {
         private String inputNameXpath = "//announcement-edit-name//input[@formcontrolname=\"displayName\"]";
