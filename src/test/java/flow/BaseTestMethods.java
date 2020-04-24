@@ -19,8 +19,7 @@ import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
@@ -149,6 +148,12 @@ public class BaseTestMethods extends eFonApp {
 
     public String getRandomPhone() {
         return "00" + getRandomNumber(11);
+    }
+
+    public void logOut(){
+        basePage.getButtonLogout().click();
+        waitUntilAlertDisappear();
+        loginPage.getButtonLogin().shouldBe(visible,appear,appears);
     }
 
     public void login() {
@@ -835,6 +840,18 @@ public class BaseTestMethods extends eFonApp {
 
         step("Check if short dial was assign to the user and user's info is showed in the grid");
         abbreviatedNumbers.checkIfAbbrevNumberAssignedToUser(user,shortNumber);
+    }
+
+    public ArrayList<String> getListOfAllCustomerNumbers(){
+        ArrayList<String> customerNumbersList;
+        login();
+        basePage.goToMenuTab(NUMBERS);
+        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
+        waitUntilAlertDisappear();
+        customerNumbersList = numbersPage.getListOfNumbers();
+        logOut();
+        waitUntilAlertDisappear();
+        return customerNumbersList;
     }
 
 }

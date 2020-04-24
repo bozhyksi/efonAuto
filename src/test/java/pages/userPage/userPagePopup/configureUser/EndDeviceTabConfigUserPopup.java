@@ -1,8 +1,16 @@
 package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import pages.numbersPage.NumbersPage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EndDeviceTabConfigUserPopup extends ConfigureUserBasePopup {
+
     //<editor-fold desc="locators">
     private String dropdownSelectEndDeviceXpath = "//edit-user//h3/following-sibling::select";
     private String inputNameEndDevXpath = "//edit-user//end-device-detail//input[@formcontrolname=\"name\"]";
@@ -74,4 +82,27 @@ public class EndDeviceTabConfigUserPopup extends ConfigureUserBasePopup {
         return field(inputLocationEndDevXpath);
     }
     //</editor-fold>
+
+    public ArrayList<String> getOutgoingDropdownItems(){
+        waitUntilAlertDisappear();
+        ArrayList<String> dropdownItemsList = new ArrayList<>();
+        Select obj = new Select(getDropdownOutgoingNumEndDev());
+        List<WebElement> itemsList = obj.getOptions();
+        for (WebElement elem: itemsList) {
+            if (!elem.getText().contains("Not Selected"))dropdownItemsList.add(elem.getText().replaceAll("\\s",""));
+        }
+        return dropdownItemsList;
+    }
+
+    public void verifyIfAllCustomerNumbersAreAvailableAsOutgoing(ArrayList<String> customerNumbersList,
+                                                                 ArrayList<String> outgoingNumbersList){
+        Assert.assertEquals(customerNumbersList.size(),outgoingNumbersList.size(),"Size of numbers lists is not equal " +
+                "customer numbers: "+customerNumbersList.size()+"; outgoing numbers: "+outgoingNumbersList.size());
+
+        for (String customerNumber: customerNumbersList) {
+            Assert.assertTrue(outgoingNumbersList.contains(customerNumber), customerNumber+" - does not exist in outgoing numbers list");
+        }
+
+    }
+
 }

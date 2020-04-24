@@ -9,6 +9,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
@@ -17,6 +18,8 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
+import static pages.basePage.BasePage.MenuTabsBasePage.USER;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
 
 @Listeners({CustomListeners.class})
@@ -585,6 +588,44 @@ public class UserPageTests extends BaseTestMethods {
         configureUserBasePopup.goToTab(ENDDEVICE);
         endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
         endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(user.getPhoneNumber());
+
+        step("Clear test data");
+        deleteUser(user);
+    }
+
+    @Description("Check if all customers numbers are available as outgoing on END-DEVICE tab(edit user popup)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfAllCustomersNumbersAreAvailableAsOutgoing(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        userArrayList.add(user);
+
+        ArrayList<String> customerNumbersList;
+        ArrayList<String> outgoingNumbersList;
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Goto Numbers page and get list of all numbers");
+        basePage.goToMenuTab(NUMBERS);
+        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
+        waitUntilAlertDisappear();
+        customerNumbersList = numbersPage.getListOfNumbers();
+
+        step("Open user's EDIT mode, and goto END DEVICES tab");
+        basePage.goToMenuTab(USER);
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ENDDEVICE);
+
+        step("Get list of outgoing numbers");
+        outgoingNumbersList = endDeviceTabConfigUserPopup.getOutgoingDropdownItems();
+
+        step("Verify if all customer numbers are available in outgoing dropdown");
+        endDeviceTabConfigUserPopup.verifyIfAllCustomerNumbersAreAvailableAsOutgoing(customerNumbersList,outgoingNumbersList);
+        refreshPage();
 
         step("Clear test data");
         deleteUser(user);

@@ -153,4 +153,5 @@ public class eFonApp extends PreparationsForRun{
     public PenaltyPopup penaltyPopup = new PenaltyPopup();
     public RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
     public ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
+
 }
