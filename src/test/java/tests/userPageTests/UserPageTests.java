@@ -631,6 +631,42 @@ public class UserPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
+    @Description("Check if vpbx admin can edit/delete uploaded files on ANNOUNCEMENTS tab(edit user popup) ")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfVpbxAdminCanEditUploadedAnnouncementsOnAnnouncementsTab(){
+        step("Preparing test data, creating new object - User");
+        User user = new User();
+        FileManagementTestData announcFile = new FileManagementTestData();
+
+        userArrayList.add(user);
+
+        step("Login the test environment");
+        login();
+
+        step("Create new user");
+        createUser(user);
+
+        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab. Upload announcement.");
+        uploadAnnouncementForUserOnEditPopup(user,announcFile);
+
+        step("Edit uploaded ANNOUNCEMENTS");
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup.changeAnnouncementName(announcFile);
+        refreshPage();
+
+        step("Verify if changes saved");
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup.verifyAnnouncementName(announcFile);
+        refreshPage();
+
+        step("Clear test data");
+        deleteUser(user);
+    }
+
+
+
     @AfterClass(alwaysRun = true)
     private void сleanUp(){
         startBrowser();

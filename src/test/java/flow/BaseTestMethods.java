@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
@@ -852,6 +853,19 @@ public class BaseTestMethods extends eFonApp {
         logOut();
         waitUntilAlertDisappear();
         return customerNumbersList;
+    }
+
+    public void uploadAnnouncementForUserOnEditPopup(User user, FileManagementTestData announcFile){
+        userPage.openEditUserPopup(user);
+        configureUserBasePopup.goToTab(ConfigureUserBasePopup.Tabs.ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup.getButtonUploadFile().click();
+        announcementsTabConfigUserPopup.uploadAnnouncementFile(announcFile.getFilePath());
+        waitUntilAlertDisappear();
+        announcementsTabConfigUserPopup.getInputName().setValue(announcFile.getFileName());
+        announcementsTabConfigUserPopup.getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        announcementsTabConfigUserPopup.getButtonClose().click();
     }
 
 }
