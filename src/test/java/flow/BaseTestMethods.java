@@ -739,6 +739,12 @@ public class BaseTestMethods extends eFonApp {
         queueForAgentsPopup.validateAddedAgents(queue,user);
     }
 
+    public void addAgentToQueue(String queue, User user){
+        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
+        queueForAgentsPopup.addAgentToQueue(queue, user);
+        queueForAgentsPopup.validateAddedAgents(queue,user);
+    }
+
     public void configureBlockList(IVRtestData ivr, BlockListTestData blockList){
         step("Configure Block list section - select number");
         blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());

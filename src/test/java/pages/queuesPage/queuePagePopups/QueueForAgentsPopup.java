@@ -62,8 +62,28 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
         waitUntilAlertDisappear();
     }
 
+    public void addAgentToQueue(String queue, User ... users){
+        getButtonEditAgentsQueueByText(queue).click();
+        waitUntilAlertDisappear();
+        for (User user:users) {
+            executeDragDropScript(getFieldNotSelectedAgentByName(user.getFirstName()), getSectionSelected());
+        }
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+    }
+
     public void validateAddedAgents(Queue queue, User ... users){
         getButtonEditAgentsQueueByText(queue.getName()).click();
+        waitUntilAlertDisappear();
+        for (User user: users) {
+            getFieldSelectedAgentByName(user.getFirstName()).should(exist);
+            waitUntilAlertDisappear();
+        }
+        getButtonCancel().click();
+    }
+
+    public void validateAddedAgents(String queue, User ... users){
+        getButtonEditAgentsQueueByText(queue).click();
         waitUntilAlertDisappear();
         for (User user: users) {
             getFieldSelectedAgentByName(user.getFirstName()).should(exist);

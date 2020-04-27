@@ -236,6 +236,20 @@ public class Queue extends BaseTestMethods {
         this.toDateQueueRecordings = getDate("HOUR",1);
     }
 
+    public Queue(String queueName){
+        this.name = queueName;
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
+    }
+
     //<editor-fold desc="get\set">
 
 

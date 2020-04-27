@@ -11,6 +11,8 @@ import lowLevelUserPages.endDevicesLowLevelUserPage.EndDevicesUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
+import lowLevelUserPages.queuesLowLevelUserPage.QueueReportsUserPage;
+import lowLevelUserPages.queuesLowLevelUserPage.QueueStatusUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.queuePopups.QueueForAgentsUserPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.ManageSenderNumbersAndNamesUserPage;
@@ -155,6 +157,8 @@ public class eFonApp extends PreparationsForRun{
     public RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
     public ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
     public QueueForAgentsUserPopup queueForAgentsLowLevelUserPopup = new QueueForAgentsUserPopup();
+    public QueueStatusUserPage queueStatusUserPage = new QueueStatusUserPage();
+    public QueueReportsUserPage queueReportsUserPage = new QueueReportsUserPage();
 
 
 }
