@@ -320,6 +320,20 @@ public class TempTest extends BaseTestMethods {
         return script;
     }
 
+    public static void main(String[] args) {
+        String ac = "Account 906144a10 (906144a10)";
 
+        System.out.println(getAc(ac));
+
+    }
+
+    private static String getAc(String ac){
+        String acc ="";
+        int start = ac.indexOf('(')+1;
+        int end = ac.indexOf(')');
+
+        acc = ac.substring(start,end);
+        return acc;
+    }
 
 }

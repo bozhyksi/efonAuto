@@ -45,7 +45,7 @@ public class QueueUserPageTests extends BaseTestMethods {
 
     // test fails, bug created EPRO-1011
     @Description("Check if low-level user can change penalty for Queue agent")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"}, enabled = false)
     public void CheckIfLowLevelUserCanChangePenaltyForQueueAgent(){
         step("Prepare test data, create test user");
         User user = new User();
@@ -67,7 +67,7 @@ public class QueueUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if low-level user can create Queues Report by DAY")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void CheckIfUserCanCreateReportByDay(){
         step("Prepare test data");
         Queue queue = new Queue("AutoTestQueue");
@@ -84,7 +84,7 @@ public class QueueUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if low-level user can create Queues Report by MONTH")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void CheckIfUserCanCreateReportByMonth(){
         step("Prepare test data");
         Queue queue = new Queue("AutoTestQueue");
@@ -100,7 +100,7 @@ public class QueueUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if low-level user can create Queues Report by PERIOD")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void CheckIfUserCanCreateReportByPeriod(){
         step("Prepare test data");
         Queue queue = new Queue("AutoTestQueue");
