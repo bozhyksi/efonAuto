@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 
 import static com.codeborne.selenide.Condition.*;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
@@ -394,7 +393,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         createHuntGroupPopup.activateCallRecordings();
 
         step("Verify if \"Calls recording\" was activated");
-        huntGroupPage.verifyIfCallRecordingWasACtivated(huntGroup);
+        huntGroupPage.verifyIfCallRecordingWasActivated(huntGroup);
 
         step("Delete test data");
         deleteHuntGroup(huntGroup.getHuntGroupName());

@@ -73,6 +73,27 @@ public class HuntGroup extends BaseTestMethods {
         fullDayPhoneNumber = getRandomPhone();
     }
 
+    public HuntGroup(String huntGroupName, String huntGroupNumber){
+        //Edit hunt group section
+        this.huntGroupLanguage = "en";
+        this.huntGroupName = huntGroupName;
+        this.huntGroupDisplayName = huntGroupName;
+        this.huntGroupNumber = huntGroupNumber;
+
+        //Voicemail settings
+        this.pinCode = getRandomNumber(1111,9999);
+        this.voicemailEmail = getRandomEmail();
+        this.salutation = "Dear Ms";
+
+        //If end devices not available (not registered) section
+        this.backUpNumber = getRandomPhone();
+
+        //Full days
+        this.fullDayName = getRandomString(10);
+        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
+        fullDayPhoneNumber = getRandomPhone();
+    }
+
     //<editor-fold desc="get\set">
 
 

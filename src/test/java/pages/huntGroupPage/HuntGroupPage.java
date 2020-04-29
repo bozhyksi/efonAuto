@@ -14,6 +14,8 @@ public class HuntGroupPage extends BasePage {
     private String buttonDeleteByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteHuntGroup\"]";
     private String buttonEditByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editHuntGroup\"]";
     private String fieldNameByTextXpath = "//table[@role=\"grid\"]//td[1]/div[1][text()[contains(.,\"%s\")]]";
+    private String fieldDisplayNameByTextXpath = "//table[@role=\"grid\"]//td[2][contains(text(),\"%s\")]";
+    private String fieldNumberByTextXpath = "//table[@role=\"grid\"]//td[3][contains(text(),\"%s\")]";
     private String listNumberXpath = "//table[@role=\"grid\"]//td[3]";
     private String dropdownHuntGroupNumberXpath = "//h3[text()=\"Hunt Group numbers\"]//following-sibling::select";
     private String checkboxBlockIncomingCallsXpath = "//label[text()=\"Block incoming calls\"]//input";
@@ -28,6 +30,14 @@ public class HuntGroupPage extends BasePage {
 
     //<editor-fold desc="get\set">
 
+
+    public SelenideElement getFieldNumberByText(String text) {
+        return field(String.format(fieldNumberByTextXpath, text));
+    }
+
+    public SelenideElement getFieldDisplayNameByText(String text) {
+        return field(String.format(fieldDisplayNameByTextXpath, text));
+    }
 
     public SelenideElement getFieldActivatedCallRecordByText(String text) {
         return field(String.format(fieldActivatedCallRecordByTextXpath,text));
@@ -96,7 +106,12 @@ public class HuntGroupPage extends BasePage {
         waitUntilAlertDisappear();
     }
 
-    public void verifyIfCallRecordingWasACtivated(HuntGroup huntGroup){
+    public void editHuntGroup(String huntGroupName){
+        getButtonEditByName(huntGroupName).click();
+        waitUntilAlertDisappear();
+    }
+
+    public void verifyIfCallRecordingWasActivated(HuntGroup huntGroup){
         refreshPage();
         getFieldCallRecordingsIconByText(huntGroup.getHuntGroupNumber()).should(exist);
         getFieldActivatedCallRecordByText(huntGroup.getHuntGroupNumber()).should(exist);

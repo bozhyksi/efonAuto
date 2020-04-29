@@ -203,7 +203,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if user can configure Queue for agents")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
     public void CheckIfUserCanConfigureQueueForAgents(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -237,7 +237,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if user can change the Agent status Login/Logout/Wait on Status tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfUserCanChangeAgentStatusOnStatusTab(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -279,7 +279,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if admin can change the Agent penalty on Status tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfAdminCanChangeTheAgentPenaltyStatusTab(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -316,6 +316,7 @@ public class QueuesPageTests extends BaseTestMethods {
         refreshPage();
 
         step("Validate if penalty was changed");
+        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
         statusQueuePage.getFieldPenaltyByText(user.getPenalty()).should(exist);
 
         step("Clean test data");
@@ -325,7 +326,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if admin can search Queue for recordings")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfAdminSearchQueueForRecordings(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -368,7 +369,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Day")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfVpbxAdminCanCreateReportByDay(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -398,7 +399,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Month")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfVpbxAdminCanCreateReportByMonth(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
@@ -428,7 +429,7 @@ public class QueuesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if VPBX admin can create Report by Period")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
     public void CheckIfVpbxAdminCanCreateReportByPeriod(){
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();

@@ -23,7 +23,7 @@ public class QueueUserPageTests extends BaseTestMethods {
     ArrayList<User> usersList = new ArrayList<>();
 
     @Description("Check if low-level user can select/deselect agents to Queue")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"})
     public void CheckIfLowLevelUserCanAddAgentsToQueue(){
 
         step("Log in the system");
@@ -115,7 +115,7 @@ public class QueueUserPageTests extends BaseTestMethods {
         queueReportsUserPage.createDayReports(Period,queue);
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();

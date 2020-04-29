@@ -356,4 +356,9 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         waitUntilAlertDisappear();
     }
 
+    public void changeHuntGroupLanguage(String value){
+        getButtonSubmitEditHuntGroup().click();
+        getDropdownLanguage().selectOptionByValue(value);
+        getButtonSubmitEditHuntGroup().click();
+    }
 }
