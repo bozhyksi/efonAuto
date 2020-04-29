@@ -61,7 +61,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
         step("Select authorized user");
         createHuntGroupPopup.getDropdownAuthUsers().selectOptionContainingText(user.getFirstName());
-        huntGroup.setHuntGroupAuthorizedUsers(user.getFullName());
+        huntGroup.setHuntGroupAuthorizedUser(user.getFullName());
 
         step("Fill in new hunt group Display Name");
         createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
@@ -175,7 +175,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can edit hunt group and configure \"Standard Timers\"")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
     public void VerifyIfUserCanEditHuntGroupAndConfigureStandardTimers() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
@@ -232,7 +232,7 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         step("Save Hunt group");
         createHuntGroupPopup.getButtonSave().click();
 
-        //test mot finished
+        //test not finished
     }
 
     @Description("Verify if user can configure \"Full days groups\"")
@@ -288,8 +288,8 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         step("Save Full Days configuration");
         addFullDaysPopup.getButtonSave().click();
         createHuntGroupPopup.getButtonSave().click();
-        refreshPage();
         waitUntilAlertDisappear();
+        refreshPage();
 
         step("Check if full days were saved");
         huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();

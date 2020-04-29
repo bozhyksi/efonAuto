@@ -403,6 +403,23 @@ public class BaseTestMethods extends eFonApp {
         huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
     }
 
+    public void createHuntGroup(HuntGroup huntGroup, String authorisedUser){
+        basePage.goToMenuTab(HUNT_GROUPS);
+        huntGroupPage.getButtonCreateNewHuntGroup().click();
+        waitUntilAlertDisappear();
+        createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
+        createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
+        createHuntGroupPopup.selectRandomNumber();
+        huntGroup.setHuntGroupNumber(createHuntGroupPopup.getDropdownNumber().getSelectedText());
+        createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
+        createHuntGroupPopup.getDropdownAuthUsers().selectOptionContainingText(authorisedUser);
+        huntGroup.setHuntGroupAuthorizedUser(authorisedUser);
+        createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
+        createHuntGroupPopup.getButtonSave().click();
+        waitUntilAlertDisappear();
+        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
+    }
+
     public void deleteHuntGroup(String name){
         basePage.goToMenuTab(HUNT_GROUPS);
         waitUntilAlertDisappear();
@@ -411,6 +428,7 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
         refreshPage();
         huntGroupPage.getfieldNameByText(name).shouldNot(Condition.exist);
+        BasePage.index.decrementAndGet();
     }
 
     public void ivrCleanUp(List<IVRtestData> ivrList){
@@ -875,5 +893,11 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
         announcementsTabConfigUserPopup.getButtonClose().click();
     }
+
+ /*   public void baseCleanUp(BaseEnums.CleanUp ...cleanObj){
+        startBrowser();
+        login();
+        closeBrowser();
+    }*/
 
 }

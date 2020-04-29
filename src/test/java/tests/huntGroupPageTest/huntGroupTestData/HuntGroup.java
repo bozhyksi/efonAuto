@@ -24,7 +24,7 @@ public class HuntGroup extends BaseTestMethods {
     //Edit hunt group section
     private String huntGroupNumber;
     private String huntGroupLanguage;
-    private String huntGroupAuthorizedUsers;
+    private String huntGroupAuthorizedUser;
     private String huntGroupName;
     private String huntGroupDisplayName;
 
@@ -157,8 +157,8 @@ public class HuntGroup extends BaseTestMethods {
         return huntGroupNumber;
     }
 
-    public String getHuntGroupAuthorizedUsers() {
-        return huntGroupAuthorizedUsers;
+    public String getHuntGroupAuthorizedUser() {
+        return huntGroupAuthorizedUser;
     }
 
     public void setHuntGroupNumber(String huntGroupNumber) {
@@ -189,8 +189,8 @@ public class HuntGroup extends BaseTestMethods {
         return relevantAccount;
     }
 
-    public void setHuntGroupAuthorizedUsers(String huntGroupAuthorizedUsers) {
-        this.huntGroupAuthorizedUsers = huntGroupAuthorizedUsers;
+    public void setHuntGroupAuthorizedUser(String huntGroupAuthorizedUser) {
+        this.huntGroupAuthorizedUser = huntGroupAuthorizedUser;
     }
     //</editor-fold>
 }
