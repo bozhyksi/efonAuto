@@ -71,4 +71,12 @@ public class EditHuntGroupPopup extends HuntGroupUserPage {
         createHuntGroupPopup.getInputFullDayDate().shouldHave(Condition.value(huntGroup.getFullDayDate()));
         refreshPage();
     }
+
+    public void configureStandartTimers(FileManagementTestData announcement, Queue queue){
+        createHuntGroupPopup.configureStandartTimers(announcement, queue);
+    }
+
+    public void verifyStandartTimers(){
+        createHuntGroupPopup.verifyStandartTimersConfiguration();
+    }
 }

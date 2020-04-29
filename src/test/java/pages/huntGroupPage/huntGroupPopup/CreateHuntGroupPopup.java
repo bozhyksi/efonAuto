@@ -8,6 +8,10 @@ import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestDa
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 
+import static com.codeborne.selenide.Condition.text;
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
+import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailUnavailable;
+
 public class CreateHuntGroupPopup extends HuntGroupPage {
     private int level = 1;
 
@@ -360,5 +364,29 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getButtonSubmitEditHuntGroup().click();
         getDropdownLanguage().selectOptionByValue(value);
         getButtonSubmitEditHuntGroup().click();
+    }
+
+    public void configureStandartTimers(FileManagementTestData announcement,Queue queue){
+        getButtonSubmitTimer().click();
+        configureLevel("10", QueueActions.VoicemailUnavailable);
+        configureLevel("12", QueueActions.Announcements,announcement);
+        configureLevel("22", QueueActions.Queue,queue);
+        configureLevel("25", QueueActions.NumberEndDevice,queue.getRandomPhone("04",8));
+        configureLevel("28", QueueActions.VoicemailNoAnnouncement);
+        configureLevel("30", QueueActions.VoicemailBusy);
+        getButtonSubmitTimer().click();
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+    }
+
+    public void verifyStandartTimersConfiguration(){
+        getButtonSubmitTimer().click();
+        getDropdownActionTypeByLabel("1").getSelectedOption().shouldHave(text("Voicemail: unavailable"));
+        getDropdownActionTypeByLabel("2").getSelectedOption().shouldHave(text("Announcements"));
+        getDropdownActionTypeByLabel("3").getSelectedOption().shouldHave(text("Queue"));
+        getDropdownActionTypeByLabel("4").getSelectedOption().shouldHave(text("Number/end device"));
+        getDropdownActionTypeByLabel("5").getSelectedOption().shouldHave(text("Voicemail: no announcement"));
+        getDropdownActionTypeByLabel("6").getSelectedOption().shouldHave(text("Voicemail: busy"));
     }
 }

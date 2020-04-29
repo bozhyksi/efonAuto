@@ -11,9 +11,11 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Condition.*;
+import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Queue;
 
+import pages.basePage.BasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -175,64 +177,45 @@ public class HuntGroupsPageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can edit hunt group and configure \"Standard Timers\"")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void VerifyIfUserCanEditHuntGroupAndConfigureStandardTimers() {
         step("Prepare test data");
         HuntGroup huntGroup = new HuntGroup();
-        FileManagementTestData file = new FileManagementTestData();
+        FileManagementTestData announcement = new FileManagementTestData();
+        Queue queue = new Queue();
+
         huntGroupsList.add(huntGroup);
-        filesList.add(file);
+        filesList.add(announcement);
+        queueArrayList.add(queue);
 
         step("Login the system");
         login();
 
-        step("Upload announcement file");
-        uploadAnnouncementFile(file);
+        step("Upload announcement announcement");
+        uploadAnnouncementFile(announcement);
 
         step("Create Hunt Group");
         createHuntGroup(huntGroup);
 
+        step("Create Queue");
+        createQueueOnlyRequiredFields(queue);
+
         step("Open created Hunt group for edit");
-        huntGroupPage.getButtonEditByName(huntGroup.getHuntGroupName()).click();
-        waitUntilAlertDisappear();
+        basePage.goToMenuTab(HUNT_GROUPS);
+        huntGroupPage.editHuntGroup(huntGroup);
 
-        step("Click Timers submit button");
-        createHuntGroupPopup.getButtonSubmitTimer().click();
+        step("Configure Standart Timers");
+        createHuntGroupPopup.configureStandartTimers(announcement,queue);
 
-        step("Configure Level_1 Number/end device");
-        createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(0).selectOptionByValue(HuntGroup.TimerLevels.NumberEndDevice.getLevel());
-        createHuntGroupPopup.getDropdownAccount().selectOption(1);
-        createHuntGroupPopup.getInputNumber().setValue(huntGroup.getBackUpNumber());
+        step("Verify Standart Timers configuration");
+        huntGroupPage.editHuntGroup(huntGroup);
+        createHuntGroupPopup.verifyStandartTimersConfiguration();
+        refreshPage();
 
-        step("Configure Level_2 VoicemailUnavailable");
-        createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(1).selectOptionByValue(VoicemailUnavailable.getLevel());
-        createHuntGroupPopup.getInputListDelay().get(0).setValue("12");
-
-        step("Configure Level_3 Announcements");
-        createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(2).selectOptionByValue(HuntGroup.TimerLevels.Announcements.getLevel());
-        createHuntGroupPopup.getDropdownListAnnouncmentId().get(0).selectOption(0);
-        createHuntGroupPopup.getInputListDelay().get(1).setValue("12");
-
-        step("Configure Level_4 VoicemailBusy");
-        createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(3).selectOptionByValue(HuntGroup.TimerLevels.VoicemailBusy.getLevel());
-        createHuntGroupPopup.getInputListDelay().get(2).setValue("12");
-
-        step("Configure Level_4 VoicemailNoAnnouncement");
-        createHuntGroupPopup.getButtonAddNewStep().click();
-        createHuntGroupPopup.getDropdownListActionType().get(4).selectOptionByValue(VoicemailNoAnnouncement.getLevel());
-        createHuntGroupPopup.getInputListDelay().get(3).setValue("12");
-
-        step("Click Submit button");
-        createHuntGroupPopup.getButtonSubmitTimer().click();
-
-        step("Save Hunt group");
-        createHuntGroupPopup.getButtonSave().click();
-
-        //test not finished
+        step("Delete test data");
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteQueue(queue.getName());
+        deleteAnnouncementFile(announcement.getFileName());
     }
 
     @Description("Verify if user can configure \"Full days groups\"")

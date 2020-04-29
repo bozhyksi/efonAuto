@@ -156,6 +156,46 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteAnnouncementFile(announcement.getFileName());
     }
 
+    //bug EPRO-1023
+    @Description("Check if low-level user can configure \"Standart Timers\" section on HuntGroup")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
+    public void CheckIfUserCanConfigureStandartTimers(){
+        step("Prepare test data");
+        HuntGroup huntGroup = new HuntGroup();
+        Queue queue = new Queue();
+        FileManagementTestData announcement = new FileManagementTestData();
+
+        filesList.add(announcement);
+        huntGroupArrayList.add(huntGroup);
+        queueArrayList.add(queue);
+
+        step("Log in as customer admin and create Huntgruop, Queue and upload announcement for low-level user");
+        login();
+        createHuntGroup(huntGroup, "AutoTestUser AutoTestUser");
+        createQueueOnlyRequiredFields(queue);
+        uploadAnnouncementFile(announcement);
+        logOut();
+
+        step("Log in as low-level user and goto HuntGroups page");
+        loginAsLowLevelUser();
+        basePageLowLevelUser.goToMenuTab(HUNT_GROUPS);
+
+        step("Edit hunt group and configure Full Days section");
+        huntGroupUserPage.editHuntGroup(huntGroup);
+        editHuntGroupLowLevelUserPopup.configureStandartTimers(announcement,queue);
+
+        step("Verify made changes");
+        huntGroupUserPage.editHuntGroup(huntGroup);
+        editHuntGroupLowLevelUserPopup.verifyStandartTimers();
+
+        step("Clear test data");
+        logOut();
+        login();
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteQueue(queue.getName());
+        deleteAnnouncementFile(announcement.getFileName());
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
