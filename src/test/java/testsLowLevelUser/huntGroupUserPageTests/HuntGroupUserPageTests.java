@@ -187,9 +187,47 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         step("Verify made changes");
         huntGroupUserPage.editHuntGroup(huntGroup);
         editHuntGroupLowLevelUserPopup.verifyStandartTimers();
+        logOut();
 
         step("Clear test data");
+        login();
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+        deleteQueue(queue.getName());
+        deleteAnnouncementFile(announcement.getFileName());
+    }
+
+    //bug EPRO-1023
+    @Description("Check if low-level user can configure \"Further Time groups\" section on HuntGroup")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"}, enabled =  false)
+    public void CheckIfUserCanConfigureFurtherTimeGroups(){
+        step("Prepare test data");
+        HuntGroup huntGroup = new HuntGroup();
+        Queue queue = new Queue();
+        FileManagementTestData announcement = new FileManagementTestData();
+
+        filesList.add(announcement);
+        huntGroupArrayList.add(huntGroup);
+        queueArrayList.add(queue);
+
+        step("Log in as customer admin and create Huntgruop, Queue and upload announcement for low-level user");
+        login();
+        createHuntGroup(huntGroup, "AutoTestUser AutoTestUser");
+        createQueueOnlyRequiredFields(queue);
+        uploadAnnouncementFile(announcement);
         logOut();
+
+        step("Log in as low-level user and goto HuntGroups page");
+        loginAsLowLevelUser();
+        basePageLowLevelUser.goToMenuTab(HUNT_GROUPS);
+
+        step("Edit hunt group and configure  \"Further Time groups\" section");
+        huntGroupUserPage.editHuntGroup(huntGroup);
+        editHuntGroupLowLevelUserPopup.configureFurtherTimers(huntGroup,queue,announcement);
+
+        step("Log out the system");
+        logOut();
+
+        step("Log in as vpbx admin and clear test data");
         login();
         deleteHuntGroup(huntGroup.getHuntGroupName());
         deleteQueue(queue.getName());
@@ -205,7 +243,4 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         announcementCleanUp(filesList);
         closeBrowser();
     }
-
-
-
 }

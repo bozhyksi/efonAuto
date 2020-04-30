@@ -218,7 +218,7 @@ public class SendSmsUserPageTests extends BaseTestMethods {
 
     @Description("Verify \"Create new code\" button, and check if user can generate new code and use it")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "sendSmsUserPageTests"})
-    public void VerifyCreateNewCodeButton(){
+    public void VerifyCreateNewCode(){
         step("Prepare test data");
         String senderNumber = getRandomPhone("076",7);
         String code1;
