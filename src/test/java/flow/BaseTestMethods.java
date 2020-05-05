@@ -894,7 +894,7 @@ public class BaseTestMethods extends eFonApp {
         announcementsTabConfigUserPopup.getButtonClose().click();
     }
 
- /*   public void baseCleanUp(BaseEnums.CleanUp ...cleanObj){
+ /*   public void baseCleanUp(MenuNavigator.CleanUp ...cleanObj){
         startBrowser();
         login();
         closeBrowser();

@@ -4,13 +4,30 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
+import core.workers.menuNavigator.MenuNavigator;
+import core.workers.menuNavigator.IMenuNavigator;
+import pages.IVRpage.IVRpage;
+import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
+import pages.callForwardingPage.CallForwardingPage;
+import pages.callPickUpPage.CallPickUpPage;
+import pages.conferenceCallsPage.ConferenceCallsPage;
+import pages.contactDataPage.ContactDataPage;
+import pages.endDevicesPage.EndDevicesPage;
+import pages.faxPage.FaxPage;
+import pages.fileManagementPage.FileManagementBasePage;
+import pages.huntGroupPage.HuntGroupPage;
+import pages.lastCallsPage.LastCallsPage;
+import pages.numbersPage.NumbersPage;
+import pages.phonebookPage.PhonebookPage;
+import pages.provisioningPage.ProvisioningBasePage;
+import pages.queuesPage.QueuesBasePage;
+import pages.recordedCallPage.RecordedCallsBasePage;
+import pages.subscriptionsPage.SubscriptionsPage;
+import pages.userPage.UserPage;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Condition.exist;
-
-public class BasePage extends Fields {
+public class BasePage extends Fields implements IMenuNavigator {
 
     public static AtomicInteger index = new AtomicInteger(1);
 
@@ -42,8 +59,6 @@ public class BasePage extends Fields {
         STATUS_QUEUES,
         RECORDINGS_QUEUES,
         REPORT_QUEUES,
-
-
     }
 
     //<editor-fold desc="//-- BasePage Locators --//">
@@ -64,34 +79,35 @@ public class BasePage extends Fields {
     private String isLoadingSpinnerXpath = "//ng2-loading-spinner";
 
     //Administration panel
-    private String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
-    private String tabUserXpath = "//a[@id=\"menu-11\"]";
-    private String tabNumbersXpath = "//a[@id=\"menu-12\"]";
-    private String tabSubscriptionsXpath = "//a[@id=\"menu-14\"]";
-    private String tabLastCallsXpath = "//a[@id=\"menu-15\"]";
-    private String tabFaxXpath = "//a[@id=\"menu-16\"]";
-    private String tabIVRsXpath = "//a[@id=\"menu-17\"]";
-    private String tabAbbreviatedNumbersXpath = "//a[@id=\"menu-18\"]";
-    private String tabCallPickUpsXpath = "//a[@id=\"menu-19\"]";
-    private String tabFileManagementXpath = "//a[@id=\"menu-20\"]";
-    private String tabCallForwardingXpath = "//a[@id=\"menu-21\"]";
-    private String tabHuntGroupsXpath = "//a[@id=\"menu-24\"]";
-    private String tabConferenceCallsXpath = "//a[@id=\"menu-25\"]";
-    private String tabQueuesXpath = "//a[@id=\"menu-26\"]";
-    private String tabEndDevicesXpath = "//a[@id=\"menu-29\"]";
-    private String tabRecordedCallsXpath = "//a[@id=\"menu-31\"]";
-    private String tabContactDataXpath = "//a[@id=\"menu-33\"]";
-    private String tabPhonebookXpath = "//a[@id=\"menu-32\"]";
-    private String tabManageAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers/manage\"]";
-    private String tabAnnouncementDisplayXpath = "//a[contains(@href,\"file-management/announcement-display\")]";
-    private String tabMusicOnHoldXpath = "//a[contains(@href,\"/file-management/music-on-hold\")]";
-    private String tabConfigureQueuesXpath = "//a[@href=\"/portal/call-queues/overview\"]";
-    private String tabStatusQueuesXpath = "//a[@href=\"/portal/call-queues/status\"]";
-    private String tabRecordingsXpath = "//a[@href=\"/portal/call-queues/records\"]";
-    private String tabReportXpath = "//a[@href=\"/portal/call-queues/reports\"]";
-    private String tabRecCallsOverviewXpath = "//a[contains(@href,\"recorded-calls/overview\")]";
-    private String tabRecCallsConfigurationsXpath = "//a[contains(@href,\"recorded-calls/configuration\")]";
-    private String tabAbbreviatedNumberXpath = "//a[@href=\"/portal/internal-numbers/overview\"]";
+    private final String formAdministrationXpath = "//main-menu//*[@id=\"navbar-collapse\"]";
+    private final String tabUserXpath = "//a[@id=\"menu-11\"]";
+    private final String tabNumbersXpath = "//a[@id=\"menu-12\"]";
+    private final String tabSubscriptionsXpath = "//a[@id=\"menu-14\"]";
+    private final String tabLastCallsXpath = "//a[@id=\"menu-15\"]";
+    private final String tabFaxXpath = "//a[@id=\"menu-16\"]";
+    private final String tabIVRsXpath = "//a[@id=\"menu-17\"]";
+    private final String tabAbbreviatedNumbersXpath = "//a[@id=\"menu-18\"]";
+    private final String tabCallPickUpsXpath = "//a[@id=\"menu-19\"]";
+    private final String tabFileManagementXpath = "//a[@id=\"menu-20\"]";
+    private final String tabCallForwardingXpath = "//a[@id=\"menu-21\"]";
+    private final String tabHuntGroupsXpath = "//a[@id=\"menu-24\"]";
+    private final String tabConferenceCallsXpath = "//a[@id=\"menu-25\"]";
+    private final String tabQueuesXpath = "//a[@id=\"menu-26\"]";
+    private final String tabEndDevicesXpath = "//a[@id=\"menu-29\"]";
+    private final String tabRecordedCallsXpath = "//a[@id=\"menu-31\"]";
+    private final String tabContactDataXpath = "//a[@id=\"menu-33\"]";
+    private final String tabPhonebookXpath = "//a[@id=\"menu-32\"]";
+    private final String tabManageAbbreviatedNumbersXpath = "//a[@href=\"/portal/internal-numbers/manage\"]";
+    private final String tabAnnouncementDisplayXpath = "//a[contains(@href,\"file-management/announcement-display\")]";
+    private final String tabMusicOnHoldXpath = "//a[contains(@href,\"/file-management/music-on-hold\")]";
+    private final String tabConfigureQueuesXpath = "//a[@href=\"/portal/call-queues/overview\"]";
+    private final String tabStatusQueuesXpath = "//a[@href=\"/portal/call-queues/status\"]";
+    private final String tabRecordingsXpath = "//a[@href=\"/portal/call-queues/records\"]";
+    private final String tabReportXpath = "//a[@href=\"/portal/call-queues/reports\"]";
+    private final String tabRecCallsOverviewXpath = "//a[contains(@href,\"recorded-calls/overview\")]";
+    private final String tabRecCallsConfigurationsXpath = "//a[contains(@href,\"recorded-calls/configuration\")]";
+    private final String tabAbbreviatedNumberXpath = "//a[@href=\"/portal/internal-numbers/overview\"]";
+    private final String tabProvisioningXpath = "//a[@id=\"menu-13\"]";
 
     //Save button
     private String buttonSaveXpath = "//button[text()=\"Save\"]";
@@ -101,6 +117,10 @@ public class BasePage extends Fields {
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
 
+
+    public SelenideElement getTabProvisioning() {
+        return field(tabProvisioningXpath);
+    }
 
     public SelenideElement getTabAbbreviatedNumber() {
         return field(tabAbbreviatedNumberXpath);
@@ -297,6 +317,107 @@ public class BasePage extends Fields {
         getMenuTab(tabName).click();
         waitUntilAlertDisappear();
         return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends IMenuNavigator> T gotoMenuTab(MenuNavigator.MainMenuTabs tabName) {
+        switch (tabName){
+            case USER:{
+                getTabUser().click();
+                waitUntilAlertDisappear();
+                return (T) new UserPage();
+            }
+            case NUMBERS:{
+                getTabNumbers().click();
+                waitUntilAlertDisappear();
+                return (T) new NumbersPage();
+            }
+            case PROVISIONING: {
+                getTabProvisioning().click();
+                waitUntilAlertDisappear();
+                return (T) new ProvisioningBasePage();
+            }
+            case SUBSCRIPTIONS:{
+                getTabSubscriptions().click();
+                waitUntilAlertDisappear();
+                return (T) new SubscriptionsPage();
+            }
+            case LAST_CALLS:{
+                getTabLastCalls().click();
+                waitUntilAlertDisappear();
+                return (T) new LastCallsPage();
+            }
+
+            case FAX:{
+                getTabFax().click();
+                waitUntilAlertDisappear();
+                return (T) new FaxPage();
+            }
+
+            case IVR:{
+                getTabIVRs().click();
+                waitUntilAlertDisappear();
+                return (T) new IVRpage();
+            }
+            case ABBREVIATED_DIALING:{
+                getTabAbbreviatedDialling().click();
+                waitUntilAlertDisappear();
+                return (T) new AbbreviatedDiallingBasePage();
+            }
+            case CALL_PICKUP:{
+                getTabCallPickUps().click();
+                waitUntilAlertDisappear();
+                return (T) new CallPickUpPage();
+            }
+            case FILE_MANAGEMENT:{
+                getTabFileManagement().click();
+                waitUntilAlertDisappear();
+                return (T) new FileManagementBasePage();
+            }
+            case CALL_FORWARDING:{
+                getTabCallForwarding().click();
+                waitUntilAlertDisappear();
+                return (T) new CallForwardingPage();
+            }
+            case HUNT_GROUPS:{
+                getTabHuntGroups().click();
+                waitUntilAlertDisappear();
+                return (T) new HuntGroupPage();
+            }
+            case CONFERENCE_CALLS:{
+                getTabConferenceCalls().click();
+                waitUntilAlertDisappear();
+                return (T) new ConferenceCallsPage();
+            }
+            case QUEUES:{
+                getTabQueues().click();
+                waitUntilAlertDisappear();
+                return (T) new QueuesBasePage();
+            }
+            case END_DEVICES:{
+                getTabEndDevices().click();
+                waitUntilAlertDisappear();
+                return (T) new EndDevicesPage();
+            }
+            case RECORDED_CALLS:{
+                getTabRecordedCalls().click();
+                waitUntilAlertDisappear();
+                return (T) new RecordedCallsBasePage();
+            }
+            case PHONEBOOK:{
+                getTabPhonebook().click();
+                waitUntilAlertDisappear();
+                return (T) new PhonebookPage();
+            }
+            case CONTACT_DATA:{
+                getTabContactData().click();
+                waitUntilAlertDisappear();
+                return (T) new ContactDataPage();
+            }
+            default:{
+                return null;
+            }
+        }
     }
 
 }

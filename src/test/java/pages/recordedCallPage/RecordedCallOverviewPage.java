@@ -3,7 +3,7 @@ package pages.recordedCallPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
-public class RecordedCallOverviewPage extends RecordedCallsPage {
+public class RecordedCallOverviewPage extends RecordedCallsBasePage {
     private String inputSearchXpath = "//input[@placeholder=\"Source, Destination, Recorded calls account\"]";
     private String inputFromDateXpath = "//label[text()=\"From\"]//following-sibling::div//input";
     private String inputUntilDateXpath = "//label[text()=\"Until\"]//following-sibling::div//input";

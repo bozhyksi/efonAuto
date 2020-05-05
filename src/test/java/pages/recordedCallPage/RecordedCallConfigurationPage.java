@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import tests.recordedCallsPageTests.recordedCallsTestData.RecordedCalls;
 
-public class RecordedCallConfigurationPage extends RecordedCallsPage {
+public class RecordedCallConfigurationPage extends RecordedCallsBasePage {
     //<editor-fold desc="locators">
     private String checkboxUploadXpath = "//label[text()=\"Upload:\"]/following-sibling::div/input";
     private String inputHostXpath = "//input[@formcontrolname=\"host\"]";

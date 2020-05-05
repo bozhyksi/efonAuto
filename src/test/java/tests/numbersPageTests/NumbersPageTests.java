@@ -1,10 +1,12 @@
 package tests.numbersPageTests;
 
+import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
+
+@Listeners(CustomListeners.class)
 
 public class NumbersPageTests extends BaseTestMethods {
     ArrayList<User> userList = new ArrayList<>();

@@ -69,7 +69,7 @@ import pages.queuesPage.queuePagePopups.PenaltyPopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import pages.recordedCallPage.RecordedCallConfigurationPage;
 import pages.recordedCallPage.RecordedCallOverviewPage;
-import pages.recordedCallPage.RecordedCallsPage;
+import pages.recordedCallPage.RecordedCallsBasePage;
 import pages.subscriptionsPage.SubscriptionsPage;
 import pages.userPage.UserPage;
 import pages.userPage.userPagePopup.CreateUserPopup;
@@ -114,7 +114,7 @@ public class eFonApp extends PreparationsForRun{
     public LastCallsPage lastCallsPage = new LastCallsPage();
     public FileManagementBasePage fileManagementBasePage = new FileManagementBasePage();
     public EndDevicesPage endDevicesPage = new EndDevicesPage();
-    public RecordedCallsPage recordedCallsPage = new RecordedCallsPage();
+    public RecordedCallsBasePage recordedCallsPage = new RecordedCallsBasePage();
     public ContactDataPage contactDataPage = new ContactDataPage();
     public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
     public EditFileManagementPopup editFileManagPopup = new EditFileManagementPopup();

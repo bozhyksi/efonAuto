@@ -2,7 +2,6 @@ package testsLowLevelUser.huntGroupUserPageTests;
 
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
-import flow.BaseEnums;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
@@ -13,9 +12,6 @@ import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
