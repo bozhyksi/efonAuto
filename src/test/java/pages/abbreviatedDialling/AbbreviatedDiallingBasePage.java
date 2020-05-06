@@ -5,7 +5,7 @@ import core.workers.menuNavigator.IMenuNavigator;
 import core.workers.menuNavigator.MenuNavigator;
 import pages.basePage.BasePage;
 
-public class AbbreviatedDiallingBasePage extends BasePage implements IMenuNavigator {
+public class AbbreviatedDiallingBasePage extends BasePage{
     //<editor-fold desc="locators">
     private final String tabAbbreviatedNumbersXpath = "//a[contains(@href,\"/internal-numbers/overview\")]";
     private final String tabManageAbbreviatedNumbersXpath = "//a[contains(@href,\"/internal-numbers/manage\")]";
@@ -21,17 +21,5 @@ public class AbbreviatedDiallingBasePage extends BasePage implements IMenuNaviga
     }
     //</editor-fold>
 
-    @Override
-    public void gotoSubMenuTab(MenuNavigator.AbbreviatedDiallingSubTabs tabName){
-        switch (tabName){
-            case ABBREVIATED_NUMBERS:{
-                getTabAbbreviatedNumbers().click();
-                waitUntilAlertDisappear();
-            }
-            case MANAGE_ABBREVIATED_NUMBERS:{
-                getTabManageAbbreviatedNumbers().click();
-                waitUntilAlertDisappear();
-            }
-        }
-    }
+
 }

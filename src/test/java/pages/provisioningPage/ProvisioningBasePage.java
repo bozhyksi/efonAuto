@@ -5,7 +5,9 @@ import core.workers.menuNavigator.MenuNavigator;
 import core.workers.menuNavigator.IMenuNavigator;
 import pages.basePage.BasePage;
 
-public class ProvisioningBasePage extends BasePage implements IMenuNavigator {
+import static core.workers.menuNavigator.MenuNavigator.ProvisioningSubTabs.*;
+
+public class ProvisioningBasePage extends BasePage{
 
     //<editor-fold desc="locators">
     private final String tabProvisioningEndDevicesXpath = "//a[contains(@href,\"/provisioning/end-devices\")]";
@@ -27,7 +29,6 @@ public class ProvisioningBasePage extends BasePage implements IMenuNavigator {
     }
     //</editor-fold>
 
-    @Override
     public void gotoSubMenuTab(MenuNavigator.ProvisioningSubTabs tabName) {
         switch (tabName){
             case END_DEVICE: {

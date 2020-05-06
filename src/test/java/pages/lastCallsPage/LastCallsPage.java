@@ -5,7 +5,7 @@ import core.workers.menuNavigator.IMenuNavigator;
 import core.workers.menuNavigator.MenuNavigator;
 import pages.basePage.BasePage;
 
-public class LastCallsPage extends BasePage implements IMenuNavigator {
+public class LastCallsPage extends BasePage{
     //<editor-fold desc="locators">
     private String tabMissedXpath = "//a[contains(@href,\"/last-calls/missed\")][text()=\"Missed\"]";
     private String tabIncomingXapth = "//a[contains(@href,\"last-calls/incoming\")]";
@@ -63,24 +63,4 @@ public class LastCallsPage extends BasePage implements IMenuNavigator {
     }
 
     //</editor-fold>
-
-    public void gotoSubMenuTab(MenuNavigator.LastCallsSubTabs tabName){
-        switch (tabName){
-            case MISSED_CALLS: {
-                getTabMissed().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-            case INCOMING_CALLS: {
-                getTabIncoming().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-            case OUTGOING_CALLS: {
-                getTabOutgoing().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-        }
-    }
 }

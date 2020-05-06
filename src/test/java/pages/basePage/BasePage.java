@@ -27,7 +27,7 @@ import pages.userPage.UserPage;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BasePage extends Fields implements IMenuNavigator {
+public class BasePage extends Fields{
 
     public static AtomicInteger index = new AtomicInteger(1);
 
@@ -319,8 +319,7 @@ public class BasePage extends Fields implements IMenuNavigator {
         return this;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends IMenuNavigator> T gotoMenuTab(MenuNavigator.MainMenuTabs tabName) {
+    public <T extends BasePage> T gotoMenuTab(MenuNavigator.MainMenuTabs tabName) {
         switch (tabName){
             case USER:{
                 getTabUser().click();
@@ -347,13 +346,11 @@ public class BasePage extends Fields implements IMenuNavigator {
                 waitUntilAlertDisappear();
                 return (T) new LastCallsPage();
             }
-
             case FAX:{
                 getTabFax().click();
                 waitUntilAlertDisappear();
                 return (T) new FaxPage();
             }
-
             case IVR:{
                 getTabIVRs().click();
                 waitUntilAlertDisappear();
@@ -419,5 +416,4 @@ public class BasePage extends Fields implements IMenuNavigator {
             }
         }
     }
-
 }
