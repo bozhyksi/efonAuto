@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Condition.exist;
 import static core.workers.javaScriptExecutor.JavaScriptExecutor.executeDragDropScript;
 
 public class QueueForAgentsPopup extends ConfigureQueueTab {
+
     //<editor-fold desc="Locations">
     private String popupTitleXpath = "//div[@class=\"modal-content\"]//h3";
     private String fieldNotSelectedAgentByNameXpath = "//h2[text()=\"Not selected\"]//parent::div//section/div[text()[contains(.,\"%s\")]]";
