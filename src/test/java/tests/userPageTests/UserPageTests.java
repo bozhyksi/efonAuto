@@ -4,12 +4,14 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
+import core.workers.sshFileTransfer.SSHFileTransfer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.basePage.BasePage;
+import pages.userPage.userPagePopup.configureUser.AnnouncementsTabConfigUserPopup;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
@@ -698,6 +700,31 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Clear test data");
         deleteUser(user);
+    }
+
+    @Description("Check if user can Record voicemail announcement by phone")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void CheckIfUserCanRecordVoicemailAnnouncementByPhone(){
+        step("Preparing test data, creating new object - User");
+        String user = "AutoTestUser";
+        FileManagementTestData announcement = new FileManagementTestData();
+        filesArrayList.add(announcement);
+
+        step("Upload test recording file to the server");
+        SSHFileTransfer.uploadFile(announcement.getSourcePath(),announcement.getDestinationPath());
+
+        step("Login the test environment");
+        login();
+
+        step("Edit created user and goto ANNOUNCEMENTS tab.");
+        userPage.editUser(user).goToTab(ANNOUNCEMENTS);
+
+        step("Save uploaded ANNOUNCEMENT by phone");
+        announcementsTabConfigUserPopup.getRecordedVoicemailAnnouncementByPhone(announcement);
+
+        step("Verify if Recorded announcement was saved");
+        userPage.editUser(user).goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup.deleteAnnouncement(announcement);
     }
 
     @AfterClass(alwaysRun = true)

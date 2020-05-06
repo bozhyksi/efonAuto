@@ -2,15 +2,78 @@ package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import pages.basePage.basePopup.ConfirmationPopup;
+import pages.fileManagementPage.FileManagementBasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
 import java.io.File;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.*;
 
 public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
+
+    private class RecordVoicemailAnnouncementByPhone{
+
+        //<editor-fold desc="locators">
+        private final String inputNameXpath = "//input[@formcontrolname=\"displayName\"]";
+        private final String checkboxVoicemailXpath = "//input[@formcontrolname=\"asVoicemail\"]";
+        private final String checkboxRingbackAnnouncementXpath = "//input[@formcontrolname=\"asRingback\"]";
+        private final String buttonLookAtMadeByCallAnnouncementXpath = "//button[text()=\"Look at made-by-call announcement\"]";
+        private final String buttonSaveXpath = "//button[text()=\"Save\"]";
+        //</editor-fold>
+
+        //<editor-fold desc="get\set">
+        public SelenideElement getInputName() {
+            return field(inputNameXpath);
+        }
+
+        public SelenideElement getCheckboxVoicemail() {
+            return field(checkboxVoicemailXpath);
+        }
+
+        public SelenideElement getCheckboxRingbackAnnouncement() {
+            return field(checkboxRingbackAnnouncementXpath);
+        }
+
+        public SelenideElement getButtonLookAtMadeByCallAnnouncement() {
+            return field(buttonLookAtMadeByCallAnnouncementXpath);
+        }
+
+        public SelenideElement getButtonSave() {
+            return field(buttonSaveXpath);
+        }
+        //</editor-fold>
+    }
+    private class ConfigureAnnouncementPopup {
+        private String inputNameXpath = "//announcement-edit-name//input[@formcontrolname=\"displayName\"]";
+        private String inputVoicemailXpath = "//announcement-edit-name//input[@formcontrolname=\"asVoicemail\"]";
+        private String inputRingbackXpath = "//announcement-edit-name//input[@formcontrolname=\"asRingback\"]";
+        private String buttonSaveXpath = "//button[text()=\"Save\"]";
+        private String buttonCancelXpath = "//button[text()=\"Cancel\"]";
+
+
+        SelenideElement getButtonCancel() {
+            return field(buttonCancelXpath);
+        }
+
+        SelenideElement getButtonSave() {
+            return field(buttonSaveXpath);
+        }
+
+        SelenideElement getInputName() {
+            return field(inputNameXpath);
+        }
+
+        SelenideElement getInputVoicemail() {
+            return field(inputVoicemailXpath);
+        }
+
+        SelenideElement getInputRingback() {
+            return field(inputRingbackXpath);
+        }
+    }
     private ConfigureAnnouncementPopup configureAnnouncementPopup = new ConfigureAnnouncementPopup();
+    private RecordVoicemailAnnouncementByPhone recordVoicemailAnnouncementByPhone = new RecordVoicemailAnnouncementByPhone();
 
     //<editor-fold desc="Locators">
     private String buttonDeleteUserAnnouncementsByNameXpath = "//voicemail-announcements//div[contains(text(),\"%s\")]/ancestor::tr//i[contains(@class,\"fa-trash\")]/parent::a";
@@ -86,33 +149,23 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         waitUntilAlertDisappear();
     }
 
+    public AnnouncementsTabConfigUserPopup getRecordedVoicemailAnnouncementByPhone(FileManagementTestData file){
+        recordVoicemailAnnouncementByPhone.getInputName().shouldHave(value("new"));
+        recordVoicemailAnnouncementByPhone.getCheckboxVoicemail().shouldBe(selected);
+        recordVoicemailAnnouncementByPhone.getInputName().setValue(file.getFileName());
+        recordVoicemailAnnouncementByPhone.getButtonSave().click();
+        waitUntilAlertDisappear();
+        refreshPage();
+        return this;
+    }
 
-    private class ConfigureAnnouncementPopup {
-        private String inputNameXpath = "//announcement-edit-name//input[@formcontrolname=\"displayName\"]";
-        private String inputVoicemailXpath = "//announcement-edit-name//input[@formcontrolname=\"asVoicemail\"]";
-        private String inputRingbackXpath = "//announcement-edit-name//input[@formcontrolname=\"asRingback\"]";
-        private String buttonSaveXpath = "//button[text()=\"Save\"]";
-        private String buttonCancelXpath = "//button[text()=\"Cancel\"]";
-
-
-        SelenideElement getButtonCancel() {
-            return field(buttonCancelXpath);
-        }
-
-        SelenideElement getButtonSave() {
-            return field(buttonSaveXpath);
-        }
-
-        SelenideElement getInputName() {
-            return field(inputNameXpath);
-        }
-
-        SelenideElement getInputVoicemail() {
-            return field(inputVoicemailXpath);
-        }
-
-        SelenideElement getInputRingback() {
-            return field(inputRingbackXpath);
-        }
+    public AnnouncementsTabConfigUserPopup deleteAnnouncement(FileManagementTestData file){
+        getButtonDeleteUserAnnouncementByName(file.getFileName()).click();
+        new ConfirmationPopup().getYesButton().click();
+        getFieldAnnouncementName(file.getFileName()).shouldNot(exist);
+        refreshPage();
+        return this;
     }
 }
+
+

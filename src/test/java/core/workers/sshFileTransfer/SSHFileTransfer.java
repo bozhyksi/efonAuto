@@ -8,12 +8,12 @@ import java.io.IOException;
 
 public class SSHFileTransfer {
 
-    private final String serverName= "192.168.102.162";
-    private final int port = 22;
-    private final String userName = "watney";
-    private final String password = "123456";
+    private static final String serverName= "192.168.102.162";
+    private static final int port = 22;
+    private static final String userName = "watney";
+    private static final String password = "123456";
 
-    private SSHClient setupSSH() throws IOException {
+    private static SSHClient setupSSH() throws IOException {
         SSHClient client = new SSHClient();
         client.addHostKeyVerifier(new PromiscuousVerifier());
         client.connect(serverName,port);
@@ -21,7 +21,7 @@ public class SSHFileTransfer {
         return client;
     }
 
-    public void uploadFile(String sourceFilePath, String destinationPath){
+    public static void uploadFile(String sourceFilePath, String destinationPath){
         SSHClient sshClient = null;
         try {
             sshClient = setupSSH();

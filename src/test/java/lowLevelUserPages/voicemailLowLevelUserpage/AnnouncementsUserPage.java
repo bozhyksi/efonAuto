@@ -3,6 +3,7 @@ package lowLevelUserPages.voicemailLowLevelUserpage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
+import pages.userPage.userPagePopup.configureUser.AnnouncementsTabConfigUserPopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
 import java.io.File;
@@ -87,6 +88,12 @@ public class AnnouncementsUserPage extends VoicemailBaseUserPage {
         getButtonSave().click();
         waitUntilAlertDisappear();
     }
+
+    public void getRecordedAnnouncementByPhone(FileManagementTestData file){
+        new AnnouncementsTabConfigUserPopup().getRecordedVoicemailAnnouncementByPhone(file)
+        .deleteAnnouncement(file);
+    }
+
 
 }
 

@@ -166,5 +166,4 @@ public class eFonApp extends PreparationsForRun{
     public EditHuntGroupPopup editHuntGroupLowLevelUserPopup = new EditHuntGroupPopup();
     public ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
 
-
 }
