@@ -63,6 +63,7 @@ import pages.lastCallsPage.OutgoingCallsTab;
 import pages.loginPage.LoginPage;
 import pages.numbersPage.NumbersPage;
 import pages.phonebookPage.PhonebookPage;
+import pages.provisioningPage.ProvisioningBasePage;
 import pages.queuesPage.*;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.queuesPage.queuePagePopups.PenaltyPopup;
@@ -163,6 +164,7 @@ public class eFonApp extends PreparationsForRun{
     public QueueReportsUserPage queueReportsUserPage = new QueueReportsUserPage();
     public HuntGroupUserPage huntGroupUserPage = new HuntGroupUserPage();
     public EditHuntGroupPopup editHuntGroupLowLevelUserPopup = new EditHuntGroupPopup();
+    public ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
 
 
 }

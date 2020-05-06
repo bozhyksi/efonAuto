@@ -7,7 +7,6 @@ import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.basePageTests.basePageTestData.BasePageTestsData.MainMenu;
 
 import static io.qameta.allure.Allure.step;
@@ -19,7 +18,7 @@ public class BasePageTests extends BaseTestMethods {
 
     @Description("Verify if user can open each main menu Tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "BasePageTests"})
-    public void VerifyIfUserCanOpenEachMainMenuTab(){
+    public void VerifyIfUserCanOpenEachMainMenuTab() {
 
         step("Log in the system");
         login();
@@ -31,6 +30,10 @@ public class BasePageTests extends BaseTestMethods {
         step("Check if user can open \"Numbers\" tab");
         basePage.goToMenuTab(NUMBERS);
         Assert.assertEquals(numbersPage.getPageTitle().text(), MainMenu.numbers.getTabName());
+
+        step("Check if user can open \"Provisioning\" tab");
+        basePage.goToMenuTab(PROVISIONING);
+        Assert.assertEquals(provisioningBasePage.getPageTitle().text(), MainMenu.provisioning.getTabName());
 
         step("Check if user can open \"Subscriptions\" tab");
         basePage.goToMenuTab(SUBSCRIPTIONS);
@@ -51,7 +54,6 @@ public class BasePageTests extends BaseTestMethods {
         step("Check if user can open \"Abbreviated Dialling\" tab");
         basePage.goToMenuTab(ABBREVIATED_DIALING);
         Assert.assertEquals(abbrevDialBasePage.getPageTitle().text(), MainMenu.abbreviatedDialling.getTabName());
-
 
         step("Check if user can open \"Groups for call pick-up\" tab");
         basePage.goToMenuTab(CALL_PICKUPs);

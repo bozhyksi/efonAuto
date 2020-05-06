@@ -1,11 +1,7 @@
 package pages.provisioningPage;
 
 import com.codeborne.selenide.SelenideElement;
-import core.workers.menuNavigator.MenuNavigator;
-import core.workers.menuNavigator.IMenuNavigator;
 import pages.basePage.BasePage;
-
-import static core.workers.menuNavigator.MenuNavigator.ProvisioningSubTabs.*;
 
 public class ProvisioningBasePage extends BasePage{
 
@@ -28,24 +24,4 @@ public class ProvisioningBasePage extends BasePage{
         return field(tabProvisioningManagerXpath);
     }
     //</editor-fold>
-
-    public void gotoSubMenuTab(MenuNavigator.ProvisioningSubTabs tabName) {
-        switch (tabName){
-            case END_DEVICE: {
-                getTabProvisioningEndDevices().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-            case PHONE_MODELS: {
-                getTabProvisioningPhoneModels().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-            case PROVISIONING_MANAGER: {
-                getTabProvisioningManager().click();
-                waitUntilAlertDisappear();
-                break;
-            }
-        }
-    }
 }

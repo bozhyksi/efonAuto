@@ -1,8 +1,6 @@
 package pages.lastCallsPage;
 
 import com.codeborne.selenide.SelenideElement;
-import core.workers.menuNavigator.IMenuNavigator;
-import core.workers.menuNavigator.MenuNavigator;
 import pages.basePage.BasePage;
 
 public class LastCallsPage extends BasePage{

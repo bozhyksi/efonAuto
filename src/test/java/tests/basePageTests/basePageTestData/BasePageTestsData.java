@@ -6,6 +6,7 @@ public class BasePageTestsData extends BaseTestMethods {
     public enum MainMenu{
         user("User"),
         numbers("Numbers"),
+        provisioning("Provisioning"),
         subscriptions("Subscriptions"),
         lastCalls("Calls"),
         fax("Faxes"),
