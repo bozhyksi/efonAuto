@@ -278,6 +278,12 @@ public class BasePage extends Fields{
         waitUntilAlertDisappear();
     }
 
+    public BasePage goToMenuTab(MenuTabsBasePage tabName){
+        getMenuTab(tabName).click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
     private SelenideElement getMenuTab(MenuTabsBasePage tabName){
         switch (tabName){
             case FAX: return getTabFax();
@@ -313,12 +319,6 @@ public class BasePage extends Fields{
             case PROVISIONING_PHONE_MODELS: return getTabProvisioningPhoneModels();
             default: return getTabUser();
         }
-    }
-
-    public BasePage goToMenuTab(MenuTabsBasePage tabName){
-        getMenuTab(tabName).click();
-        waitUntilAlertDisappear();
-        return this;
     }
 
 }

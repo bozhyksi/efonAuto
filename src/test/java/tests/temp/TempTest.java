@@ -322,13 +322,4 @@ public class TempTest extends BaseTestMethods {
         return script;
     }
 
-    public static void main(String[] args) {
-        ArrayList<String> str = new ArrayList<>();
-
-
-
-    }
-
-
-
 }

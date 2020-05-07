@@ -29,6 +29,10 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
+    public String getRandomIpAddress(){
+        return "192.168." + getRandomNumber(0,254)+"."+getRandomNumber(0,254);
+    }
+
     public String getDate(){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date currentDate = new Date();
