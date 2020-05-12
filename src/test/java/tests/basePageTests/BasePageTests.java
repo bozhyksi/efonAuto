@@ -96,4 +96,6 @@ public class BasePageTests extends BaseTestMethods {
         basePage.goToMenuTab(CONTACT_DATA);
         Assert.assertEquals(contactDataPage.getPageTitle().text(), MainMenu.contactData.getTabName());
     }
+
+
 }

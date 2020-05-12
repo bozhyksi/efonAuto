@@ -2,6 +2,7 @@ package pages.provisioningPage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import tests.provisioningPageTests.provisioningTestData.ProvisioningTestData;
 
 import static com.codeborne.selenide.Condition.exist;
