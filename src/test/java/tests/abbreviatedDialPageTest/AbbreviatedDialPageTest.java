@@ -9,12 +9,15 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.*;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 @Listeners(CustomListeners.class)
 
@@ -226,6 +229,29 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         refreshPage();
         deleteUser(user);
         deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
+    }
+
+    @Description("Check if user can add single Short Number (modified  test)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest", "ttt"})
+    public void CheckIfUserCanAddOneShortNumber() {
+        step("Prepare test data");
+        AbbreviatedDialling singleShortNum = new AbbreviatedDialling(SINGLE);
+        abbrevDialList.add(singleShortNum);
+
+        step("Login the system and goto Abbreviated dialling -> Manage abbreviated numbers page");
+        login();
+        basePage.goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
+
+        manageAbbrevNumbersPage.addSingleAbbrevNumber(singleShortNum);
+
+        step("Goto Abbreviated dialling list");
+        manageAbbrevNumbersPage.goToMenuTab(ABBREVIATED_NUMBERS);
+
+        abbreviatedNumbers
+                .checkIfAbbrevNumberExistsInList(singleShortNum)
+                .deleteSingleAbbrevNumber(singleShortNum)
+                .checkIfAbbrevNumberDoesNotExistInList(singleShortNum);
     }
 
     @AfterClass(alwaysRun = true)

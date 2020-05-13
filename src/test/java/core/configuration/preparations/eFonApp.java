@@ -81,7 +81,7 @@ public class eFonApp extends PreparationsForRun{
 
     public Fields fields = new Fields();
     public BasePage basePage = new BasePage();
-    public DataBaseWorker dataBaseWorker = new DataBaseWorker();
+    public static DataBaseWorker dataBaseWorker = new DataBaseWorker();
     public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
     public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 

@@ -7,11 +7,15 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.testng.annotations.Test;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.lang.reflect.ParameterizedType;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.RANGE;
 
 public class TempTest extends BaseTestMethods {
 
@@ -321,5 +326,16 @@ public class TempTest extends BaseTestMethods {
 
         return script;
     }
+
+    public static void main(String[] args) {
+
+        for (int i = 0; i < 10; i++) {
+            String[] asr = new AbbreviatedDialling(RANGE).generateRandomAbbrevNumsRange();
+            System.out.println(asr[0]+"   "+asr[1]);
+
+        }
+
+    }
+
 
 }

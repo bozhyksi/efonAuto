@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="D:/eFonAuto/proj_EFON/efonAuto/src/test/java/tests/temp"><classes><class name="tests.temp.TempTest"><methods><include name="sss"/></methods></class></classes></test></suite>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="D:/eFonAuto/proj_EFON/efonAuto/src/test/java/tests/temp">
+
+        <groups>
+            <run>
+                <include name="ttt"></include>
+            </run>
+        </groups>
+
+        <packages>
+            <package name="tests.*"></package>
+            <package name="testsLowLevelUser.*"></package>
+        </packages>
+
+    </test>
+</suite>

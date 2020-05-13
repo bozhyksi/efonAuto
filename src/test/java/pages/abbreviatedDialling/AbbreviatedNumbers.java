@@ -4,6 +4,8 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import pages.basePage.basePopup.ConfirmationPopup;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
@@ -109,13 +111,36 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         getListNo().filterBy(Condition.text(shortNum)).shouldHave(CollectionCondition.size(1));
     }
 
+    @Step("Check if single short dial exists in the list")
+    public AbbreviatedNumbers checkIfAbbrevNumberExistsInList(AbbreviatedDialling shortNum){
+        getDropdownItemsPerPage().selectOptionContainingText("All");
+        getFieldNumberByText(shortNum.getSingleShortNum()).should(exist);
+        return new AbbreviatedNumbers();
+    }
+
     public void checkIfAbbrevNumberDoesNotExistInList(String shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getListNo().filterBy(Condition.text(shortNum)).shouldHave(CollectionCondition.size(0));
     }
 
+    @Step("Verify if single abbreviated number does not exist in the list")
+    public AbbreviatedNumbers checkIfAbbrevNumberDoesNotExistInList(AbbreviatedDialling shortNum){
+        getDropdownItemsPerPage().selectOptionContainingText("All");
+        getFieldNumberByText(shortNum.getSingleShortNum()).shouldNot(exist);
+        return new AbbreviatedNumbers();
+    }
+
     public void deleteSingleAbbrevNumber(String shortNum){
         getButtonDeleteByNum(shortNum).click();
+    }
+
+    @Step("Delete single short number")
+    public AbbreviatedNumbers deleteSingleAbbrevNumber(AbbreviatedDialling shortNum){
+        getButtonDeleteByNum(shortNum.getSingleShortNum()).click();
+        waitUntilAlertDisappear();
+        new ConfirmationPopup().getYesButton().click();
+        waitUntilAlertDisappear();
+        return new AbbreviatedNumbers();
     }
 
     public void checkIfAbbrevNumberRangeCreated(AbbreviatedDialling obj){

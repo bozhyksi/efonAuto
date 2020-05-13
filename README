@@ -27,13 +27,15 @@ Run the tests from the console:
 3. Execute appropriate suit: mvn clean test -D<path><press enter>
 
 -<folder> and <suitName> set to one of the following:
-    -Dpath=pageSuits/loginPage(or other page name);
-    -Dpath=regression/regression;
-    -Dpath=smoke/smoke;
+    -Dpath=pageSuits/loginPage.xml(or other page name);
+    -Dpath=regression/regression.xml;
+    -Dpath=smoke/smoke.xml;
 
 
 4. Allure Reporting. To generate allure-report exec the following commands:
-    - mvn clean test -Dpath=smoke/smoke <press enter>
+    - mvn clean test -Dpath=smoke/smoke.xml <press enter>
     - mvn allure : serve
 
-
+Example:
+    mvn clean test -Pqa -Dpath=ttt.xml
+    mvn allure : serve
