@@ -202,7 +202,6 @@ public class BaseTestMethods extends eFonApp {
         createUserPopup.getCheckboxBusyOnBusy().click();
         user.setPermittedDestinationNumbers(createUserPopup.selectPermittedDestinationNumbers());
         createUserPopup.getCheckboxSmsEnabled().click();
-        createUserPopup.getCheckboxRoleFinance().click();
         user.setCallsRecordingDirection(createUserPopup.activateCallRecordings());
         //createUserPopup.activateFaxDispatch(user.getInputLocalHeaderInfo());
         createUserPopup.getButtonSave().click();

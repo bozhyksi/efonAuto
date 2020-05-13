@@ -13,7 +13,7 @@ public class AbbreviatedDialling extends BaseTestMethods {
     }
 
     private final int startRange = 11;
-    private final int endRange = 99;
+    private final int endRange = 98;
 
     private ArrayList<String> shortNumbers = new ArrayList<>();
     private String singleShortNum;

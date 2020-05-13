@@ -22,7 +22,6 @@ public class CreateUserPopup extends UserPage {
     private String dropdownPermittedDestNumbersXpath = "//create-user//select[@formcontrolname=\"currentBlockSet\"]";
     private String checkboxSmsEnabledXpath = "//create-user//input[@formcontrolname=\"smsEnabled\"]";
     private String checkboxActivateFaxDispatchXpath = "//create-user//input[@formcontrolname=\"faxEnabled\"]";
-    private String checkboxRoleFinanceXpath = "//create-user//input[@formcontrolname=\"roleFinance\"]";
     private String checkboxActivateCallRecordingXpath = "//create-user//input[@formcontrolname=\"activateCallRecording\"]";
     private String dropdownCallRecordingDirectionXpath = "//create-user//select[@formcontrolname=\"callRecordingDirection\"]";
     private String buttonSaveXpath = "//button[text()='Save']";
@@ -103,10 +102,6 @@ public class CreateUserPopup extends UserPage {
 
     public SelenideElement getcheckboxActivateFaxDispatch() {
         return field(checkboxActivateFaxDispatchXpath);
-    }
-
-    public SelenideElement getCheckboxRoleFinance() {
-        return field(checkboxRoleFinanceXpath);
     }
 
     public SelenideElement getCheckboxActivateCallRecording() {

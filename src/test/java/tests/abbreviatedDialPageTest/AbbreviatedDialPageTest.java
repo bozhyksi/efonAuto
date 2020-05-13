@@ -30,7 +30,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddOneShortNumberOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
-        AbbreviatedDialling abbrevNum = new AbbreviatedDialling(getRandomNumber(250, 299));
+        AbbreviatedDialling abbrevNum = new AbbreviatedDialling(SINGLE);
 
         step("Login the system");
         login();
@@ -56,10 +56,10 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     }
 
     @Description("Check if user can add Short Number in range on \"Manage abbreviated numbers\" page")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest","ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddShortNumberInRangeOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
-        AbbreviatedDialling shortNums = new AbbreviatedDialling(201, 205);
+        AbbreviatedDialling shortNums = new AbbreviatedDialling(RANGE);
         for (String num: shortNums.getShortNumbersArray()) {
             abbrevDialList.add(new AbbreviatedDialling(num));
         }
@@ -86,7 +86,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "abbreviatedDialPageTest"})
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToInternalUser() {
         step("Prepare test data");
-        AbbreviatedDialling shorNum = new AbbreviatedDialling(getRandomNumber(255, 260));
+        AbbreviatedDialling shorNum = new AbbreviatedDialling(SINGLE);
         User user = new User();
         userArrayList.add(user);
         abbrevDialList.add(shorNum);
@@ -124,7 +124,8 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
     public void CheckIfUserCanEditAbbreviatedNumberAndAssignItToExternalUser() {
         step("Prepare test data");
-        AbbreviatedDialling shortNum = new AbbreviatedDialling(getRandomNumber(245,249));
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(SINGLE);
+        abbrevDialList.add(shortNum);
 
         step("Login the system");
         login();
@@ -173,7 +174,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
     public void CheckIfUserAddSecretaryToShortNumber(){
         step("Prepare test data");
-        AbbreviatedDialling shortNum = new AbbreviatedDialling(11,99);
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(SINGLE);
         User user = new User();
         userArrayList.add(user);
         abbrevDialList.add(shortNum);
@@ -206,7 +207,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","abbreviatedDialPageTest"})
     public void CheckIfUserActivateDeactivateBlfPickupOption(){
         step("Prepare test data");
-        AbbreviatedDialling shortNum = new AbbreviatedDialling(11,99);
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(SINGLE);
         User user = new User();
         userArrayList.add(user);
         abbrevDialList.add(shortNum);
@@ -255,7 +256,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     }
 
     @Description("Check if user can add Short Number in range (modified  test)")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest","ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddShortNumberInRange(){
         step("Prepare test data");
         AbbreviatedDialling rangeShortNum = new AbbreviatedDialling(RANGE);
