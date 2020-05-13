@@ -232,7 +232,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     }
 
     @Description("Check if user can add single Short Number (modified  test)")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest", "ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
     public void CheckIfUserCanAddOneShortNumber() {
         step("Prepare test data");
         AbbreviatedDialling singleShortNum = new AbbreviatedDialling(SINGLE);
