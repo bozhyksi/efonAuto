@@ -64,6 +64,10 @@ public class AbbreviatedDialling extends BaseTestMethods {
                 this.lastName = getRandomString(15);
                 this.firstName = getRandomString(15);
                 this.company = getRandomString(15);
+
+                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]) ; i++) {
+                    shortNumbers.add(String.valueOf(i));
+                }
             }
         }
     }

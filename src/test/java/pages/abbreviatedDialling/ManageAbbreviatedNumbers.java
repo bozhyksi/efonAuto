@@ -48,11 +48,12 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     }
 
     @Step("Create single abbreviated number")
-    public void addSingleAbbrevNumber(AbbreviatedDialling shortNumber){
+    public ManageAbbreviatedNumbers addSingleAbbrevNumber(AbbreviatedDialling shortNumber){
         getInputAdd().setValue(shortNumber.getSingleShortNum());
         waitUntilAlertDisappear();
         getButtonAdd().click();
         waitUntilAlertDisappear();
+        return this;
     }
 
     public void addRangeAbbrevNumber(String startRangeNum, String endRangeNum){
@@ -60,5 +61,16 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         getInputAddAreaUntil().setValue(endRangeNum);
         getButtonAddArea().click();
     }
+
+    @Step("Create range of short numbers")
+    public ManageAbbreviatedNumbers addRangeAbbrevNumber(AbbreviatedDialling rangeNumbers){
+        getInputAddAreaFrom().setValue(rangeNumbers.getFromNumber());
+        getInputAddAreaUntil().setValue(rangeNumbers.getUntilNumber());
+        waitUntilAlertDisappear();
+        getButtonAddArea().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
 
 }

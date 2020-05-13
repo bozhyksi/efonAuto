@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
@@ -162,6 +163,7 @@ public class BaseTestMethods extends eFonApp {
         loginPage.getButtonLogin().shouldBe(visible,appear,appears);
     }
 
+    @Step("Log in as VPBX admin")
     public void login() {
         loginPage.fillInLogin(getLogin());
         loginPage.fillInPassword(getPassword());
@@ -605,6 +607,7 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
+    @Step("Clean up abbreviated numbers - delete test data")
     public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
         try {
             basePage.getTabAbbreviatedDialling().click();

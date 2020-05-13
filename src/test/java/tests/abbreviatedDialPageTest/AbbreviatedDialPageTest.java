@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.RANGE;
 import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 @Listeners(CustomListeners.class)
@@ -55,7 +56,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
     }
 
     @Description("Check if user can add Short Number in range on \"Manage abbreviated numbers\" page")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest","ttt"})
     public void CheckIfUserCanAddShortNumberInRangeOnManageAbbreviatedNumbersPage() {
         step("Prepare test data");
         AbbreviatedDialling shortNums = new AbbreviatedDialling(201, 205);
@@ -243,16 +244,40 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         basePage.goToMenuTab(ABBREVIATED_DIALING)
                 .goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
 
-        manageAbbrevNumbersPage.addSingleAbbrevNumber(singleShortNum);
-
-        step("Goto Abbreviated dialling list");
-        manageAbbrevNumbersPage.goToMenuTab(ABBREVIATED_NUMBERS);
+        manageAbbrevNumbersPage
+                .addSingleAbbrevNumber(singleShortNum)
+                .goToMenuTab(ABBREVIATED_NUMBERS);
 
         abbreviatedNumbers
                 .checkIfAbbrevNumberExistsInList(singleShortNum)
                 .deleteSingleAbbrevNumber(singleShortNum)
                 .checkIfAbbrevNumberDoesNotExistInList(singleShortNum);
     }
+
+    @Description("Check if user can add Short Number in range (modified  test)")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "abbreviatedDialPageTest","ttt"})
+    public void CheckIfUserCanAddShortNumberInRange(){
+        step("Prepare test data");
+        AbbreviatedDialling rangeShortNum = new AbbreviatedDialling(RANGE);
+        for (String shortNumber: rangeShortNum.getShortNumbersArray()) {
+            abbrevDialList.add(new AbbreviatedDialling(shortNumber));
+        }
+
+        login();
+        basePage
+                .goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
+
+        manageAbbrevNumbersPage
+                .addRangeAbbrevNumber(rangeShortNum)
+                .goToMenuTab(ABBREVIATED_NUMBERS);
+
+        abbreviatedNumbers
+                .checkIfAbbrevNumberRangeCreated(rangeShortNum);
+
+        abbrevNumsCleanUp(abbrevDialList);
+    }
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){

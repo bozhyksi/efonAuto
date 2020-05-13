@@ -115,7 +115,7 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     public AbbreviatedNumbers checkIfAbbrevNumberExistsInList(AbbreviatedDialling shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getFieldNumberByText(shortNum.getSingleShortNum()).should(exist);
-        return new AbbreviatedNumbers();
+        return this;
     }
 
     public void checkIfAbbrevNumberDoesNotExistInList(String shortNum){
@@ -127,7 +127,7 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     public AbbreviatedNumbers checkIfAbbrevNumberDoesNotExistInList(AbbreviatedDialling shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getFieldNumberByText(shortNum.getSingleShortNum()).shouldNot(exist);
-        return new AbbreviatedNumbers();
+        return this;
     }
 
     public void deleteSingleAbbrevNumber(String shortNum){
@@ -140,15 +140,17 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         waitUntilAlertDisappear();
         new ConfirmationPopup().getYesButton().click();
         waitUntilAlertDisappear();
-        return new AbbreviatedNumbers();
+        return this;
     }
 
-    public void checkIfAbbrevNumberRangeCreated(AbbreviatedDialling obj){
+    @Step("Check if short numbers in range were added")
+    public AbbreviatedNumbers checkIfAbbrevNumberRangeCreated(AbbreviatedDialling obj){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         waitUntilAlertDisappear();
         for (String elem : obj.getShortNumbersArray()) {
             getFieldNumberByText(elem).should().exists();
-        };
+        }
+        return this;
     }
 
     public void editSingleAbbrevNumber(String shortNum){
