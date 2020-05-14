@@ -9,7 +9,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
@@ -44,7 +43,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         step("Goto Abbreviated numbers tab and check if short number was added");
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         waitUntilAlertDisappear();
-        abbreviatedNumbers.checkIfAbbrevNumberExistsInList(abbrevNum.getSingleShortNum());
+        abbreviatedNumbers.checkIfSingleAbbrevNumberExistsInList(abbrevNum.getSingleShortNum());
 
         step("Clear test data - delete added short number");
         abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum.getSingleShortNum());
@@ -52,7 +51,7 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Verify if Abbreviated number was deleted");
-        abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum.getSingleShortNum());
+        abbreviatedNumbers.checkIfSingleAbbrevNumberDoesNotExistInList(abbrevNum.getSingleShortNum());
     }
 
     @Description("Check if user can add Short Number in range on \"Manage abbreviated numbers\" page")
@@ -250,9 +249,9 @@ public class AbbreviatedDialPageTest extends BaseTestMethods {
                 .goToMenuTab(ABBREVIATED_NUMBERS);
 
         abbreviatedNumbers
-                .checkIfAbbrevNumberExistsInList(singleShortNum)
+                .checkIfSingleAbbrevNumberExistsInList(singleShortNum)
                 .deleteSingleAbbrevNumber(singleShortNum)
-                .checkIfAbbrevNumberDoesNotExistInList(singleShortNum);
+                .checkIfSingleAbbrevNumberDoesNotExistInList(singleShortNum);
     }
 
     @Description("Check if user can add Short Number in range (modified  test)")

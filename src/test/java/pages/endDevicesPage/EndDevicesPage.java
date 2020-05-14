@@ -1,8 +1,10 @@
 package pages.endDevicesPage;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import pages.endDevicesPage.endDevicesPopUps.AutoProvisioningInfoToolTip;
+import pages.endDevicesPage.endDevicesPopUps.ConfigureEndDevicesPopup;
 import tests.endDevicesPageTests.endDevicesTestData.EndDevicesTestData;
 
 public class EndDevicesPage extends BasePage {
@@ -60,4 +62,12 @@ public class EndDevicesPage extends BasePage {
         return new AutoProvisioningInfoToolTip();
 
     }
+
+    @Step("Edit end-device, open \"Configure end devices\" popup")
+    public ConfigureEndDevicesPopup configureEndDevice(String endDeviceName){
+        getButtonEdit(endDeviceName).click();
+        waitUntilAlertDisappear();
+        return new ConfigureEndDevicesPopup();
+    }
+
 }

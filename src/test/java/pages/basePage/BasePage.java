@@ -45,6 +45,24 @@ public class BasePage extends Fields{
         REPORT_QUEUES,
     }
 
+    public enum ItemsPerPage{
+        _10("10"),
+        _25("25"),
+        _50("50"),
+        _100("100"),
+        _All("-1");
+
+        private String items;
+
+        ItemsPerPage(String items){
+            this.items = items;
+        }
+
+        public String getItems() {
+            return items;
+        }
+    }
+
     //<editor-fold desc="//-- BasePage Locators --//">
     private String pageTitleXpath = "//h1";
     private String alertDialogXpath = "//div[@role=\"alertdialog\"]";
@@ -319,6 +337,11 @@ public class BasePage extends Fields{
             case PROVISIONING_PHONE_MODELS: return getTabProvisioningPhoneModels();
             default: return getTabUser();
         }
+    }
+
+    public BasePage setItemsPerPage(ItemsPerPage value){
+        getDropdownItemsPerPage().selectOptionByValue(value.getItems());
+        return this;
     }
 
 }

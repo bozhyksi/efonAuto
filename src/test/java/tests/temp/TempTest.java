@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.codeborne.selenide.Condition.exist;
@@ -328,14 +329,8 @@ public class TempTest extends BaseTestMethods {
     }
 
     public static void main(String[] args) {
-
-        for (int i = 0; i < 10; i++) {
-            String[] asr = new AbbreviatedDialling(RANGE).generateRandomAbbrevNumsRange();
-            System.out.println(asr[0]+"   "+asr[1]);
-
-        }
-
     }
+
 
 
 }

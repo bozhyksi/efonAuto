@@ -106,25 +106,25 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     //</editor-fold>
 
-    public void checkIfAbbrevNumberExistsInList(String shortNum){
+    public void checkIfSingleAbbrevNumberExistsInList(String shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getListNo().filterBy(Condition.text(shortNum)).shouldHave(CollectionCondition.size(1));
     }
 
     @Step("Check if single short dial exists in the list")
-    public AbbreviatedNumbers checkIfAbbrevNumberExistsInList(AbbreviatedDialling shortNum){
+    public AbbreviatedNumbers checkIfSingleAbbrevNumberExistsInList(AbbreviatedDialling shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getFieldNumberByText(shortNum.getSingleShortNum()).should(exist);
         return this;
     }
 
-    public void checkIfAbbrevNumberDoesNotExistInList(String shortNum){
+    public void checkIfSingleAbbrevNumberDoesNotExistInList(String shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getListNo().filterBy(Condition.text(shortNum)).shouldHave(CollectionCondition.size(0));
     }
 
     @Step("Verify if single abbreviated number does not exist in the list")
-    public AbbreviatedNumbers checkIfAbbrevNumberDoesNotExistInList(AbbreviatedDialling shortNum){
+    public AbbreviatedNumbers checkIfSingleAbbrevNumberDoesNotExistInList(AbbreviatedDialling shortNum){
         getDropdownItemsPerPage().selectOptionContainingText("All");
         getFieldNumberByText(shortNum.getSingleShortNum()).shouldNot(exist);
         return this;

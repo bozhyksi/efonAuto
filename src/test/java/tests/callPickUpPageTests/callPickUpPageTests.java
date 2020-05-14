@@ -5,47 +5,53 @@ import com.codeborne.selenide.Condition;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.callPickUpPageTests.CallPickUpTestData.CallPickUp;
+
+import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.CALL_PICKUPs;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 public class callPickUpPageTests extends BaseTestMethods {
+    ArrayList<AbbreviatedDialling> shortNumbersList = new ArrayList<>();
+    ArrayList<CallPickUp> callPickUpsList = new ArrayList<>();
 
     @Description("Check if user can create new Call Pick Up group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callPickUpPageTests"})
     public void CheckIfUserCanCreateNewCallPickUpGroup() {
+
         step("Prepare test data");
-        String groupName = getRandomString(10);
-        String abbrevNum = getRandomNumber(201, 299);
+        AbbreviatedDialling shortNumber = new AbbreviatedDialling(SINGLE);
+        CallPickUp callPickUp = new CallPickUp(shortNumber);
+        shortNumbersList.add(shortNumber);
+        callPickUpsList.add(callPickUp);
 
-        step("Log in the system");
         login();
+        addSingleAbbreviatedNumber(shortNumber);
 
-        step("Create new single Abbreviated Number");
-        addSingleAbbrevNumber(abbrevNum);
+        basePage
+                .goToMenuTab(CALL_PICKUPs);
+        callPickUpPage
+                .clickCreateNewGroup()
+                .configureGroupForCallPickup(callPickUp)
+                .editCallPickUp(callPickUp)
+                .verifyGroupForCallPickupConfiguration(callPickUp)
+                .deleteCallPickUp(callPickUp)
+                .verifyIfCallPickUpDoesNotExist(callPickUp);
 
-        step("Goto call PickUps tab and create new Call Pickup group");
-        basePage.getTabCallPickUps().click();
-        callPickUpPage.getButtonNewGroup().click();
-        groupCallPickupPopup.getInputName().setValue(groupName);
-        groupCallPickupPopup.selectAbbrenNumber(abbrevNum);
-        groupCallPickupPopup.getDropdownSelectAccounts().selectOption(1);
-        groupCallPickupPopup.getButtonSave().click();
+        deleteSingleAbbreviatedNumber(shortNumber);
+    }
 
-        step("Verify if Call PickUp group was created");
-        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(1));
-        callPickUpPage.getListAbbrevDial().filterBy(Condition.text(abbrevNum)).shouldHave(CollectionCondition.size(1));
-
-        step("Delete CallPickUp group");
-        callPickUpPage.deletePickUpGroup(groupName);
-        confirmationPopup.getYesButton().click();
-
-        step("Verify if Call PickUp group was Deleted");
-        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(0));
-        callPickUpPage.getListAbbrevDial().filterBy(Condition.text(abbrevNum)).shouldHave(CollectionCondition.size(0));
-
-        step("Delete created Abbreviated number");
-        refreshPage();
-        deleteSingleAbbrevNumber(abbrevNum);
+    @AfterClass(alwaysRun = true)
+    private void cleanUp(){
+        startBrowser();
+        login();
+        abbrevNumsCleanUp(shortNumbersList);
+        closeBrowser();
     }
 }

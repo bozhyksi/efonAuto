@@ -10,6 +10,7 @@ import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.callPickUpPageTests.CallPickUpTestData.CallPickUp;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
@@ -26,9 +27,14 @@ import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
+import static pages.basePage.BasePage.ItemsPerPage._All;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
+
+    public boolean getRandomBoolean() {
+        return Math.random() < 0.5;
+    }
 
     public String getRandomIpAddress(){
         return "192.168." + getRandomNumber(0,254)+"."+getRandomNumber(0,254);
@@ -263,12 +269,43 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
+    @Step("Add single abbreviated number")
+    public void addSingleAbbreviatedNumber(AbbreviatedDialling shortNumber){
+        basePage
+                .goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
+
+        manageAbbrevNumbersPage
+                .addSingleAbbrevNumber(shortNumber)
+                .goToMenuTab(ABBREVIATED_NUMBERS);
+
+        abbreviatedNumbers
+                .checkIfSingleAbbrevNumberExistsInList(shortNumber);
+    }
+
     public void addSingleAbbrevNumber(String abbrevNum) {
         basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
         manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
         waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        abbreviatedNumbers.checkIfAbbrevNumberExistsInList(abbrevNum);
+        abbreviatedNumbers.checkIfSingleAbbrevNumberExistsInList(abbrevNum);
+    }
+
+    @Step("Delete single short number")
+    public void deleteSingleAbbreviatedNumber(AbbreviatedDialling shortNumber) {
+        basePage
+                .goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(ABBREVIATED_NUMBERS)
+                .setItemsPerPage(_All);
+
+        if (!abbreviatedNumbers.getButtonDeleteByNum(shortNumber.getSingleShortNum()).exists()) {
+            makeAbbrevNumberUnused(shortNumber.getSingleShortNum());
+            refreshPage();
+        }
+
+        abbreviatedNumbers
+                .deleteSingleAbbrevNumber(shortNumber)
+                .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
     }
 
     public void deleteSingleAbbrevNumber(String abbrevNum) {
@@ -281,7 +318,7 @@ public class BaseTestMethods extends eFonApp {
         abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum);
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
-        abbreviatedNumbers.checkIfAbbrevNumberDoesNotExistInList(abbrevNum);
+        abbreviatedNumbers.checkIfSingleAbbrevNumberDoesNotExistInList(abbrevNum);
     }
 
     public void deleteAllAbbrevNumbers() {
@@ -329,22 +366,12 @@ public class BaseTestMethods extends eFonApp {
         alertPopup.getAlertDialog().should(Condition.appears);
     }
 
-    public void createCallPickUpGroup(String groupName, String abbrevNum) {
-        basePage.getTabCallPickUps().click();
-        callPickUpPage.getButtonNewGroup().click();
-        groupCallPickupPopup.getInputName().setValue(groupName);
-        groupCallPickupPopup.selectAbbrenNumber(abbrevNum);
-        groupCallPickupPopup.getDropdownSelectAccounts().selectOption(1);
-        groupCallPickupPopup.getButtonSave().click();
-
-        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(1));
-        callPickUpPage.getListAbbrevDial().filterBy(Condition.text(abbrevNum)).shouldHave(CollectionCondition.size(1));
-    }
-
-    public void deleteCallPickUpGroup(String groupName) {
-        callPickUpPage.deletePickUpGroup(groupName);
-        confirmationPopup.getYesButton().click();
-        callPickUpPage.getListName().filterBy(Condition.text(groupName)).shouldHave(CollectionCondition.size(0));
+    public void createCallPickUpGroup(CallPickUp callPickUp) {
+        basePage.goToMenuTab(CALL_PICKUPs);
+        callPickUpPage
+                .clickCreateNewGroup()
+                .configureGroupForCallPickup(callPickUp)
+                .verifyIfCallPickUpExists(callPickUp);
     }
 
     public void createConferenceCall(Conference conference) {
