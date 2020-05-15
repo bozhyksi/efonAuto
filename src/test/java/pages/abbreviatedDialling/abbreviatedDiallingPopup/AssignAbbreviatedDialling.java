@@ -2,6 +2,7 @@ package pages.abbreviatedDialling.abbreviatedDiallingPopup;
 
 import com.codeborne.selenide.SelenideElement;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 public class AssignAbbreviatedDialling extends AbbreviatedNumbers {
     //<editor-fold desc="//-- AssignAbbreviatedDialling Locators --//">
@@ -69,4 +70,11 @@ public class AssignAbbreviatedDialling extends AbbreviatedNumbers {
     }
     //</editor-fold>
 
+
+    public AssignAbbreviatedDialling setShortNumberUnused(){
+        getRadioUnused().click();
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
 }

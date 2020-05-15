@@ -88,4 +88,7 @@ public class CallPickUpPage extends BasePage {
         return this;
     }
 
+    public boolean callPickUpGroupExists(CallPickUp callPickUp){
+        return getNameByText(callPickUp.getName()).exists();
+    }
 }

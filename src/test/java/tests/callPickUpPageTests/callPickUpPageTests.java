@@ -47,10 +47,42 @@ public class callPickUpPageTests extends BaseTestMethods {
         deleteSingleAbbreviatedNumber(shortNumber);
     }
 
+    @Description("Check if user can EDIT and change the configuration of Call Pick Up group")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "callPickUpPageTests"})
+    public void CheckIfUserCanEditAndChangeTheConfigurationOfCallPickUpGroup() {
+
+        step("Prepare test data");
+        AbbreviatedDialling shortNumber = new AbbreviatedDialling(SINGLE);
+        AbbreviatedDialling shortNumber2 = new AbbreviatedDialling(SINGLE);
+        CallPickUp callPickUp = new CallPickUp(shortNumber);
+        CallPickUp callPickUpUpdated = new CallPickUp(shortNumber2);
+        shortNumbersList.add(shortNumber);
+        shortNumbersList.add(shortNumber2);
+        callPickUpsList.add(callPickUpUpdated);
+
+        login();
+        addSingleAbbreviatedNumber(shortNumber);
+        addSingleAbbreviatedNumber(shortNumber2);
+        createCallPickUpGroup(callPickUp);
+
+        basePage
+                .goToMenuTab(CALL_PICKUPs);
+        callPickUpPage
+                .editCallPickUp(callPickUp)
+                .configureGroupForCallPickup(callPickUpUpdated)
+                .editCallPickUp(callPickUpUpdated)
+                .verifyGroupForCallPickupConfiguration(callPickUpUpdated)
+                .deleteCallPickUp(callPickUpUpdated)
+                .verifyIfCallPickUpDoesNotExist(callPickUpUpdated);
+
+        deleteSingleAbbreviatedNumber(shortNumber, shortNumber2);
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();
+        callPickUpCleanUp(callPickUpsList);
         abbrevNumsCleanUp(shortNumbersList);
         closeBrowser();
     }

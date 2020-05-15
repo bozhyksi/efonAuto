@@ -298,14 +298,29 @@ public class BaseTestMethods extends eFonApp {
                 .goToMenuTab(ABBREVIATED_NUMBERS)
                 .setItemsPerPage(_All);
 
-        if (!abbreviatedNumbers.getButtonDeleteByNum(shortNumber.getSingleShortNum()).exists()) {
-            makeAbbrevNumberUnused(shortNumber.getSingleShortNum());
-            refreshPage();
-        }
+        if (!abbreviatedNumbers.checkIfDeleteButtonExist(shortNumber))
+            abbreviatedNumbers.makeShortNumberUnused(shortNumber);
 
         abbreviatedNumbers
                 .deleteSingleAbbrevNumber(shortNumber)
                 .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
+    }
+
+    @Step("Delete single short number")
+    public void deleteSingleAbbreviatedNumber(AbbreviatedDialling ... shortNumbers) {
+        basePage
+                .goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(ABBREVIATED_NUMBERS)
+                .setItemsPerPage(_All);
+
+        for (AbbreviatedDialling shortNumber : shortNumbers) {
+            if (!abbreviatedNumbers.checkIfDeleteButtonExist(shortNumber))
+                abbreviatedNumbers.makeShortNumberUnused(shortNumber);
+
+            abbreviatedNumbers
+                    .deleteSingleAbbrevNumber(shortNumber)
+                    .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
+        }
     }
 
     public void deleteSingleAbbrevNumber(String abbrevNum) {
@@ -366,12 +381,44 @@ public class BaseTestMethods extends eFonApp {
         alertPopup.getAlertDialog().should(Condition.appears);
     }
 
+    @Step("Create call pick up")
     public void createCallPickUpGroup(CallPickUp callPickUp) {
         basePage.goToMenuTab(CALL_PICKUPs);
         callPickUpPage
                 .clickCreateNewGroup()
                 .configureGroupForCallPickup(callPickUp)
                 .verifyIfCallPickUpExists(callPickUp);
+    }
+
+    @Step("Delete call pickup")
+    public void deleteCallPickup(CallPickUp callPickUp){
+        basePage
+                .goToMenuTab(CALL_PICKUPs);
+        callPickUpPage
+                .deleteCallPickUp(callPickUp)
+                .verifyIfCallPickUpDoesNotExist(callPickUp);
+    }
+
+    @Step("Delete call pickup")
+    public void deleteCallPickup(CallPickUp ... callPickUps){
+        basePage
+                .goToMenuTab(CALL_PICKUPs);
+        for (CallPickUp callPickUp:callPickUps) {
+            callPickUpPage
+                    .deleteCallPickUp(callPickUp)
+                    .verifyIfCallPickUpDoesNotExist(callPickUp);
+        }
+    }
+
+    public void callPickUpCleanUp(ArrayList<CallPickUp> callPickUpsList){
+        basePage
+                .goToMenuTab(CALL_PICKUPs);
+        for (CallPickUp callPickUp : callPickUpsList) {
+            if (callPickUpPage.callPickUpGroupExists(callPickUp)){
+                deleteCallPickup(callPickUp);
+                waitUntilAlertDisappear();
+            }
+        }
     }
 
     public void createConferenceCall(Conference conference) {

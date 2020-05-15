@@ -5,6 +5,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDialling;
 import pages.basePage.basePopup.ConfirmationPopup;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
@@ -153,6 +154,21 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         return this;
     }
 
+    @Step("Make short number unused")
+    public AbbreviatedNumbers makeShortNumberUnused(AbbreviatedDialling shortNumber){
+        clickEditSingleShortNumber(shortNumber);
+        new AssignAbbreviatedDialling()
+                .setShortNumberUnused();
+        return this;
+    }
+
+    @Step("Edit single short number, open edit popup")
+    public AbbreviatedNumbers clickEditSingleShortNumber(AbbreviatedDialling shortNumber){
+        getButtonEditByNum(shortNumber.getSingleShortNum()).click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
     public void editSingleAbbrevNumber(String shortNum){
         getButtonEditByNum(shortNum).click();
     }
@@ -181,5 +197,9 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
             }
         }
         return false;
+    }
+
+    public boolean checkIfDeleteButtonExist(AbbreviatedDialling shortNumber){
+        return getButtonDeleteByNum(shortNumber.getSingleShortNum()).exists();
     }
 }
