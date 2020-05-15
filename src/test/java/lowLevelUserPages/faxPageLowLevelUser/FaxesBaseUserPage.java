@@ -60,6 +60,7 @@ public class FaxesBaseUserPage extends BasePageLowLevelUser {
         }
     }
 
+    @Step("Select number from Search dropdown")
     public FaxesBaseUserPage selectNumberFromSearchDropdown(String number){
         getDropdownNumberSearch().selectOptionContainingText(number);
         return this;
@@ -67,6 +68,7 @@ public class FaxesBaseUserPage extends BasePageLowLevelUser {
 
     @Step("Check if only user number is available in dropdown ")
     public FaxesBaseUserPage validateNumberSearchDropDownItems(){
+        getDropdownNumberSearch().click();
         waitUntilAlertDisappear();
         ArrayList<String> phones = new ArrayList<>();
         Select select = new Select(getDropdownNumberSearch());

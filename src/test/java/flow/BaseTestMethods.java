@@ -218,6 +218,7 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserExistsInTheList(user);
     }
 
+    @Step("Delete the user")
     public void deleteUser(User user) {
         basePage.getTabUser().click();
         waitUntilAlertDisappear();
