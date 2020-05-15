@@ -2,6 +2,7 @@ package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.userPage.UserPage;
 
 import static com.codeborne.selenide.Condition.*;
@@ -136,5 +137,12 @@ public class ConfigureUserBasePopup extends UserPage {
         getTabElement(tabName).waitUntil(Condition.appear,500);
         getTabElement(tabName).click();
         waitUntilAlertDisappear();
+    }
+
+    @Step("Close popup")
+    public UserPage closeEditUserPopup(){
+        getButtonClose().click();
+        waitUntilAlertDisappear();
+        return this;
     }
 }

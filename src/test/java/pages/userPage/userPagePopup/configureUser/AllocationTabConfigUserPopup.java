@@ -2,7 +2,9 @@ package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.testng.Assert;
+import pages.userPage.UserPage;
 
 public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     //<editor-fold desc="Locators">
@@ -19,9 +21,16 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     private String checkboxCallsRecordingXpath = "//form//input[@formcontrolname=\"activateCallRecording\"]";
     private String dropdownCallsRecordingXpath = "//form//select[@formcontrolname=\"callRecordingDirection\"]";
     private String selectedEndDeviceXpath = "//form//span[contains(@class,\"selected-item\")]";
+    private final String dropdownFax2EmailAccessXpath = "//select[@formcontrolname=\"faxNumber\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getDropdownFax2EmailAccess() {
+        return field(dropdownFax2EmailAccessXpath);
+    }
+
     public SelenideElement getSelectedEndDevice() {
         return field(selectedEndDeviceXpath);
     }
@@ -106,4 +115,23 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     public void validateCallsRecordingDirection(String expR){
         getDropdownCallsRecording().getSelectedText().contains(expR);
     }
+
+    @Step("Select number in Fax2Email dropdown")
+    public AllocationTabConfigUserPopup selectNumberAssignFax2EmailAccess(String number){
+        getDropdownFax2EmailAccess().selectOptionByValue(number);
+        return this;
+    }
+
+    @Step("Save changes")
+    public AllocationTabConfigUserPopup saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    public UserPage closeEditUserPopup(){
+        return super.closeEditUserPopup();
+    }
+
+
 }

@@ -163,6 +163,7 @@ public class BaseTestMethods extends eFonApp {
         return "00" + getRandomNumber(11);
     }
 
+    @Step("Log out the system")
     public void logOut(){
         basePage.getButtonLogout().click();
         waitUntilAlertDisappear();
@@ -177,6 +178,7 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
     }
 
+    @Step("Log in as Low-Level user")
     public void loginAsLowLevelUser(){
         loginPage.fillInLogin(getLowLevelUserLogin());
         loginPage.fillInPassword(getLowLevelUserPassword());
@@ -190,6 +192,7 @@ public class BaseTestMethods extends eFonApp {
         loginPage.getButtonLogin().click();
     }
 
+    @Step("Create new user")
     public void createUser(User user) {
         basePage.getTabUser().click();
         userPage.getPageTitle().getText().equals("User");

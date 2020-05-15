@@ -4,6 +4,7 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.userPageTests.userPageTestData.User;
@@ -94,6 +95,13 @@ public class UserPage extends BasePage {
     public void openEditUserPopup(User user){
         getButtonConfigUserByName(user.getFirstName()).click();
         waitUntilAlertDisappear();
+    }
+
+    @Step("Open Edit user popup")
+    public ConfigureUserBasePopup openEditUserPopup(String user){
+        getButtonConfigUserByName(user).click();
+        waitUntilAlertDisappear();
+        return new ConfigureUserBasePopup();
     }
 
     public ConfigureUserBasePopup editUser(String user){

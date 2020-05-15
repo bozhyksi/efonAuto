@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Condition.*;
 
 public class BasePageLowLevelUser extends BasePage {
     public static String autotestUserPhone = "00451245789908";
+    public static String autotestUserName = "AutoTestUser AutoTestUser";
 
     public enum MenuTabsLowLevelUser{
         SEND_SMS,
@@ -18,7 +19,10 @@ public class BasePageLowLevelUser extends BasePage {
         DASHBOARD,
         ANNOUNCEMENTS,
         VOICEMAIL_SETTING,
-        MANAGE_SENDER_NUMBERS_AND_NAMES;
+        MANAGE_SENDER_NUMBERS_AND_NAMES,
+        FAX_ARRIVED,
+        FAX_SETTINGS,
+        SEND_FAX;
     }
     public enum PageTitles{
         OVERVIEW("Overview"),
@@ -53,9 +57,25 @@ public class BasePageLowLevelUser extends BasePage {
     private String tabDashboardXpath = "//a[@id=\"menu-10\"]";
     private String pageTitleXpath = "//h1[text()=\"%s\"]";
     private String tabManageSenderNumbersXpath = "//a[contains(@href,\"sms/sms-authorization-number\")]";
+    private String tabFaxArrivedXpath = "//a[contains(@href,\"/fax/received-faxes\")]";
+    private String tabFaxSettingsXpath = "//a[contains(@href,\"/fax/fax-settings\")]";
+    private String tabFaxSendXpath = "//a[contains(@href,\"/fax/fax-send\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+    public SelenideElement getTabFaxArrived() {
+        return field(tabFaxArrivedXpath);
+    }
+
+    public SelenideElement getTabFaxSettings() {
+        return field(tabFaxSettingsXpath);
+    }
+
+    public SelenideElement getTabFaxSend() {
+        return field(tabFaxSendXpath);
+    }
+
     public SelenideElement getTabManageSenderNumbers() {
         return field(tabManageSenderNumbersXpath);
     }
@@ -95,7 +115,7 @@ public class BasePageLowLevelUser extends BasePage {
     //</editor-fold>
 
     @Override
-    public BasePage goToMenuTab(MenuTabsBasePage tabName) {
+    public BasePageLowLevelUser goToMenuTab(MenuTabsBasePage tabName) {
         super.goToMenuTab(tabName);
         return this;
     }
@@ -114,7 +134,10 @@ public class BasePageLowLevelUser extends BasePage {
             case ANNOUNCEMENTS: return getTabAnnouncements();
             case VOICEMAIL_SETTING: return getTabVoicemailSetting();
             case MANAGE_SENDER_NUMBERS_AND_NAMES: return getTabManageSenderNumbers();
-            default: return getTabDashboard();
+            case FAX_ARRIVED: return getTabFaxArrived();
+            case SEND_FAX: return getTabFaxSend();
+            case FAX_SETTINGS: return getTabFaxSettings();
+            default: return null;
         }
     }
 

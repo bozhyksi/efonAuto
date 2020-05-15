@@ -5,18 +5,29 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
+import tests.userPageTests.userPageTestData.User;
 import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.Fax2EmailSettingsTestData;
 import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.SendFaxTestData;
 
+import java.util.ArrayList;
+
 import static io.qameta.allure.Allure.step;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_ARRIVED;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserName;
+
 import static lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage.FaxesBaseUserPageTabs.FAX_SETTINGS;
 import static pages.basePage.BasePage.MenuTabsBasePage.FAX;
+import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.ALLOCATIONS;
+
 
 @Listeners(CustomListeners.class)
 
 public class FaxUserPageTests extends BaseTestMethods {
+    ArrayList<User> usersList = new ArrayList<>();
 
     @Description("Check if low-level user can Send Fax")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
@@ -78,7 +89,7 @@ public class FaxUserPageTests extends BaseTestMethods {
         loginAsLowLevelUser();
 
         step("Goto Faxes -> Fax Settings");
-        basePageLowLevelUser.goToMenuTab(FAX);
+        basePageLowLevelUser.goToMenuTab(BasePage.MenuTabsBasePage.FAX);
         faxesBaseUserPage.goToMenuTab(FAX_SETTINGS);
 
         step("Configure Fax2Email");
@@ -90,5 +101,54 @@ public class FaxUserPageTests extends BaseTestMethods {
 
     }
 
+    @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
+    public void CheckIfSelectedNumberInFax2emailIsAvailableInSelectNumberDropdownOnFaxTab(){
+        step("Prepare test data");
+        User user = new User();
+        usersList.add(user);
+
+        login();
+        createUser(user);
+        refreshPage();
+        userPage
+                .openEditUserPopup(autotestUserName)
+                .goToTab(ALLOCATIONS);
+        allocationTabConfigUserPopup
+                .selectNumberAssignFax2EmailAccess(user.getPhoneNumber())
+                .saveChanges()
+                .closeEditUserPopup();
+        logOut();
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(FAX)
+                .goToMenuTab(FAX_ARRIVED);
+        faxArrivedUserPage
+                .selectNumberFromSearchDropdown(user.getPhoneNumber());
+        logOut();
+
+        login();
+        deleteUser(user);
+    }
+
+    @Description("Check if \"Select number\" drop-down on Fax tab contains only user related numbers")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
+    public void checkifSelectNumberDropDownOnFaxTabContainsOnlyUserRelatedNumbers(){
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(FAX)
+                .goToMenuTab(FAX_ARRIVED);
+        faxArrivedUserPage
+                .validateNumberSearchDropDownItems();
+    }
+
+    @AfterClass(alwaysRun = true, enabled = false)
+    private void cleanUp(){
+        startBrowser();
+        login();
+        userCleanUp(usersList);
+        closeBrowser();
+    }
 
 }

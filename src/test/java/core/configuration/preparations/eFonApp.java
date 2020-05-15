@@ -8,6 +8,7 @@ import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
 import lowLevelUserPages.endDevicesLowLevelUserPage.EndDevicesUserPage;
+import lowLevelUserPages.faxPageLowLevelUser.FaxArrivedUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
@@ -167,5 +168,6 @@ public class eFonApp extends PreparationsForRun{
     public EditHuntGroupPopup editHuntGroupLowLevelUserPopup = new EditHuntGroupPopup();
     public static ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
     public static ProvisioningManagerPage provisioningManagerPage = new ProvisioningManagerPage();
+    public static FaxArrivedUserPage faxArrivedUserPage = new FaxArrivedUserPage();
 
 }
