@@ -1,10 +1,13 @@
 package lowLevelUserPages.faxPageLowLevelUser;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+
+import java.util.ArrayList;
 
 public class FaxesBaseUserPage extends BasePageLowLevelUser {
     public enum FaxesBaseUserPageTabs{
@@ -62,10 +65,16 @@ public class FaxesBaseUserPage extends BasePageLowLevelUser {
         return this;
     }
 
+    @Step("Check if only user number is available in dropdown ")
     public FaxesBaseUserPage validateNumberSearchDropDownItems(){
         waitUntilAlertDisappear();
+        ArrayList<String> phones = new ArrayList<>();
         Select select = new Select(getDropdownNumberSearch());
-        Assert.assertEquals(select.getOptions().size(), 2,"Numbers list is grater/less than one. ");
+        int size = select.getOptions().size();
+        for (WebElement elem:select.getOptions()) {
+            phones.add(elem.getText());
+        }
+        Assert.assertEquals(size, 2,"Numbers list contains not user related phones: \n" + phones);
         return this;
     }
 }

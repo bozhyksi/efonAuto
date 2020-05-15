@@ -102,7 +102,7 @@ public class FaxUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "faxUserPageTests"})
     public void CheckIfSelectedNumberInFax2emailIsAvailableInSelectNumberDropdownOnFaxTab(){
         step("Prepare test data");
         User user = new User();
@@ -130,6 +130,14 @@ public class FaxUserPageTests extends BaseTestMethods {
 
         login();
         deleteUser(user);
+        logOut();
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(FAX)
+                .goToMenuTab(FAX_ARRIVED);
+        faxArrivedUserPage
+                .validateNumberSearchDropDownItems();
     }
 
     @Description("Check if \"Select number\" drop-down on Fax tab contains only user related numbers")
@@ -143,7 +151,7 @@ public class FaxUserPageTests extends BaseTestMethods {
                 .validateNumberSearchDropDownItems();
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();
         login();
