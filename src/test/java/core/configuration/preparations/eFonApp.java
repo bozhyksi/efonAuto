@@ -14,6 +14,9 @@ import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.huntGroupLowLevelUserPage.HuntGroupUserPage;
 import lowLevelUserPages.huntGroupLowLevelUserPage.huntGroupPopup.EditHuntGroupPopup;
+import lowLevelUserPages.lastCallsLowLevelUserPage.IncomingLastCallsUserPage;
+import lowLevelUserPages.lastCallsLowLevelUserPage.MissedLastCallsUserPage;
+import lowLevelUserPages.lastCallsLowLevelUserPage.OutgoingLastCallsUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.QueueReportsUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.QueueStatusUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.queuePopups.QueueForAgentsUserPopup;
@@ -169,5 +172,8 @@ public class eFonApp extends PreparationsForRun{
     public static ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
     public static ProvisioningManagerPage provisioningManagerPage = new ProvisioningManagerPage();
     public static FaxArrivedUserPage faxArrivedUserPage = new FaxArrivedUserPage();
+    public static MissedLastCallsUserPage missedLastCallsUserPage = new MissedLastCallsUserPage();
+    public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
+    public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
 
 }

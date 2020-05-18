@@ -5,6 +5,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BasePage extends Fields{
@@ -20,6 +21,9 @@ public class BasePage extends Fields{
         PROVISIONING_PHONE_MODELS,
         PROVISIONING_MANAGER,
         LAST_CALLS,
+        LAST_CALLS_MISSED,
+        LAST_CALLS_INCOMING,
+        LAST_CALLS_OUTGOING,
         FAX,
         IVRs,
         ABBREVIATED_DIALING,
@@ -86,6 +90,9 @@ public class BasePage extends Fields{
     private final String tabNumbersXpath = "//a[@id=\"menu-12\"]";
     private final String tabSubscriptionsXpath = "//a[@id=\"menu-14\"]";
     private final String tabLastCallsXpath = "//a[@id=\"menu-15\"]";
+    private final String tabLastCallsMissedXpath = "//a[contains(@href,\"/last-calls/missed\")]";
+    private final String tabLastCallsIncomingXpath = "//a[contains(@href,\"last-calls/incoming\")]";
+    private final String tabLastCallsOutgoingXpath = "//a[contains(@href,\"last-calls/outgoing\")]";
     private final String tabFaxXpath = "//a[@id=\"menu-16\"]";
     private final String tabIVRsXpath = "//a[@id=\"menu-17\"]";
     private final String tabAbbreviatedNumbersXpath = "//a[@id=\"menu-18\"]";
@@ -122,6 +129,20 @@ public class BasePage extends Fields{
     //</editor-fold>
 
     //<editor-fold desc="//-- BasePage get/set methods --//">
+
+
+    public SelenideElement getTabLastCallsOutgoing() {
+        return field(tabLastCallsOutgoingXpath);
+    }
+
+    public SelenideElement getTabLastCallsIncoming() {
+        return field(tabLastCallsIncomingXpath);
+    }
+
+    public SelenideElement getTabLastCallsMissed() {
+        return field(tabLastCallsMissedXpath);
+    }
+
     public SelenideElement getTabProvisioningEndDevices() {
         return field(tabProvisioningEndDevicesXpath);
     }
@@ -304,6 +325,9 @@ public class BasePage extends Fields{
 
     private SelenideElement getMenuTab(MenuTabsBasePage tabName){
         switch (tabName){
+            case LAST_CALLS_MISSED:return getTabLastCallsMissed();
+            case LAST_CALLS_INCOMING:return getTabLastCallsIncoming();
+            case LAST_CALLS_OUTGOING:return getTabLastCallsOutgoing();
             case FAX: return getTabFax();
             case IVRs: return getTabIVRs();
             case USER: return getTabUser();

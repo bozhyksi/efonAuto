@@ -102,7 +102,6 @@ public class FaxUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "faxUserPageTests", "ttt"})
     public void CheckIfSelectedNumberInFax2emailIsAvailableInSelectNumberDropdownOnFaxTab(){
         step("Prepare test data");
         User user = new User();
