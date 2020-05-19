@@ -22,6 +22,8 @@ import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -32,6 +34,45 @@ import static pages.basePage.BasePage.ItemsPerPage._All;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
+
+    public String getRandomCustomerFreePhoneNumberFromDB(){
+        String query =
+                "select pn.number\n" +
+                "from webadmin_20170426.phonenumber as pn \n" +
+                "left join webadmin_20170426.feature f on pn.phonenumber_id = f.phonenumber_fk\n" +
+                "where pn.owner_fk = 906144\n" +
+                "and pn.manual_extensions = 0\n" +
+                "and pn.write_extensions = 1\n" +
+                "and f.feature_id is null";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> numbers = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                numbers.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return numbers.get(new Random().nextInt(numbers.size()));
+    }
+
+    public String getRandomCustomerFreeEndDeviceFromDB(){
+        String query = "SELECT name FROM webadmin_20170426.account where owner_fk = 906144 and customer_fk = 906144";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> numbers = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                numbers.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return numbers.get(new Random().nextInt(numbers.size()));
+    }
 
     public boolean getRandomBoolean() {
         return Math.random() < 0.5;

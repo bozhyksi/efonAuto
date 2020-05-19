@@ -3,6 +3,7 @@ package tests.userPageTests.userPageTestData;
 import flow.BaseTestMethods;
 
 public class User extends BaseTestMethods {
+    //<editor-fold desc="properties">
     private String title = "Mr";
     private String firstName = getRandomString(5);
     private String lastName = getRandomString(5);
@@ -25,6 +26,7 @@ public class User extends BaseTestMethods {
     private String voicemailSalutation = getRandomString(15);
     private String faxEmail = getRandomEmail();
     private String penalty = getRandomNumber(100,999);
+    //</editor-fold>
 
     //<editor-fold desc="get\set">
 
@@ -141,4 +143,9 @@ public class User extends BaseTestMethods {
         return lastName+" "+firstName;
     }
     //</editor-fold>
+
+    public User(){
+        this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
+    }
 }

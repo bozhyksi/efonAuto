@@ -2,7 +2,10 @@ package lowLevelUserPages.faxPageLowLevelUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import java.io.File;
 
@@ -65,5 +68,14 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
             getFieldInputRequiredDestNumber().should(Condition.appear,Condition.visible,Condition.exist);
         }
 
+    }
+
+    @Step("Verify if all customer numbers are available in Outgoing number dropdown")
+    public SendFaxUserPage verifyIfAllCustomerNumbersAreAvailableInOutgoingNumberDropdown(){
+        int customerNumbersQuantity = super.getAllCustomerNumbersFromDB().size();
+        int outgoingNumbersQuantity = new Select(getDropdownOutgoingNumber()).getOptions().size();
+        Assert.assertEquals(outgoingNumbersQuantity,customerNumbersQuantity+2,
+                "Customer has "+customerNumbersQuantity+" phone numbers but "+outgoingNumbersQuantity+" are available!");
+        return this;
     }
 }

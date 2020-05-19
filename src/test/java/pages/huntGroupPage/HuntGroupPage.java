@@ -3,8 +3,11 @@ package pages.huntGroupPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
+import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
 
@@ -101,14 +104,18 @@ public class HuntGroupPage extends BasePage {
         waitUntilAlertDisappear();
     }
 
-    public void editHuntGroup(HuntGroup huntGroup){
+    @Step("Click Edit hunt group")
+    public CreateHuntGroupPopup editHuntGroup(HuntGroup huntGroup){
         getButtonEditByName(huntGroup.getHuntGroupName()).click();
         waitUntilAlertDisappear();
+        return new CreateHuntGroupPopup();
     }
 
-    public void editHuntGroup(String huntGroupName){
+    @Step("Click Edit hunt group")
+    public CreateHuntGroupPopup editHuntGroup(String huntGroupName){
         getButtonEditByName(huntGroupName).click();
         waitUntilAlertDisappear();
+        return new CreateHuntGroupPopup();
     }
 
     public void verifyIfCallRecordingWasActivated(HuntGroup huntGroup){
@@ -116,4 +123,31 @@ public class HuntGroupPage extends BasePage {
         getFieldCallRecordingsIconByText(huntGroup.getHuntGroupNumber()).should(exist);
         getFieldActivatedCallRecordByText(huntGroup.getHuntGroupNumber()).should(exist);
     }
+
+    @Step("Click Create Hunt Group")
+    public CreateHuntGroupPopup clickCreateNewHuntGroup(){
+        getButtonCreateNewHuntGroup().click();
+        waitUntilAlertDisappear();
+        return new CreateHuntGroupPopup();
+    }
+
+    @Step("Create hunt group")
+    public HuntGroupPage createHuntGroup(HuntGroup huntGroup){
+        clickCreateNewHuntGroup()
+                .setName(huntGroup.getHuntGroupName())
+                .setDisplayName(huntGroup.getHuntGroupDisplayName())
+                .selectLanguage(huntGroup.getHuntGroupLanguage())
+                .selectNumber(huntGroup.getHuntGroupNumber())
+                .saveChanges();
+        return this;
+    }
+
+    @Step("Add authorized user to hunt group")
+    public HuntGroupPage addAuthorizedUserToHuntGroup(HuntGroup huntGroup, User ... users){
+        editHuntGroup(huntGroup.getHuntGroupName())
+                .selectAuthorizedUser(users)
+                .saveChanges();
+        return this;
+    }
+
 }

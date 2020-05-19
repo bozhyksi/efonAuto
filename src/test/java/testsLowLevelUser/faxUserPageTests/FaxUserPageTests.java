@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_ARRIVED;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.SEND_FAX;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserName;
 
 import static lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage.FaxesBaseUserPageTabs.FAX_SETTINGS;
@@ -102,6 +103,7 @@ public class FaxUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
     public void CheckIfSelectedNumberInFax2emailIsAvailableInSelectNumberDropdownOnFaxTab(){
         step("Prepare test data");
         User user = new User();
@@ -141,7 +143,7 @@ public class FaxUserPageTests extends BaseTestMethods {
 
     @Description("Check if \"Select number\" drop-down on Fax tab contains only user related numbers")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
-    public void checkifSelectNumberDropDownOnFaxTabContainsOnlyUserRelatedNumbers(){
+    public void CheckIfSelectNumberDropDownOnFaxTabContainsOnlyUserRelatedNumbers(){
         loginAsLowLevelUser();
         basePageLowLevelUser
                 .goToMenuTab(FAX)
@@ -150,7 +152,19 @@ public class FaxUserPageTests extends BaseTestMethods {
                 .validateNumberSearchDropDownItems();
     }
 
-    @AfterClass(alwaysRun = true)
+    @Description("Check if \"Outgoing number\" drop-down on SendFax tab contains all customer numbers")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests", "ttt"})
+    public void CheckIfOutgoingNumberDropDownOnSendFaxTabContainsAllCustomerNumbers(){
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(FAX)
+                .goToMenuTab(SEND_FAX);
+        sendFaxUserPage
+                .verifyIfAllCustomerNumbersAreAvailableInOutgoingNumberDropdown();
+    }
+
+    @AfterClass(alwaysRun = true, enabled = false)
     private void cleanUp(){
         startBrowser();
         login();

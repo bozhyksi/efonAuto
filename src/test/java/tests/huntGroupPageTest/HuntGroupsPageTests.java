@@ -382,7 +382,40 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroup(huntGroup.getHuntGroupName());
     }
 
-    @AfterClass(alwaysRun = true)
+    @Description("Verify if user is able to RE-Configure HuntGroup authorized users")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void VerifyIfUserIsAbleToReconfigureHuntgroupEditSection(){
+        User user1 = new User();
+        User user2 = new User();
+        HuntGroup huntGroup = new HuntGroup();
+
+        huntGroupsList.add(huntGroup);
+        usersList.add(user1);
+        usersList.add(user2);
+
+        login();
+        userPage
+                .createUser(user1,user2);
+        basePage
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .createHuntGroup(huntGroup)
+                .addAuthorizedUserToHuntGroup(huntGroup,user1);
+        huntGroupPage
+                .editHuntGroup(huntGroup)
+                .unassignAuthorizedUser(user1)
+                .selectAuthorizedUser(user2)
+                .saveChanges()
+                .editHuntGroup(huntGroup)
+                .validateSelectedAuthorizedUsers(user2)
+                .refreshPage();
+
+        deleteUser(user1,user2);
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+    }
+
+
+    @AfterClass(alwaysRun = true, enabled = false)
     private void cleanUp() {
         startBrowser();
         login();

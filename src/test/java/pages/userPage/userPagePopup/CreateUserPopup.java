@@ -1,6 +1,7 @@
 package pages.userPage.userPagePopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.userPage.UserPage;
 
 public class CreateUserPopup extends UserPage {
@@ -125,20 +126,28 @@ public class CreateUserPopup extends UserPage {
     }
     //</editor-fold>
 
-    public void selectTitle(String value){
+    @Step("Select title")
+    public CreateUserPopup selectTitle(String value){
         getDropdownTitle().selectOption(value);
+        return this;
     }
 
-    public void fillFirstName(String val){
+    @Step("Set first name")
+    public CreateUserPopup fillFirstName(String val){
         getInputFirstName().setValue(val);
+        return this;
     }
 
-    public void fillLastName(String val){
+    @Step("Set last name")
+    public CreateUserPopup fillLastName(String val){
         getInputLastName().setValue(val);
+        return this;
     }
 
-    public void fillLoginEmail(String val){
+    @Step("Set Login e-mail address")
+    public CreateUserPopup fillLoginEmail(String val){
         getInputLoginEmail().setValue(val);
+        return this;
     }
 
     public String selectNumber(){
@@ -147,19 +156,33 @@ public class CreateUserPopup extends UserPage {
         return getDropdownNumber().getSelectedText();
     }
 
+    @Step("Select phone number")
+    public CreateUserPopup selectNumber(String number){
+        getDropdownNumber().selectOptionByValue(number);
+        return this;
+    }
+
     public void selectEndDevices(){
         //getRandomDropDownOption(getDropdownEndDevices());
         getDropdownEndDevices().selectOption(index.getAndIncrement());
     }
 
-    public void fillInDiffContactEmail(String email){
-        getCheckboxUseDiffContactEmail().click();
-        getInputDiffContactEmail().setValue(email);
+    @Step("Select end device")
+    public CreateUserPopup selectEndDevices(String endDevice){
+        getDropdownEndDevices().selectOptionContainingText(endDevice);
+        return this;
     }
 
-    public void fillInVoiceEmail(String email){
+    public CreateUserPopup fillInDiffContactEmail(String email){
+        getCheckboxUseDiffContactEmail().click();
+        getInputDiffContactEmail().setValue(email);
+        return this;
+    }
+
+    public CreateUserPopup fillInVoiceEmail(String email){
         getCheckboxUseVoiceEmail().click();
         getInputUseVoiceEmailEmail().setValue(email);
+        return this;
     }
 
     public String selectPermittedDestinationNumbers(){
@@ -173,13 +196,21 @@ public class CreateUserPopup extends UserPage {
         return getDropdownCallRecordingDirection().getSelectedText();
     }
 
-    public void activateFaxDispatch(String val){
+    public CreateUserPopup activateFaxDispatch(String val){
         getcheckboxActivateFaxDispatch().click();
         getInputLocalHeaderInfo().setValue(val);
+        return this;
     }
 
     public String getSelectedEndDeviceName(){
         return getSelectedEndDevice().getText();
+    }
+
+    @Step("Save changes")
+    public UserPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new UserPage();
     }
 
 }

@@ -3,11 +3,16 @@ package pages.huntGroupPage.huntGroupPopup;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.huntGroupPage.HuntGroupPage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
 
+import java.util.ArrayList;
+
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailUnavailable;
@@ -37,12 +42,14 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     //<editor-fold desc="Locators">
     //Edit hunt group section
     private String buttonSubmitEditHuntGroupXpath = "//h2[text()=\"Edit hunt group\"]/a";
+    private String buttonEditHuntGroupXpath = "//h2[text()=\"Edit hunt group\"]//i[contains(@class,\"fa-cog\")]/..";
     private String dropdownNumberXpath = "//select[@formcontrolname=\"huntGroupNumber\"]";
     private String inputNameXpath = "//input[@formcontrolname=\"huntGroupName\"]";
     private String dropdownLanguageXpath = "//select[@formcontrolname=\"huntGroupLanguage\"]";
     private String inputDisplNameXpath = "//input[@formcontrolname=\"huntGroupDisplayName\"]";
     private String dropdownAuthUsersXpath = "//label[text()=\"Authorised users\"]/following-sibling::div/select";
     private String selectedAuthorizedUser = "//new-selected-value//span[text()[contains(.,'%s')]]";
+    private final String buttonDeleteAuthorizedUserXpath = "//new-selected-value//span[text()[contains(.,\"%s\")]]/button";
 
     //Voicemail settings section
     private String inputPinXpath = "//input[@formcontrolname=\"pin\"]";
@@ -100,6 +107,14 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
 
     //<editor-fold desc="get\set">
 
+
+    public SelenideElement getButtonEditHuntGroup() {
+        return field(buttonEditHuntGroupXpath);
+    }
+
+    public SelenideElement getButtonDeleteAuthorizedUser(String text) {
+        return field(String.format(buttonDeleteAuthorizedUserXpath,text));
+    }
 
     public SelenideElement getButtonEditFurtherTime() {
         return field(buttonEditFurtherTimeXpath);
@@ -388,5 +403,82 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getDropdownActionTypeByLabel("4").getSelectedOption().shouldHave(text("Number/end device"));
         getDropdownActionTypeByLabel("5").getSelectedOption().shouldHave(text("Voicemail: no announcement"));
         getDropdownActionTypeByLabel("6").getSelectedOption().shouldHave(text("Voicemail: busy"));
+    }
+
+    @Step("Select hunt group number")
+    public CreateHuntGroupPopup selectNumber(String number){
+        getDropdownNumber().selectOptionContainingText(number);
+        return this;
+    }
+
+    @Step("Set hunt group name")
+    public CreateHuntGroupPopup setName(String huntGroupName){
+        getInputName().setValue(huntGroupName);
+        return this;
+    }
+
+    @Step("Select authorized users")
+    public CreateHuntGroupPopup selectAuthorizedUser(String ...userNames){
+        for (String userName : userNames) {
+            getDropdownAuthUsers().selectOptionContainingText(userName);
+            waitUntilAlertDisappear();
+        }
+        return this;
+    }
+
+    @Step("Select authorized users")
+    public CreateHuntGroupPopup selectAuthorizedUser(User... users){
+        if (getButtonEditHuntGroup().exists()) getButtonEditHuntGroup().click();
+        for (User user : users) {
+            getDropdownAuthUsers().selectOptionContainingText(user.getLastName());
+            waitUntilAlertDisappear();
+        }
+        return this;
+    }
+
+    @Step("Unassign authorized users")
+    public CreateHuntGroupPopup unassignAuthorizedUser(User... users){
+        if (getButtonEditHuntGroup().exists()) getButtonEditHuntGroup().click();
+        for (User user: users) {
+            getButtonDeleteAuthorizedUser(user.getFirstName()).click();
+            waitUntilAlertDisappear();
+        }
+        return this;
+    }
+
+    @Step("Set display name")
+    public CreateHuntGroupPopup setDisplayName(String displayName){
+        getInputDisplName().setValue(displayName);
+        return this;
+    }
+
+    @Step("Select language")
+    public CreateHuntGroupPopup selectLanguage(String language){
+        getDropdownLanguage().selectOptionByValue(language);
+        return this;
+    }
+
+    @Step("Save changes")
+    public HuntGroupPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new HuntGroupPage();
+    }
+
+    @Step("Click edit button for \"Edit hunt group\" section")
+    public CreateHuntGroupPopup clickEditButtonForEditHuntGroupSection(){
+        getButtonSubmitEditHuntGroup().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Validate selected authorized users")
+    public CreateHuntGroupPopup validateSelectedAuthorizedUsers(User ... users){
+        if (getButtonEditHuntGroup().exists()) getButtonEditHuntGroup().click();
+        for (User user : users) {
+            getSelectedAuthorizedUserByName(user.getFirstName()).should(exist);
+            waitUntilAlertDisappear();
+        }
+        return this;
     }
 }

@@ -6,10 +6,13 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.BasePage;
+import pages.userPage.userPagePopup.CreateUserPopup;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.userPageTests.userPageTestData.User;
 
 import javax.jws.soap.SOAPBinding;
+
+import static pages.basePage.BasePage.MenuTabsBasePage.USER;
 
 public class UserPage extends BasePage {
     //<editor-fold desc="//-- UserPage Locators --// ">
@@ -108,5 +111,29 @@ public class UserPage extends BasePage {
         getButtonConfigUserByName(user).click();
         waitUntilAlertDisappear();
         return new ConfigureUserBasePopup();
+    }
+
+    @Step("Click create new user button")
+    public CreateUserPopup clickCreateNewUserButton(){
+        getButtonCreateNewUser().click();
+        waitUntilAlertDisappear();
+        return new CreateUserPopup();
+    }
+
+    @Step("Create user")
+    public UserPage createUser(User ... users){
+        goToMenuTab(USER);
+        for (User user : users) {
+            clickCreateNewUserButton()
+                    .selectTitle(user.getTitle())
+                    .fillFirstName(user.getFirstName())
+                    .fillLastName(user.getLastName())
+                    .fillLoginEmail(user.getLoginEmail())
+                    .selectNumber(user.getPhoneNumber())
+                    .selectEndDevices(user.getEndDevices())
+                    .saveChanges();
+            waitUntilAlertDisappear();
+        }
+        return this;
     }
 }

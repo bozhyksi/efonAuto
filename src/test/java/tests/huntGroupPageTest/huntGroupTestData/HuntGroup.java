@@ -1,6 +1,9 @@
 package tests.huntGroupPageTest.huntGroupTestData;
 
 import flow.BaseTestMethods;
+import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
 
 public class HuntGroup extends BaseTestMethods {
     public enum TimerLevels{
@@ -27,6 +30,7 @@ public class HuntGroup extends BaseTestMethods {
     private String huntGroupAuthorizedUser;
     private String huntGroupName;
     private String huntGroupDisplayName;
+    private ArrayList<String> huntGroupAuthorizedUsers;
 
     //Voicemail settings
     private String pinCode;
@@ -58,6 +62,7 @@ public class HuntGroup extends BaseTestMethods {
         this.huntGroupLanguage = "en";
         this.huntGroupName = getRandomString(10);
         this.huntGroupDisplayName = "Display_"+this.huntGroupName;
+        this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
 
         //Voicemail settings
         this.pinCode = getRandomNumber(1111,9999);
@@ -96,6 +101,10 @@ public class HuntGroup extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public ArrayList<String> getHuntGroupAuthorizedUsers() {
+        return huntGroupAuthorizedUsers;
+    }
 
     public String getFurtherTimeSunday() {
         return furtherTimeSunday;

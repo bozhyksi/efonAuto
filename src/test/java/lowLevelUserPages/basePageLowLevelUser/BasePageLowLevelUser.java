@@ -1,20 +1,19 @@
 package lowLevelUserPages.basePageLowLevelUser;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
-import lowLevelUserPages.lastCallsLowLevelUserPage.LastCallsUserPage;
-import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
-import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
-import org.apache.poi.ss.formula.functions.T;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import pages.basePage.BasePage;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.visible;
+import static core.configuration.preparations.eFonApp.dataBaseWorker;
 
 public class BasePageLowLevelUser extends BasePage {
     public static String autotestUserPhone = "00451245789908";
@@ -79,14 +78,17 @@ public class BasePageLowLevelUser extends BasePage {
         return field(tabFaxSettingsXpath);
     }
 
+    @Step("Goto SendFax tab")
     public SelenideElement getTabFaxSend() {
         return field(tabFaxSendXpath);
     }
 
+    @Step("Goto MANAGE SENDER NUMBERS AND NAMES tab")
     public SelenideElement getTabManageSenderNumbers() {
         return field(tabManageSenderNumbersXpath);
     }
 
+    @Step("Goto Overview/Dashboard tab")
     public SelenideElement getTabDashboard() {
         return field(tabDashboardXpath);
     }
@@ -95,10 +97,12 @@ public class BasePageLowLevelUser extends BasePage {
         return field(String.format(pageTitleXpath,title.getTitle()));
     }
 
+    @Step("Goto VoiceMail tab")
     public SelenideElement getTabVoiceMail() {
         return field(tabVoiceMailXpath);
     }
 
+    @Step("Goto SendSMS tab")
     public SelenideElement getTabSendSms() {
         return field(tabSendSmsXpath);
     }
@@ -107,14 +111,17 @@ public class BasePageLowLevelUser extends BasePage {
         return field(tabVoicemailXpath);
     }
 
+    @Step("Goto Voicemail Setting tab")
     public SelenideElement getTabVoicemailSetting() {
         return field(tabVoicemailSettingXpath);
     }
 
+    @Step("Goto Announcements tab")
     public SelenideElement getTabAnnouncements() {
         return field(tabAnnouncementsXpath);
     }
 
+    @Step("Goto Fax tab")
     @Override
     public SelenideElement getTabFax() {
         return super.getTabFax();
@@ -163,5 +170,20 @@ public class BasePageLowLevelUser extends BasePage {
         }
         Assert.assertEquals(size, 1,"Numbers list contains not user related phones: \n" + phones);
         return this;
+    }
+
+    public ArrayList<String> getAllCustomerNumbersFromDB(){
+        String query = "SELECT number FROM webadmin_20170426.phonenumber where owner_fk = 906144";
+        ArrayList<String> customerPhoneNumbersList = new ArrayList<>();
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        while (true) {
+            try {
+                if (!resultSet.next()) break;
+                customerPhoneNumbersList.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return customerPhoneNumbersList;
     }
 }
