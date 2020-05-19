@@ -3,6 +3,7 @@ package lowLevelUserPages.basePageLowLevelUser;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
+import lowLevelUserPages.lastCallsLowLevelUserPage.LastCallsUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
 import org.apache.poi.ss.formula.functions.T;
@@ -21,9 +22,9 @@ public class BasePageLowLevelUser extends BasePage {
 
     public enum MenuTabsLowLevelUser{
         SEND_SMS,
-        VOICEMAIL,
         DASHBOARD,
         ANNOUNCEMENTS,
+        VOICEMAIL,
         VOICEMAIL_SETTING,
         MANAGE_SENDER_NUMBERS_AND_NAMES,
         FAX_ARRIVED,
@@ -149,5 +150,18 @@ public class BasePageLowLevelUser extends BasePage {
 
     public void validatePageTitle(PageTitles title){
         getPageTitleXpath(title).should(exist).shouldBe(visible);
+    }
+
+    public BasePageLowLevelUser validateDropDownItems(SelenideElement dropdown){
+        dropdown.click();
+        waitUntilAlertDisappear();
+        ArrayList<String> phones = new ArrayList<>();
+        Select select = new Select(dropdown);
+        int size = select.getOptions().size();
+        for (WebElement elem:select.getOptions()) {
+            phones.add(elem.getText());
+        }
+        Assert.assertEquals(size, 1,"Numbers list contains not user related phones: \n" + phones);
+        return this;
     }
 }

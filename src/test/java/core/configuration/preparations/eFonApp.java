@@ -31,6 +31,7 @@ import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirm
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.IVRpage.IVRpage;
 import pages.IVRpage.IVRpagePopup.IVRpagePopup;
@@ -104,7 +105,7 @@ public class eFonApp extends PreparationsForRun{
     public FaxPage faxPage = new FaxPage();
     public CallPickUpPage callPickUpPage = new CallPickUpPage();
     public GroupCallPickupPopup groupCallPickupPopup = new GroupCallPickupPopup();
-    public CallForwardingPage callForwardingPage = new CallForwardingPage();
+    public static CallForwardingPage callForwardingPage = new CallForwardingPage();
     public ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
     public IVRpage ivrPage = new IVRpage();
@@ -148,7 +149,6 @@ public class eFonApp extends PreparationsForRun{
     public SendFaxUserPage sendFaxUserPage = new SendFaxUserPage();
     public FaxSettingUserPage faxSettingUserPage = new FaxSettingUserPage();
     public DashboardUserPage dashboardUserPage = new DashboardUserPage();
-    public VoicemailBaseUserPage voicemailBaseUserPage = new VoicemailBaseUserPage();
     public VoicemailSettingUserPage voicemailSettingUserPage = new VoicemailSettingUserPage();
     public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
     public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
@@ -175,5 +175,5 @@ public class eFonApp extends PreparationsForRun{
     public static MissedLastCallsUserPage missedLastCallsUserPage = new MissedLastCallsUserPage();
     public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
     public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
-
+    public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
 }

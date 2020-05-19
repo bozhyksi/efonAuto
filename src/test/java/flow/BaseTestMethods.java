@@ -5,6 +5,8 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
+import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
 import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
@@ -26,7 +28,6 @@ import java.util.*;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
-import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.ANNOUNCEMENTS;
 import static pages.basePage.BasePage.ItemsPerPage._All;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -725,8 +726,9 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void deleteAnnouncementLowLevelUser(FileManagementTestData announcement){
-        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
-        voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(BasePageLowLevelUser.MenuTabsLowLevelUser.ANNOUNCEMENTS);
         announcementsUserPage.getButtonDeleteByName(announcement.getFileName()).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
@@ -750,10 +752,9 @@ public class BaseTestMethods extends eFonApp {
 
     public void lowLevelUserAnnouncementCleanUp(List<FileManagementTestData> filesList){
         try {
-            basePageLowLevelUser.goToMenuTab(VOICEMAIL);
-            waitUntilAlertDisappear();
-            voicemailBaseUserPage.getTabAnnouncements().click();
-            waitUntilAlertDisappear();
+            basePageLowLevelUser
+                    .goToMenuTab(VOICEMAIL)
+                    .goToMenuTab(ANNOUNCEMENTS);
             for (FileManagementTestData file: filesList) {
                 if (announcementsUserPage.getFieldNameByText(file.getFileName()).exists()){
                     deleteAnnouncementLowLevelUser(file);
@@ -766,8 +767,9 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void lowLevelUserUploadAnnouncement(FileManagementTestData announcement){
-        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
-        voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(ANNOUNCEMENTS);
         announcementsUserPage.uploadAnnouncementFile(announcement);
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();

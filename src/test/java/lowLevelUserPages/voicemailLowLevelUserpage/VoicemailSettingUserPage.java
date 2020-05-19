@@ -2,6 +2,7 @@ package lowLevelUserPages.voicemailLowLevelUserpage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import testsLowLevelUser.voicemailUserPageTests.voicemailTestData.VoicemailTestData;
 
@@ -115,6 +116,12 @@ public class VoicemailSettingUserPage extends VoicemailBaseUserPage {
         getDropdownVoicemailBusy().selectOptionByValue("null");
 
         getButtonSave().click();
+    }
+
+    @Step("Check if Select number dropdown contains only user number")
+    public VoicemailSettingUserPage verifySelectNumberDropdownItems(){
+        super.validateDropDownItems(getDropdownSelectNumber());
+        return this;
     }
 
 }

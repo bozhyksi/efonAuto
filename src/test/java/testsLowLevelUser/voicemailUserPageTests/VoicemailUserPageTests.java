@@ -5,6 +5,7 @@ import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL_SETTING;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserPhone;
-import static lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage.VoicemailTabs.VOICEMAIL_SETTING;
 
 @Listeners(CustomListeners.class)
 
@@ -26,7 +27,7 @@ public class VoicemailUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can configure Voicemail retrieval/delivery")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfLowlevelUserCanConfigureVoicemailRetrievalDelivery(){
+    public void CheckIfLowLevelUserCanConfigureVoicemailRetrievalDelivery(){
         step("Prepare test data");
         VoicemailTestData voicemailAccess = new VoicemailTestData();
 
@@ -34,8 +35,9 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         loginAsLowLevelUser();
 
         step("Goto Voicemail");
-        basePageLowLevelUser.goToMenuTab(VOICEMAIL);
-        voicemailBaseUserPage.goToMenuTab(VOICEMAIL_SETTING);
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(VOICEMAIL_SETTING);
 
         step("Configure Voicemail retrieval/delivery");
         voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
@@ -99,7 +101,7 @@ public class VoicemailUserPageTests extends BaseTestMethods {
     }
 
     @Description("Check if low-level user can configure Voicemail announcement settings")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"}, invocationCount = 3)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
     public void CheckIfLowLevelUserCanConfigureVoicemailAnnouncementSettings(){
         step("Prepare test data");
         FileManagementTestData announcement = new FileManagementTestData();
@@ -112,7 +114,9 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         lowLevelUserUploadAnnouncement(announcement);
 
         step("Goto Voicemail Settings");
-        voicemailBaseUserPage.goToMenuTab(VOICEMAIL_SETTING);
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(VOICEMAIL_SETTING);
 
         step("Configure Voicemail announcement settings");
         voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
@@ -127,6 +131,32 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         step("Cleat test data - delete uploaded file");
         deleteAnnouncementLowLevelUser(announcement);
     }
+
+    @Description("Check if Select Number drop-down contains only user number on VOICEMAIL tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
+    public void CheckIfSelectNumberDropDownContainsOnlyUserNumberOnVoiceMail(){
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL);
+        voicemailUserPage
+                .verifySelectNumberDropdownItems();
+
+    }
+
+    @Description("Check if Select Number drop-down contains only user number on VOICEMAIL_SETTINGS tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
+    public void CheckIfSelectNumberDropDownContainsOnlyUserNumberOnSettings(){
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(VOICEMAIL_SETTING);
+        voicemailSettingUserPage
+                .verifySelectNumberDropdownItems();
+
+    }
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){

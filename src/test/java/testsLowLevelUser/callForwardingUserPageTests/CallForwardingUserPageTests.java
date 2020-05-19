@@ -32,7 +32,7 @@ public class CallForwardingUserPageTests extends BaseTestMethods {
         basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
 
         step("Configure After section");
-        callForwardingUserPage.configureAfterSection(callForwardingPage, delay, forwardToPhone);
+        callForwardingUserPage.configureAfterSection(delay, forwardToPhone);
 
         step("Clear test data");
         lowLevelUserCallForwardingCleanUp();
@@ -51,7 +51,7 @@ public class CallForwardingUserPageTests extends BaseTestMethods {
         basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
 
         step("Confidure if Busy");
-        callForwardingUserPage.configureIfBusySection(callForwardingPage,forwardToPhone);
+        callForwardingUserPage.configureIfBusySection(forwardToPhone);
 
         step("Clear test data");
         lowLevelUserCallForwardingCleanUp();
@@ -71,7 +71,7 @@ public class CallForwardingUserPageTests extends BaseTestMethods {
         basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
 
         step("Configure end device section");
-        callForwardingUserPage.configureIfEndDeviceUnavailableSection(callForwardingPage,forwardToPhone);
+        callForwardingUserPage.configureIfEndDeviceUnavailableSection(forwardToPhone);
 
         step("Clear test data");
         lowLevelUserCallForwardingCleanUp();
@@ -91,10 +91,22 @@ public class CallForwardingUserPageTests extends BaseTestMethods {
         basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
 
         step("Configure Suppressed section");
-        callForwardingUserPage.configureSuppressedNumbersSection(callForwardingPage,forwardToPhone);
+        callForwardingUserPage.configureSuppressedNumbersSection(forwardToPhone);
 
         step("Clear test data");
         lowLevelUserCallForwardingCleanUp();
+    }
+
+    @Description("Verify if \"My numbers\" dropdown contains only user related number")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
+    public void VerifyIfMyNumbersDropdownContainsOnlyUserRelatedNumber(){
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(CALL_FORWARDING);
+        callForwardingUserPage
+                .verifyMyNumbersDropDownItems();
+
     }
 
     @AfterClass(alwaysRun = true)

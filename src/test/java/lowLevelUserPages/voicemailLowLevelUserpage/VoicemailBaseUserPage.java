@@ -3,12 +3,7 @@ package lowLevelUserPages.voicemailLowLevelUserpage;
 import com.codeborne.selenide.SelenideElement;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 
-public class VoicemailBaseUserPage extends BasePageLowLevelUser {
-    public enum VoicemailTabs{
-        VOICEMAIL_OVERWIEV,
-        VOICEMAIL_SETTING,
-        ANNOUNCEMENTS;
-    }
+public abstract class VoicemailBaseUserPage extends BasePageLowLevelUser {
 
     //<editor-fold desc="locators">
     private String tabVoicemailXpath = "//a[contains(@href,\"/voicemail/overview\")]";
@@ -30,16 +25,4 @@ public class VoicemailBaseUserPage extends BasePageLowLevelUser {
     }
     //</editor-fold>
 
-    private SelenideElement getTab(VoicemailTabs tab){
-        switch (tab){
-            case ANNOUNCEMENTS: return getTabAnnouncements();
-            case VOICEMAIL_SETTING: return getTabVoicemailSetting();
-            default: return getTabVoicemail();
-        }
-    }
-
-    public void goToMenuTab(VoicemailTabs tab){
-        getTab(tab).click();
-        waitUntilAlertDisappear();
-    }
 }
