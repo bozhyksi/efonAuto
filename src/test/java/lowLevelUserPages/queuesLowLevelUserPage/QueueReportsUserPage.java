@@ -1,34 +1,37 @@
 package lowLevelUserPages.queuesLowLevelUserPage;
 
+import io.qameta.allure.Step;
 import pages.queuesPage.ReportsQueueTab;
 import tests.queuesPageTest.queueTestData.Queue;
 
 import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.recordingsQueuePage;
+import static core.configuration.preparations.eFonApp.reportsQueuePage;
 
 public class QueueReportsUserPage extends QueuesBaseUserPage {
-    ReportsQueueTab reportsQueueTab = new ReportsQueueTab();
 
     public void createDayReports(ReportsQueueTab.ReportBy report, Queue queue){
-        reportsQueueTab.goToReport(report);
+        reportsQueuePage.goToReport(report);
         for (Queue.Report reportType : Queue.Report.values()) {
-            reportsQueueTab.selectReportType(reportType);
-            reportsQueueTab.getDropdownQueue().selectOptionContainingText(queue.getName());
-            reportsQueueTab.getDropdownAgent().selectOptionContainingText("All agents");
+            reportsQueuePage.selectReportType(reportType);
+            reportsQueuePage.getDropdownQueue().selectOptionContainingText(queue.getName());
+            reportsQueuePage.getDropdownAgent().selectOptionContainingText("All agents");
             switch (report){
                 case Day:
-                    reportsQueueTab.getInputDay().setValue(queue.getDay());
+                    reportsQueuePage.getInputDay().setValue(queue.getDay());
                     break;
                 case Month:
-                    reportsQueueTab.getInputMonth().setValue(queue.getMonth());
+                    reportsQueuePage.getInputMonth().setValue(queue.getMonth());
                     break;
                 case Period:
-                    reportsQueueTab.getInputFrom().setValue(queue.getFromDate()).pressTab();
-                    reportsQueueTab.getInputTo().setValue(queue.getToDate()).pressTab();
+                    reportsQueuePage.getInputFrom().setValue(queue.getFromDate()).pressTab();
+                    reportsQueuePage.getInputTo().setValue(queue.getToDate()).pressTab();
                     break;
             }
-            reportsQueueTab.getButtonSearch().click();
+            reportsQueuePage.getButtonSearch().click();
             waitUntilAlertDisappear();
-            reportsQueueTab.getFieldByText("No Items").should(exist);
+            reportsQueuePage.getFieldByText("No Items").should(exist);
         }
     }
+
 }

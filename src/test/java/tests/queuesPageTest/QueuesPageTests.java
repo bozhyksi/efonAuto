@@ -31,7 +31,7 @@ public class QueuesPageTests extends BaseTestMethods {
 
     @Description("Verify if user can create new Queue")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
-    public void VerifyIfUserCanCreateNewQueue(){
+    public void VerifyIfUserCanCreateNewQueue() {
         step("Prepare test data - users, queue instances");
         Queue queue = new Queue();
         User user1 = new User();

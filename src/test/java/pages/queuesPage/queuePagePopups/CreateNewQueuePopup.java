@@ -1,7 +1,9 @@
 package pages.queuesPage.queuePagePopups;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
+import pages.queuesPage.ConfigureQueueTab;
 
 public class CreateNewQueuePopup extends BasePopup {
     //<editor-fold desc="Locators">
@@ -23,9 +25,16 @@ public class CreateNewQueuePopup extends BasePopup {
     private String dropdownRecordCallsXpath = "//select[@formcontrolname=\"recordCalls\"]";
     private String buttonSaveXpath = "//button[text()=\"Save\"]";
     private String buttonCancelXpath = "//button[text()=\"Cancel\"]";
+    private final String buttonUbAssignManagerReporterByNameXpath = "//new-selected-value//span[contains(.,\"%s\")]/button";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getButtonUnAssignManagerReporterByName(String text) {
+        return field(String.format(buttonUbAssignManagerReporterByNameXpath, text));
+    }
+
     public SelenideElement getFieldName() {
         return field(fieldNameXpath);
     }
@@ -106,6 +115,37 @@ public class CreateNewQueuePopup extends BasePopup {
 
     public void selectRandomWaitingMusic(){
         getRandomDropDownOption(getDropdownWaitingMusic());
+    }
+
+    @Step("Select queue manager")
+    public CreateNewQueuePopup selectQueueManager(String managerName){
+        getDropdownManager().selectOptionContainingText(managerName);
+        return this;
+    }
+
+    @Step("Save changes")
+    public ConfigureQueueTab saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new ConfigureQueueTab();
+    }
+
+    @Step("Set queue name")
+    public CreateNewQueuePopup setQueueName(String queueName){
+        getInputQueueName().setValue(queueName);
+        return this;
+    }
+
+    @Step("Set queue Subscription")
+    public CreateNewQueuePopup setSubscription(){
+        getDropdownSubscription().selectOption(1);
+        return this;
+    }
+
+    @Step ("Deselect queue manager")
+    public CreateNewQueuePopup unassignQueueManager(String managerName){
+        getButtonUnAssignManagerReporterByName(managerName).click();
+        return this;
     }
 
 }

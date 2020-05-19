@@ -1,6 +1,12 @@
 package pages.queuesPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
+import tests.queuesPageTest.queueTestData.Queue;
+
+import static com.codeborne.selenide.Condition.exist;
 
 public class ConfigureQueueTab extends QueuesBasePage {
     //<editor-fold desc="Locators">
@@ -57,4 +63,31 @@ public class ConfigureQueueTab extends QueuesBasePage {
         return field(String.format(buttonEditAgentsQueueByTextXpath,name));
     }
     //</editor-fold>
+
+    @Step("Click create new Queue")
+    public CreateNewQueuePopup clickCreateNewQueue(){
+        getButtonCreateNewQueue().click();
+        waitUntilAlertDisappear();
+        return new CreateNewQueuePopup();
+    }
+
+    @Step("Verify if Queue exists in the list")
+    public ConfigureQueueTab verifyIfQueueExistsInTheList(String queueName){
+        getFieldQueueNameByText(queueName).should(exist);
+        return this;
+    }
+
+    @Step("Verify if Queue does NOT exists in the list")
+    public ConfigureQueueTab verifyIfQueueNotExistInList(String queueName){
+        getFieldQueueNameByText(queueName).shouldNot(exist);
+        return this;
+    }
+
+    @Step("Click Edit Queue button")
+    public CreateNewQueuePopup clickEditQueueButton(String queueName){
+        getButtonEditQueueByName(queueName).click();
+        waitUntilAlertDisappear();
+        return new CreateNewQueuePopup();
+    }
+
 }

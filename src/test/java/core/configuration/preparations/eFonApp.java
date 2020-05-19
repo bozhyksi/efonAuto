@@ -17,6 +17,7 @@ import lowLevelUserPages.huntGroupLowLevelUserPage.huntGroupPopup.EditHuntGroupP
 import lowLevelUserPages.lastCallsLowLevelUserPage.IncomingLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.MissedLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.OutgoingLastCallsUserPage;
+import lowLevelUserPages.queuesLowLevelUserPage.QueueRecordingsUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.QueueReportsUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.QueueStatusUserPage;
 import lowLevelUserPages.queuesLowLevelUserPage.queuePopups.QueueForAgentsUserPopup;
@@ -160,12 +161,12 @@ public class eFonApp extends PreparationsForRun{
     public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
     public ActivateAuthorisationCodePopup activateAuthorisationCodePopup = new ActivateAuthorisationCodePopup();
     public SecretaryPopup secretaryPopup = new SecretaryPopup();
-    public StatusQueueTab statusQueuePage = new StatusQueueTab();
-    public PenaltyPopup penaltyPopup = new PenaltyPopup();
-    public RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
-    public ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
+    public static StatusQueueTab statusQueuePage = new StatusQueueTab();
+    public static PenaltyPopup penaltyPopup = new PenaltyPopup();
+    public static RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
+    public static ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
     public QueueForAgentsUserPopup queueForAgentsLowLevelUserPopup = new QueueForAgentsUserPopup();
-    public QueueStatusUserPage queueStatusUserPage = new QueueStatusUserPage();
+    public static QueueStatusUserPage queueStatusUserPage = new QueueStatusUserPage();
     public QueueReportsUserPage queueReportsUserPage = new QueueReportsUserPage();
     public HuntGroupUserPage huntGroupUserPage = new HuntGroupUserPage();
     public EditHuntGroupPopup editHuntGroupLowLevelUserPopup = new EditHuntGroupPopup();
@@ -176,4 +177,5 @@ public class eFonApp extends PreparationsForRun{
     public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
     public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
     public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
+    public static QueueRecordingsUserPage queueRecordingsUserPage = new QueueRecordingsUserPage();
 }
