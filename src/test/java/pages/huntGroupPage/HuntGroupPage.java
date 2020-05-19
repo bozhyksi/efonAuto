@@ -5,11 +5,14 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.BasePage;
+import pages.basePage.basePopup.ConfirmationPopup;
 import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
+import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
 public class HuntGroupPage extends BasePage {
     //<editor-fold desc="Locators">
@@ -133,9 +136,23 @@ public class HuntGroupPage extends BasePage {
 
     @Step("Create hunt group")
     public HuntGroupPage createHuntGroup(HuntGroup huntGroup){
+        goToMenuTab(HUNT_GROUPS);
         clickCreateNewHuntGroup()
                 .setName(huntGroup.getHuntGroupName())
                 .setDisplayName(huntGroup.getHuntGroupDisplayName())
+                .selectLanguage(huntGroup.getHuntGroupLanguage())
+                .selectNumber(huntGroup.getHuntGroupNumber())
+                .saveChanges();
+        return this;
+    }
+
+    @Step("Create hunt group with authorized users")
+    public HuntGroupPage createHuntGroup(HuntGroup huntGroup, String userName){
+        goToMenuTab(HUNT_GROUPS);
+        clickCreateNewHuntGroup()
+                .setName(huntGroup.getHuntGroupName())
+                .setDisplayName(huntGroup.getHuntGroupDisplayName())
+                .selectAuthorizedUser(userName)
                 .selectLanguage(huntGroup.getHuntGroupLanguage())
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .saveChanges();
@@ -148,6 +165,30 @@ public class HuntGroupPage extends BasePage {
                 .selectAuthorizedUser(users)
                 .saveChanges();
         return this;
+    }
+
+    @Step("Delete hunt group")
+    public void deleteHuntGroup(String ...huntGroupNames){
+        goToMenuTab(HUNT_GROUPS);
+        for (String huntGroupName : huntGroupNames) {
+            getButtonDeleteByName(huntGroupName).click();
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            refreshPage();
+            getfieldNameByText(huntGroupName).shouldNot(Condition.exist);
+        }
+    }
+
+    @Step("Delete hunt group")
+    public void deleteHuntGroup(HuntGroup ...huntGroups){
+        goToMenuTab(HUNT_GROUPS);
+        for (HuntGroup huntGroup : huntGroups) {
+            getButtonDeleteByName(huntGroup.getHuntGroupName()).click();
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            refreshPage();
+            getfieldNameByText(huntGroup.getHuntGroupName()).shouldNot(Condition.exist);
+        }
     }
 
 }

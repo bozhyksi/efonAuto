@@ -1,14 +1,16 @@
 package lowLevelUserPages.huntGroupLowLevelUserPage;
 
 import com.codeborne.selenide.Condition;
+import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import pages.huntGroupPage.HuntGroupPage;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.huntGroupPage;
+import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
 public class HuntGroupUserPage extends BasePageLowLevelUser {
-    private HuntGroupPage huntGroupPage = new HuntGroupPage();
 
     public void editHuntGroup(HuntGroup huntGroup){
         huntGroupPage.editHuntGroup(huntGroup.getHuntGroupName());
@@ -23,6 +25,22 @@ public class HuntGroupUserPage extends BasePageLowLevelUser {
         huntGroupPage.getFieldDisplayNameByText(huntGroup.getHuntGroupDisplayName()).should(exist);
         huntGroupPage.getFieldNumberByText(huntGroup.getHuntGroupNumber()).should(exist);
         huntGroupPage.verifyIfCallRecordingWasActivated(huntGroup);
+    }
+
+    @Step("Verify if HuntGroup exists in the list")
+    public HuntGroupUserPage verifyIfHuntGroupIsAvailable(String huntGroupName){
+        goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .getfieldNameByText(huntGroupName).should(exist);
+        return this;
+    }
+
+    @Step("Verify if HuntGroup does not exists in the list")
+    public HuntGroupUserPage verifyIfHuntGroupIsNOTAvailable(String huntGroupName){
+        goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .getfieldNameByText(huntGroupName).shouldNot(exist);
+        return this;
     }
 
 }

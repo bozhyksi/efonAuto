@@ -545,6 +545,7 @@ public class BaseTestMethods extends eFonApp {
         huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
     }
 
+    @Step("Delete hunt group")
     public void deleteHuntGroup(String name){
         basePage.goToMenuTab(HUNT_GROUPS);
         waitUntilAlertDisappear();

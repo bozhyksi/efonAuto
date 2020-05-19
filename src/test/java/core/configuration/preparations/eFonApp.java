@@ -91,7 +91,7 @@ public class eFonApp extends PreparationsForRun{
     public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
     public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 
-    public ConfirmationPopup confirmationPopup = new ConfirmationPopup();
+    public static ConfirmationPopup confirmationPopup = new ConfirmationPopup();
     public AlertPopup alertPopup = new AlertPopup();
     public LoginPage loginPage = new LoginPage();
     public UserPage userPage = new UserPage();
@@ -111,7 +111,7 @@ public class eFonApp extends PreparationsForRun{
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
     public IVRpage ivrPage = new IVRpage();
     public IVRpagePopup createNewIvrPopup = new IVRpagePopup();
-    public HuntGroupPage huntGroupPage = new HuntGroupPage();
+    public static HuntGroupPage huntGroupPage = new HuntGroupPage();
     public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
     public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();
     public QueuesBasePage queuesBasePage = new QueuesBasePage();

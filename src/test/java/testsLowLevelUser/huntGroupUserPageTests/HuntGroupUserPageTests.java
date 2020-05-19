@@ -14,6 +14,7 @@ import tests.queuesPageTest.queueTestData.Queue;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserName;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
 @Listeners(CustomListeners.class)
@@ -228,6 +229,52 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteHuntGroup(huntGroup.getHuntGroupName());
         deleteQueue(queue.getName());
         deleteAnnouncementFile(announcement.getFileName());
+    }
+
+    @Description("Check if user has access to HuntGroup where he was assigned as authorised user")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
+    public void CheckIfUserHasAccessToHuntGroupWhereHeWasAssignedAsAuthorisedUser(){
+
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupArrayList.add(huntGroup);
+
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup, autotestUserName);
+        logOut();
+
+        loginAsLowLevelUser();
+        basePageLowLevelUser
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupUserPage
+                .verifyIfHuntGroupIsAvailable(huntGroup.getHuntGroupName());
+        logOut();
+
+        login();
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+
+    }
+
+    @Description("Check if user has NO access to HuntGroup where he was NOT assigned as authorised user")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
+    public void CheckIfUserHasNOAccessToHuntGroupWhereHeWasNOTAssignedAsAuthorisedUser(){
+
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupArrayList.add(huntGroup);
+
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup);
+        logOut();
+
+        loginAsLowLevelUser();
+        huntGroupUserPage
+                .verifyIfHuntGroupIsNOTAvailable(huntGroup.getHuntGroupName());
+        logOut();
+
+        login();
+        huntGroupPage
+                .deleteHuntGroup(huntGroup);
     }
 
     @AfterClass(alwaysRun = true)
