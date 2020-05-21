@@ -46,7 +46,7 @@ public class QueueUserPageTests extends BaseTestMethods {
     }
 
     // test fails, bug created EPRO-1011
-    @Description("Check if low-level user can change penalty for Queue agent")
+    @Description("Check if low-level user can change penalty for Queue agent ==== test fails, bug created EPRO-1011")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"}, enabled = false)
     public void CheckIfLowLevelUserCanChangePenaltyForQueueAgent(){
         step("Prepare test data, create test user");

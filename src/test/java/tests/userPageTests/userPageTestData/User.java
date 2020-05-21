@@ -148,4 +148,9 @@ public class User extends BaseTestMethods {
         this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
     }
+
+    public User(String autoProvisionedEndDevice){
+        this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.endDevices = autoProvisionedEndDevice;
+    }
 }

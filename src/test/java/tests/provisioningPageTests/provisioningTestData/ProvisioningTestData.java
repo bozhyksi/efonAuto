@@ -53,4 +53,12 @@ public class ProvisioningTestData extends BaseTestMethods {
             return setProvisioningForXMinutes;
         }
     }
+
+    public static class ConfigurationTemplate extends ProvisioningTestData{
+        private String filePath = "testData\\provisioning\\aastra_37i_V2.0_6867.cfg";
+
+        public String getFilePath() {
+            return filePath;
+        }
+    }
 }

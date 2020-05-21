@@ -70,6 +70,7 @@ import pages.loginPage.LoginPage;
 import pages.numbersPage.NumbersPage;
 import pages.phonebookPage.PhonebookPage;
 import pages.provisioningPage.ProvisioningBasePage;
+import pages.provisioningPage.ProvisioningEndDevicesPage;
 import pages.provisioningPage.ProvisioningManagerPage;
 import pages.queuesPage.*;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
@@ -88,7 +89,7 @@ public class eFonApp extends PreparationsForRun{
     public Fields fields = new Fields();
     public BasePage basePage = new BasePage();
     public static DataBaseWorker dataBaseWorker = new DataBaseWorker();
-    public ExcelFileWorker excelFileWorker = new ExcelFileWorker();
+    public static ExcelFileWorker excelFileWorker = new ExcelFileWorker();
     public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 
     public static ConfirmationPopup confirmationPopup = new ConfirmationPopup();
@@ -178,4 +179,5 @@ public class eFonApp extends PreparationsForRun{
     public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
     public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
     public static QueueRecordingsUserPage queueRecordingsUserPage = new QueueRecordingsUserPage();
+    public static ProvisioningEndDevicesPage provisioningEndDevicesPage = new ProvisioningEndDevicesPage();
 }

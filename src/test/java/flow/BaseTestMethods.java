@@ -35,6 +35,26 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
+    public String getAutoProvisionedEndDeviceFromDB(){
+        String query = "select name " +
+                "from account " +
+                "where is_automatically_provisioned = 1 " +
+                "and  is_selected_for_provisioning = 0 " +
+                "and owner_fk = 906144 " +
+                "and customer_fk = 906144";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> autoProvisionedEndDevicesList = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                autoProvisionedEndDevicesList.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return autoProvisionedEndDevicesList.get(new Random().nextInt(autoProvisionedEndDevicesList.size()));
+    }
+
     public String getRandomCustomerFreePhoneNumberFromDB(){
         String query =
                 "select pn.number\n" +
@@ -271,6 +291,7 @@ public class BaseTestMethods extends eFonApp {
         BasePage.index.decrementAndGet();
     }
 
+    @Step("Delete the user")
     public void deleteUser(User ... users) {
         basePage.getTabUser().click();
         waitUntilAlertDisappear();

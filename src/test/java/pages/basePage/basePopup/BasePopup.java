@@ -1,6 +1,7 @@
 package pages.basePage.basePopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 
 public class BasePopup extends BasePage {
@@ -14,4 +15,5 @@ public class BasePopup extends BasePage {
     public SelenideElement getButtonSave() {
         return field(buttonSaveXpath);
     }
+
 }
