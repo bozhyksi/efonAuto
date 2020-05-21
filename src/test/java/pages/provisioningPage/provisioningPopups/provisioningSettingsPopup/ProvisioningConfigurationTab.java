@@ -3,14 +3,13 @@ package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.testng.Assert;
-import pages.basePage.basePopup.BasePopup;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
 
 import java.io.File;
 
 import static core.configuration.preparations.eFonApp.excelFileWorker;
 
-public class ConfigurationTabProvisioningSettingPopup extends ProvisioningSettingsPopupBaseTab {
+public class ProvisioningConfigurationTab extends ProvisioningSettingsPopup {
 
     //<editor-fold desc="locators">
     private final String dropdownFirmwareXpath = "//select[@formcontrolname=\"firmwareId\"]";
@@ -46,7 +45,7 @@ public class ConfigurationTabProvisioningSettingPopup extends ProvisioningSettin
     //</editor-fold>
 
     @Step("Upload custom configuration template")
-    public ConfigurationTabProvisioningSettingPopup uploadCustomConfigTemplate(String path){
+    public ProvisioningConfigurationTab uploadCustomConfigTemplate(String path){
         getDropdownConfigurationTemplate().selectOptionContainingText("Custom");
         waitUntilAlertDisappear();
         getInputUploadCustomConfigTemplate().uploadFile(new File(path));
@@ -62,28 +61,30 @@ public class ConfigurationTabProvisioningSettingPopup extends ProvisioningSettin
     }
 
     @Step("Download current configuration template")
-    public ConfigurationTabProvisioningSettingPopup downloadCurrentConfigurationTemplate(){
+    public ProvisioningConfigurationTab downloadCurrentConfigurationTemplate(){
         getButtonDownloadConfigtemplate().click();
         waitUntilAlertDisappear();
         return this;
     }
 
     @Step("Verify if config file was downloaded")
-    public ConfigurationTabProvisioningSettingPopup verifyIfConfigFileWaDownloaded(){
+    public ProvisioningConfigurationTab verifyIfConfigFileWaDownloaded(){
         Assert.assertTrue(excelFileWorker.checkIfFileExists("aastra_37i_V2.0_6867.cfg"), "File not found!");
         return this;
     }
 
     @Step("Delete downloaded file")
-    public ConfigurationTabProvisioningSettingPopup deleteDownloadedFile(){
+    public ProvisioningConfigurationTab deleteDownloadedFile(){
         excelFileWorker.deleteFile("aastra_37i_V2.0_6867.cfg");
         return this;
     }
 
     @Step("Select firmware")
-    public ConfigurationTabProvisioningSettingPopup selectFirmware(){
+    public ProvisioningConfigurationTab selectFirmware(){
         getDropdownFirmware().selectOption(1);
         return this;
     }
+
+
 
 }

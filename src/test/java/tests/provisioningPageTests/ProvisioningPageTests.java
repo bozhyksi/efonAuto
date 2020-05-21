@@ -112,9 +112,11 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .clickEditButton(user.getFirstName())
+                .gotoProvisioningConfigurationTab()
                 .uploadCustomConfigTemplate(configTemplate.getFilePath())
                 .saveChanges()
                 .clickEditButton(user.getFirstName())
+                .gotoProvisioningConfigurationTab()
                 .getButtonDownloadConfigtemplate().should(exist);
         refreshPage();
         deleteUser(user);
@@ -135,9 +137,11 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .clickEditButton(user.getFirstName())
+                .gotoProvisioningConfigurationTab()
                 .uploadCustomConfigTemplate(configTemplate.getFilePath())
                 .saveChanges()
                 .clickEditButton(user.getFirstName())
+                .gotoProvisioningConfigurationTab()
                 .downloadCurrentConfigurationTemplate()
                 .verifyIfConfigFileWaDownloaded()
                 .deleteDownloadedFile();
@@ -159,6 +163,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .clickEditButton(user.getFirstName())
+                .gotoProvisioningConfigurationTab()
                 .selectFirmware()
                 .saveChanges();
         refreshPage();

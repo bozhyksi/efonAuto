@@ -1,8 +1,9 @@
 package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
-public class SettingsTabProvisioningSettingPopup extends ProvisioningSettingsPopupBaseTab {
+public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
 
     //<editor-fold desc="locators">
     private final String dropdownLanguageXpath = "//select[@formcontrolname=\"languageCode\"]";
@@ -49,4 +50,33 @@ public class SettingsTabProvisioningSettingPopup extends ProvisioningSettingsPop
         return field(inputDisplayNameByNumberXpath);
     }
     //</editor-fold>
+
+
+    @Step("Select language")
+    public ProvisioningSettingTab selectLanguage(String value){
+        getDropdownLanguage().selectOptionByValue(value);
+        return this;
+    }
+
+    @Step("Select Web language")
+    public ProvisioningSettingTab selectWebLanguage(String value){
+        getDropdownWebLanguage().selectOptionByValue(value);
+        return this;
+    }
+
+    @Step("Configure WEB authentication")
+    public ProvisioningSettingTab configureWebAuthentication(String user, String password){
+        getInputConfigureWebAuth().click();
+        waitUntilAlertDisappear();
+        if(getInputWebUser().exists())getInputWebUser().setValue(user);
+        getInputWebPassword().setValue(password);
+        return this;
+    }
+
+    @Step("Configure function")
+    public ProvisioningSettingTab configureFunction(){
+        return this;
+    }
+
+
 }

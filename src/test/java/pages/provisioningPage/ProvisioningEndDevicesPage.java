@@ -2,7 +2,7 @@ package pages.provisioningPage;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import pages.provisioningPage.provisioningPopups.provisioningSettingsPopup.ConfigurationTabProvisioningSettingPopup;
+import pages.provisioningPage.provisioningPopups.provisioningSettingsPopup.ProvisioningSettingsPopup;
 
 public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
 
@@ -38,10 +38,11 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     //</editor-fold>
 
     @Step("Click edit button and open Provisioning settings popup")
-    public ConfigurationTabProvisioningSettingPopup clickEditButton(String name){
+    public ProvisioningSettingsPopup clickEditButton(String name){
         getButtonEditEndDeviceByName(name).click();
         waitUntilAlertDisappear();
-        return new ConfigurationTabProvisioningSettingPopup();
+        return new ProvisioningSettingsPopup();
     }
+
 
 }
