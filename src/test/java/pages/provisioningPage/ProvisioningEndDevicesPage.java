@@ -44,5 +44,4 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
         return new ProvisioningSettingsPopup();
     }
 
-
 }

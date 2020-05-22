@@ -123,7 +123,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
     }
 
     @Description("Check if vpbx admin can download Configuration template  --  cant resolve This file can harm...")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "provisioningPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"}, enabled = false)
     public void checkIfAdminCanDownloadConfigurationTemplate(){
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         ProvisioningTestData.ConfigurationTemplate configTemplate = new ProvisioningTestData.ConfigurationTemplate();
@@ -169,6 +169,60 @@ public class ProvisioningPageTests extends BaseTestMethods {
         refreshPage();
         deleteUser(user);
     }
+
+    @Description("Check if vpbx admin can configure Functions on provisioning settings")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void checkIfVpbxAdminCanConfigureFunctions(){
+        User user = new User(getAutoProvisionedEndDeviceFromDB());
+        ProvisioningTestData.ProvisioningSettings provisioningSettings = new ProvisioningTestData.ProvisioningSettings();
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user);
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .clickEditButton(user.getFirstName())
+                .gotoProvisioningSettingsTab()
+                .selectLanguage(provisioningSettings.getLanguageValue())
+                .selectWebLanguage(provisioningSettings.getWebLanguageVal())
+                .configureWebAuthentication(provisioningSettings.getWebUser(),provisioningSettings.getWebPassword())
+                .configureFunction(provisioningSettings.getDestNum(), provisioningSettings.getDispName())
+                .saveChanges();
+        provisioningEndDevicesPage
+                .clickEditButton(user.getFirstName())
+                .gotoProvisioningSettingsTab()
+                .verifyConfiguredFunctions(provisioningSettings.getDestNum(),provisioningSettings.getDispName());
+
+        refreshPage();
+        deleteUser(user);
+
+    }
+
+    @Description("Check if provisioning settings popup shows end device and user name")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void checkIfProvisioningSettingsPopupShownEndDeviceAndUserName(){
+
+        User user = new User(getAutoProvisionedEndDeviceFromDB());
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user)
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .clickEditButton(user.getFirstName())
+                .checkEndDeviceAndUserName(user.getEndDevices(),user.getFirstName());
+
+        refreshPage();
+        deleteUser(user);
+
+    }
+
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){

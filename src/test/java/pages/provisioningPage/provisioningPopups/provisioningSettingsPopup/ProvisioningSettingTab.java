@@ -1,7 +1,10 @@
 package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+
+import static com.codeborne.selenide.Condition.value;
 
 public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
 
@@ -38,16 +41,16 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
         return field(inputWebPasswordXpath);
     }
 
-    public SelenideElement getDropdownFunctionByNumber() {
-        return field(dropdownFunctionByNumberXpath);
+    public SelenideElement getDropdownFunctionByNumber(String text) {
+        return field(String.format(dropdownFunctionByNumberXpath, text));
     }
 
-    public SelenideElement getInputDestinationNumberByNumber() {
-        return field(inputDestinationNumberByNumberXpath);
+    public SelenideElement getInputDestinationNumberByNumber(String text) {
+        return field(String.format(inputDestinationNumberByNumberXpath, text));
     }
 
-    public SelenideElement getInputDisplayNameByNumber() {
-        return field(inputDisplayNameByNumberXpath);
+    public SelenideElement getInputDisplayNameByNumber(String text) {
+        return field(String.format(inputDisplayNameByNumberXpath,text));
     }
     //</editor-fold>
 
@@ -66,7 +69,7 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
 
     @Step("Configure WEB authentication")
     public ProvisioningSettingTab configureWebAuthentication(String user, String password){
-        getInputConfigureWebAuth().click();
+        if (!getInputConfigureWebAuth().isSelected())getInputConfigureWebAuth().click();
         waitUntilAlertDisappear();
         if(getInputWebUser().exists())getInputWebUser().setValue(user);
         getInputWebPassword().setValue(password);
@@ -74,9 +77,30 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
     }
 
     @Step("Configure function")
-    public ProvisioningSettingTab configureFunction(){
+    public ProvisioningSettingTab configureFunction(String destNum, String dispName){
+        configFunc(1,destNum,dispName);
+        configFunc(2,destNum,dispName);
+        configFunc(3,destNum,dispName);
         return this;
     }
 
+    private void configFunc(int num, String destNum, String dispName){
+        getDropdownFunctionByNumber(String.valueOf(num)).selectOption(num);
+        getInputDestinationNumberByNumber(String.valueOf(num)).setValue(destNum);
+        getInputDisplayNameByNumber(String.valueOf(num)).setValue(dispName);
+    }
+
+    @Step("Verify configured functions")
+    public ProvisioningSettingTab verifyConfiguredFunctions(String destNum, String dispName){
+        verifyFunc(1,destNum,dispName);
+        verifyFunc(2,destNum,dispName);
+        verifyFunc(3,destNum,dispName);
+        return this;
+    }
+
+    private void verifyFunc(int num, String destNum, String dispName){
+        getInputDestinationNumberByNumber(String.valueOf(num)).shouldHave(value(destNum));
+        getInputDisplayNameByNumber(String.valueOf(num)).shouldHave(value(dispName));
+    }
 
 }

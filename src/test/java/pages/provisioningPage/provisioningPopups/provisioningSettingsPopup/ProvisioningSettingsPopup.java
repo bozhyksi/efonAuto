@@ -1,8 +1,12 @@
 package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
+import pages.provisioningPage.ProvisioningEndDevicesPage;
+
+import static com.codeborne.selenide.Condition.text;
 
 public class ProvisioningSettingsPopup extends BasePopup {
     public enum ProvisioningSettingsPopupTabs{
@@ -23,7 +27,7 @@ public class ProvisioningSettingsPopup extends BasePopup {
         return field(fieldPhoneModelXpath);
     }
 
-    public SelenideElement fieldEndDevice() {
+    public SelenideElement getfieldEndDevice() {
         return field(fieldEndDeviceXpath);
     }
 
@@ -64,4 +68,19 @@ public class ProvisioningSettingsPopup extends BasePopup {
         gotoMenuTab(ProvisioningSettingsPopupTabs.PROVISIONING_CONFIGURATION);
         return new ProvisioningConfigurationTab();
     }
+
+    @Step("Save changes")
+    public ProvisioningEndDevicesPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new ProvisioningEndDevicesPage();
+    }
+
+    @Step("Check end device and user name")
+    public ProvisioningSettingsPopup checkEndDeviceAndUserName(String endDevice, String userName){
+        getfieldEndDevice().getText().contains(endDevice);
+        getfieldEndDevice().getText().contains(userName);
+        return this;
+    }
+
 }

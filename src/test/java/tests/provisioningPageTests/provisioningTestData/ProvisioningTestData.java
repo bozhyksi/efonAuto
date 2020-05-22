@@ -1,6 +1,7 @@
 package tests.provisioningPageTests.provisioningTestData;
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 
 import java.util.Random;
 
@@ -59,6 +60,49 @@ public class ProvisioningTestData extends BaseTestMethods {
 
         public String getFilePath() {
             return filePath;
+        }
+    }
+
+    public static class ProvisioningSettings extends ProvisioningTestData{
+
+        private String languageValue;
+        private String webLanguageVal;
+        private String webUser;
+        private String webPassword;
+        private String destNum;
+        private String dispName;
+
+        public ProvisioningSettings(){
+            this.languageValue = PublicEnums.LanguageValues.getRandLangVal();
+            this.webLanguageVal = PublicEnums.LanguageValues.getRandLangVal();
+            this.webUser = getRandomString(10);
+            this.webPassword = getRandomPassword();
+            this.destNum = getRandomPhone();
+            this.dispName = getRandomString(15);
+        }
+
+        public String getDestNum() {
+            return destNum;
+        }
+
+        public String getDispName() {
+            return dispName;
+        }
+
+        public String getLanguageValue() {
+            return languageValue;
+        }
+
+        public String getWebLanguageVal() {
+            return webLanguageVal;
+        }
+
+        public String getWebPassword() {
+            return webPassword;
+        }
+
+        public String getWebUser() {
+            return webUser;
         }
     }
 }
