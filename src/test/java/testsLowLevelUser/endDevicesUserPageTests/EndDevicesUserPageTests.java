@@ -12,6 +12,7 @@ import tests.userPageTests.userPageTestData.EndDevice;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserEndDevname;
 import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
 
 @Listeners(CustomListeners.class)
@@ -20,23 +21,21 @@ public class EndDevicesUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can edit his own End Devices")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
-    public void CheckIfLowlevelUserCanEditHisOwnEndDevices(){
-        step("Prepare test data");
+    public void CheckIfLowLevelUserCanEditHisOwnEndDevices(){
         EndDevice endDevice = new EndDevice();
 
-        step("Login as low-level user");
         loginAsLowLevelUser();
-
-        step("Goto end devices tab");
-        basePageLowLevelUser.goToMenuTab(END_DEVICES);
-
-        step("Edit available EndDevice");
-        endDevicesUserPage.openEditEndDevicePopup("Account 906144a10");
-        endDevicesUserPage.configureUserEndDevice(endDeviceTabConfigUserPopup, endDevice);
-
-        step("validate saved data");
-        endDevicesUserPage.openEditEndDevicePopup("Account 906144a10");
-        endDevicesUserPage.validateEndDeviceData(endDeviceTabConfigUserPopup, endDevice);
+        basePageLowLevelUser
+                .goToMenuTab(END_DEVICES);
+        endDevicesUserPage
+                .configureEndDevice(autotestUserEndDevname)
+                .selectPhoneLanguage(endDevice.getEndDevPhoneLanguage())
+                .selectOutgoingNumber(endDevice.getEndDevOutgoingNumber())
+                .selectSuppressedOption(endDevice.getEndDevSuppressed())
+                .enterLocation(endDevice.getEndDevLocation())
+                .saveChanges()
+                .configureEndDevice(autotestUserEndDevname)
+                .validateEndDeviceConfiguration(endDevice);
     }
 
     @Description("Check if all customer numbers are available as End Device outgoing number")
@@ -54,7 +53,7 @@ public class EndDevicesUserPageTests extends BaseTestMethods {
 
         step("Goto end devices and verify if all customer numbers exist in outgoing dropdown");
         basePageLowLevelUser.goToMenuTab(END_DEVICES);
-        endDevicesUserPage.getButtonEditEndDeviceByName("Account 906144a10").click();
+        endDevicesUserPage.getButtonEditEndDeviceByName(autotestUserEndDevname).click();
         waitUntilAlertDisappear();
         outgoingNumbersList = endDevicesUserPage.getOutgoingDropdownItems();
         endDevicesUserPage.verifyIfAllCustomerNumbersAreAvailableAsOutgoing(customerNumbersList,outgoingNumbersList);

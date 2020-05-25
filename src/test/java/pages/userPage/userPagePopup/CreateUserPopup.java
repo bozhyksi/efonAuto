@@ -151,7 +151,6 @@ public class CreateUserPopup extends UserPage {
     }
 
     public String selectNumber(){
-        //getRandomDropDownOption(getDropdownNumber());
         getDropdownNumber().selectOption(index.getAndIncrement());
         return getDropdownNumber().getSelectedText();
     }

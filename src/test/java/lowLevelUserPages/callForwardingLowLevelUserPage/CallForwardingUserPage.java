@@ -5,6 +5,8 @@ import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import pages.callForwardingPage.CallForwardingPage;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.value;
 import static core.configuration.preparations.eFonApp.callForwardingPage;
 import static io.qameta.allure.Allure.step;
 
@@ -29,9 +31,9 @@ public class CallForwardingUserPage extends BasePageLowLevelUser {
         refreshPage();
 
         step("Verify if all entered data was saved");
-        callForwardingPage.getInputDelay().shouldHave(Condition.value(delay));
-        callForwardingPage.getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
-        callForwardingPage.getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
+        callForwardingPage.getInputDelay().shouldHave(value(delay));
+        callForwardingPage.getDropdownAfterForwardTo().getSelectedOption().shouldHave(text("Phone"));
+        callForwardingPage.getInputAfterPhone().shouldHave(value(forwardToPhone));
     }
 
     public void configureIfBusySection(String forwardToPhone){
@@ -50,28 +52,21 @@ public class CallForwardingUserPage extends BasePageLowLevelUser {
         refreshPage();
 
         step("Verify if all entered data was saved");
-        callForwardingPage.getDropdownIfbusyForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
-        callForwardingPage.getInputIfbusyPhone().shouldHave(Condition.value(forwardToPhone));
+        callForwardingPage.getDropdownIfbusyForwardTo().getSelectedOption().shouldHave(text("Phone"));
+        callForwardingPage.getInputIfbusyPhone().shouldHave(value(forwardToPhone));
     }
 
+    @Step("Configure \"If end device unavailable (not registered)\" section")
     public void configureIfEndDeviceUnavailableSection(String forwardToPhone){
-        step("Activate \"If end device unavailable (not registered)\" checkbox");
-        if (!callForwardingPage.getCheckboxDeviceUnavailable().isSelected())callForwardingPage.getCheckboxDeviceUnavailable().click();
-
-        step("Select value from \"ForwardTo\" dropdown");
+        if (!callForwardingPage.getCheckboxDeviceUnavailable().isSelected())
+            callForwardingPage.getCheckboxDeviceUnavailable().click();
         callForwardingPage.getDropdownIfbusyForwardTo().selectOption("Phone");
-
-        step("Fill in phone field");
         callForwardingPage.getInputDevicePhone().setValue(forwardToPhone);
-
-        step("Save changes");
         callForwardingPage.getButtonSave().click();
         waitUntilAlertDisappear();
         refreshPage();
-
-        step("Verify if all entered data was saved");
-        callForwardingPage.getDropdownDeviceForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
-        callForwardingPage.getInputDevicePhone().shouldHave(Condition.value(forwardToPhone));
+        callForwardingPage.getDropdownDeviceForwardTo().getSelectedOption().shouldHave(text("Phone"));
+        callForwardingPage.getInputDevicePhone().shouldHave(value(forwardToPhone));
     }
 
     public void configureSuppressedNumbersSection( String forwardToPhone){
@@ -87,7 +82,7 @@ public class CallForwardingUserPage extends BasePageLowLevelUser {
         refreshPage();
 
         step("Verify if all entered data was saved");
-        callForwardingPage.getDropdownSupprNumForwardTo().getSelectedOption().shouldHave(Condition.value("VOICEMAIL"));
+        callForwardingPage.getDropdownSupprNumForwardTo().getSelectedOption().shouldHave(value("VOICEMAIL"));
     }
 
     @Step("Check if Select number dropdown contains only user number")

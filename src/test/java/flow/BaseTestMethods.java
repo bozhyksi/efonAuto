@@ -265,7 +265,7 @@ public class BaseTestMethods extends eFonApp {
         createUserPopup.fillFirstName(user.getFirstName());
         createUserPopup.fillLastName(user.getLastName());
         createUserPopup.fillLoginEmail(user.getLoginEmail());
-        user.setPhoneNumber(createUserPopup.selectNumber());
+        createUserPopup.selectNumber(user.getPhoneNumber());
         createUserPopup.selectEndDevices();
         user.setEndDevices(createUserPopup.getSelectedEndDeviceName());
         createUserPopup.fillInDiffContactEmail(user.getUseDiffContactEmail());

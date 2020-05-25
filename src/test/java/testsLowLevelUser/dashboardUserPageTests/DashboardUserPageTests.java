@@ -35,8 +35,8 @@ public class DashboardUserPageTests extends BaseTestMethods {
         step("Check Voicemail widget");
         dashboardUserPage.checkWidgetButton(SHOW_ALL_VOICEMAIL_MESSAGES, VOICEMAIL);
 
-        step("Check Queues widget");
-        dashboardUserPage.checkWidgetButton(SHOW_QUEUE_STATUS, QUEUES);
+        //step("Check Queues widget");
+        //dashboardUserPage.checkWidgetButton(SHOW_QUEUE_STATUS, QUEUES);
 
         step("Check Send text message widget");
         dashboardUserPage.checkWidgetButton(SEND_TEXT_MESSAGE, SEND_SMS);

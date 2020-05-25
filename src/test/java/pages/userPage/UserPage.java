@@ -12,6 +12,8 @@ import tests.userPageTests.userPageTestData.User;
 
 import javax.jws.soap.SOAPBinding;
 
+import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
 import static pages.basePage.BasePage.MenuTabsBasePage.USER;
 
 public class UserPage extends BasePage {
@@ -27,9 +29,19 @@ public class UserPage extends BasePage {
     private String buttonDeleteUserXpath = "//*[@role=\"grid\"]//a[@id=\"deleteUserButton\"]";
     private String buttonConfigUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editUserButton\"]";
     private String buttonDeleteUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteUserButton\"]";
+    private final String getFieldByText = "//table//td[contains(text(),\"%s\")]";
     //</editor-fold>
 
     //<editor-fold desc="//-- UserPage get/set methods --//">
+
+    public SelenideElement getGetFieldUserNumberByText(String text) {
+        return field(String.format(getFieldByText, text));
+    }
+
+    public SelenideElement getGetFieldUserNameByText(String text) {
+        return field(String.format(getFieldByText, text));
+    }
+
     public SelenideElement getButtonDeleteUserByName(String name) {
         return field(String.format(buttonDeleteUserByNameXpath, name));
     }
@@ -134,6 +146,31 @@ public class UserPage extends BasePage {
                     .saveChanges();
             waitUntilAlertDisappear();
         }
+        return this;
+    }
+
+    @Step("Delete users")
+    public UserPage deleteUser(User ... users){
+        goToMenuTab(USER);
+        for (User user : users) {
+            getButtonDeleteUserByName(user.getFirstName()).click();
+            waitUntilAlertDisappear();
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            verifyIfUserDoesNotExist(user.getFirstName());
+        }
+        return  this;
+    }
+
+    @Step("Verify if user does not exist in the list")
+    public UserPage verifyIfUserDoesNotExist(String userName){
+        getGetFieldUserNameByText(userName).shouldNot(exist);
+        return this;
+    }
+
+    @Step("Verify if user exists in the list")
+    public UserPage verifyIfUserExists(String userName){
+        getGetFieldUserNameByText(userName).should(exist);
         return this;
     }
 }

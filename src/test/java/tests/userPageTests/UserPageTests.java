@@ -1,7 +1,6 @@
 package tests.userPageTests;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import core.workers.sshFileTransfer.SSHFileTransfer;
@@ -10,9 +9,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
-import pages.userPage.userPagePopup.configureUser.AnnouncementsTabConfigUserPopup;
-import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
 import tests.userPageTests.userPageTestData.User;
@@ -33,69 +29,30 @@ public class UserPageTests extends BaseTestMethods {
     @Description("Check if VPBX admin is able to create users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
     public void CheckIfVpbxAdminIsAbleToCreateUsers(){
-        step("Preparing test data object - User");
+
         User user = new User();
         userArrayList.add(user);
 
-        step("Log in the system as VPBX admin and goto Users tab");
         login();
-        basePage.getTabUser().click();
+        userPage
+                .createUser(user)
+                .verifyIfUserExists(user.getFirstName())
+                .deleteUser(user);
 
-        step("Verify if correct page was loaded");
-        userPage.getPageTitle().getText().equals("User");
-
-        step("Click \"Create New User\"");
-        userPage.getButtonCreateNewUser().click();
-
-        step("Verify if correct popup opened");
-        createUserPopup.getPopupTitle().getText().equals("Create user");
-
-        step("Fill in all mandatory fields - Title, First/Last name, Login, Number, End-device");
-        createUserPopup.selectTitle(user.getTitle());
-        createUserPopup.fillFirstName(user.getFirstName());
-        createUserPopup.fillLastName(user.getLastName());
-        createUserPopup.fillLoginEmail(user.getLoginEmail());
-        user.setPhoneNumber(createUserPopup.selectNumber());
-        createUserPopup.selectEndDevices();
-        createUserPopup.fillInDiffContactEmail(user.getUseDiffContactEmail());
-        createUserPopup.fillInVoiceEmail(user.getVoiceEmail());
-        createUserPopup.getCheckboxBusyOnBusy().click();
-        user.setPermittedDestinationNumbers(createUserPopup.selectPermittedDestinationNumbers());
-        createUserPopup.getCheckboxSmsEnabled().click();
-        user.setCallsRecordingDirection(createUserPopup.activateCallRecordings());
-        //createUserPopup.activateFaxDispatch(user.getInputLocalHeaderInfo());
-
-        step("Save all made changes");
-        createUserPopup.getButtonSave().click();
-
-        step("Verify if user was created with correct data");
-        userPage.checkIfUserExistsInTheList(user);
-
-        step("Clear test data, delete created user");
-        deleteUser(user);
     }
 
     @Description("Check if VPBX admin is able to DELETE users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
-    public void CheckifVpbxAdminisAbletoDeleteUsers(){
-        step("Preparing test data object - User");
+    public void CheckIfVpbxAdminCanDeleteUsers(){
+
         User user = new User();
         userArrayList.add(user);
 
-        step("Log in the system");
         login();
+        userPage
+                .createUser(user)
+                .deleteUser(user);
 
-        step("Create new user");
-        createUser(user);
-
-        step("Delete created user");
-        userPage.deleteUserButtonClick(user.getFullName());
-
-        step("Confirm deleting");
-        confirmationPopup.getYesButton().click();
-
-        step("Check if user was deleted");
-        userPage.checkIfUserDeleted(user);
     }
 
     @Description("Check if the system shows correct user's data on edit popup - \"NAME\" tab")

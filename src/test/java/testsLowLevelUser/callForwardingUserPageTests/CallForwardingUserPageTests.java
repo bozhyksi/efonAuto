@@ -60,21 +60,14 @@ public class CallForwardingUserPageTests extends BaseTestMethods {
     @Description("Verify if user can configure \"If end device unavailable (not registered)\" section in call forwarding")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
     public void VerifyIfUserCanConfigureIfEndDeviceUnavailableSectionInCallForwarding(){
-        step("Prepare test data");
-        String delay = getRandomNumber(2);
-        String forwardToPhone = getRandomPhone();
 
-        step("Log in the system");
         loginAsLowLevelUser();
-
-        step("Goto forwarding tab");
-        basePageLowLevelUser.goToMenuTab(CALL_FORWARDING);
-
-        step("Configure end device section");
-        callForwardingUserPage.configureIfEndDeviceUnavailableSection(forwardToPhone);
-
-        step("Clear test data");
+        basePageLowLevelUser
+                .goToMenuTab(CALL_FORWARDING);
+        callForwardingUserPage
+                .configureIfEndDeviceUnavailableSection(getRandomPhone());
         lowLevelUserCallForwardingCleanUp();
+
     }
 
     @Description("Verify if user can configure \"Calls with suppressed numbers\" section in call forwarding")

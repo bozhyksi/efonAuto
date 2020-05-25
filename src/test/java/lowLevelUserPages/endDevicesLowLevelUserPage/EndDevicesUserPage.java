@@ -2,7 +2,9 @@ package lowLevelUserPages.endDevicesLowLevelUserPage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import lowLevelUserPages.endDevicesLowLevelUserPage.configureEndDevicesPopup.ConfigureEndDevicesPopup;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -53,9 +55,11 @@ public class EndDevicesUserPage extends BasePageLowLevelUser {
 
     //</editor-fold>
 
-    public void openEditEndDevicePopup(String name){
+    @Step("Click configure end device")
+    public ConfigureEndDevicesPopup configureEndDevice(String name){
         getButtonEditEndDeviceByName(name).click();
         waitUntilAlertDisappear();
+        return new ConfigureEndDevicesPopup();
     }
 
     public void configureUserEndDevice(EndDeviceTabConfigUserPopup endDevicesPage, EndDevice endDevice){
@@ -73,14 +77,6 @@ public class EndDevicesUserPage extends BasePageLowLevelUser {
         }
         getButtonSave().click();
         waitUntilAlertDisappear();
-    }
-
-    public void validateEndDeviceData(EndDeviceTabConfigUserPopup endDevicesPage, EndDevice endDevice){
-        getDropdownPhoneLanguage().getSelectedValue().contains(endDevice.getEndDevPhoneLanguage());
-        getDropdownOutgoingNumber().getSelectedValue().contains(endDevice.getEndDevOutgoingNumber());
-        if (endDevice.getEndDevSuppressedYES()) getCheckboxSuppressedYes().shouldBe(selected);
-        if (endDevice.getEndDevSuppressedNO()) getCheckboxSuppressedNo().shouldBe(selected);
-        refreshPage();
     }
 
     public ArrayList<String> getOutgoingDropdownItems(){

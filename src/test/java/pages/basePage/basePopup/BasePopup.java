@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
+import io.qameta.allure.Step;
 
 public class BasePopup extends Fields {
 
