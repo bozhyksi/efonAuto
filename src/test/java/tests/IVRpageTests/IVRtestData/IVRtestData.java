@@ -1,6 +1,7 @@
 package tests.IVRpageTests.IVRtestData;
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 
 public class IVRtestData extends BaseTestMethods {
 
@@ -76,9 +77,10 @@ public class IVRtestData extends BaseTestMethods {
     public IVRtestData(){
         this.ivrName = getRandomString(10);
         this.ivrDisplName = getRandomString(10);
-        this.ivrLanguage = Language.en.toString();
-        this.active = true;
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
         this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
     }
 
     //<editor-fold desc="get\set">

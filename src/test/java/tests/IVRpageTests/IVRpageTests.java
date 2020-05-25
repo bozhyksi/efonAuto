@@ -7,6 +7,7 @@ import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.basePage.BasePage;
@@ -575,6 +576,32 @@ public class IVRpageTests extends BaseTestMethods {
         step("CleanUp test data");
         deleteIVR(ivr.getIvrName());
         deleteAnnouncementFile(file.getFileName());
+    }
+
+    @Description("Verify if user can creaate/delete IVRs")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void createDeleteIvrTest(){
+
+        IVRtestData ivr = new IVRtestData();
+        FileManagementTestData announcement = new FileManagementTestData();
+        filesList.add(announcement);
+        ivrList.add(ivr);
+
+        login();
+        uploadAnnouncementFile(announcement);
+        basePage
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickNewIvr()
+                .enterIvrName(ivr.getIvrName())
+                .enterDisplayName(ivr.getIvrDisplName())
+                .selectLanguage(ivr.getIvrLanguage())
+                .selectNumber(ivr.getIvrNumber())
+                .selectAnnouncement(announcement.getFileName())
+                .saveChanges()
+                .verifyIfIvrExists(ivr.getIvrName())
+                .deleteIvr(ivr);
+        deleteAnnouncementFile(announcement.getFileName());
     }
 
     @AfterClass(alwaysRun = true)

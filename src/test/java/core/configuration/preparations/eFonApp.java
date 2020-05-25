@@ -30,12 +30,11 @@ import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.CreateSmsA
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.NewSenderNumberPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
-import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.IVRpage.IVRpage;
-import pages.IVRpage.IVRpagePopup.IVRpagePopup;
+import pages.IVRpage.IVRpagePopup.CreateEditIvrPopup;
 import pages.IVRpage.blockListSection.BlockListSection;
 import pages.IVRpage.blockListSection.BlocklistPopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
@@ -111,7 +110,7 @@ public class eFonApp extends PreparationsForRun{
     public ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
     public IVRpage ivrPage = new IVRpage();
-    public IVRpagePopup createNewIvrPopup = new IVRpagePopup();
+    public CreateEditIvrPopup createNewIvrPopup = new CreateEditIvrPopup();
     public static HuntGroupPage huntGroupPage = new HuntGroupPage();
     public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
     public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();

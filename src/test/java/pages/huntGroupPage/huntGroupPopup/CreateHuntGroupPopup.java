@@ -12,8 +12,7 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailUnavailable;
 
@@ -325,7 +324,8 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     public void configureLevel(String delay, QueueActions actionValue, String number) {
         String levelNumber = String.valueOf(level);
         getButtonAddNewStep().click();
-        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
         getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
         getDropDownEndDevicesByLabel(levelNumber).selectOption(1);
         getInputNumberByLabel(levelNumber).setValue(number);
@@ -336,7 +336,8 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         String levelNumber = String.valueOf(level);
         getButtonAddNewStep().click();
         getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
-        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
         level++;
     }
 
@@ -345,7 +346,8 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getButtonAddNewStep().click();
         getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
         getDropdownAnnouncementIdByLabel(levelNumber).selectOptionContainingText(file.getFileName());
-        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
         level++;
     }
 
@@ -354,7 +356,8 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getButtonAddNewStep().click();
         getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
         getDropdownQueueIdByLabel(levelNumber).selectOptionContainingText(queue.getName());
-        if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
+        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
         level++;
     }
 

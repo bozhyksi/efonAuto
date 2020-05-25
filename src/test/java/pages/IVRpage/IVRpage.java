@@ -1,13 +1,19 @@
 package pages.IVRpage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import pages.IVRpage.IVRpagePopup.CreateEditIvrPopup;
 import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
+
+import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
 
 public class IVRpage extends BasePage {
 
@@ -22,9 +28,21 @@ public class IVRpage extends BasePage {
     private String inputParameterByEventNumberXpath = "//table//td[2][text()=\"%s\"]//ancestor::tr//input[@formcontrolname=\"id\"]";
     private String dropdownActionByEventNumberXpath = "//table//td[2][text()=\"%s\"]//ancestor::tr//select[@formcontrolname=\"ivrActionType\"]";
     private String checkboxActiveByEventNumberXpath = "//table//td[2][text()=\"%s\"]//ancestor::tr//input[@formcontrolname=\"active\"]";
+    private final String fieldByText = "//td[contains(text(), \"%s\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getFieldNameByText(String text) {
+        return field(String.format(fieldByText,text));
+    }
+
+
+    public SelenideElement getFieldPhoneByText(String text) {
+        return field(String.format(fieldByText,text));
+    }
+
     public SelenideElement getCheckboxActiveByEventNumber(String name) {
         return field(String.format(checkboxActiveByEventNumberXpath, name));
     }
@@ -140,6 +158,36 @@ public class IVRpage extends BasePage {
         waitUntilAlertDisappear();
     }
 
+    @Step("Click New IVR button")
+    public CreateEditIvrPopup clickNewIvr(){
+        getButtonNewIvr().click();
+        waitUntilAlertDisappear();
+        return new CreateEditIvrPopup();
+    }
 
+    @Step("Verify if IVR exists")
+    public IVRpage verifyIfIvrExists(String ivrName){
+        getFieldNameByText(ivrName).should(exist);
+        return this;
+    }
+
+    @Step("Verify if IVR does not exists")
+    public IVRpage verifyIfIvrDoesNotExist(String ivrName){
+        getFieldNameByText(ivrName).shouldNot(exist);
+        return this;
+    }
+
+    @Step("Delete IVR")
+    public IVRpage deleteIvr(IVRtestData ... ivrs){
+        goToMenuTab(MenuTabsBasePage.IVRs);
+        for (IVRtestData ivr : ivrs) {
+            getButtonDeleteIvrByName(ivr.getIvrName()).click();
+            waitUntilAlertDisappear();
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            verifyIfIvrDoesNotExist(ivr.getIvrName());
+        }
+        return this;
+    }
 
 }
