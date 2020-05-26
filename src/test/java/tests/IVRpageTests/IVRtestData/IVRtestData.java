@@ -72,19 +72,37 @@ public class IVRtestData extends BaseTestMethods {
     private String parameterIVR;
     private String parameterPlayAndHangUp;
     private String parameterQueue;
+    private String parameterMaxThroughputs;
+    private String parameterMaxWaitingTime;
+    private String pinCode;
 
 
     public IVRtestData(){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
         this.ivrName = getRandomString(10);
         this.ivrDisplName = getRandomString(10);
         this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
         this.active = getRandomBoolean();
         this.parameterExtTelNumber = getRandomPhone();
         this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
     }
 
     //<editor-fold desc="get\set">
 
+
+    public String getParameterMaxWaitingTime() {
+        return parameterMaxWaitingTime;
+    }
+
+    public String getParameterMaxThroughputs() {
+        return parameterMaxThroughputs;
+    }
+
+    public String getPinCode() {
+        return pinCode;
+    }
 
     public void setAction(String action) {
         this.action = action;

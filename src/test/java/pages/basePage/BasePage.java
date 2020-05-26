@@ -305,6 +305,7 @@ public class BasePage extends Fields{
     //</editor-fold>
 
     public void waitUntilAlertDisappear() {
+        Selenide.sleep(500);
         getIsLoadingSpinner().waitUntil(Condition.disappear, 10000);
         getIsLoadingSpinner().shouldNotBe(Condition.visible);
         getAlertDialog().waitUntil(Condition.disappear, 10000);

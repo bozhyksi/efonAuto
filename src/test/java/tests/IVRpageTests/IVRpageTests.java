@@ -578,7 +578,7 @@ public class IVRpageTests extends BaseTestMethods {
         deleteAnnouncementFile(file.getFileName());
     }
 
-    @Description("Verify if user can creaate/delete IVRs")
+    @Description("Verify if user can create/delete IVRs")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void createDeleteIvrTest(){
 
@@ -603,6 +603,52 @@ public class IVRpageTests extends BaseTestMethods {
                 .deleteIvr(ivr);
         deleteAnnouncementFile(announcement.getFileName());
     }
+
+    @Description("Verify if user can configure IVRs actions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void configureIvrActionsTest(){
+
+        IVRtestData ivr = new IVRtestData();
+        HuntGroup huntGroup = new HuntGroup();
+        FileManagementTestData announcement = new FileManagementTestData();
+        User user = new User();
+
+        filesList.add(announcement);
+        ivrList.add(ivr);
+        usersList.add(user);
+        huntGroupsList.add(huntGroup);
+
+        login();
+        uploadAnnouncementFile(announcement);
+        createHuntGroup(huntGroup);
+
+        userPage
+                .createUser(user);
+        ivrPage
+                .createIvr(ivr, announcement);
+        ivrPage
+                .clickEditIvr(ivr)
+                .configureHuntGroupAction(huntGroup)
+                .configurePhoneDirectAction(user)
+                .configureExternalDirectAction(ivr.getParameterExtTelNumber())
+                .configureVoiceMailUnavailableAction()
+                .configureVoiceMailNoAnnouncementAction()
+                .configureVoiceMailOfSubscriberAction(user)
+                .configureMaxPassesReachedAction()
+                .configureInvalidChoiceAction()
+                .configureTimeExpiredAction()
+                .configurePlayAndHangUpAction(announcement)
+                .configurePlayAndRestartAction(announcement)
+                .configureRestartMenuAction()
+                .saveChanges();
+        ivrPage
+                .deleteIvr(ivr);
+        userPage
+                .deleteUser(user);
+        deleteAnnouncementFile(announcement.getFileName());
+        deleteHuntGroup(huntGroup.getHuntGroupName());
+    }
+
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {

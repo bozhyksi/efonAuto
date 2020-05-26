@@ -1,5 +1,6 @@
 package pages.abbreviatedDialling;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
@@ -49,7 +50,9 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     @Step("Create single abbreviated number")
     public ManageAbbreviatedNumbers addSingleAbbrevNumber(AbbreviatedDialling shortNumber){
+        goToMenuTab(MenuTabsBasePage.ABBREVIATED_DIALING).goToMenuTab(MenuTabsBasePage.MANAGE_ABBREVIATED_NUMBERS);
         getInputAdd().setValue(shortNumber.getSingleShortNum());
+        Selenide.sleep(1000);
         waitUntilAlertDisappear();
         getButtonAdd().click();
         waitUntilAlertDisappear();

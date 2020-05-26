@@ -14,6 +14,7 @@ import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
 import static core.configuration.preparations.eFonApp.confirmationPopup;
+import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 
 public class IVRpage extends BasePage {
 
@@ -188,6 +189,27 @@ public class IVRpage extends BasePage {
             verifyIfIvrDoesNotExist(ivr.getIvrName());
         }
         return this;
+    }
+
+    @Step("Create IVR")
+    public IVRpage createIvr(IVRtestData ivr, FileManagementTestData announcement){
+        goToMenuTab(IVRs);
+        clickNewIvr()
+                .enterIvrName(ivr.getIvrName())
+                .enterDisplayName(ivr.getIvrDisplName())
+                .selectLanguage(ivr.getIvrLanguage())
+                .selectNumber(ivr.getIvrNumber())
+                .selectAnnouncement(announcement.getFileName())
+                .saveChanges()
+                .verifyIfIvrExists(ivr.getIvrName());
+        return this;
+    }
+
+    @Step("Click edit IVR button")
+    public CreateEditIvrPopup clickEditIvr(IVRtestData ivr){
+        getButtonEditIvrByName(ivr.getIvrName()).click();
+        waitUntilAlertDisappear();
+        return new  CreateEditIvrPopup();
     }
 
 }

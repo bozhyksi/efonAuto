@@ -6,7 +6,6 @@ public class PublicEnums {
 
     public enum LanguageValues{
 
-        ES("es"),
         IT("it"),
         DE("de"),
         FR("fr"),
@@ -59,6 +58,8 @@ public class PublicEnums {
         _8("8"),
         _9("9"),
         _0("0"),
+        _star("*"),
+        _dies("#"),
         ABBREVIATED_NUMBER("Abbreviated number"),
         INVALID_CHOICE("Invalid choice"),
         TIME_EXPIRED("Time expired"),
@@ -70,7 +71,7 @@ public class PublicEnums {
             this.val = val;
         }
 
-        private String getVal() {
+        public String getVal() {
             return val;
         }
 

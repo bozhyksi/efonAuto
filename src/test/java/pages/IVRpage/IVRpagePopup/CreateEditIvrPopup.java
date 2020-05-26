@@ -1,8 +1,18 @@
 package pages.IVRpage.IVRpagePopup;
 
 import com.codeborne.selenide.SelenideElement;
+import flow.PublicEnums;
 import io.qameta.allure.Step;
 import pages.IVRpage.IVRpage;
+import tests.IVRpageTests.IVRtestData.IVRtestData;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
+
+import static flow.PublicEnums.IvrActions.*;
+import static flow.PublicEnums.IvrEvents.*;
 
 public class CreateEditIvrPopup extends IVRpage {
 
@@ -150,21 +160,27 @@ public class CreateEditIvrPopup extends IVRpage {
         return this;
     }
 
+    @Step("Select Action for proper event")
+    public CreateEditIvrPopup selectAction(PublicEnums.IvrEvents event, PublicEnums.IvrActions action){
+        getDropdownIvrActionByEvent(event.getVal()).selectOptionByValue(action.toString());
+        return this;
+    }
+
     @Step("Select Parameter from dropdown for proper event")
-    public CreateEditIvrPopup selectParameter(String event, String parameter){
-        getDropdownParameterByEvent(event).selectOptionContainingText(parameter);
+    public CreateEditIvrPopup selectParameter(PublicEnums.IvrEvents event, String parameter){
+        getDropdownParameterByEvent(event.getVal()).selectOptionContainingText(parameter);
         return this;
     }
 
     @Step("Enter Parameter into field for proper event")
-    public CreateEditIvrPopup enterParameter(String event, String parameter){
-        getInputParameterByEvent(event).setValue(parameter);
+    public CreateEditIvrPopup enterParameter(PublicEnums.IvrEvents event, String parameter){
+        getInputParameterByEvent(event.getVal()).setValue(parameter);
         return this;
     }
 
     @Step("Activate/deactivate event")
-    public CreateEditIvrPopup activateEvent(String event){
-        getCheckboxActiveByEvent(event).click();
+    public CreateEditIvrPopup activateEvent(PublicEnums.IvrEvents event){
+        getCheckboxActiveByEvent(event.getVal()).click();
         return this;
     }
 
@@ -217,6 +233,122 @@ public class CreateEditIvrPopup extends IVRpage {
         return new IVRpage();
     }
 
-    //@Step("Configure action")
+    @Step("Configure action")
+    public CreateEditIvrPopup configureAllAction(){
+        return this;
+    }
+
+    @Step("Configure RINGRUF action")
+    public CreateEditIvrPopup configureHuntGroupAction(HuntGroup huntGroup){
+        activateEvent(_1);
+        selectAction(_1, RINGRUF);
+        selectParameter(_1, huntGroup.getHuntGroupName());
+        return this;
+    }
+
+    @Step("Configure PHONE_DIRECT action")
+    public CreateEditIvrPopup configurePhoneDirectAction(User user){
+        activateEvent(_2);
+        selectAction(_2, PHONE_DIRECT);
+        selectParameter(_2, user.getFirstName());
+        return this;
+    }
+
+    @Step("Configure ABBREVIATED_NUMBER(PHONE_INTERNAL) action")
+    public CreateEditIvrPopup configureAbbreviatedNumberAction(AbbreviatedDialling abbrevNumber){
+        activateEvent(_3);
+        selectAction(_3, PHONE_INTERNAL);
+        selectParameter(_3, abbrevNumber.getSingleShortNum());
+        return this;
+    }
+
+    @Step("Configure PHONE_EXTERNAL action")
+    public CreateEditIvrPopup configureExternalDirectAction(String externalNumber){
+        activateEvent(_4);
+        selectAction(_4, PHONE_EXTERNAL);
+        enterParameter(_4, externalNumber);
+        return this;
+    }
+
+    @Step("Configure IVR action")
+    public CreateEditIvrPopup configureIvrNumberAction(IVRtestData ivr){
+        activateEvent(_5);
+        selectAction(_5, IVR);
+        selectParameter(_5, ivr.getIvrName());
+        return this;
+    }
+
+    @Step("Configure VOICEMAIL_UNAVAILABLE action")
+    public CreateEditIvrPopup configureVoiceMailUnavailableAction(){
+        activateEvent(_6);
+        selectAction(_6, VM_UNAVAILABLE);
+        return this;
+    }
+
+    @Step("Configure VM_NO_ANNOUNCE action")
+    public CreateEditIvrPopup configureVoiceMailNoAnnouncementAction(){
+        activateEvent(_7);
+        selectAction(_7, VM_NO_ANNOUNCE);
+        return this;
+    }
+
+    @Step("Configure VM_PERSONAL(Voicemail of subscriber) action")
+    public CreateEditIvrPopup configureVoiceMailOfSubscriberAction(User user){
+        activateEvent(_8);
+        selectAction(_8, VM_PERSONAL);
+        selectParameter(_8, user.getFirstName());
+        return this;
+    }
+
+    @Step("Configure PLAY_HANGUP action")
+    public CreateEditIvrPopup configurePlayAndHangUpAction(FileManagementTestData announce){
+        activateEvent(_9);
+        selectAction(_9, PLAY_HANGUP);
+        selectParameter(_9, announce.getFileName());
+        return this;
+    }
+
+    @Step("Configure PLAY_RESTART action")
+    public CreateEditIvrPopup configurePlayAndRestartAction(FileManagementTestData announce){
+        activateEvent(_0);
+        selectAction(_0, PLAY_RESTART);
+        selectParameter(_0, announce.getFileName());
+        return this;
+    }
+
+    @Step("Configure _star action")
+    public CreateEditIvrPopup configureQueueAction(Queue queue){
+        activateEvent(_star);
+        selectAction(_star, CALL_CENTER_QUEUE);
+        selectParameter(_star, queue.getName());
+        return this;
+    }
+
+    @Step("Configure _dies action")
+    public CreateEditIvrPopup configureRestartMenuAction(){
+        activateEvent(_dies);
+        selectAction(_dies, RESTART);
+        return this;
+    }
+
+    @Step("Configure INVALID_CHOICE action")
+    public CreateEditIvrPopup configureInvalidChoiceAction(){
+        selectAction(INVALID_CHOICE, HANGUP);
+        return this;
+    }
+
+    @Step("Configure TIME_EXPIRED action")
+    public CreateEditIvrPopup configureTimeExpiredAction(){
+        selectAction(TIME_EXPIRED, RESTART);
+        return this;
+    }
+
+    @Step("Configure MAX_PASSES_REACHED action")
+    public CreateEditIvrPopup configureMaxPassesReachedAction(){
+        selectAction(MAX_PASSES_REACHED, HANGUP);
+        return this;
+    }
+
+
 
 }
