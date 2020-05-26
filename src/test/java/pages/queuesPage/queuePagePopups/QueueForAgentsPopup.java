@@ -2,6 +2,7 @@ package pages.queuesPage.queuePagePopups;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
 import pages.queuesPage.ConfigureQueueTab;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -53,17 +54,19 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
 
     //</editor-fold>
 
-    public void addAgentToQueue(Queue queue, User ... users){
-        getButtonEditAgentsQueueByText(queue.getName()).click();
+    @Step("Add agent to Queue")
+    public ConfigureQueueTab addAgentToQueue(User ... users){
         waitUntilAlertDisappear();
         for (User user:users) {
             executeDragDropScript(getFieldNotSelectedAgentByName(user.getFirstName()), getSectionSelected());
         }
         getButtonSave().click();
         waitUntilAlertDisappear();
+        return new ConfigureQueueTab();
     }
 
-    public void addAgentToQueue(String queue, User ... users){
+    @Step("Add agent to Queue")
+    public ConfigureQueueTab addAgentToQueue(String queue, User ... users){
         getButtonEditAgentsQueueByText(queue).click();
         waitUntilAlertDisappear();
         for (User user:users) {
@@ -71,9 +74,11 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
         }
         getButtonSave().click();
         waitUntilAlertDisappear();
+        return new ConfigureQueueTab();
     }
 
-    public void validateAddedAgents(Queue queue, User ... users){
+    @Step("Check Queue agent")
+    public QueueForAgentsPopup validateAddedAgents(Queue queue, User ... users){
         getButtonEditAgentsQueueByText(queue.getName()).click();
         waitUntilAlertDisappear();
         for (User user: users) {
@@ -81,9 +86,11 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
             waitUntilAlertDisappear();
         }
         getButtonCancel().click();
+        return this;
     }
 
-    public void validateAddedAgents(String queue, User ... users){
+    @Step("Check Queue agent")
+    public QueueForAgentsPopup validateAddedAgents(String queue, User ... users){
         getButtonEditAgentsQueueByText(queue).click();
         waitUntilAlertDisappear();
         for (User user: users) {
@@ -91,5 +98,6 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
             waitUntilAlertDisappear();
         }
         getButtonCancel().click();
+        return this;
     }
 }

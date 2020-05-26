@@ -28,6 +28,7 @@ import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_1;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_2;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.IvrActions.*;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 @Listeners(CustomListeners.class)
 
@@ -229,68 +230,47 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureQueuesIvrAction() {
-        step("Prepare test data - create IVR object");
-        IVRtestData ivr = new IVRtestData();
-        FileManagementTestData file = new FileManagementTestData();
-        AbbreviatedDialling shortNum = new AbbreviatedDialling(10, 99);
         Queue queue = new Queue();
+        FileManagementTestData announcement = new FileManagementTestData();
+        AbbreviatedDialling shortNumber = new AbbreviatedDialling(SINGLE);
+        IVRtestData ivr = new IVRtestData();
         User user = new User();
-
-        ivrList.add(ivr);
-        filesList.add(file);
-        queueList.add(queue);
-        shortNumList.add(shortNum);
         usersList.add(user);
+        queueList.add(queue);
+        filesList.add(announcement);
+        shortNumList.add(shortNumber);
+        ivrList.add(ivr);
 
-        step("Log in the system");
         login();
-
-        step("Create test user");
-        createUser(user);
-
-        step("Add single short number");
-        addSingleAbbrevNumber(shortNum.getSingleShortNum());
-
-        step("Upload announcement");
-        uploadAnnouncementFile(file);
-
-        step("Create Queue and add Agent");
-        createQueue(queue,shortNum);
-        addAgentToQueue(queue,user);
-
-        step("Create IVR");
-        createIVR(ivr, file);
-
-        step("Click edit IVR button");
-        ivrPage.editIVR(ivr.getIvrName());
-
-        step("Configure Queue action");
-        createNewIvrPopup.configureAction(ivr, Event_1, CALL_CENTER_QUEUE, queue);
-
-        step("Save changes");
-        createNewIvrPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-
-        step("Check if data was saved");
-        ivrPage.editIVR(ivr.getIvrName());
-        waitUntilAlertDisappear();
-        createNewIvrPopup.getCheckboxActiveByEventNumber(ivr.getEventNumber()).shouldBe(selected);
-        createNewIvrPopup.getDropdownActionByEventNumber(ivr.getEventNumber()).getSelectedValue().contains(ivr.getAction());
-        createNewIvrPopup.getDropdownParameterByEventNumber(ivr.getEventNumber()).getSelectedText().contains(ivr.getParameterQueue());
-        refreshPage();
-        waitUntilAlertDisappear();
-
-
-        step("CleanUp test data");
-        deleteIVR(ivr.getIvrName());
-        deleteUser(user);
-        deleteQueue(queue.getName());
-        deleteAnnouncementFile(file.getFileName());
-        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
-
+        userPage
+                .createUser(user);
+        manageAbbrevNumbersPage
+                .addSingleAbbrevNumber(shortNumber);
+        configureQueueTab
+                .createQueue(queue)
+                .clickEditQueueButton(queue)
+                .selectLoginShortNum(shortNumber)
+                .saveChanges()
+                .openQueueAgentPopup(queue)
+                .addAgentToQueue(user);
+        announcementDisplayPage
+                .uploadAnnouncement(announcement);
+        ivrPage
+                .createIvr(ivr, announcement)
+                .clickEditIvr(ivr)
+                .configureQueueAction(queue)
+                .saveChanges()
+                .deleteIvr(ivr);
+        configureQueueTab
+                .deleteQueue(queue);
+        userPage
+                .deleteUser(user);
+        abbreviatedNumbers
+                .deleteSingleAbbrevNumber(shortNumber);
+        announcementDisplayPage
+                .deleteAnnouncement(announcement);
     }
 
     @Description("Verify if user can configure \"Call to direct number\" ivr action")
@@ -659,6 +639,7 @@ public class IVRpageTests extends BaseTestMethods {
         huntGroupCleanUp(huntGroupsList);
         queueCleanUp(queueList);
         announcementCleanUp(filesList);
+        abbrevNumsCleanUp(shortNumList);
         closeBrowser();
     }
 }

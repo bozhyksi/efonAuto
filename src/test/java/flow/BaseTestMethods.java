@@ -3,6 +3,7 @@ package flow;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
@@ -902,12 +903,14 @@ public class BaseTestMethods extends eFonApp {
 
     public void addAgentToQueue(Queue queue, User user){
         basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        queueForAgentsPopup.addAgentToQueue(queue, user);
+        configureQueueTab.openQueueAgentPopup(queue);
+        queueForAgentsPopup.addAgentToQueue(user);
         queueForAgentsPopup.validateAddedAgents(queue,user);
     }
 
     public void addAgentToQueue(String queue, User user){
         basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
+        configureQueueTab.openQueueAgentPopup(queue);
         queueForAgentsPopup.addAgentToQueue(queue, user);
         queueForAgentsPopup.validateAddedAgents(queue,user);
     }

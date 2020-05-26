@@ -4,6 +4,8 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
+import flow.BaseTestMethods;
+import pages.basePage.basePopup.BasePopup;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -305,7 +307,7 @@ public class BasePage extends Fields{
     //</editor-fold>
 
     public void waitUntilAlertDisappear() {
-        Selenide.sleep(500);
+        Selenide.sleep(200);
         getIsLoadingSpinner().waitUntil(Condition.disappear, 10000);
         getIsLoadingSpinner().shouldNotBe(Condition.visible);
         getAlertDialog().waitUntil(Condition.disappear, 10000);

@@ -137,6 +137,8 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     @Step("Delete single short number")
     public AbbreviatedNumbers deleteSingleAbbrevNumber(AbbreviatedDialling shortNum){
+        goToMenuTab(MenuTabsBasePage.ABBREVIATED_DIALING)
+                .goToMenuTab(MenuTabsBasePage.ABBREVIATED_NUMBERS);
         getButtonDeleteByNum(shortNum.getSingleShortNum()).click();
         waitUntilAlertDisappear();
         new ConfirmationPopup().getYesButton().click();

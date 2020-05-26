@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
 import pages.queuesPage.ConfigureQueueTab;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 public class CreateNewQueuePopup extends BasePopup {
     //<editor-fold desc="Locators">
@@ -145,6 +146,12 @@ public class CreateNewQueuePopup extends BasePopup {
     @Step ("Deselect queue manager")
     public CreateNewQueuePopup unassignQueueManager(String managerName){
         getButtonUnAssignManagerReporterByName(managerName).click();
+        return this;
+    }
+
+    @Step ("Select Login/logout short number")
+    public CreateNewQueuePopup selectLoginShortNum(AbbreviatedDialling shortNum){
+        getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
         return this;
     }
 

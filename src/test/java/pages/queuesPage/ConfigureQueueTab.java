@@ -4,9 +4,14 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
+import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import tests.queuesPageTest.queueTestData.Queue;
 
 import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
+import static core.configuration.preparations.eFonApp.excelFileWorker;
+import static pages.basePage.BasePage.MenuTabsBasePage.CONFIGURE_QUEUES;
+import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
 
 public class ConfigureQueueTab extends QueuesBasePage {
     //<editor-fold desc="Locators">
@@ -89,5 +94,53 @@ public class ConfigureQueueTab extends QueuesBasePage {
         waitUntilAlertDisappear();
         return new CreateNewQueuePopup();
     }
+
+    @Step("Click Edit Queue button")
+    public CreateNewQueuePopup clickEditQueueButton(Queue queue){
+        getButtonEditQueueByName(queue.getName()).click();
+        waitUntilAlertDisappear();
+        return new CreateNewQueuePopup();
+    }
+
+    @Step("Create new Queue(only required fields)")
+    public ConfigureQueueTab createQueue(Queue queue){
+        goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
+        clickCreateNewQueue()
+                .setQueueName(queue.getName())
+                .setSubscription()
+                .saveChanges()
+                .verifyIfQueueExistsInTheList(queue.getName());
+        return this;
+    }
+
+    @Step("Open Queue agent popup")
+    public QueueForAgentsPopup openQueueAgentPopup(Queue queue){
+        getButtonEditAgentsQueueByText(queue.getName()).click();
+        waitUntilAlertDisappear();
+        return new QueueForAgentsPopup();
+    }
+
+    @Step("Open Queue agent popup")
+    public QueueForAgentsPopup openQueueAgentPopup(String queue){
+        getButtonEditAgentsQueueByText(queue).click();
+        waitUntilAlertDisappear();
+        return new QueueForAgentsPopup();
+    }
+
+    @Step("Delete Queue")
+    public ConfigureQueueTab deleteQueue(Queue ... queues){
+        goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
+        for (Queue queue : queues) {
+            getButtonDeleteQueueByName(queue.getName()).click();
+            waitUntilAlertDisappear();
+            confirmationPopup.getYesButton().click();
+            waitUntilAlertDisappear();
+            verifyIfQueueNotExistInList(queue.getName());
+        }
+        return this;
+    }
+
 
 }

@@ -52,7 +52,7 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     public ManageAbbreviatedNumbers addSingleAbbrevNumber(AbbreviatedDialling shortNumber){
         goToMenuTab(MenuTabsBasePage.ABBREVIATED_DIALING).goToMenuTab(MenuTabsBasePage.MANAGE_ABBREVIATED_NUMBERS);
         getInputAdd().setValue(shortNumber.getSingleShortNum());
-        Selenide.sleep(1000);
+        Selenide.sleep(200);
         waitUntilAlertDisappear();
         getButtonAdd().click();
         waitUntilAlertDisappear();
