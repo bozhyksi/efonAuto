@@ -230,7 +230,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "IVRpageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void VerifyIfUserCanConfigureQueuesIvrAction() {
         Queue queue = new Queue();
         FileManagementTestData announcement = new FileManagementTestData();

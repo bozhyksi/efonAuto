@@ -15,7 +15,6 @@ import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Queue;
 
-import pages.basePage.BasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import static io.qameta.allure.Allure.step;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.NumberEndDevice;
 import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailBusy;
-import static tests.huntGroupPageTest.huntGroupTestData.HuntGroup.TimerLevels.*;
 
 @Listeners(CustomListeners.class)
 
@@ -414,8 +412,77 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroup(huntGroup.getHuntGroupName());
     }
 
+    @Description("Verify if after changing HuntGroup name - changed data is shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void verifyIfUpdatedNameShownInGrid(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
 
-    @AfterClass(alwaysRun = true, enabled = false)
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup)
+                .editHuntGroup(huntGroup)
+                .clickEditButtonForEditHuntGroupSection()
+                .setName(huntGroup.changeHuntGroupName())
+                .saveChanges()
+                .verifyIfHuntGroupNameExists(huntGroup.getHuntGroupName())
+                .deleteHuntGroup(huntGroup);
+
+    }
+
+    @Description("Verify if after changing HuntGroup Display Name - changed data is shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void verifyIfUpdatedDisplayNameShownInGrid(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup)
+                .editHuntGroup(huntGroup)
+                .clickEditButtonForEditHuntGroupSection()
+                .setDisplayName(huntGroup.changeDisplayName())
+                .saveChanges()
+                .verifyIfHuntGroupDisplayNameExists(huntGroup.getHuntGroupDisplayName())
+                .deleteHuntGroup(huntGroup);
+    }
+
+    @Description("Verify if after changing HuntGroup phonenumber - is shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void VerifyIfHuntGroupPhoneShownIngridAfterChanging(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup)
+                .editHuntGroup(huntGroup)
+                .clickEditButtonForEditHuntGroupSection()
+                .selectNumber(huntGroup.changeNumber())
+                .saveChanges()
+                .verifyIfHuntGroupNumberExists(huntGroup.getHuntGroupNumber())
+                .deleteHuntGroup(huntGroup);
+    }
+
+    @Description("Verify if after deleting, HuntGroup phonenumber - is not shown in the BlockList dropdown")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void verifyIfDeletedHuntgroupNumbersNotShownInBlocklistDropDown(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        login();
+        huntGroupPage
+                .createHuntGroup(huntGroup);
+        blockListSections
+                .dropdownContainsNumber(huntGroup.getHuntGroupNumber());
+        huntGroupPage
+                .deleteHuntGroup(huntGroup.getHuntGroupName());
+        blockListSections
+                .dropdownNotContainsNumber(huntGroup.getHuntGroupNumber());
+    }
+
+
+    @AfterClass(alwaysRun = true)
     private void cleanUp() {
         startBrowser();
         login();

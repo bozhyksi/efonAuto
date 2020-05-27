@@ -15,6 +15,7 @@ import static core.configuration.preparations.eFonApp.confirmationPopup;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 
 public class HuntGroupPage extends BasePage {
+
     //<editor-fold desc="Locators">
     private String buttonCreateNewHuntGroupXpath = "//a[text()='New hunt group']";
     private String buttonDeleteByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteHuntGroup\"]";
@@ -189,6 +190,24 @@ public class HuntGroupPage extends BasePage {
             refreshPage();
             getfieldNameByText(huntGroup.getHuntGroupName()).shouldNot(Condition.exist);
         }
+    }
+
+    @Step("Verify if Huntgroup name exists in the list")
+    public HuntGroupPage verifyIfHuntGroupNameExists(String huntGroupName){
+        getfieldNameByText(huntGroupName).should(exist);
+        return this;
+    }
+
+    @Step("Verify if Huntgroup Display Name exists in the list")
+    public HuntGroupPage verifyIfHuntGroupDisplayNameExists(String huntGroupDisplayName){
+        getfieldNameByText(huntGroupDisplayName).should(exist);
+        return this;
+    }
+
+    @Step("Verify if Huntgroup Phone Number exists in the list")
+    public HuntGroupPage verifyIfHuntGroupNumberExists(String huntGroupDisplayNumber){
+        getfieldNameByText(huntGroupDisplayNumber).should(exist);
+        return this;
     }
 
 }

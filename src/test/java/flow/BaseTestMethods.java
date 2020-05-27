@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
+import static core.configuration.preparations.eFonApp.blockListSection;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static pages.basePage.BasePage.ItemsPerPage._All;

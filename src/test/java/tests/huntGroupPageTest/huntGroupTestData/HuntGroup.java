@@ -24,6 +24,7 @@ public class HuntGroup extends BaseTestMethods {
     }
 
     //<editor-fold desc="properties">
+
     //Edit hunt group section
     private String huntGroupNumber;
     private String huntGroupLanguage;
@@ -202,5 +203,18 @@ public class HuntGroup extends BaseTestMethods {
         this.huntGroupAuthorizedUser = huntGroupAuthorizedUser;
     }
     //</editor-fold>
+
+    public String changeHuntGroupName(){
+        return this.huntGroupName = "ChangedName "+getRandomString(15);
+    }
+
+    public String changeDisplayName(){
+        return this.huntGroupDisplayName = "ChangedDisplayName "+getRandomString(15);
+    }
+
+    public String changeNumber(){
+        return this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
+    }
+
 }
 

@@ -155,7 +155,7 @@ public class eFonApp extends PreparationsForRun{
     public EditAnnouncementPopupUserPage editAnnouncementPopup = new EditAnnouncementPopupUserPage();
     public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
     public EndDevicesUserPage endDevicesUserPage = new EndDevicesUserPage();
-    public BlockListSection blockListSection = new BlockListSection();
+    public static BlockListSection blockListSection = new BlockListSection();
     public BlocklistPopup blocklistPopup = new BlocklistPopup();
     public ManageSenderNumbersAndNamesUserPage manageSenderNumbersUserPage = new ManageSenderNumbersAndNamesUserPage();
     public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
@@ -179,4 +179,7 @@ public class eFonApp extends PreparationsForRun{
     public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
     public static QueueRecordingsUserPage queueRecordingsUserPage = new QueueRecordingsUserPage();
     public static ProvisioningEndDevicesPage provisioningEndDevicesPage = new ProvisioningEndDevicesPage();
+    public static pages.blockListSection.BlockListSection blockListSections = new pages.blockListSection.BlockListSection();
+
+
 }
