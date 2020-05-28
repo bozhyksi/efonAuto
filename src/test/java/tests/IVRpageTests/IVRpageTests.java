@@ -467,7 +467,6 @@ public class IVRpageTests extends BaseTestMethods {
         ivrList.add(ivr);
         filesList.add(file);
 
-        step("Log in the system");
         login();
 
         step("Upload announcement");

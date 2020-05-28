@@ -317,7 +317,6 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     //</editor-fold>
 
     public void selectRandomNumber() {
-        //getDropdownNumber().selectOption(getRandomDropDownOption(dropdownNumberXpath));
         getDropdownNumber().selectOption(index.getAndIncrement());
     }
 

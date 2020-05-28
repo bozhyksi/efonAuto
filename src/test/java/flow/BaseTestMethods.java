@@ -294,7 +294,6 @@ public class BaseTestMethods extends eFonApp {
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         userPage.checkIfUserDeleted(user);
-        BasePage.index.decrementAndGet();
     }
 
     @Step("Delete the user")
@@ -581,7 +580,6 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
         refreshPage();
         huntGroupPage.getfieldNameByText(name).shouldNot(Condition.exist);
-        BasePage.index.decrementAndGet();
     }
 
     public void ivrCleanUp(List<IVRtestData> ivrList){

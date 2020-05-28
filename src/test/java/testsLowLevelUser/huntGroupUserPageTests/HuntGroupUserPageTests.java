@@ -27,8 +27,9 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
     private String huntGroupName = "AutoTestHuntGroup";
     private String huntGroupNumber = "044225787864";
 
-    @Description("Check if low-level user can edit HuntGroup")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
+    //bug 1021
+    @Description("Check if low-level user can edit HuntGroup - BUG 1021")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
     public void CheckIfLowLevelUserCanEditHuntGroup(){
         HuntGroup huntGroup = new HuntGroup(huntGroupName, huntGroupNumber);
 

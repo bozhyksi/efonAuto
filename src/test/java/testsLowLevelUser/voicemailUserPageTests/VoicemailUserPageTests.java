@@ -107,7 +107,6 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         FileManagementTestData announcement = new FileManagementTestData();
         announcementList.add(announcement);
 
-        step("Login as low-level user");
         loginAsLowLevelUser();
 
         step("Upload Announcements file");
@@ -144,8 +143,9 @@ public class VoicemailUserPageTests extends BaseTestMethods {
 
     }
 
-    @Description("Check if Select Number drop-down contains only user number on VOICEMAIL_SETTINGS tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
+    //BUG 1043
+    @Description("Check if Select Number drop-down contains only user number on VOICEMAIL_SETTINGS tab - BUG 1043")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"},enabled = false)
     public void CheckIfSelectNumberDropDownContainsOnlyUserNumberOnSettings(){
 
         loginAsLowLevelUser();
