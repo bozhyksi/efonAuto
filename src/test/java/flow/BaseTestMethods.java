@@ -37,6 +37,10 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
+    public String getRandomMAC(){
+        return "00085D"+getRandomNumber(000000,999999);
+    }
+
     public String getAutoProvisionedEndDeviceFromDB(){
         String query = "select name " +
                 "from account " +

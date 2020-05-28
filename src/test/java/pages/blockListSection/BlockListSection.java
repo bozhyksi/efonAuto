@@ -22,6 +22,33 @@ public class BlockListSection extends BasePage {
     private final String dropdownBlocklistTypeXpath = "//select[@formcontrolname=\"blockListType\"]";
     //</editor-fold>
 
+
+    //<editor-fold desc="get\set">
+    public SelenideElement getDropdownNumbers() {
+        return field(dropdownNumbersXpath);
+    }
+
+    public SelenideElement getCheckboxBlockIncomCalls() {
+        return field(checkboxBlockIncomCallsXpath);
+    }
+
+    public SelenideElement getCheckboxCallsSuppressedNumbers() {
+        return field(checkboxCallsSuppressedNumbersXpath);
+    }
+
+    public SelenideElement getCheckboxUseBlockList() {
+        return field(checkboxUseBlockListXpath);
+    }
+
+    public SelenideElement getDropdownForwardTo() {
+        return field(dropdownForwardToXpath);
+    }
+
+    public SelenideElement getDropdownBlocklistType() {
+        return field(dropdownBlocklistTypeXpath);
+    }
+    //</editor-fold>
+
     @Step("Check if number exists in Blocklist dropdown")
     public BlockListSection dropdownContainsNumber(String item){
         field(dropdownNumbersXpath).click();

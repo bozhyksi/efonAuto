@@ -1,6 +1,5 @@
 package tests.provisioningPageTests;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -14,7 +13,6 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.text;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -220,6 +218,81 @@ public class ProvisioningPageTests extends BaseTestMethods {
         refreshPage();
         deleteUser(user);
 
+    }
+
+    @Description("Check if user can Select/Deselect for provisioning end device")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void selectForProvisioningTest(){
+
+        User user = new User();
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user)
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .selectForProvisioning(user.getFirstName())
+                .deSelectForProvisioning(user.getFirstName());
+        userPage
+                .deleteUser(user);
+    }
+
+    @Description("Check if user can Set/ReSet as manually provisioned end device")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void setAsManuallyProvisionedTest(){
+
+        User user = new User();
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user)
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .setManuallyProvisioned(user.getFirstName())
+                .resetManuallyProvisioned(user.getFirstName());
+        userPage
+                .deleteUser(user);
+    }
+
+    @Description("Check if user can Select/Deselect for MAC end device")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void selectForMacTest(){
+        String macAddress = getRandomMAC();
+        User user = new User();
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user)
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .selectForMacProvisioning(user.getFirstName(),macAddress)
+                .deSelectForProvisioning(user.getFirstName());
+        userPage
+                .deleteUser(user);
+    }
+
+    @Description("Check if user can change IP address of end device")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void changeIpAddressTest(){
+        String ipAddress = getRandomIpAddress();
+        User user = new User(getAutoProvisionedEndDeviceFromDB());
+        userArrayList.add(user);
+
+        login();
+        userPage
+                .createUser(user)
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .changeIpAddress(user.getFirstName(),ipAddress);
+        userPage
+                .deleteUser(user);
     }
 
 
