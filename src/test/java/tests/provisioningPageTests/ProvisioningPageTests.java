@@ -314,10 +314,73 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     }
 
-    @Description("Check if user can configure fixed function")
+    @Description("Check if user can configure PANASONIC KX-UT670NE functions")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void configureFixedFunctionTest(){
+    public void configFunctionsForPanasonicTest(){
+        PhoneModelTestData phoneModel = new PhoneModelTestData("panasonic KX-UT670NE");
 
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .configAllFunctions(phoneModel)
+                .savePhoneModelChanges()
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .validateFunctions(phoneModel)
+                .deactivateAllFunctions()
+                .savePhoneModelChanges();
+
+    }
+
+    @Description("Check if user can configure SNOM D765 functions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void configFunctionsForSnomTest(){
+        PhoneModelTestData phoneModel = new PhoneModelTestData("snom D765");
+
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .configAllFunctions(phoneModel)
+                .savePhoneModelChanges()
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .validateFunctions(phoneModel)
+                .deactivateAllFunctions()
+                .savePhoneModelChanges();
+    }
+
+    @Description("Check if user can configure Gigaset D765 functions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void configFunctionsForGigasetTest(){
+        PhoneModelTestData phoneModel = new PhoneModelTestData("Gigaset DE900 IP PRO");
+
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .configAllFunctions(phoneModel)
+                .savePhoneModelChanges()
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .validateFunctions(phoneModel)
+                .deactivateAllFunctions()
+                .savePhoneModelChanges();
+    }
+
+    @Description("Check if user can configure Alcatel Temporis IP301G functions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void configFunctionsForAlcatelTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("Alcatel Temporis IP301G");
 
         login();
@@ -325,19 +388,37 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
-                .clickEditPhoneModel(phoneModel)
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .configureFixedFunctions(phoneModel)
+                .configAllFunctions(phoneModel)
                 .savePhoneModelChanges()
-                .clickEditPhoneModel(phoneModel)
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .verifyFixedFunctions(phoneModel)
-                .unConfigureFixedFunctions()
-                .saveChanges();
-
+                .validateFunctions(phoneModel)
+                .deactivateAllFunctions()
+                .savePhoneModelChanges();
     }
 
+    @Description("Check if user can configure AASTRA 6869i functions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void configFunctionsForAastraTest(){
+        PhoneModelTestData phoneModel = new PhoneModelTestData("aastra 6869i");
 
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .configAllFunctions(phoneModel)
+                .savePhoneModelChanges()
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .validateFunctions(phoneModel)
+                .deactivateAllFunctions()
+                .savePhoneModelChanges();
+    }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){

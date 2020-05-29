@@ -1,12 +1,13 @@
 package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.openqa.selenium.support.ui.Select;
 import tests.provisioningPageTests.provisioningTestData.PhoneModelTestData;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.*;
 
 public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
 
@@ -20,11 +21,18 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
     private final String inputDestinationNumberByNumberXpath = "//td[contains(text(),\" %s\")]/..//input[@formcontrolname=\"destinationNumber\"]";
     private final String inputDisplayNameByNumberXpath = "//td[contains(text(),\" %s\")]/..//input[@formcontrolname=\"displayName\"]";
     private final String checkboxIsFixedByText = "//td[contains(text(),\" %s\")]/..//input[@formcontrolname=\"isFixed\"]";
+    private final String fieldFixedByText = "//td[text()[contains(.,\"%s\")]]";
     //</editor-fold>
 
 
     //<editor-fold desc="get\set">
+    public SelenideElement getFieldDisplNameByText(String text) {
+        return field(String.format(fieldFixedByText,text));
+    }
 
+    public SelenideElement getFieldDestNumByText(String text) {
+        return field(String.format(fieldFixedByText,text));
+    }
 
     public SelenideElement getCheckboxIsFixedByText(String text) {
         return field(String.format(checkboxIsFixedByText,text));
@@ -120,38 +128,46 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
         return this;
     }
 
-    @Step("Configure fixed function")
-    public ProvisioningSettingTab configureFixedFunctions(PhoneModelTestData phoneModel){
-        configFunc(11, phoneModel.getDestinNumber(),phoneModel.getDisplName()).makeFixed("11");
-        waitUntilAlertDisappear();
-        configFunc(12, phoneModel.getDestinNumber(),phoneModel.getDisplName()).makeFixed("12");
-        waitUntilAlertDisappear();
-        configFunc(13, phoneModel.getDestinNumber(),phoneModel.getDisplName()).makeFixed("13");
+    private int getFunctionDropdownSize(){
+        return new Select(getDropdownFunctionByNumber("1")).getOptions().size();
+    }
+
+    private int getFunctionSize(){
+        return fields("//table[@formarrayname=\"functionKeys\"]//tr").size()-1;
+    }
+
+    @Step("Configure all functions")
+    public ProvisioningSettingTab configAllFunctions(PhoneModelTestData obj){
+        for (int i = 1; i <= getFunctionDropdownSize()-1; i++) {
+            String index = String.valueOf(getFunctionSize() - i);
+            getDropdownFunctionByNumber(index).selectOption(i);
+            getInputDisplayNameByNumber(index).setValue(obj.getDisplName());
+            getInputDestinationNumberByNumber(index).setValue(obj.getDestinNumber());
+            makeFixed(index);
+            waitUntilAlertDisappear();
+        }
         return this;
     }
 
-    @Step("Delete configured function")
-    public ProvisioningSettingTab unConfigureFixedFunctions(){
-        unfixFunc(11).getDropdownFunctionByNumber(String.valueOf(11)).selectOptionContainingText("Not selected");
-        waitUntilAlertDisappear();
-        unfixFunc(12).getDropdownFunctionByNumber(String.valueOf(12)).selectOptionContainingText("Not selected");
-        waitUntilAlertDisappear();
-        unfixFunc(13).getDropdownFunctionByNumber(String.valueOf(13)).selectOptionContainingText("Not selected");
+    @Step("Validate configured functions")
+    public ProvisioningSettingTab validateFunctions(PhoneModelTestData obj){
+        for (SelenideElement element : fields("//input[@formcontrolname=\"destinationNumber\"]")) {
+            element.shouldHave(value(obj.getDestinNumber()));
+        }
+        for (SelenideElement element : fields("//input[@formcontrolname=\"displayName\"]")) {
+            element.shouldHave(value(obj.getDisplName()));
+        }
         return this;
     }
 
-    @Step("Unfix function")
-    public ProvisioningSettingTab unfixFunc(int funcNum){
-        if (getCheckboxIsFixedByText(String.valueOf(funcNum)).isSelected())
-            getCheckboxIsFixedByText(String.valueOf(funcNum)).click();
-        return this;
-    }
-
-    @Step("Verify Fixed functions")
-    public ProvisioningSettingTab verifyFixedFunctions(PhoneModelTestData phoneModel){
-        verifyFunc(11,phoneModel.getDestinNumber(),phoneModel.getDisplName());
-        verifyFunc(12,phoneModel.getDestinNumber(),phoneModel.getDisplName());
-        verifyFunc(13,phoneModel.getDestinNumber(),phoneModel.getDisplName());
+    @Step("Deactivate functions")
+    public ProvisioningSettingTab deactivateAllFunctions(){
+        for (int i = 1; i < getFunctionSize(); i++) {
+            if (!getDropdownFunctionByNumber(String.valueOf(i)).getSelectedOption().getText().contains("Not selected")){
+                getDropdownFunctionByNumber(String.valueOf(i)).selectOption(0);
+                waitUntilAlertDisappear();
+            }
+        }
         return this;
     }
 

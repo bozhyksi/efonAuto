@@ -3,6 +3,7 @@ package pages.provisioningPage.provisioningPopups.provisioningSettingsPopup;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.openqa.selenium.support.ui.Select;
 import pages.basePage.basePopup.BasePopup;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
 import pages.provisioningPage.ProvisioningPhoneModelsPage;
@@ -19,12 +20,19 @@ public class ProvisioningSettingsPopup extends BasePopup {
     //<editor-fold desc="locators">
     private final String tabProvisioningConfigurationXpath = "//a[contains(text(),\"Provisioning configuration\")]";
     private final String tabProvisioningSettingsXpath = "//a[contains(text(),\"Provisioning settings\")]";
+    private final String buttonClose = "//button[@class=\"close\"]";
 
     private final String fieldEndDeviceXpath = "//label[text()=\"End device\"]/../div";
     private final String fieldPhoneModelXpath = "//label[text()=\"Phone model\"]/../div";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getButtonClose() {
+        return field(buttonClose);
+    }
+
     public SelenideElement getFieldPhoneModel() {
         return field(fieldPhoneModelXpath);
     }
@@ -97,4 +105,7 @@ public class ProvisioningSettingsPopup extends BasePopup {
         getFieldPhoneModel().shouldHave(text(name));
         return this;
     }
+
+
+
 }

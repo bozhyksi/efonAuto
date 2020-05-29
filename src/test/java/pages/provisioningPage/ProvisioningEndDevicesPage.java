@@ -13,6 +13,7 @@ import static core.configuration.preparations.eFonApp.confirmationPopup;
 public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
 
     //<editor-fold desc="locators">
+
     private final String buttonEditEndDeviceByNameXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-cog\")]/..";
     private final String fieldDisplayNameByTextXpath = "//td/div[contains(text(),\"%s)]";
     private final String fieldByTextXpath = "//table//td[contains(text(),\"%s\")]";
@@ -34,6 +35,8 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
     public SelenideElement getFieldMacByText(String text) {
         return field(String.format(fieldMacByTextXpath,text));
     }
@@ -193,13 +196,6 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
         return new ChangeIpAddressPopup();
     }
 
-
-
-
-
-
-
-
     @Step("Verify if end-device is selected for provisioning")
     public ProvisioningEndDevicesPage verifyIfSelectedForProvisioning(String name){
         getIconFaCheckSelectProvByText(name).should(exist);
@@ -217,8 +213,5 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
         getIconFaCheckManualProvByText(name).should(exist);
         return this;
     }
-
-
-
 
 }

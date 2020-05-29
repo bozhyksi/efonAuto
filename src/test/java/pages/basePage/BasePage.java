@@ -119,8 +119,8 @@ public class BasePage extends Fields{
     private final String tabRecCallsConfigurationsXpath = "//a[contains(@href,\"recorded-calls/configuration\")]";
     private final String tabAbbreviatedNumberXpath = "//a[contains(@href,\"/internal-numbers/overview\")]";
     private final String tabProvisioningXpath = "//a[@id=\"menu-13\"]";
-    private final String tabProvisioningEndDevicesXpath = "//a[contains(@href,\"/provisioning/end-devices\")]";
-    private final String tabProvisioningPhoneModelsXpath = "//a[contains(@href,\"/provisioning/phone-models\")]";
+    private final String tabProvisioningEndDevicesXpath = "//a[contains(@href,\"/provisioning/end-devices\") or contains(@href,\"/provisioning/(end-devices)\")]";
+    private final String tabProvisioningPhoneModelsXpath = "//a[contains(@href,\"/provisioning/phone-models\") or contains(@href,\"/provisioning/(phone-models)\")]";
     private final String tabProvisioningManagerXpath = "//a[contains(@href,\"/provisioning-manager\")]";
     //</editor-fold>
 

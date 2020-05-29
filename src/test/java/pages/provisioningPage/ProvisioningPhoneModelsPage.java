@@ -5,6 +5,8 @@ import io.qameta.allure.Step;
 import pages.provisioningPage.provisioningPopups.provisioningSettingsPopup.ProvisioningSettingsPopup;
 import tests.provisioningPageTests.provisioningTestData.PhoneModelTestData;
 
+import static pages.basePage.BasePage.MenuTabsBasePage.PROVISIONING_PHONE_MODELS;
+
 public class ProvisioningPhoneModelsPage extends ProvisioningBasePage {
     //<editor-fold desc="locators">
     private final String fieldbyTextXpath = "//table//td[contains(text(),\"%s\")]";
