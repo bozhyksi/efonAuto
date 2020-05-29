@@ -80,4 +80,26 @@ public class PublicEnums {
         }
     }
 
+    public enum PhoneModelFunctions{
+
+        NOT_SELECTED("Not selected"),
+        PHONE_NUMBER("Phone number"),
+        FORWARDING("Forwarding");
+
+        private String func;
+
+        PhoneModelFunctions(String func){
+            this.func = func;
+        }
+
+        public String getFunc(){
+            return this.func;
+        }
+
+        public static String getRandFunc(){
+            return values()[new Random().nextInt(PhoneModelFunctions.values().length)].getFunc();
+        }
+
+    }
+
 }

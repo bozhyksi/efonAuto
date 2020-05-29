@@ -71,6 +71,7 @@ import pages.phonebookPage.PhonebookPage;
 import pages.provisioningPage.ProvisioningBasePage;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
 import pages.provisioningPage.ProvisioningManagerPage;
+import pages.provisioningPage.ProvisioningPhoneModelsPage;
 import pages.queuesPage.*;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.queuesPage.queuePagePopups.PenaltyPopup;
@@ -91,6 +92,7 @@ public class eFonApp extends PreparationsForRun{
     public static ExcelFileWorker excelFileWorker = new ExcelFileWorker();
     public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 
+    public static ProvisioningPhoneModelsPage provisioningPhoneModelsPage = new ProvisioningPhoneModelsPage();
     public static ConfirmationPopup confirmationPopup = new ConfirmationPopup();
     public AlertPopup alertPopup = new AlertPopup();
     public LoginPage loginPage = new LoginPage();

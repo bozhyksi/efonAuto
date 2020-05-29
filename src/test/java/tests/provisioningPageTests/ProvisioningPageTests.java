@@ -7,12 +7,14 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import tests.provisioningPageTests.provisioningTestData.PhoneModelTestData;
 import tests.provisioningPageTests.provisioningTestData.ProvisioningTestData;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.text;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -293,6 +295,46 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .changeIpAddress(user.getFirstName(),ipAddress);
         userPage
                 .deleteUser(user);
+    }
+
+    @Description("Check if user can open Phone Model provisioning settings popup")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void openPhoneModelSettingsPopupTest(){
+
+        PhoneModelTestData phoneModel = new PhoneModelTestData();
+
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel.getPhoneModel())
+                .gotoProvisioningSettingsTab()
+                .verifyPhoneModelName(phoneModel.getPhoneModel());
+
+    }
+
+    @Description("Check if user can configure fixed function")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    public void configureFixedFunctionTest(){
+
+        PhoneModelTestData phoneModel = new PhoneModelTestData("Alcatel Temporis IP301G");
+
+        login();
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_PHONE_MODELS);
+        provisioningPhoneModelsPage
+                .clickEditPhoneModel(phoneModel)
+                .gotoProvisioningSettingsTab()
+                .configureFixedFunctions(phoneModel)
+                .savePhoneModelChanges()
+                .clickEditPhoneModel(phoneModel)
+                .gotoProvisioningSettingsTab()
+                .verifyFixedFunctions(phoneModel)
+                .unConfigureFixedFunctions()
+                .saveChanges();
+
     }
 
 

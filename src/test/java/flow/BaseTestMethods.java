@@ -37,6 +37,27 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
+    public String getRandomPhoneModelFromDB(){
+        String query ="SELECT pm.phone_model " +
+                "FROM webadmin_20170426.firmware f " +
+                "join webadmin_20170426.phone_model pm on pm.phone_model_id = f.phone_model_fk " +
+                "where f.function_keys_quantity > 15 " +
+                "and pm.phone_model != \"Yealink T42S\" " +
+                "group by pm.phone_model";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> numbers = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                numbers.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return numbers.get(new Random().nextInt(numbers.size()));
+    }
+
     public String getRandomMAC(){
         return "00085D"+getRandomNumber(000000,999999);
     }

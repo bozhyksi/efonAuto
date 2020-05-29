@@ -5,10 +5,12 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
+import pages.provisioningPage.ProvisioningPhoneModelsPage;
 
 import static com.codeborne.selenide.Condition.text;
 
 public class ProvisioningSettingsPopup extends BasePopup {
+
     public enum ProvisioningSettingsPopupTabs{
         PROVISIONING_CONFIGURATION,
         PROVISIONING_SETTINGS;
@@ -76,6 +78,13 @@ public class ProvisioningSettingsPopup extends BasePopup {
         return new ProvisioningEndDevicesPage();
     }
 
+    @Step("Save Phone Model changes")
+    public ProvisioningPhoneModelsPage savePhoneModelChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new ProvisioningPhoneModelsPage();
+    }
+
     @Step("Check end device and user name")
     public ProvisioningSettingsPopup checkEndDeviceAndUserName(String endDevice, String userName){
         getfieldEndDevice().getText().contains(endDevice);
@@ -83,4 +92,9 @@ public class ProvisioningSettingsPopup extends BasePopup {
         return this;
     }
 
+    @Step("Verify header - phone model name")
+    public ProvisioningSettingsPopup verifyPhoneModelName(String name){
+        getFieldPhoneModel().shouldHave(text(name));
+        return this;
+    }
 }
