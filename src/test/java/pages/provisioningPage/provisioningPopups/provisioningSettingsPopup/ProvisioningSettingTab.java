@@ -129,10 +129,12 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
     }
 
     private int getFunctionDropdownSize(){
+        waitUntilAlertDisappear();
         return new Select(getDropdownFunctionByNumber("1")).getOptions().size();
     }
 
     private int getFunctionSize(){
+        waitUntilAlertDisappear();
         return fields("//table[@formarrayname=\"functionKeys\"]//tr").size()-1;
     }
 
