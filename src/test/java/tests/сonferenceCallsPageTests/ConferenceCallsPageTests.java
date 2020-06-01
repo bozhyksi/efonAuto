@@ -7,7 +7,7 @@ import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
+import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 
 import static io.qameta.allure.Allure.step;
 
@@ -15,62 +15,62 @@ import static io.qameta.allure.Allure.step;
 
 public class ConferenceCallsPageTests extends BaseTestMethods {
 
-    @Description("Verify if user can create new Conference Call")
+    @Description("Verify if user can create new ConferenceCallTestData Call")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "conferenceCallsPage"})
     public void VerifyIfUserCreateNewConferenceCall(){
         step("Preparing test data");
-        Conference conference = new Conference();
+        ConferenceCallTestData conferenceCallTestData = new ConferenceCallTestData();
 
         step("Log in the system");
         login();
 
-        step("Go to Conference Call tab");
+        step("Go to ConferenceCallTestData Call tab");
         basePage.getTabConferenceCalls().click();
 
-        step("Click \"New conference call\"");
+        step("Click \"New conferenceCallTestData call\"");
         conferenceCallsPage.getButtonNewConferenceCall().click();
         waitUntilAlertDisappear();
 
-        step("Fill in Name field in \"Configure conference call\" popup");
-        createNewConfCallPopup.getInputName().setValue(conference.getName());
+        step("Fill in Name field in \"Configure conferenceCallTestData call\" popup");
+        createNewConfCallPopup.getInputName().setValue(conferenceCallTestData.getName());
 
-        step("Select call number in \"Configure conference call\" popup\"");
+        step("Select call number in \"Configure conferenceCallTestData call\" popup\"");
         createNewConfCallPopup.getDropdownConferenceCallNum().selectOption(1);
 
-        step("Fill in PIN field in \"Configure conference call\" popup\"");
-        createNewConfCallPopup.getInputPin().setValue(conference.getPin());
+        step("Fill in PIN field in \"Configure conferenceCallTestData call\" popup\"");
+        createNewConfCallPopup.getInputPin().setValue(conferenceCallTestData.getPin());
 
-        step("Select call Language in \"Configure conference call\" popup\"");
-        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conference.getLanguage());
+        step("Select call Language in \"Configure conferenceCallTestData call\" popup\"");
+        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conferenceCallTestData.getLanguage());
 
         step("Save entered data");
         createNewConfCallPopup.getButtonSave().click();
         waitUntilAlertDisappear();
 
-        step("Delete created Conference call");
-        conferenceCallsPage.getButtonDeleteByName(conference.getName()).click();
+        step("Delete created ConferenceCallTestData call");
+        conferenceCallsPage.getButtonDeleteByName(conferenceCallTestData.getName()).click();
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
 
-        step("Verify if Conference call was deleted");
-        conferenceCallsPage.getListNames().filterBy(Condition.text(conference.getName())).shouldHaveSize(0);
+        step("Verify if ConferenceCallTestData call was deleted");
+        conferenceCallsPage.verifyConfCallNotExist(conferenceCallTestData.getName());
     }
 
     @Description("Verify if user can configure Calls with suppressed numbers")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"},invocationCount = 3)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void VerifyIfUserCanConfigureCallsWithSuppressedNumbers(){
         step("Preparing test data");
-        Conference conference = new Conference();
+        ConferenceCallTestData conferenceCallTestData = new ConferenceCallTestData();
         String forwardTo = "VOICEMAIL";
 
         step("Log in the system");
         login();
 
-        step("Create new Conference Call");
-        createConferenceCall(conference);
+        step("Create new ConferenceCallTestData Call");
+        createConferenceCall(conferenceCallTestData);
 
-        step("Select Conference calls number from drop down");
-        conferenceCallsPage.getDropdownConferenceCallNumbers().selectOptionContainingText(conference.getConferenceNumber());
+        step("Select ConferenceCallTestData calls number from drop down");
+        conferenceCallsPage.getDropdownConferenceCallNumbers().selectOptionContainingText(conferenceCallTestData.getConferenceNumber());
 
         step("Enable Calls with suppressed numbers check box");
         conferenceCallsPage.getCheckboxCallsSuppressedNum().click();
@@ -83,10 +83,74 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         refreshPage();
 
         step("Verify if all data was saved");
-        conferenceCallsPage.getDropdownConferenceCallNumbers().selectOptionContainingText(conference.getConferenceNumber());
+        conferenceCallsPage.getDropdownConferenceCallNumbers().selectOptionContainingText(conferenceCallTestData.getConferenceNumber());
         conferenceCallsPage.getDropdownForwardTo().getSelectedValue().equals(forwardTo);
 
-        step("Delete Conference calls");
-        deleteConferenceCall(conference.getName());
+        step("Delete ConferenceCallTestData calls");
+        conferenceCallsPage.deleteConfCall(conferenceCallTestData);
+    }
+
+    //BUG 924
+    @Description("Verify if changed conference call name displayed in the grid")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    public void verifyIfChangedNameDisplayed(){
+        ConferenceCallTestData confCall = new ConferenceCallTestData();
+
+        login();
+        conferenceCallsPage
+                .createConfCall(confCall)
+                .clickEdit(confCall)
+                .enterName(confCall.changeName())
+                .saveChanges()
+                .verifyConfCallExists(confCall.getName())
+                .deleteConfCall(confCall);
+    }
+
+    //BUG 924
+    @Description("Verify if changed conference call Number displayed in the grid")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    public void verifyIfChangedNumberDisplayed(){
+        ConferenceCallTestData confCall = new ConferenceCallTestData();
+
+        login();
+        conferenceCallsPage
+                .createConfCall(confCall)
+                .clickEdit(confCall)
+                .selectNumber(confCall.changeNumber())
+                .saveChanges()
+                .verifyConfCallExists(confCall.getConferenceNumber())
+                .deleteConfCall(confCall);
+    }
+
+    //BUG 924
+    @Description("Verify if changed conference call PIN displayed in the grid")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    public void verifyIfChangedPinDisplayed(){
+        ConferenceCallTestData confCall = new ConferenceCallTestData();
+
+        login();
+        conferenceCallsPage
+                .createConfCall(confCall)
+                .clickEdit(confCall)
+                .selectNumber(confCall.changePIN())
+                .saveChanges()
+                .verifyConfCallExists(confCall.getPin())
+                .deleteConfCall(confCall);
+    }
+
+    //BUG 924
+    @Description("Verify if changed conference call Language displayed in the grid")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    public void verifyIfChangedLanguageDisplayed(){
+        ConferenceCallTestData confCall = new ConferenceCallTestData();
+
+        login();
+        conferenceCallsPage
+                .createConfCall(confCall)
+                .clickEdit(confCall)
+                .selectNumber(confCall.changeLanguage())
+                .saveChanges()
+                .verifyConfCallExists(confCall.getPin())
+                .deleteConfCall(confCall);
     }
 }

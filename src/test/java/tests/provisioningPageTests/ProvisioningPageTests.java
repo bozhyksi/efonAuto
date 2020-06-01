@@ -420,6 +420,33 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges();
     }
 
+    @Description("Check if user can create Additional end devices")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "provisioningPageTests"}, enabled = false)
+    public void additionalEndDevicesTest(){
+        User user1 = new User();
+        User user2 = new User();
+        userArrayList.add(user2);
+        userArrayList.add(user1);
+
+        login();
+        userPage
+                .createUser(user1, user2);
+        basePage
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_END_DEVICES);
+        provisioningEndDevicesPage
+                .selectForProvisioning(user1.getFirstName())
+                .clickPlus(user1.getFirstName())
+                .dragDrop(user2.getFirstName())
+                .saveChanges()
+                .clickPlus(user1.getFirstName())
+                .validateAdditionalEndDevice(user2.getFirstName())
+                .refreshPage();
+        userPage
+                .deleteUser(user1,user2);
+
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         startBrowser();

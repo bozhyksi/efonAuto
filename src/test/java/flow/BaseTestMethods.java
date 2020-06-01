@@ -3,12 +3,9 @@ package flow;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
-import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailBaseUserPage;
-import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
@@ -19,7 +16,7 @@ import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
-import tests.сonferenceCallsPageTests.ConferenceCallTestData.Conference;
+import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
@@ -29,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
-import static core.configuration.preparations.eFonApp.blockListSection;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static pages.basePage.BasePage.ItemsPerPage._All;
@@ -528,25 +524,17 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void createConferenceCall(Conference conference) {
+    public void createConferenceCall(ConferenceCallTestData conferenceCallTestData) {
         basePage.getTabConferenceCalls().click();
         conferenceCallsPage.getButtonNewConferenceCall().click();
         waitUntilAlertDisappear();
-        createNewConfCallPopup.getInputName().setValue(conference.getName());
+        createNewConfCallPopup.getInputName().setValue(conferenceCallTestData.getName());
         createNewConfCallPopup.getDropdownConferenceCallNum().selectOption(1);
-        conference.setConferenceNumber(createNewConfCallPopup.getDropdownConferenceCallNum().getSelectedText());
-        createNewConfCallPopup.getInputPin().setValue(conference.getPin());
-        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conference.getLanguage());
+        conferenceCallTestData.setConferenceNumber(createNewConfCallPopup.getDropdownConferenceCallNum().getSelectedText());
+        createNewConfCallPopup.getInputPin().setValue(conferenceCallTestData.getPin());
+        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conferenceCallTestData.getLanguage());
         createNewConfCallPopup.getButtonSave().click();
         waitUntilAlertDisappear();
-    }
-
-    public void deleteConferenceCall(String confName) {
-        basePage.getTabConferenceCalls().click();
-        conferenceCallsPage.getButtonDeleteByName(confName).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        conferenceCallsPage.getListNames().filterBy(Condition.text(confName)).shouldHaveSize(0);
     }
 
     public void createIVR(IVRtestData ivr, FileManagementTestData file) {

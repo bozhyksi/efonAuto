@@ -72,7 +72,7 @@ public class BasePageTests extends BaseTestMethods {
         basePage.goToMenuTab(HUNT_GROUPS);
         Assert.assertEquals(huntGroupPage.getPageTitle().text(), MainMenu.huntGroups.getTabName());
 
-        step("Check if user can open \"Conference calls\" tab");
+        step("Check if user can open \"ConferenceCallTestData calls\" tab");
         basePage.goToMenuTab(CONFERENCE_CALLS);
         Assert.assertEquals(conferenceCallsPage.getPageTitle().text(), MainMenu.conferenceCalls.getTabName());
 

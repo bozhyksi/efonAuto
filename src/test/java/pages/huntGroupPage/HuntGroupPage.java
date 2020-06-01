@@ -20,9 +20,9 @@ public class HuntGroupPage extends BasePage {
     private String buttonCreateNewHuntGroupXpath = "//a[text()='New hunt group']";
     private String buttonDeleteByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteHuntGroup\"]";
     private String buttonEditByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editHuntGroup\"]";
-    private String fieldNameByTextXpath = "//table[@role=\"grid\"]//td[1]/div[1][text()[contains(.,\"%s\")]]";
-    private String fieldDisplayNameByTextXpath = "//table[@role=\"grid\"]//td[2][contains(text(),\"%s\")]";
-    private String fieldNumberByTextXpath = "//table[@role=\"grid\"]//td[3][contains(text(),\"%s\")]";
+    private String fieldNameByTextXpath = "//table//td/div[text()[contains(.,\"%s\")]]";
+    private String fieldDisplayNameByTextXpath = "//table//td[text()[contains(.,\"%s\")]]";
+    private String fieldNumberByTextXpath = "//table//td[text()[contains(.,\"%s\")]]";
     private String listNumberXpath = "//table[@role=\"grid\"]//td[3]";
     private String dropdownHuntGroupNumberXpath = "//h3[text()=\"Hunt Group numbers\"]//following-sibling::select";
     private String checkboxBlockIncomingCallsXpath = "//label[text()=\"Block incoming calls\"]//input";
@@ -205,8 +205,8 @@ public class HuntGroupPage extends BasePage {
     }
 
     @Step("Verify if Huntgroup Phone Number exists in the list")
-    public HuntGroupPage verifyIfHuntGroupNumberExists(String huntGroupDisplayNumber){
-        getfieldNameByText(huntGroupDisplayNumber).should(exist);
+    public HuntGroupPage verifyIfHuntGroupNumberExists(String number){
+        getFieldNumberByText(number).should(exist);
         return this;
     }
 

@@ -3,12 +3,15 @@ package pages.provisioningPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import pages.provisioningPage.provisioningPopups.AdditionalEndDevicesPopup;
 import pages.provisioningPage.provisioningPopups.ChangeIpAddressPopup;
 import pages.provisioningPage.provisioningPopups.SelectForMacProvisioningPopup;
 import pages.provisioningPage.provisioningPopups.provisioningSettingsPopup.ProvisioningSettingsPopup;
+import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
 import static core.configuration.preparations.eFonApp.confirmationPopup;
+import static core.configuration.preparations.eFonApp.queueForAgentsPopup;
 
 public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
 
@@ -212,6 +215,13 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     public ProvisioningEndDevicesPage verifyIfManuallyProvisioned(String name){
         getIconFaCheckManualProvByText(name).should(exist);
         return this;
+    }
+
+    @Step("Click plus button")
+    public AdditionalEndDevicesPopup clickPlus(String text){
+        getButtonPlusByText(text).click();
+        waitUntilAlertDisappear();
+        return new AdditionalEndDevicesPopup();
     }
 
 }

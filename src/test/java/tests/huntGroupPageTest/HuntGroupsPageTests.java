@@ -430,9 +430,8 @@ public class HuntGroupsPageTests extends BaseTestMethods {
 
     }
 
-    //- BUG 975
-    @Description("Verify if after changing HuntGroup Display Name - changed data is shown in the grid - BUG 975")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Description("Verify if after changing HuntGroup Display Name - changed data is shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void verifyIfUpdatedDisplayNameShownInGrid(){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
@@ -448,9 +447,8 @@ public class HuntGroupsPageTests extends BaseTestMethods {
                 .deleteHuntGroup(huntGroup);
     }
 
-    //- BUG 975
-    @Description("Verify if after changing HuntGroup phonenumber - is shown in the grid- BUG 975")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Description("Verify if after changing HuntGroup phonenumber - is shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void VerifyIfHuntGroupPhoneShownIngridAfterChanging(){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
@@ -466,9 +464,8 @@ public class HuntGroupsPageTests extends BaseTestMethods {
                 .deleteHuntGroup(huntGroup);
     }
 
-    //- BUG 975
-    @Description("Verify if after deleting, HuntGroup phonenumber - is not shown in the BlockList dropdown- BUG 975")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Description("Verify if after deleting, HuntGroup phonenumber - is not shown in the BlockList dropdown")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void verifyIfDeletedHuntgroupNumbersNotShownInBlocklistDropDown(){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
@@ -483,7 +480,6 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         blockListSections
                 .dropdownNotContainsNumber(huntGroup.getHuntGroupNumber());
     }
-
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {

@@ -1,34 +1,36 @@
 package pages.provisioningPage.provisioningPopups;
 
-import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
+import io.qameta.allure.Step;
+import pages.basePage.basePopup.BasePopup;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
-import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import tests.userPageTests.userPageTestData.User;
+import static core.configuration.preparations.eFonApp.queueForAgentsPopup;
 
 import static com.codeborne.selenide.Condition.exist;
 import static core.workers.javaScriptExecutor.JavaScriptExecutor.executeDragDropScript;
 
-public class AdditionalEndDevicesPopup extends ProvisioningEndDevicesPage {
+public class AdditionalEndDevicesPopup extends BasePopup {
 
-    private QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
-
-    public AdditionalEndDevicesPopup addAdditionalEndDevice(User parentUser, User additionalUserEndDevice){
-        getButtonPlusByText(parentUser.getFirstName()).click();
-        waitUntilAlertDisappear();
-        executeDragDropScript(queueForAgentsPopup.getFieldNotSelectedAgentByName(additionalUserEndDevice.getEndDevices()),
+    @Step("Create additional end device")
+    public AdditionalEndDevicesPopup dragDrop(String additionalUserEndDevice){
+        executeDragDropScript(queueForAgentsPopup.getFieldNotSelectedAgentByName(additionalUserEndDevice),
                                 queueForAgentsPopup.getSectionSelected());
-        queueForAgentsPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
         return this;
     }
 
-    public AdditionalEndDevicesPopup validateAdditionalEndDevice(User parentUser,User additionalUserEndDevice){
-        getButtonPlusByText(parentUser.getFirstName()).click();
+    @Step("Save changes")
+    public ProvisioningEndDevicesPage saveChanges(){
+        getButtonSave().click();
         waitUntilAlertDisappear();
-        queueForAgentsPopup.getFieldSelectedAgentByName(additionalUserEndDevice.getEndDevices()).should(exist);
+        return new ProvisioningEndDevicesPage();
+    }
+
+    @Step("Validate additional end device")
+    public ProvisioningEndDevicesPage validateAdditionalEndDevice(String additionalUserEndDevice){
+        queueForAgentsPopup.getFieldSelectedAgentByName(additionalUserEndDevice).should(exist);
         waitUntilAlertDisappear();
         queueForAgentsPopup.getButtonCancel().click();
-        return this;
+        return new ProvisioningEndDevicesPage();
     }
 
 }
