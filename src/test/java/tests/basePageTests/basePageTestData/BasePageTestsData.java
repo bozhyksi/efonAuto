@@ -16,7 +16,7 @@ public class BasePageTestsData extends BaseTestMethods {
         fileManagement("File management"),
         callForwarding("Forwarding"),
         huntGroups("Hunt Groups"),
-        conferenceCalls("ConferenceCallTestData calls"),
+        conferenceCalls("Conference calls"),
         queues("Queues"),
         endDevices("End devices"),
         recordedCalls("Recorded calls"),

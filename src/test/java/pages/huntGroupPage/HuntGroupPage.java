@@ -200,7 +200,7 @@ public class HuntGroupPage extends BasePage {
 
     @Step("Verify if Huntgroup Display Name exists in the list")
     public HuntGroupPage verifyIfHuntGroupDisplayNameExists(String huntGroupDisplayName){
-        getfieldNameByText(huntGroupDisplayName).should(exist);
+        getFieldDisplayNameByText(huntGroupDisplayName).should(exist);
         return this;
     }
 

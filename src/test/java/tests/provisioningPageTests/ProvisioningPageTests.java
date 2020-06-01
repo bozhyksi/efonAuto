@@ -3,6 +3,7 @@ package tests.provisioningPageTests;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
+import static flow.PublicEnums.dragDropSection.SECTION_NOT_SELECTED;
+import static flow.PublicEnums.dragDropSection.SECTION_SELECTED;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -314,8 +317,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     }
 
+    // EPRO-1074
     @Description("Check if user can configure PANASONIC KX-UT670NE functions")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"}, enabled = false)
     public void configFunctionsForPanasonicTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("panasonic KX-UT670NE");
 
@@ -421,10 +425,10 @@ public class ProvisioningPageTests extends BaseTestMethods {
     }
 
     @Description("Check if user can create Additional end devices")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "provisioningPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
     public void additionalEndDevicesTest(){
-        User user1 = new User();
-        User user2 = new User();
+        User user1 = new User(getSelectedForProvEndDeviceFromDB());
+        User user2 = new User(getNotProvisionedEndDeviceFromDB());
         userArrayList.add(user2);
         userArrayList.add(user1);
 
@@ -435,19 +439,19 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
-                .selectForProvisioning(user1.getFirstName())
                 .clickPlus(user1.getFirstName())
-                .dragDrop(user2.getFirstName())
+                .dragDrop(SECTION_SELECTED, user2.getFirstName())
                 .saveChanges()
                 .clickPlus(user1.getFirstName())
-                .validateAdditionalEndDevice(user2.getFirstName())
+                .dragDrop(SECTION_NOT_SELECTED, user2.getFirstName())
+                .saveChanges()
                 .refreshPage();
         userPage
                 .deleteUser(user1,user2);
 
     }
 
-    @AfterClass(alwaysRun = true)
+    @AfterClass(alwaysRun = true, enabled = false)
     private void cleanUp(){
         startBrowser();
         login();

@@ -9,6 +9,7 @@ import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCal
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.selected;
 import static core.configuration.preparations.eFonApp.confirmationPopup;
 
 public class ConferenceCallsPage  extends BasePage {
@@ -20,7 +21,7 @@ public class ConferenceCallsPage  extends BasePage {
     private String buttonEditByName = "//td[contains(text(),\"%s\")]/..//a[@id=\"editConferenceCall\"]";
     private String buttonDeleteByName = "//td[contains(text(),\"%s\")]/..//a[@id=\"deleteConferenceCall\"]";;
 
-    private String dropdownConferenceCallNumbersXpath = "//h3[text()=\"ConferenceCallTestData calls numbers\"]//following-sibling::select";
+    private String dropdownConferenceCallNumbersXpath = "//h3[text()=\"Conference calls numbers\"]/../select";
     private String checkboxCallsSuppressedNumXpath = "//label[text()=\"Calls with suppressed numbers\"]/input";
     private String dropdownForwardToXpath = "//select[@formcontrolname=\"forwardTo\"]";
     private String buttonSaveXpath = "//button[text()=\"Save\"]";
@@ -131,6 +132,29 @@ public class ConferenceCallsPage  extends BasePage {
         getButtonEditByName(confCall.getName()).click();
         waitUntilAlertDisappear();
         return new CreateNewConferenceCallPopup();
+    }
+
+    @Step("Configure call with suppressed number")
+    public ConferenceCallsPage configSuppressedNumber(String number){
+        getDropdownConferenceCallNumbers().selectOptionContainingText(number);
+        getCheckboxCallsSuppressedNum().click();
+        getDropdownForwardTo().selectOptionByValue("VOICEMAIL");
+        return this;
+    }
+
+    @Step("Save")
+    public ConferenceCallsPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Validate suppressed number configurations")
+    public ConferenceCallsPage validateSuppressedNumber(String number){
+        getDropdownConferenceCallNumbers().selectOptionContainingText(number);
+        getCheckboxCallsSuppressedNum().shouldBe(selected);
+        getDropdownForwardTo().getSelectedValue().contains("VOICEMAIL");
+        return this;
     }
 
 

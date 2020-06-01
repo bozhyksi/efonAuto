@@ -20,7 +20,7 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     private final String buttonEditEndDeviceByNameXpath = "//td[contains(text(),\"%s\")]/..//i[contains(@class,\"fa-cog\")]/..";
     private final String fieldDisplayNameByTextXpath = "//td/div[contains(text(),\"%s)]";
     private final String fieldByTextXpath = "//table//td[contains(text(),\"%s\")]";
-    private final String buttonPlusByTextXpath = "//table//td[contains(text(),\"%s\")]/..//a[@xpath=\"1\"]";
+    private final String buttonPlusByTextXpath = "//table//td[contains(text(),\"%s\")]/..//a[@id=\"addSubEndDevicesButton\"]";
 
     private final String buttonActionsMenuByTextXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"button-custom-html\"]";
     private final String buttonSelectForProvisionXpath = "//*[@id=\"dropdown-custom-html\"]//a[text()=\"Select for provisioning\"]";

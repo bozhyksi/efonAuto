@@ -6,6 +6,7 @@ import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import pages.conferenceCallsPage.ConferenceCallsPage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
@@ -79,6 +80,44 @@ public class BaseTestMethods extends eFonApp {
                 "and  is_selected_for_provisioning = 0 " +
                 "and owner_fk = 906144 " +
                 "and customer_fk = 906144";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> autoProvisionedEndDevicesList = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                autoProvisionedEndDevicesList.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return autoProvisionedEndDevicesList.get(new Random().nextInt(autoProvisionedEndDevicesList.size()));
+    }
+
+    public String getSelectedForProvEndDeviceFromDB(){
+        String query = "SELECT name " +
+                "FROM webadmin_20170426.account " +
+                "where owner_fk = 906144 " +
+                "and customer_fk=906144 " +
+                "and (is_automatically_provisioned = 0 and is_selected_for_provisioning = 1)";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> autoProvisionedEndDevicesList = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                autoProvisionedEndDevicesList.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return autoProvisionedEndDevicesList.get(new Random().nextInt(autoProvisionedEndDevicesList.size()));
+    }
+
+    public String getNotProvisionedEndDeviceFromDB(){
+        String query = "SELECT name " +
+                        "FROM webadmin_20170426.account " +
+                        "where owner_fk = 906144 " +
+                        "and customer_fk=906144 " +
+                        "and (is_automatically_provisioned = 0 and is_selected_for_provisioning = 0)";
         ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
         ArrayList<String> autoProvisionedEndDevicesList = new ArrayList<>();
         while (true){
@@ -1070,6 +1109,17 @@ public class BaseTestMethods extends eFonApp {
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
         announcementsTabConfigUserPopup.getButtonClose().click();
+    }
+
+    public void cleanUpConfCalls(ArrayList<ConferenceCallTestData> confCallsList){
+        basePage
+                .goToMenuTab(CONFERENCE_CALLS);
+        for (ConferenceCallTestData entry : confCallsList) {
+            waitUntilAlertDisappear();
+            if(conferenceCallsPage.getFieldNameByText(entry.getName()).exists())
+                conferenceCallsPage
+                        .deleteConfCall(entry);
+        }
     }
 
  /*   public void baseCleanUp(MenuNavigator.CleanUp ...cleanObj){
