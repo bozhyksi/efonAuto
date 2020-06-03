@@ -7,9 +7,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import pages.basePage.BasePage;
+import pages.blockListSection.blockListSectionPopup.BlockedNumbersPopup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.selected;
 
 public class BlockListSection extends BasePage {
 
@@ -20,10 +24,24 @@ public class BlockListSection extends BasePage {
     private final String checkboxUseBlockListXpath = "//input[@formcontrolname=\"useBlockList\"]";
     private final String dropdownForwardToXpath = "//select[@formcontrolname=\"forwardTo\"]";
     private final String dropdownBlocklistTypeXpath = "//select[@formcontrolname=\"blockListType\"]";
-    //</editor-fold>
+    private final String buttonEdit = "//select[@formcontrolname=\"blockListType\"]/../..//i[contains(@class, \"fa-cog\")]/..";
+    private final String fieldByText = "//*[@id=\"systemModal\"]//td[contains(text(),\"%s\")]";
+    //</editor-fold >
 
 
     //<editor-fold desc="get\set">
+    public SelenideElement getFieldCommentByText(String text) {
+        return field(String.format(fieldByText,text));
+    }
+
+    public SelenideElement getFieldNumberByText(String text) {
+        return field(String.format(fieldByText,text));
+    }
+
+    public SelenideElement getButtonEdit() {
+        return field(buttonEdit);
+    }
+
     public SelenideElement getDropdownNumbers() {
         return field(dropdownNumbersXpath);
     }
@@ -50,7 +68,7 @@ public class BlockListSection extends BasePage {
     //</editor-fold>
 
     @Step("Check if number exists in Blocklist dropdown")
-    public BlockListSection dropdownContainsNumber(String item){
+    public BlockListSection checkIfDropdownContainsNumber(String item){
         field(dropdownNumbersXpath).click();
         waitUntilAlertDisappear();
         List<WebElement> list = new Select(field(dropdownNumbersXpath)).getOptions();
@@ -65,7 +83,7 @@ public class BlockListSection extends BasePage {
     }
 
     @Step("Check if number NOT exist in Blocklist dropdown")
-    public BlockListSection dropdownNotContainsNumber(String item){
+    public BlockListSection checkIfDropdownNotContainsNumber(String item){
         field(dropdownNumbersXpath).click();
         waitUntilAlertDisappear();
         List<WebElement> list = new Select(field(dropdownNumbersXpath)).getOptions();
@@ -78,6 +96,75 @@ public class BlockListSection extends BasePage {
         return this;
     }
 
+    @Step("Click edit blocklist button. Open \"Enter blocked numbers\" popup")
+    public BlockedNumbersPopup clickEdit(){
+        getButtonEdit().click();
+        waitUntilAlertDisappear();
+        return new BlockedNumbersPopup();
+    }
+
+    @Step("Select number from drop-down")
+    public BlockListSection selectNumber(String num){
+        getDropdownNumbers().selectOptionContainingText(num);
+        return this;
+    }
+
+    @Step("Activate Calls with suppressed numbers")
+    public BlockListSection clickCallsWithSuppressedNumbers(){
+        getCheckboxCallsSuppressedNumbers().click();
+        return this;
+    }
+
+    @Step("Activate Block incoming calls")
+    public BlockListSection clickBlockIncomingCalls(){
+        getCheckboxBlockIncomCalls().click();
+        return this;
+    }
+
+    @Step("Select ForwardTo")
+    public BlockListSection selectForwardTo(String val){
+        getDropdownForwardTo().selectOptionContainingText(val);
+        return this;
+    }
+
+    @Step("Save changes")
+    public BlockListSection saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Verify Block incoming calls comfiguration")
+    public BlockListSection verifyBlockIncomingCallsConfig(){
+        getCheckboxBlockIncomCalls().shouldBe(selected);
+        getDropdownForwardTo().getSelectedOption().getText().contains("Voicemail");
+        return this;
+    }
+
+    @Step("Verify Calls with suppressed numbers comfiguration")
+    public BlockListSection verifyCallsWithSuppressedNumbers(){
+        getCheckboxCallsSuppressedNumbers().shouldBe(selected);
+        return this;
+    }
+
+    @Step("Activate Use blocklist")
+    public BlockListSection activateUseBlocklist(){
+        if (!getCheckboxBlockIncomCalls().isSelected()) {
+            clickBlockIncomingCalls().selectForwardTo("Voicemail");
+        }
+        if (!getCheckboxUseBlockList().isSelected()){
+            getCheckboxUseBlockList().click();
+            getDropdownBlocklistType().selectOptionContainingText("Blocked numbers");
+        }
+        return this;
+    }
+
+    @Step("Verify Use blocklist comfiguration")
+    public BlockListSection verifyUseBlocklistConfigs(){
+        getCheckboxUseBlockList().shouldBe(selected);
+        getDropdownBlocklistType().getSelectedOption().getText().contains("Blocked numbers");
+        return this;
+    }
 
 
 }

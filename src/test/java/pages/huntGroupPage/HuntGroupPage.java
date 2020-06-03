@@ -181,7 +181,7 @@ public class HuntGroupPage extends BasePage {
     }
 
     @Step("Delete hunt group")
-    public void deleteHuntGroup(HuntGroup ...huntGroups){
+    public HuntGroupPage deleteHuntGroup(HuntGroup ...huntGroups){
         goToMenuTab(HUNT_GROUPS);
         for (HuntGroup huntGroup : huntGroups) {
             getButtonDeleteByName(huntGroup.getHuntGroupName()).click();
@@ -190,6 +190,7 @@ public class HuntGroupPage extends BasePage {
             refreshPage();
             getfieldNameByText(huntGroup.getHuntGroupName()).shouldNot(Condition.exist);
         }
+        return this;
     }
 
     @Step("Verify if Huntgroup name exists in the list")

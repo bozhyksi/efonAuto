@@ -5,8 +5,6 @@ import flow.PublicEnums;
 import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
 import pages.provisioningPage.ProvisioningEndDevicesPage;
-import tests.userPageTests.userPageTestData.User;
-import static core.configuration.preparations.eFonApp.queueForAgentsPopup;
 
 import static com.codeborne.selenide.Condition.exist;
 import static core.workers.javaScriptExecutor.JavaScriptExecutor.executeDragDropScript;
@@ -41,7 +39,7 @@ public class AdditionalEndDevicesPopup extends BasePopup {
     //</editor-fold>
 
     @Step("Create additional end device")
-    public AdditionalEndDevicesPopup dragDrop(PublicEnums.dragDropSection section ,String account){
+    public AdditionalEndDevicesPopup dragDrop(PublicEnums.DragDropSection section , String account){
         switch (section){
             case SECTION_SELECTED:
                 executeDragDropScript(getNotSelectedAccountByText(account),getSectionSelected());

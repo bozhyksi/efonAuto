@@ -474,11 +474,11 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         huntGroupPage
                 .createHuntGroup(huntGroup);
         blockListSections
-                .dropdownContainsNumber(huntGroup.getHuntGroupNumber());
+                .checkIfDropdownContainsNumber(huntGroup.getHuntGroupNumber());
         huntGroupPage
                 .deleteHuntGroup(huntGroup.getHuntGroupName());
         blockListSections
-                .dropdownNotContainsNumber(huntGroup.getHuntGroupNumber());
+                .checkIfDropdownNotContainsNumber(huntGroup.getHuntGroupNumber());
     }
 
     @AfterClass(alwaysRun = true)

@@ -3,7 +3,6 @@ package tests.provisioningPageTests;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
-import flow.PublicEnums;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
@@ -15,9 +14,8 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.text;
-import static flow.PublicEnums.dragDropSection.SECTION_NOT_SELECTED;
-import static flow.PublicEnums.dragDropSection.SECTION_SELECTED;
+import static flow.PublicEnums.DragDropSection.SECTION_NOT_SELECTED;
+import static flow.PublicEnums.DragDropSection.SECTION_SELECTED;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 

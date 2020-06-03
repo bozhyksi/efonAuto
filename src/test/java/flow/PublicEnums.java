@@ -102,7 +102,7 @@ public class PublicEnums {
 
     }
 
-    public enum dragDropSection{
+    public enum DragDropSection {
         SECTION_SELECTED,
         SECTION_NOT_SELECTED
     }
