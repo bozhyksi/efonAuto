@@ -7,7 +7,9 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.blockListSectionTests.blockListTestData.BlockListTestData;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 public class BlockListTests extends BaseTestMethods {
 
     ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
+    ArrayList<IVRtestData> ivrList = new ArrayList<>();
+    ArrayList<FileManagementTestData> announcementList = new ArrayList<>();
 
     //bug 974
     @Description("Check Block incoming calls configurations")
@@ -174,7 +178,7 @@ public class BlockListTests extends BaseTestMethods {
 
     //bug EPRO-1075
     @Description("Check after configuring blocklist and deleting HuntGruops phone number can be re-used")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
     public void phoneNumberReUseHuntGroupTest(){
         HuntGroup huntGroup = new HuntGroup();
         HuntGroup huntGroup2 = new HuntGroup(getRandomString(15), huntGroup.getHuntGroupNumber());
@@ -195,13 +199,42 @@ public class BlockListTests extends BaseTestMethods {
                 .deleteHuntGroup(huntGroup2);
     }
 
+    @Description("Check after configuring blocklist and deleting IVRs phone number can be re-used")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void phoneNumberReUseIVRTest(){
 
+        BlockListTestData blockList = new BlockListTestData();
+        IVRtestData ivr = new IVRtestData();
+        IVRtestData ivr2 = new IVRtestData(ivr.getIvrNumber());
+        FileManagementTestData announcement = new FileManagementTestData();
+        ivrList.add(ivr);
+        ivrList.add(ivr2);
+        announcementList.add(announcement);
+
+
+        login();
+        announcementDisplayPage
+                .uploadAnnouncement(announcement);
+        ivrPage
+                .createIvr(ivr,announcement);
+        blockListSections
+                .selectNumber(ivr.getIvrNumber())
+                .activateUseBlocklist();
+        ivrPage
+                .deleteIvr(ivr)
+                .createIvr(ivr2,announcement)
+                .deleteIvr(ivr2);
+        announcementDisplayPage
+                .deleteAnnouncement(announcement);
+    }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
         startBrowser();
         login();
+        ivrCleanUp(ivrList);
         huntGroupCleanUp(huntGroupsList);
+        announcementCleanUp(announcementList);
         closeBrowser();
     }
 

@@ -48,14 +48,7 @@ public class IVRtestData extends BaseTestMethods {
         }
     }
 
-    private enum Language{
-        de_ch,
-        de,
-        en,
-        it,
-        fr;
-    }
-
+    //<editor-fold desc="properties">
     private String ivrName;
     private String ivrDisplName;
     private String ivrLanguage;
@@ -75,7 +68,7 @@ public class IVRtestData extends BaseTestMethods {
     private String parameterMaxThroughputs;
     private String parameterMaxWaitingTime;
     private String pinCode;
-
+    //</editor-fold>
 
     public IVRtestData(){
         this.parameterMaxThroughputs = getRandomNumber(1,9);
@@ -86,6 +79,18 @@ public class IVRtestData extends BaseTestMethods {
         this.active = getRandomBoolean();
         this.parameterExtTelNumber = getRandomPhone();
         this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
+    }
+
+    public IVRtestData(String num){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = num;
         this.pinCode = getRandomNumber(1111,9999);
     }
 

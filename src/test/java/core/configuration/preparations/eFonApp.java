@@ -111,7 +111,7 @@ public class eFonApp extends PreparationsForRun{
     public static CallForwardingPage callForwardingPage = new CallForwardingPage();
     public static ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
     public CreateNewConferenceCallPopup createNewConfCallPopup = new CreateNewConferenceCallPopup();
-    public IVRpage ivrPage = new IVRpage();
+    public static IVRpage ivrPage = new IVRpage();
     public CreateEditIvrPopup createNewIvrPopup = new CreateEditIvrPopup();
     public static HuntGroupPage huntGroupPage = new HuntGroupPage();
     public AddFullDaysPopup addFullDaysPopup = new AddFullDaysPopup();
@@ -128,7 +128,7 @@ public class eFonApp extends PreparationsForRun{
     public ContactDataPage contactDataPage = new ContactDataPage();
     public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
     public EditFileManagementPopup editFileManagPopup = new EditFileManagementPopup();
-    public AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
+    public static AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
     public static QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
     public AllocationTabConfigUserPopup allocationTabConfigUserPopup = new AllocationTabConfigUserPopup();
     public ForwardingTabConfigUserPopup forwardingTabConfigUserPopup = new ForwardingTabConfigUserPopup();
