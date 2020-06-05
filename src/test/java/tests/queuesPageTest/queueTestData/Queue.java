@@ -5,6 +5,7 @@ import flow.BaseTestMethods;
 import java.util.Random;
 
 public class Queue extends BaseTestMethods {
+    //<editor-fold desc="enums">
     public enum Report{
         Overall_Call_Statistics("Overall call statistics"),
         Daily_Call_Statistics("Daily call statistics"),
@@ -196,6 +197,7 @@ public class Queue extends BaseTestMethods {
             return String.valueOf(values()[random.nextInt(values().length)]);
         }
     }
+    //</editor-fold>
 
     //<editor-fold desc="properties">
 
@@ -374,6 +376,10 @@ public class Queue extends BaseTestMethods {
         return announcementFrequency;
     }
     //</editor-fold>
+
+    public String changeName(){
+        return this.name = getRandomString(15);
+    }
 
 }
 

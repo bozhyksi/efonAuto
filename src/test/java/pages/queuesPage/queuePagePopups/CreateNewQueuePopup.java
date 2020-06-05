@@ -124,6 +124,12 @@ public class CreateNewQueuePopup extends BasePopup {
         return this;
     }
 
+    @Step("Select queue reporter")
+    public CreateNewQueuePopup selectQueueReporter(String managerName){
+        getDropdownReporter().selectOptionContainingText(managerName);
+        return this;
+    }
+
     @Step("Save changes")
     public ConfigureQueueTab saveChanges(){
         getButtonSave().click();

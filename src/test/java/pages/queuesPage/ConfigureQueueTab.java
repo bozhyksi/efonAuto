@@ -3,6 +3,7 @@ package pages.queuesPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.testng.Assert;
 import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -23,11 +24,19 @@ public class ConfigureQueueTab extends QueuesBasePage {
     private String buttonDeleteQueueByNameXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"deleteQueue\"]";
     private String buttonEditQueueByNameXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"editQueue\"]";
     private String fieldQueueNameByTextXpath = "//table//td[text()=\"%s\"][1]";
-    private String fieldQueueManagerByTextXpath = "//table//td[text()=\"%s\"][4]";
+    private String fieldByTextXpath = "//table//td[contains(text(),\"%s\")]";
     private String buttonEditAgentsQueueByTextXpath = "//table//td[text()=\"%s\"][1]/ancestor::tr//a[@id=\"editAgentsQueue\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getFieldReporterByText(String text) {
+        return field(String.format(fieldByTextXpath,text));
+    }
+
+    public SelenideElement getFieldManagerByText(String text) {
+        return field(String.format(fieldByTextXpath,text));
+    }
+
     public SelenideElement getButtonDeleteQueueByName(String name) {
         return field(String.format(buttonDeleteQueueByNameXpath,name));
     }
@@ -60,9 +69,6 @@ public class ConfigureQueueTab extends QueuesBasePage {
         return field(String.format(fieldQueueNameByTextXpath,txt));
     }
 
-    public SelenideElement getFieldQueueManagerByText(String txt) {
-        return field(String.format(fieldQueueManagerByTextXpath,txt));
-    }
 
     public SelenideElement getButtonEditAgentsQueueByText(String name) {
         return field(String.format(buttonEditAgentsQueueByTextXpath,name));
@@ -142,5 +148,11 @@ public class ConfigureQueueTab extends QueuesBasePage {
         return this;
     }
 
+    @Step("Verify Queue manager\reporter")
+    public ConfigureQueueTab verifyQueueManagerReporterExist(String manager){
+        boolean exist = getFieldManagerByText(manager).exists();
+        Assert.assertTrue(exist,"User "+manager+" is not current queue manager");
+        return this;
+    }
 
 }

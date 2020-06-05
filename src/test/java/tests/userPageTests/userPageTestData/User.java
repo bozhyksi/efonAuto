@@ -5,8 +5,8 @@ import flow.BaseTestMethods;
 public class User extends BaseTestMethods {
     //<editor-fold desc="properties">
     private String title = "Mr";
-    private String firstName = getRandomString(5);
-    private String lastName = getRandomString(5);
+    private String firstName = getRandomString(15);
+    private String lastName = getRandomString(15);
     private String loginEmail = getRandomEmail();
     private String UseDiffContactEmail = getRandomEmail();
     private String VoiceEmail = getRandomEmail();

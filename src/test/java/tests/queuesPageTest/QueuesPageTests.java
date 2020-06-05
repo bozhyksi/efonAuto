@@ -7,7 +7,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.queuesPage.ReportsQueueTab;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -20,7 +19,6 @@ import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.queuesPage.ReportsQueueTab.ReportBy.*;
 import static pages.queuesPage.StatusQueueTab.ChangeState.*;
-import static tests.queuesPageTest.queueTestData.Queue.Report.Overall_Call_Statistics;
 
 @Listeners(CustomListeners.class)
 
@@ -445,6 +443,67 @@ public class QueuesPageTests extends BaseTestMethods {
         step("Clean test data");
         deleteUser(user);
         deleteQueue(queue.getName());
+    }
+
+    @Description("Check if Queue changed name shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void queueChangedNameDisplayingTest(){
+
+        Queue queue = new Queue();
+        queuesList.add(queue);
+
+        login();
+        configureQueueTab
+                .createQueue(queue)
+                .clickEditQueueButton(queue)
+                    .setQueueName(queue.changeName())
+                    .saveChanges()
+                .verifyIfQueueExistsInTheList(queue.getName())
+                .deleteQueue(queue);
+    }
+
+    @Description("Check if Queue changed Manager shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void queueChangedManagerDisplayingTest(){
+        User user = new User();
+        Queue queue = new Queue();
+        queuesList.add(queue);
+        usersList.add(user);
+
+        login();
+        userPage
+                .createUser(user);
+        configureQueueTab
+                .createQueue(queue)
+                .clickEditQueueButton(queue)
+                .selectQueueManager(user.getFirstName())
+                .saveChanges()
+                .verifyQueueManagerReporterExist(user.getFullName())
+                .deleteQueue(queue);
+        userPage
+                .deleteUser(user);
+    }
+
+    @Description("Check if Queue changed Reporter shown in the grid")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
+    public void queueChangedReporterDisplayingTest(){
+        User user = new User();
+        Queue queue = new Queue();
+        queuesList.add(queue);
+        usersList.add(user);
+
+        login();
+        userPage
+                .createUser(user);
+        configureQueueTab
+                .createQueue(queue)
+                .clickEditQueueButton(queue)
+                .selectQueueReporter(user.getFirstName())
+                .saveChanges()
+                .verifyQueueManagerReporterExist(user.getFullName())
+                .deleteQueue(queue);
+        userPage
+                .deleteUser(user);
     }
 
 
