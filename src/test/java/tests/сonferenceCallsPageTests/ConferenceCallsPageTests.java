@@ -51,9 +51,8 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
                 .deleteConfCall(confCall);
     }
 
-    //BUG 924
     @Description("Verify if changed conference call name displayed in the grid")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void verifyIfChangedNameDisplayed(){
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
@@ -68,9 +67,8 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
                 .deleteConfCall(confCall);
     }
 
-    //BUG 924
     @Description("Verify if changed conference call Number displayed in the grid")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void verifyIfChangedNumberDisplayed(){
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
@@ -85,9 +83,8 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
                 .deleteConfCall(confCall);
     }
 
-    //BUG 924
     @Description("Verify if changed conference call PIN displayed in the grid")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void verifyIfChangedPinDisplayed(){
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
@@ -96,15 +93,14 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         conferenceCallsPage
                 .createConfCall(confCall)
                 .clickEdit(confCall)
-                .selectNumber(confCall.changePIN())
+                .enterPIN(confCall.changePIN())
                 .saveChanges()
                 .verifyConfCallExists(confCall.getPin())
                 .deleteConfCall(confCall);
     }
 
-    //BUG 924
     @Description("Verify if changed conference call Language displayed in the grid")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class, */groups = {"regression","conferenceCallsPage"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void verifyIfChangedLanguageDisplayed(){
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
@@ -113,9 +109,9 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         conferenceCallsPage
                 .createConfCall(confCall)
                 .clickEdit(confCall)
-                .selectNumber(confCall.changeLanguage())
+                .selectLanguage(confCall.changeLanguage())
                 .saveChanges()
-                .verifyConfCallExists(confCall.getPin())
+                .verifyConfCallExists(confCall.getLanguage())
                 .deleteConfCall(confCall);
     }
 

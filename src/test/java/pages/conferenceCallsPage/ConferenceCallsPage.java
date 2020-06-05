@@ -104,7 +104,20 @@ public class ConferenceCallsPage  extends BasePage {
 
     @Step("Verify if Conference call exists in the list")
     public ConferenceCallsPage verifyConfCallExists(String name){
-        getFieldByText(name).should(exist);
+        switch (name){
+            case "en":
+                getFieldByText("English").should(exist);
+                break;
+            case "de":
+                getFieldByText("Deutsch").should(exist);
+                break;
+            case "it":
+                getFieldByText("Italiano").should(exist);
+                break;
+            case "fr":
+                getFieldByText("Français").should(exist);
+                break;
+        }
         return this;
     }
 
