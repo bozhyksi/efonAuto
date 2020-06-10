@@ -82,14 +82,14 @@ public class ConferenceCallsPage  extends BasePage {
     //</editor-fold>
 
 
-    @Step("Click Create New ConferenceCallTestData Call")
+    @Step("Click Create New ConferenceCall")
     public CreateNewConferenceCallPopup clickNewConfCall(){
         getButtonNewConferenceCall().click();
         waitUntilAlertDisappear();
         return new CreateNewConferenceCallPopup();
     }
 
-    @Step("Create ConferenceCallTestData Call")
+    @Step("Create Conference Call")
     public ConferenceCallsPage createConfCall(ConferenceCallTestData confCall){
         goToMenuTab(MenuTabsBasePage.CONFERENCE_CALLS);
         clickNewConfCall()

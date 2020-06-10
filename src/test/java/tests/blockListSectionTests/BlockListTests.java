@@ -11,6 +11,7 @@ import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.blockListSectionTests.blockListTestData.BlockListTestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class BlockListTests extends BaseTestMethods {
     ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
     ArrayList<IVRtestData> ivrList = new ArrayList<>();
     ArrayList<FileManagementTestData> announcementList = new ArrayList<>();
+    ArrayList<ConferenceCallTestData> confCallList = new ArrayList<>();
 
     //bug 974
     @Description("Check Block incoming calls configurations")
@@ -199,7 +201,7 @@ public class BlockListTests extends BaseTestMethods {
                 .deleteHuntGroup(huntGroup2);
     }
 
-    @Description("Check after configuring blocklist and deleting IVRs phone number can be re-used")
+    @Description("Check if after configuring blocklist and deleting IVRs phone number can be re-used")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void phoneNumberReUseIVRTest(){
 
@@ -228,6 +230,31 @@ public class BlockListTests extends BaseTestMethods {
                 .deleteAnnouncement(announcement);
     }
 
+    //bug 1075
+    @Description("Check if after creating and deleting Conference Call phone number can be re-used")
+    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "huntGroupsPageTests"},enabled = false)
+    public void phoneNumberReUseConferenceCallTest(){
+        ConferenceCallTestData confCall = new ConferenceCallTestData();
+        ConferenceCallTestData confCall2 = new ConferenceCallTestData(confCall.getConferenceNumber());
+        confCallList.add(confCall);
+        confCallList.add(confCall2);
+
+        login();
+        conferenceCallsPage
+                .createConfCall(confCall);
+        blockListSections
+                .selectNumber(confCall.getConferenceNumber())
+                .activateUseBlocklist()
+                .saveChanges();
+        conferenceCallsPage
+                .deleteConfCall(confCall)
+                .createConfCall(confCall2)
+                .deleteConfCall(confCall2);
+    }
+
+
+
+
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
         startBrowser();
@@ -235,6 +262,7 @@ public class BlockListTests extends BaseTestMethods {
         ivrCleanUp(ivrList);
         huntGroupCleanUp(huntGroupsList);
         announcementCleanUp(announcementList);
+        cleanUpConfCalls(confCallList);
         closeBrowser();
     }
 

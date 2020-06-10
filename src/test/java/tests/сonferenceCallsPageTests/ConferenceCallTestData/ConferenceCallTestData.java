@@ -17,6 +17,13 @@ public class ConferenceCallTestData extends BaseTestMethods {
         this.conferenceNumber = getRandomCustomerFreePhoneNumberFromDB();
     }
 
+    public ConferenceCallTestData(String conferenceNumber){
+        this.name = getRandomString(10);
+        this.pin = getRandomNumber(4);
+        this.language = PublicEnums.LanguageValues.getRandLangVal();
+        this.conferenceNumber = conferenceNumber;
+    }
+
     //<editor-fold desc="get\set">
     public String getName() {
         return name;

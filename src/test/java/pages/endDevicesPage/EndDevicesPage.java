@@ -49,18 +49,18 @@ public class EndDevicesPage extends BasePage {
     }
     //</editor-fold>
 
+    @Step("Open Auto Provisioning Info Tool Tip")
     public AutoProvisioningInfoToolTip openAutoProvisionedInfoToolTip(EndDevicesTestData.EndDevice endDevice){
         getButtonAutoProvisioningToolTip(endDevice.getAutoProvisionedEndDeviceName()).click();
         waitUntilAlertDisappear();
         return new AutoProvisioningInfoToolTip();
-
     }
 
+    @Step("Open Auto Provisioning Info Tool Tip")
     public AutoProvisioningInfoToolTip openAutoProvisionedInfoToolTip(){
         getButtonAutoProvTooTip().click();
         waitUntilAlertDisappear();
         return new AutoProvisioningInfoToolTip();
-
     }
 
     @Step("Edit end-device, open \"Configure end devices\" popup")
