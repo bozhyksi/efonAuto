@@ -29,7 +29,7 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
 
     //bug 1021
     @Description("Check if low-level user can edit HuntGroup - BUG 1021")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
     public void CheckIfLowLevelUserCanEditHuntGroup(){
         HuntGroup huntGroup = new HuntGroup(huntGroupName, huntGroupNumber);
 
