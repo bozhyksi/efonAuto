@@ -1,4 +1,4 @@
-package api.tests;
+package api.data.preparation;
 
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
@@ -8,30 +8,29 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.FilterableResponseSpecification;
-import java.io.IOException;
+import io.restassured.specification.RequestSpecification;
+
 import static io.restassured.RestAssured.given;
 
-public class SSSE {
-    public static void main(String[] args) throws IOException {
-        RestAssured.baseURI = "http://192.168.102.162:9090";
-        RestAssured.basePath = "/portal/api";
+public abstract class Preparation {
 
-
+    public static RequestSpecification login (){
         setup();
-        given()
+        return given()
                 .auth()
                 .form("AutoTest@AutoTest.aa", "Login123!!!",
                         new FormAuthConfig(
                                 "/portal/j_spring_security_check",
                                 "j_username",
                                 "j_password")
-                                .withLoggingEnabled())
-                .contentType(ContentType.JSON)
-                .get("/users/search")
-                .then().log()
-                .all();
+                                )
+                .contentType(ContentType.JSON);
     }
+
     private static void setup() {
+        RestAssured.baseURI = "http://192.168.102.162:9090";
+        RestAssured.basePath = "/portal/api";
+
         RestAssured.filters(new Filter() {
             @Override
             public Response filter(FilterableRequestSpecification requestSpec,
@@ -49,4 +48,5 @@ public class SSSE {
             }
         });
     }
+
 }
