@@ -38,7 +38,6 @@ public class UserPageTests extends BaseTestMethods {
                 .createUser(user)
                 .verifyIfUserExists(user.getFirstName())
                 .deleteUser(user);
-
     }
 
     @Description("Check if VPBX admin is able to DELETE users")

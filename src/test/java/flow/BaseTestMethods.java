@@ -34,20 +34,6 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
 
-    public String getEndDeviceNameById(String id){
-        String query ="SELECT name FROM webadmin_20170426.account where account_id=%s";
-        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,id));
-        while (true){
-            try {
-                if (!resultSet.next()) break;
-                return resultSet.getString(1);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     public String getRandomPhoneModelFromDB(){
         String query ="SELECT pm.phone_model " +
                 "FROM webadmin_20170426.firmware f " +

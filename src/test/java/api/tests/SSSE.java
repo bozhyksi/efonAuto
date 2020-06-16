@@ -1,52 +1,22 @@
 package api.tests;
 
-import io.restassured.RestAssured;
-import io.restassured.authentication.FormAuthConfig;
-import io.restassured.filter.Filter;
-import io.restassured.filter.FilterContext;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.specification.FilterableRequestSpecification;
-import io.restassured.specification.FilterableResponseSpecification;
-import java.io.IOException;
-import static io.restassured.RestAssured.given;
+
+import org.testng.annotations.Test;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+
+import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
 
 public class SSSE {
-    public static void main(String[] args) throws IOException {
-        RestAssured.baseURI = "http://192.168.102.162:9090";
-        RestAssured.basePath = "/portal/api";
 
+    @Test
+    public void asd(){
+        FileManagementTestData announcement = new FileManagementTestData();
 
-        setup();
-        given()
-                .auth()
-                .form("AutoTest@AutoTest.aa", "Login123!!!",
-                        new FormAuthConfig(
-                                "/portal/j_spring_security_check",
-                                "j_username",
-                                "j_password")
-                                .withLoggingEnabled())
-                .contentType(ContentType.JSON)
-                .get("/users/search")
-                .then().log()
-                .all();
+        uploadAnnouncementApi(announcement);
+
+        deleteAnnouncementApi(announcement.getId());
+
     }
-    private static void setup() {
-        RestAssured.filters(new Filter() {
-            @Override
-            public Response filter(FilterableRequestSpecification requestSpec,
-                                   FilterableResponseSpecification responseSpec, FilterContext ctx) {
-                String csrfToken = requestSpec.getCookies().getValue("XSRF-TOKEN");
-                String sessionId = requestSpec.getCookies().getValue("JSESSIONID");
-                if (sessionId == null || csrfToken == null) {
-                    Response response = RestAssured.given().noFilters().get("/login");
-                    sessionId = response.cookie("JSESSIONID");
-                    csrfToken = response.cookie("XSRF-TOKEN");
-                }
-                requestSpec.replaceCookie("JSESSIONID", sessionId);
-                requestSpec.replaceHeader("X-XSRF-TOKEN", csrfToken);
-                return ctx.next(requestSpec, responseSpec);
-            }
-        });
-    }
+
 }

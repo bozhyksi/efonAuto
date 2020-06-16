@@ -3,6 +3,11 @@ package tests.huntGroupPageTest.huntGroupTestData;
 import flow.BaseTestMethods;
 import tests.userPageTests.userPageTestData.User;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonValue;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HuntGroup extends BaseTestMethods {
@@ -214,6 +219,71 @@ public class HuntGroup extends BaseTestMethods {
 
     public String changeNumber(){
         return this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
+    }
+
+    public String getJson(){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createObjectBuilder()
+                .add("huntGroupNumber", factory.createObjectBuilder()
+                        .add("phoneNumberId", getPhoneNumberId())
+                        .add("number", getHuntGroupNumber())
+                )
+                .add("huntGroupName",getHuntGroupName())
+                .add("huntGroupDisplayName",getHuntGroupDisplayName())
+                .add("huntGroupLanguage",getHuntGroupLanguage())
+                .add("grantedUsers",factory.createArrayBuilder())
+                .add("voicemailSettings",factory.createObjectBuilder()
+                        .add("email","")
+                        .add("pin","")
+                        .add("salutation", "")
+                        .add("onlySendByEmail", false)
+                )
+                .add("huntGroupBackUpRouting",factory.createObjectBuilder()
+                        .add("backUpAccount", JsonValue.NULL)
+                        .add("backUpType", 0)
+                        .add("backUpNumber", JsonValue.NULL)
+                )
+                .add("huntGroupTimerQueues", factory.createArrayBuilder()
+                        .add(factory.createObjectBuilder()
+                                        .add("huntGroupQueueId", JsonValue.NULL)
+                                        .add("timerQueueName","Default")
+                                        .add("position", 999)
+                                        .add("timerQueueType", "standard")
+                                        .add("huntGroupQueueActions", factory.createArrayBuilder())
+                                        .add("huntGroupQueueActionsUpdate", false)
+                                        .add("viewIndex",0))
+                )
+                .add("hasCallsRecording", factory.createObjectBuilder()
+                        .add("activateCallRecording", false)
+                ).build().toString();
+    }
+
+    public String getId(){
+        String query ="SELECT ringruf_id FROM webadmin_20170426.ringruf where logical_name = \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getHuntGroupName()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    public String getPhoneNumberId(){
+        String query ="SELECT phonenumber_id FROM webadmin_20170426.phonenumber where number = \"%s\" and owner_fk = 906144";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getHuntGroupNumber()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
 }

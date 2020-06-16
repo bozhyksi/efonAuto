@@ -5,11 +5,23 @@ import io.restassured.RestAssured;
 public abstract class EndPoints {
 
     private static final String baseApi = "http://192.168.102.162:9090/portal";
+    private static final String basePath = "/portal/api";
 
+    //Authorization
     public final static String getLoginToken = baseApi+"/api";
     public final static String postLogin = baseApi+"/j_spring_security_check";
+
+    //User
     public final static String postCreateUser = "/users/create";
     public final static String deleteDeleteUser = "/users/{id}";
     public final static String getUsersList = "/users/search";
+
+    //File management
+    public final static String postAnnouncementUpload = "/uploader/upload/announcement";
+    public final static String deleteAnnouncementDelete = "/announcements/{id}";
+
+    //Hunt group
+    public final static String postHuntGroupCreate = "/hunt-groups";
+    public final static String deleteHuntGroup = "/hunt-groups/{id}";
 
 }

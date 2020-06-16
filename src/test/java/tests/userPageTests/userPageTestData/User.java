@@ -1,6 +1,14 @@
 package tests.userPageTests.userPageTestData;
 
+
 import flow.BaseTestMethods;
+
+
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class User extends BaseTestMethods {
     //<editor-fold desc="properties">
@@ -153,4 +161,68 @@ public class User extends BaseTestMethods {
         this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.endDevices = autoProvisionedEndDevice;
     }
+
+    public String getUserJSON(){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createObjectBuilder()
+                .add("userNaming", factory.createObjectBuilder()
+                        .add("salutation", factory.createObjectBuilder()
+                                .add("id",10)
+                                .add("messageKey","salutation.male")
+                        )
+                        .add("firstName", getFirstName())
+                        .add("lastName", getLastName())
+                        .add("loginEmail", getLoginEmail())
+                        //.add("useDifferentContactEmail", "")
+                )
+                .add("userAllocation", factory.createObjectBuilder()
+                        //.add("useVoicemailEmail", "")
+                        .add("number", getPhoneNumber())
+                        .add("accounts", factory.createArrayBuilder()
+                                .add(getEndDevId())
+                        )
+                        .add("busyOnBusy",false)
+                        .add("internalNumbers", factory.createArrayBuilder())
+                        .add("currentBlockSet",7300)
+                        .add("smsEnabled",false)
+                        .add("faxEnabled",false)
+                        //.add("faxNumber", "")
+                        //.add("localHeaderInfo", "")
+                        .add("callRecording", factory.createObjectBuilder()
+                                .add("activateCallRecording",false)
+                                .add("callRecordingDirection","ALL")
+                        )
+                ).build().toString();
+    }
+
+    private String getId(){
+        String query ="SELECT * FROM webadmin_20170426.customer where display_name = \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getFullName()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    private String getEndDevId(){
+        String query ="SELECT account_id " +
+                "FROM webadmin_20170426.account " +
+                "where owner_fk = 906144 and name like \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getEndDevices()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
 }
