@@ -2,6 +2,12 @@ package tests.queuesPageTest.queueTestData;
 
 import flow.BaseTestMethods;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonValue;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Queue extends BaseTestMethods {
@@ -379,6 +385,94 @@ public class Queue extends BaseTestMethods {
 
     public String changeName(){
         return this.name = getRandomString(15);
+    }
+
+    public String getJson(){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createObjectBuilder()
+                .add("globalDetail", factory.createObjectBuilder()
+                        .add("queueName", getName())
+                        .add("subscriptionId", getSubscriptionId())
+                        .add("mohId",0)
+                        .add("loginLogout", JsonValue.NULL)
+                        .add("uploadType", "")
+                        .add("reporterIds",factory.createArrayBuilder())
+                        .add("managerIds",factory.createArrayBuilder())
+                )
+                .add("specificDetail",factory.createObjectBuilder()
+                        .add("maxHoldTime", 30)
+                        .add("priority", 100)
+                        .add("announcementFilename","")
+                        .add("announcementFrequency", 30)
+                        .add("strategy", "fewestcalls")
+                        .add("timeout", 10)
+                        .add("retry", 10)
+                        .add("wrapUpTime", 10)
+                        .add("recordCalls", true)
+                        .add("announcementId",0)
+                )
+                .add("name", generateNewId())
+                .build().toString();
+    }
+
+    private String getSubscriptionId(){
+        String query ="SELECT abo_id FROM webadmin_20170426.abo \n" +
+                "where customer_fk = 906144 and display_name=\"Queue/ACD\" and abo_id not in \n" +
+                "(\n" +
+                "\tSELECT abo_fk FROM webadmin_20170426.call_center_queue\n" +
+                "\twhere name like\"%906144%\" and is_active=1\n" +
+                ")";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        ArrayList<String> idList = new ArrayList<>();
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                idList.add(resultSet.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return idList.get(0);
+    }
+
+    private String generateNewId(){
+        String query ="SELECT * FROM webadmin_20170426.call_center_queue where name like \"%906144%\" order by name desc limit 1";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        String nameId = "";
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                nameId= resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return incrementId(nameId);
+    }
+
+    private String incrementId(String nameId){
+        String str = nameId.substring(nameId.indexOf("_")+1);
+        str = String.valueOf(Integer.parseInt(str)+1);
+        if (str.length()<5){
+            for (int i = 0; i <= 5-str.length(); i++){
+                str = "0"+str;
+            }
+        }
+        return  "906144_"+str;
+    }
+
+    public String getId(){
+        String query ="SELECT * FROM webadmin_20170426.call_center_queue where queue_name = \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getName()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
 }

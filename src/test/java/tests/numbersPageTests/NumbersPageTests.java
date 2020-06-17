@@ -15,6 +15,10 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiClasses.HuntGroupApi.createHuntGroupApi;
+import static api.baseApiClasses.HuntGroupApi.deleteHuntGroupApi;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
 
@@ -48,53 +52,40 @@ public class NumbersPageTests extends BaseTestMethods {
         deleteUser(user);
     }
 
-    //test disabled because of the bug
     @Description("Verify if IVR data is shown on numbers page")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"})
     public void VerifyIfIvrDataIsShownInNumbersPage(){
-        step("Prepare test data");
         IVRtestData ivr = new IVRtestData();
         FileManagementTestData announcement = new FileManagementTestData();
         ivrList.add(ivr);
+        announcementList.add(announcement);
 
-        step("Log in the system");
+        uploadAnnouncementApi(announcement);
         login();
-
-        step("Upload announcement");
-        uploadAnnouncementFile(announcement);
-
-        step("Create IVR");
-        createIVR(ivr,announcement);
-
-        step("Goto Numbers page and check if user details is shown for proper number");
-        basePage.goToMenuTab(NUMBERS);
-        numbersPage.verifyIfNumberInfoShowed(ivr);
-
-        step("Delete test data");
+        ivrPage
+                .createIvr(ivr,announcement);
+        basePage
+                .goToMenuTab(NUMBERS);
+        numbersPage
+                .verifyIfNumberInfoShowed(ivr);
         deleteIVR(ivr.getIvrName());
-        deleteAnnouncementFile(announcement.getFileName());
+        deleteAnnouncementApi(announcement.getId());
     }
 
-    //test disabled because of the bug
+
     @Description("Verify if Hunt Group data is shown on numbers page")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"})
     public void VerifyIfHuntGroupDataIsShownInNumbersPage(){
-        step("Prepare test data");
+
         HuntGroup huntGroup = new HuntGroup();
-        huntGroupList.add(huntGroup);
-
-        step("Log in the system");
+        createHuntGroupApi(huntGroup.getJson());
         login();
+        basePage
+                .goToMenuTab(NUMBERS);
+        numbersPage
+                .verifyIfNumberInfoShowed(huntGroup);
+        deleteHuntGroupApi(huntGroup.getId());
 
-        step("Create hunt group");
-        createHuntGroup(huntGroup);
-
-        step("Goto Numbers page and check if user details is shown for proper number");
-        basePage.goToMenuTab(NUMBERS);
-        numbersPage.verifyIfNumberInfoShowed(huntGroup);
-
-        step("Delete test data");
-        deleteHuntGroup(huntGroup.getHuntGroupName());
     }
 
     @AfterClass(alwaysRun = true)

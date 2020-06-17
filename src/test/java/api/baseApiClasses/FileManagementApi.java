@@ -1,5 +1,6 @@
-package api.baseApiMethods;
+package api.baseApiClasses;
 
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
@@ -11,6 +12,7 @@ import static api.data.preparation.Preparation.login;
 
 public class FileManagementApi {
 
+    @Step("Upload announcement via API")
     public static void uploadAnnouncementApi(FileManagementTestData file){
         login().
                 given()
@@ -22,6 +24,7 @@ public class FileManagementApi {
                 .post(postAnnouncementUpload);
     }
 
+    @Step("Delete announcement via API")
     public static void deleteAnnouncementApi (String id){
         login()
                 .delete(deleteAnnouncementDelete,id);

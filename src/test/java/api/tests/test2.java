@@ -1,16 +1,21 @@
 package api.tests;
 
-import io.restassured.http.ContentType;
-import org.testng.annotations.Test;
-import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
-import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
-import tests.userPageTests.userPageTestData.User;
+import tests.queuesPageTest.queueTestData.Queue;
 
-import static api.baseApiMethods.HuntGroupApi.createHuntGroupApi;
-import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
-import static api.data.endPoints.EndPoints.*;
-import static api.data.preparation.Preparation.login;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static api.baseApiClasses.QueueApi.createQueueApi;
+import static api.baseApiClasses.QueueApi.deleteQueueApi;
+import static core.configuration.preparations.eFonApp.dataBaseWorker;
 
 public class test2 {
+    public static void main(String[] args) {
+
+        Queue queue = new Queue();
+        createQueueApi(queue.getJson());
+        deleteQueueApi(queue.getId());
+    }
 
 }

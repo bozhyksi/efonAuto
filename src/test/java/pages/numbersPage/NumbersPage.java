@@ -3,6 +3,7 @@ package pages.numbersPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
@@ -62,7 +63,7 @@ public class NumbersPage extends BasePage {
 
     public void verifyIfNumberInfoShowed(HuntGroup huntGroup){
         useSearchToFindNumber(huntGroup.getHuntGroupNumber());
-        getFieldByText("Hunt group").should(exist);
+        getFieldByText("Ringruf").should(exist);
     }
 
     public void verifyIfNumberInfoShowed(User user){
@@ -70,6 +71,8 @@ public class NumbersPage extends BasePage {
         getFieldByText(user.getFirstName()).should(exist);
         getFieldByText(getUserAccountDetail(user.getEndDevices())).should(exist);
     }
+
+    @Step("Verify if system shows where proper number is used")
 
     private String getUserAccountDetail(String account){
         int start = account.indexOf('(')+1;

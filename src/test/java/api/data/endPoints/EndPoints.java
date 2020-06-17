@@ -24,4 +24,8 @@ public abstract class EndPoints {
     public final static String postHuntGroupCreate = "/hunt-groups";
     public final static String deleteHuntGroup = "/hunt-groups/{id}";
 
+    //Queues
+    public final static String postCreateQueue = "/queues/details/";
+    public final static String deleteDeleteQueue = "/queues/{id}";
+
 }

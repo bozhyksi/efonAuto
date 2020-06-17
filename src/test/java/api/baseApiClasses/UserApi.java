@@ -1,4 +1,4 @@
-package api.baseApiMethods;
+package api.baseApiClasses;
 
 import io.restassured.http.ContentType;
 
