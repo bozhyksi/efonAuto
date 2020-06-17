@@ -28,4 +28,12 @@ public abstract class EndPoints {
     public final static String postCreateQueue = "/queues/details/";
     public final static String deleteDeleteQueue = "/queues/{id}";
 
+    //IVRs
+    public final static String postIvrCreate = "ivrs/";
+    public final static String deleteIvrDelete = "ivrs/{id}";
+
+    //Conference calls
+    public final static String postConfCallCreate = "/conference-calls";
+    public final static String deleteConfCallDelete = "/conference-calls/{id}";
+
 }

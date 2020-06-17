@@ -1,7 +1,16 @@
 package tests.IVRpageTests.IVRtestData;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import flow.BaseTestMethods;
 import flow.PublicEnums;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonValue;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class IVRtestData extends BaseTestMethods {
 
@@ -68,6 +77,7 @@ public class IVRtestData extends BaseTestMethods {
     private String parameterMaxThroughputs;
     private String parameterMaxWaitingTime;
     private String pinCode;
+    private FileManagementTestData announcement;
     //</editor-fold>
 
     public IVRtestData(){
@@ -80,6 +90,19 @@ public class IVRtestData extends BaseTestMethods {
         this.parameterExtTelNumber = getRandomPhone();
         this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.pinCode = getRandomNumber(1111,9999);
+    }
+
+    public IVRtestData(FileManagementTestData announcement){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
     }
 
     public IVRtestData(String num){
@@ -96,6 +119,10 @@ public class IVRtestData extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public FileManagementTestData getAnnouncement() {
+        return announcement;
+    }
 
     public String getParameterMaxWaitingTime() {
         return parameterMaxWaitingTime;
@@ -221,4 +248,170 @@ public class IVRtestData extends BaseTestMethods {
         this.ivrAnnounce = ivrAnnounce.replaceAll("\\s","");
     }
     //</editor-fold>
+
+    public String getJson(){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createObjectBuilder()
+                .add("logicalName", getIvrName())
+                .add("displayName", getIvrDisplName())
+                .add("language", getIvrLanguage())
+                .add("number", getPhoneNumberId(getIvrNumber()))
+                .add("announcement", announcement.getId())
+                .add("ivrActions", factory.createArrayBuilder()
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",1)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",2)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",3)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",4)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",5)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",6)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",7)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",8)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",9)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event",0)
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","*")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","#")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","_INTERNALNB_")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","i")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","t")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                        .add(factory.createObjectBuilder()
+                                .add("active",false)
+                                .add("ivrActionType","HANGUP")
+                                .add("event","d")
+                                .add("parameter", factory.createObjectBuilder()
+                                        .add("id", JsonValue.NULL)
+                                )
+                        )
+                )
+                .add("maxThroughputs", 1)
+                .add("maxWaitTime", 3)
+                .add("pin", "")
+                .add("voiceMailEmail", "")
+                .add("voiceMailTitle", "")
+                .add("deleteVoiceMail", false)
+                .add("hasCallsRecording", factory.createObjectBuilder()
+                        .add("activateCallRecording", false)
+                )
+                .add("isNumberPublic", true)
+                .build().toString();
+    }
+
+    public String getId(){
+        String query = "SELECT ivr_id FROM webadmin_20170426.ivr where logical_name = \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getIvrName()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
 }
