@@ -5,7 +5,6 @@ import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
@@ -15,10 +14,12 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
-import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
-import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
 import static api.baseApiClasses.HuntGroupApi.createHuntGroupApi;
 import static api.baseApiClasses.HuntGroupApi.deleteHuntGroupApi;
+import static api.baseApiClasses.IVRApi.createIvrApi;
+import static api.baseApiClasses.IVRApi.deleteIvrApi;
+import static api.baseApiClasses.UserApi.createUserApi;
+import static api.baseApiClasses.UserApi.deleteUserApi;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
 
@@ -30,48 +31,36 @@ public class NumbersPageTests extends BaseTestMethods {
     ArrayList<FileManagementTestData> announcementList = new ArrayList<>();
     ArrayList<HuntGroup> huntGroupList = new ArrayList<>();
 
-
     @Description("Verify if user data is shown on numbers page")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"})
     public void VerifyIfUserDataIsShownInNumbersPage(){
-        step("Prepare test data");
+
         User user = new User();
         userList.add(user);
 
-        step("Log in the system");
-        login();
-
-        step("Create user");
-        createUser(user);
-
-        step("Goto Numbers page and check if user details is shown for proper number");
-        basePage.goToMenuTab(NUMBERS);
-        numbersPage.verifyIfNumberInfoShowed(user);
-
-        step("Delete test data");
-        deleteUser(user);
+        createUserApi(user.getUserJSON());
+        login()
+            .goToMenuTab(NUMBERS);
+        numbersPage
+                .verifyIfNumberInfoShown(user);
+        deleteUserApi(user.getId());
     }
 
     @Description("Verify if IVR data is shown on numbers page")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"})
     public void VerifyIfIvrDataIsShownInNumbersPage(){
-        IVRtestData ivr = new IVRtestData();
-        FileManagementTestData announcement = new FileManagementTestData();
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
         ivrList.add(ivr);
-        announcementList.add(announcement);
+        announcementList.add(ivr.getAnnouncement());
 
-        uploadAnnouncementApi(announcement);
-        login();
-        ivrPage
-                .createIvr(ivr,announcement);
-        basePage
+        createIvrApi(ivr);
+        login()
                 .goToMenuTab(NUMBERS);
         numbersPage
-                .verifyIfNumberInfoShowed(ivr);
-        deleteIVR(ivr.getIvrName());
-        deleteAnnouncementApi(announcement.getId());
-    }
+                .verifyIfNumberInfoShown(ivr);
+        deleteIvrApi(ivr);
 
+    }
 
     @Description("Verify if Hunt Group data is shown on numbers page")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "numbersPageTests"})
@@ -83,7 +72,7 @@ public class NumbersPageTests extends BaseTestMethods {
         basePage
                 .goToMenuTab(NUMBERS);
         numbersPage
-                .verifyIfNumberInfoShowed(huntGroup);
+                .verifyIfNumberInfoShown(huntGroup);
         deleteHuntGroupApi(huntGroup.getId());
 
     }

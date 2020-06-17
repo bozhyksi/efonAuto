@@ -21,8 +21,11 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.selected;
-import static com.codeborne.selenide.Condition.selectedText;
+import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiClasses.IVRApi.createIvrApi;
+import static api.baseApiClasses.IVRApi.deleteIvrApi;
+import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 import static tests.IVRpageTests.IVRtestData.IVRtestData.EventNumber.Event_1;
@@ -42,98 +45,40 @@ public class IVRpageTests extends BaseTestMethods {
 
     @Description("Verify if user can create new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
-    public void VerifyIfUserCanCreateNewIvr() {
-        step("Prepare test data - create IVR object");
-        IVRtestData ivr = new IVRtestData();
-        FileManagementTestData file = new FileManagementTestData();
+    public void VerifyIfUserCanCreateNewIvrAPI() {
+
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
         ivrList.add(ivr);
-        filesList.add(file);
+        filesList.add(ivr.getAnnouncement());
 
-        step("Log in the system");
+        uploadAnnouncementApi(ivr.getAnnouncement());
         login();
-
-        step("Upload announcement");
-        uploadAnnouncementFile(file);
-
-        step("Goto IVR page");
-        basePage.goToMenuTab(IVRs);
-
-        step("Click \"New IVR\" button");
-        ivrPage.getButtonNewIvr().click();
-
-        step("Fill in \"Name\" field");
-        createNewIvrPopup.getInputName().setValue(ivr.getIvrName());
-
-        step("Fill in \"Display Nane\" field");
-        createNewIvrPopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
-
-        step("Select English language");
-        createNewIvrPopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
-
-        step("Select number");
-        createNewIvrPopup.getDropdownSelectIvrNumber().selectOption(1);
-
-        step("Select announcement");
-        createNewIvrPopup.getDropdownSelectAnnounc().selectOption(1);
-
-        step("Save all changes");
-        createNewIvrPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-
-        step("Check if IVR is displayed in the grid");
-        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
-
-        step("Delete created IVR");
-        ivrPage.getButtonDeleteIvrByName(ivr.getIvrName()).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-
-        step("Check if IVR was deleted in the grid");
-        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.size(0));
-
-        step("Delete announcement file");
-        deleteAnnouncementFile(file.getFileName());
+        ivrPage
+                .createIvr(ivr)
+                .verifyIfIvrExists(ivr.getIvrName())
+                .deleteIvr(ivr);
+        deleteAnnouncementApi(ivr.getAnnouncement().getId());
     }
 
     @Description("Verify if user can EDIT new IVR")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "IVRpageTests"})
     public void VerifyIfUserCanEditNewIvr() {
-        step("Prepare test data - create IVR object");
-        String displName = getRandomString(10);
-        IVRtestData ivr = new IVRtestData();
-        FileManagementTestData file = new FileManagementTestData();
+
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
         ivrList.add(ivr);
-        filesList.add(file);
+        filesList.add(ivr.getAnnouncement());
 
-        step("Log in the system");
-        login();
-
-        step("Upload announcement");
-        uploadAnnouncementFile(file);
-
-        step("Create new IVR");
-        createIVR(ivr, file);
-
-        step("Click edit button");
-        ivrPage.getButtonEditIvrByName(ivr.getIvrName()).click();
-        waitUntilAlertDisappear();
-
-        step("Display name");
-        createNewIvrPopup.getInputDisplayName().setValue(displName);
-
-        step("Save changed data");
-        createNewIvrPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
+        createIvrApi(ivr);
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .enterDisplayName(ivr.changeDisplayName())
+                .saveChanges()
+                .clickEditIvr(ivr)
+                .getInputDisplayName().shouldHave(value(ivr.getIvrDisplName()));
         refreshPage();
-
-        step("Check if saved data are displayed correctly in the grid");
-        ivrPage.getListDisplayName().filterBy(Condition.text(displName)).shouldHave(CollectionCondition.sizeGreaterThan(0));
-
-        step("Delete created test data");
-        deleteIVR(ivr.getIvrName());
-
-        step("Delete announcement file");
-        deleteAnnouncementFile(file.getFileName());
+        deleteIvrApi(ivr);
     }
 
     @Description("Verify if user can configure \"Call to external subscriber\" ivr action")

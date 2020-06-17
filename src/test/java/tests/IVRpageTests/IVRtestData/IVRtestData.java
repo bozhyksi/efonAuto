@@ -414,4 +414,8 @@ public class IVRtestData extends BaseTestMethods {
         return "";
     }
 
+    public String changeDisplayName(){
+        return this.ivrDisplName = getRandomString(15);
+    }
+
 }

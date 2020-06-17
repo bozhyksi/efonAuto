@@ -192,6 +192,20 @@ public class IVRpage extends BasePage {
     }
 
     @Step("Create IVR")
+    public IVRpage createIvr(IVRtestData ivr){
+        goToMenuTab(IVRs);
+        clickNewIvr()
+                .enterIvrName(ivr.getIvrName())
+                .enterDisplayName(ivr.getIvrDisplName())
+                .selectLanguage(ivr.getIvrLanguage())
+                .selectNumber(ivr.getIvrNumber())
+                .selectAnnouncement(ivr.getAnnouncement().getFileName())
+                .saveChanges()
+                .verifyIfIvrExists(ivr.getIvrName());
+        return this;
+    }
+
+    @Step("Create IVR")
     public IVRpage createIvr(IVRtestData ivr, FileManagementTestData announcement){
         goToMenuTab(IVRs);
         clickNewIvr()

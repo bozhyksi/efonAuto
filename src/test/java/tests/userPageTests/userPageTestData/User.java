@@ -195,7 +195,7 @@ public class User extends BaseTestMethods {
                 ).build().toString();
     }
 
-    private String getId(){
+    public String getId(){
         String query ="SELECT * FROM webadmin_20170426.customer where display_name = \"%s\"";
         ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getFullName()));
         while (true){

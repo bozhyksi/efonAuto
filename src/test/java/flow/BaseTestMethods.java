@@ -6,6 +6,7 @@ import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import pages.basePage.BasePage;
 import pages.conferenceCallsPage.ConferenceCallsPage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
@@ -309,11 +310,12 @@ public class BaseTestMethods extends eFonApp {
     }
 
     @Step("Log in as VPBX admin")
-    public void login() {
+    public BasePage login() {
         loginPage.fillInLogin(getLogin());
         loginPage.fillInPassword(getPassword());
         loginPage.getButtonLogin().click();
         waitUntilAlertDisappear();
+        return new BasePage();
     }
 
     @Step("Log in as Low-Level user")

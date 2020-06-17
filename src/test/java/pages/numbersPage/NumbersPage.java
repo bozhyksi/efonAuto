@@ -56,27 +56,22 @@ public class NumbersPage extends BasePage {
         getFieldNumberByText(number).should(exist, visible);
     }
 
-    public void verifyIfNumberInfoShowed(IVRtestData ivr){
+    @Step("Verify if system shows where proper number is used")
+    public void verifyIfNumberInfoShown(IVRtestData ivr){
         useSearchToFindNumber(ivr.getIvrNumber());
         getFieldByText("IVR").should(exist);
     }
 
-    public void verifyIfNumberInfoShowed(HuntGroup huntGroup){
+    @Step("Verify if system shows where proper number is used")
+    public void verifyIfNumberInfoShown(HuntGroup huntGroup){
         useSearchToFindNumber(huntGroup.getHuntGroupNumber());
         getFieldByText("Ringruf").should(exist);
     }
 
-    public void verifyIfNumberInfoShowed(User user){
+    @Step("Verify if system shows where proper number is used")
+    public void verifyIfNumberInfoShown(User user){
         useSearchToFindNumber(user.getPhoneNumber());
         getFieldByText(user.getFirstName()).should(exist);
-        getFieldByText(getUserAccountDetail(user.getEndDevices())).should(exist);
     }
 
-    @Step("Verify if system shows where proper number is used")
-
-    private String getUserAccountDetail(String account){
-        int start = account.indexOf('(')+1;
-        int end = account.indexOf(')');
-        return account.substring(start, end);
-    }
 }
