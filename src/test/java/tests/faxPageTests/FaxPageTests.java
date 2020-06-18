@@ -12,7 +12,10 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.UserApi.createUserApi;
+import static api.baseApiMethods.UserApi.deleteUserApi;
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.FAX;
 
 @Listeners(CustomListeners.class)
 
@@ -21,46 +24,27 @@ public class FaxPageTests extends BaseTestMethods {
 
     @Description("Verify if user can configure Fax for newly created user")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "faxPageTests"})
-    public void VerifyIfUserCanСonfigureFaxForNewlyCreatedUser() {
-        step("Prepare test data - create test user object");
+    public void fax2EmailConfigurationsTest() {
+        String fax2email = getRandomEmail();
         User user = new User();
         userArrayList.add(user);
 
-        step("Login");
-        login();
-
-        step("Create new user");
-        createUser(user);
-
-        step("Goto Fax page");
-        basePage.getTabFax().click();
-
-        step("Select phone number for fax");
-        faxPage.getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
-
-        step("Click configure button");
-        faxPage.getEditButton().click();
-
-        step("Fill in fax email");
-        faxPage.getInputEmail().setValue(getRandomEmail());
-
-        step("Select fax format - pdf only");
-        faxPage.getRadioPdfOnly().click();
-
-        step("Save Changes and validate");
-        faxPage.getButtonSave().click();
-        waitUntilAlertDisappear();
-        alertPopup.getAlertDialog().should(Condition.appears);
-
-        step("Delete test data - delete test user");
-        deleteUser(user);
+        createUserApi(user.getJson());
+        login()
+                .goToMenuTab(FAX);
+        faxPage
+                .selectNumber(user.getPhoneNumber())
+                .clickEditFax2Email()
+                .enterEmail(fax2email)
+                .selectPdfOnly()
+                .saveChanges()
+                .clickEditFax2Email()
+                .validateSavedData(fax2email);
+        deleteUserApi(user.getId());
     }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        login();
-        userCleanUp(userArrayList);
-        closeBrowser();
+        userApiCleanUp(userArrayList);
     }
 }

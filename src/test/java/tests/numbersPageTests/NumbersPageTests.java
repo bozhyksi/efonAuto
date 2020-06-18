@@ -38,7 +38,7 @@ public class NumbersPageTests extends BaseTestMethods {
         User user = new User();
         userList.add(user);
 
-        createUserApi(user.getUserJSON());
+        createUserApi(user.getJson());
         login()
             .goToMenuTab(NUMBERS);
         numbersPage

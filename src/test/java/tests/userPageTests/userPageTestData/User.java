@@ -162,7 +162,7 @@ public class User extends BaseTestMethods {
         this.endDevices = autoProvisionedEndDevice;
     }
 
-    public String getUserJSON(){
+    public String getJson(){
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         return factory.createObjectBuilder()
                 .add("userNaming", factory.createObjectBuilder()

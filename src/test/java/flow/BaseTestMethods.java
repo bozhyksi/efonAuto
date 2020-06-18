@@ -28,6 +28,7 @@ import java.util.*;
 
 import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
 import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
+import static api.baseApiMethods.UserApi.deleteUserApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
@@ -684,6 +685,12 @@ public class BaseTestMethods extends eFonApp {
         } catch (Throwable e) {
             System.out.println("userCleanUp failed");
             e.printStackTrace();
+        }
+    }
+
+    public void userApiCleanUp(List<User> userList){
+        for (User user : userList) {
+            deleteUserApi(user.getId());
         }
     }
 

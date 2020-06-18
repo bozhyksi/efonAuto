@@ -1,9 +1,15 @@
 package pages.faxPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.value;
+
 public class FaxPage extends BasePage {
+
     //<editor-fold desc="//-- Locators --//">
     private String dropdownSelectNumberXpath = "//h3[text()=\"Select number\"]//following-sibling::select";
     private String editButtonXpath = "//a[@name=\"editLink\"]|//div[text()=\"Fax2Email is not configured for this phone number\"]//following-sibling::div/a[@class=\"icon-link\"]";
@@ -54,4 +60,43 @@ public class FaxPage extends BasePage {
         return field(buttonCancelXpath);
     }
     //</editor-fold>
+
+    @Step("Select user number from \"Select number\" dropdown")
+    public FaxPage selectNumber(String number){
+        getDropdownSelectNumber().selectOptionContainingText(number);
+        return this;
+    }
+
+    @Step("Edit Fax2Email section")
+    public FaxPage clickEditFax2Email(){
+        getEditButton().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Enter email")
+    public FaxPage enterEmail(String email){
+        getInputEmail().setValue(email);
+        return this;
+    }
+
+    @Step("Select fax format - pdf only")
+    public FaxPage selectPdfOnly(){
+        getRadioPdfOnly().click();
+        return this;
+    }
+
+    @Step("Save Changes")
+    public FaxPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Validate")
+    public FaxPage validateSavedData(String email){
+        getInputEmail().shouldHave(value(email));
+        getRadioPdfOnly().shouldBe(selected);
+        return this;
+    }
 }
