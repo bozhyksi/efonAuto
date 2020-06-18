@@ -1,6 +1,5 @@
 package tests.сonferenceCallsPageTests;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -10,9 +9,13 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 
+
 import java.util.ArrayList;
 
+import static api.baseApiMethods.ConferenceCallsApi.createConferenceCallApi;
+import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.CONFERENCE_CALLS;
 
 @Listeners(CustomListeners.class)
 
@@ -33,38 +36,21 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
                 .deleteConfCall(confCall);
     }
 
-    @Description("Verify if user can configure Calls with suppressed numbers")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
-    public void VerifyIfUserCanConfigureCallsWithSuppressedNumbers(){
-
-        ConferenceCallTestData confCall = new ConferenceCallTestData();
-        confCallsList.add(confCall);
-
-        login();
-        conferenceCallsPage
-                .createConfCall(confCall)
-                .configSuppressedNumber(confCall.getConferenceNumber())
-                .saveChanges()
-                .refreshPage();
-        conferenceCallsPage
-                .validateSuppressedNumber(confCall.getConferenceNumber())
-                .deleteConfCall(confCall);
-    }
-
     @Description("Verify if changed conference call name displayed in the grid")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","conferenceCallsPage"})
     public void verifyIfChangedNameDisplayed(){
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
 
-        login();
+        createConferenceCallApi(confCall.getJson());
+        login()
+                .goToMenuTab(CONFERENCE_CALLS);
         conferenceCallsPage
-                .createConfCall(confCall)
                 .clickEdit(confCall)
                 .enterName(confCall.changeName())
                 .saveChanges()
-                .verifyConfCallExists(confCall.getName())
-                .deleteConfCall(confCall);
+                .verifyConfCallExists(confCall.getName());
+        deleteConferenceCallApi(confCall.getId());
     }
 
     @Description("Verify if changed conference call Number displayed in the grid")
@@ -73,14 +59,15 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
 
-        login();
+        createConferenceCallApi(confCall.getJson());
+        login()
+                .goToMenuTab(CONFERENCE_CALLS);
         conferenceCallsPage
-                .createConfCall(confCall)
                 .clickEdit(confCall)
                 .selectNumber(confCall.changeNumber())
                 .saveChanges()
-                .verifyConfCallExists(confCall.getConferenceNumber())
-                .deleteConfCall(confCall);
+                .verifyConfCallExists(confCall.getConferenceNumber());
+        deleteConferenceCallApi(confCall.getId());
     }
 
     @Description("Verify if changed conference call PIN displayed in the grid")
@@ -89,14 +76,15 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
 
-        login();
+        createConferenceCallApi(confCall.getJson());
+        login()
+                .goToMenuTab(CONFERENCE_CALLS);
         conferenceCallsPage
-                .createConfCall(confCall)
                 .clickEdit(confCall)
                 .enterPIN(confCall.changePIN())
                 .saveChanges()
-                .verifyConfCallExists(confCall.getPin())
-                .deleteConfCall(confCall);
+                .verifyConfCallExists(confCall.getPin());
+        deleteConferenceCallApi(confCall.getId());
     }
 
     @Description("Verify if changed conference call Language displayed in the grid")
@@ -105,21 +93,19 @@ public class ConferenceCallsPageTests extends BaseTestMethods {
         ConferenceCallTestData confCall = new ConferenceCallTestData();
         confCallsList.add(confCall);
 
-        login();
+        createConferenceCallApi(confCall.getJson());
+        login()
+                .goToMenuTab(CONFERENCE_CALLS);
         conferenceCallsPage
-                .createConfCall(confCall)
                 .clickEdit(confCall)
                 .selectLanguage(confCall.changeLanguage())
                 .saveChanges()
-                .verifyConfCallExists(confCall.getLanguage())
-                .deleteConfCall(confCall);
+                .verifyConfCallLanguage(confCall.getLanguage());
+        deleteConferenceCallApi(confCall.getId());
     }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        login();
         cleanUpConfCalls(confCallsList);
-        closeBrowser();
     }
 }

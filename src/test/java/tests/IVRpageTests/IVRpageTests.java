@@ -1,16 +1,12 @@
 package tests.IVRpageTests;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
@@ -21,10 +17,10 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
-import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
-import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
-import static api.baseApiClasses.IVRApi.createIvrApi;
-import static api.baseApiClasses.IVRApi.deleteIvrApi;
+import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiMethods.IVRApi.createIvrApi;
+import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;

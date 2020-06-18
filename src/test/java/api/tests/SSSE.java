@@ -4,8 +4,7 @@ package api.tests;
 import org.testng.annotations.Test;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
-import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
-import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
 
 public class SSSE {
 

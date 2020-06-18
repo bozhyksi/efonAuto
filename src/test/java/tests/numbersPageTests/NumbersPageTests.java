@@ -14,12 +14,12 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
-import static api.baseApiClasses.HuntGroupApi.createHuntGroupApi;
-import static api.baseApiClasses.HuntGroupApi.deleteHuntGroupApi;
-import static api.baseApiClasses.IVRApi.createIvrApi;
-import static api.baseApiClasses.IVRApi.deleteIvrApi;
-import static api.baseApiClasses.UserApi.createUserApi;
-import static api.baseApiClasses.UserApi.deleteUserApi;
+import static api.baseApiMethods.HuntGroupApi.createHuntGroupApi;
+import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
+import static api.baseApiMethods.IVRApi.createIvrApi;
+import static api.baseApiMethods.IVRApi.deleteIvrApi;
+import static api.baseApiMethods.UserApi.createUserApi;
+import static api.baseApiMethods.UserApi.deleteUserApi;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.NUMBERS;
 

@@ -7,7 +7,6 @@ import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import pages.basePage.BasePage;
-import pages.conferenceCallsPage.ConferenceCallsPage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
@@ -27,6 +26,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
+import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
@@ -555,13 +556,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void callPickUpCleanUp(ArrayList<CallPickUp> callPickUpsList){
-        basePage
-                .goToMenuTab(CALL_PICKUPs);
         for (CallPickUp callPickUp : callPickUpsList) {
-            if (callPickUpPage.callPickUpGroupExists(callPickUp)){
-                deleteCallPickup(callPickUp);
-                waitUntilAlertDisappear();
-            }
+            deleteCallPickupApi(callPickUp);
         }
     }
 
@@ -1114,13 +1110,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void cleanUpConfCalls(ArrayList<ConferenceCallTestData> confCallsList){
-        basePage
-                .goToMenuTab(CONFERENCE_CALLS);
         for (ConferenceCallTestData entry : confCallsList) {
-            waitUntilAlertDisappear();
-            if(conferenceCallsPage.getFieldNameByText(entry.getName()).exists())
-                conferenceCallsPage
-                        .deleteConfCall(entry);
+            deleteConferenceCallApi(entry.getId());
         }
     }
 

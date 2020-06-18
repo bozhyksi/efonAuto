@@ -72,6 +72,40 @@ public class AbbreviatedDialling extends BaseTestMethods {
         }
     }
 
+    //<editor-fold desc="get\set">
+    public String getSingleShortNum() {
+        return singleShortNum;
+    }
+
+    public ArrayList<String> getShortNumbersArray() {
+        return shortNumbers;
+    }
+
+    public String getFromNumber() {
+        return fromNumber;
+    }
+
+    public String getUntilNumber() {
+        return untilNumber;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getExtPhoneNum() {
+        return extPhoneNum;
+    }
+    //</editor-fold>
+
     private String generateRandomSingleAbbrevNumber(){
         String abbrevNum = getRandomNumber(startRange,endRange);
         if (verifyIfSingleAbbrevNumFree(abbrevNum)) {
@@ -129,36 +163,18 @@ public class AbbreviatedDialling extends BaseTestMethods {
         return true;
     }
 
-    public String getSingleShortNum() {
-        return singleShortNum;
-    }
-
-    public ArrayList<String> getShortNumbersArray() {
-        return shortNumbers;
-    }
-
-    public String getFromNumber() {
-        return fromNumber;
-    }
-
-    public String getUntilNumber() {
-        return untilNumber;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getExtPhoneNum() {
-        return extPhoneNum;
+    public String getId(){
+        String query = "SELECT * FROM webadmin_20170426.internal_number where number=%s and abo_fk=1212363";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getSingleShortNum()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
 }

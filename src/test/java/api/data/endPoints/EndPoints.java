@@ -36,4 +36,11 @@ public abstract class EndPoints {
     public final static String postConfCallCreate = "/conference-calls";
     public final static String deleteConfCallDelete = "/conference-calls/{id}";
 
+    //Abbreviated numbers
+    public final static String postCreateAbbreviatedNumber = "/internal-numbers/{number}";
+    public final static String deleteAbbreviatedNumberDelete = "/internal-numbers/{id}";
+
+    //Call PickUps
+    public final static String postCreateCallPickUp = "/call-intercept-groups/create";
+    public final static String deleteCreateCallPickUp = "call-intercept-groups/{id}";
 }

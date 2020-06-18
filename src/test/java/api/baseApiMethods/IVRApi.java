@@ -1,11 +1,11 @@
-package api.baseApiClasses;
+package api.baseApiMethods;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 
-import static api.baseApiClasses.FileManagementApi.deleteAnnouncementApi;
-import static api.baseApiClasses.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
 import static api.data.endPoints.EndPoints.*;
 import static api.data.preparation.Preparation.login;
 

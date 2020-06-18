@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.testng.Assert;
 import pages.basePage.BasePage;
 import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCallPopup;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
@@ -103,8 +104,8 @@ public class ConferenceCallsPage  extends BasePage {
     }
 
     @Step("Verify if Conference call exists in the list")
-    public ConferenceCallsPage verifyConfCallExists(String name){
-        switch (name){
+    public ConferenceCallsPage verifyConfCallLanguage(String language){
+        switch (language){
             case "en":
                 getFieldByText("English").should(exist);
                 break;
@@ -117,6 +118,8 @@ public class ConferenceCallsPage  extends BasePage {
             case "fr":
                 getFieldByText("Français").should(exist);
                 break;
+            default:
+                Assert.assertTrue(false);
         }
         return this;
     }
@@ -124,6 +127,12 @@ public class ConferenceCallsPage  extends BasePage {
     @Step("Verify if Conference call does NOT exist in the list")
     public ConferenceCallsPage verifyConfCallNotExist(String name){
         getFieldByText(name).shouldNot(exist);
+        return this;
+    }
+
+    @Step("Verify if Conference call exist in the list")
+    public ConferenceCallsPage verifyConfCallExists(String name){
+        getFieldByText(name).should(exist);
         return this;
     }
 

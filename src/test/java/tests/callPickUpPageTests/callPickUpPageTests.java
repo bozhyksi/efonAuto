@@ -13,28 +13,26 @@ import tests.callPickUpPageTests.CallPickUpTestData.CallPickUp;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.AbbreviatedNumbersApi.createAbbreviatedNumberApi;
+import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
+import static api.baseApiMethods.CallPickUpsApi.createCallPickupApi;
+import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.CALL_PICKUPs;
 import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 public class callPickUpPageTests extends BaseTestMethods {
-    ArrayList<AbbreviatedDialling> shortNumbersList = new ArrayList<>();
     ArrayList<CallPickUp> callPickUpsList = new ArrayList<>();
 
     @Description("Check if user can create new Call Pick Up group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callPickUpPageTests"})
-    public void CheckIfUserCanCreateNewCallPickUpGroup() {
+    public void createDeleteCallPickUpGroupTest() {
 
-        step("Prepare test data");
-        AbbreviatedDialling shortNumber = new AbbreviatedDialling(SINGLE);
-        CallPickUp callPickUp = new CallPickUp(shortNumber);
-        shortNumbersList.add(shortNumber);
+        CallPickUp callPickUp = new CallPickUp( new AbbreviatedDialling(SINGLE));
         callPickUpsList.add(callPickUp);
 
-        login();
-        addSingleAbbreviatedNumber(shortNumber);
-
-        basePage
+        createAbbreviatedNumberApi(callPickUp.getShortNumberObj().getSingleShortNum());
+        login()
                 .goToMenuTab(CALL_PICKUPs);
         callPickUpPage
                 .clickCreateNewGroup()
@@ -43,29 +41,22 @@ public class callPickUpPageTests extends BaseTestMethods {
                 .verifyGroupForCallPickupConfiguration(callPickUp)
                 .deleteCallPickUp(callPickUp)
                 .verifyIfCallPickUpDoesNotExist(callPickUp);
-
-        deleteSingleAbbreviatedNumber(shortNumber);
+        deleteAbbreviatedNumberApi(callPickUp.getShortNumberObj().getId());
     }
 
     @Description("Check if user can EDIT and change the configuration of Call Pick Up group")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "callPickUpPageTests"})
-    public void CheckIfUserCanEditAndChangeTheConfigurationOfCallPickUpGroup() {
+    public void editCallPickUpGroupTest() {
 
-        step("Prepare test data");
-        AbbreviatedDialling shortNumber = new AbbreviatedDialling(SINGLE);
-        AbbreviatedDialling shortNumber2 = new AbbreviatedDialling(SINGLE);
-        CallPickUp callPickUp = new CallPickUp(shortNumber);
-        CallPickUp callPickUpUpdated = new CallPickUp(shortNumber2);
-        shortNumbersList.add(shortNumber);
-        shortNumbersList.add(shortNumber2);
+        CallPickUp callPickUp = new CallPickUp(new AbbreviatedDialling(SINGLE));
+        CallPickUp callPickUpUpdated = new CallPickUp(new AbbreviatedDialling(SINGLE));
         callPickUpsList.add(callPickUpUpdated);
+        callPickUpsList.add(callPickUp);
 
-        login();
-        addSingleAbbreviatedNumber(shortNumber);
-        addSingleAbbreviatedNumber(shortNumber2);
-        createCallPickUpGroup(callPickUp);
+        createCallPickupApi(callPickUp);
+        createAbbreviatedNumberApi(callPickUpUpdated.getShortNumberObj().getSingleShortNum());
 
-        basePage
+        login()
                 .goToMenuTab(CALL_PICKUPs);
         callPickUpPage
                 .editCallPickUp(callPickUp)
@@ -75,15 +66,12 @@ public class callPickUpPageTests extends BaseTestMethods {
                 .deleteCallPickUp(callPickUpUpdated)
                 .verifyIfCallPickUpDoesNotExist(callPickUpUpdated);
 
-        deleteSingleAbbreviatedNumber(shortNumber, shortNumber2);
+        deleteCallPickupApi(callPickUp);
+        deleteAbbreviatedNumberApi(callPickUpUpdated.getShortNumberObj().getId());
     }
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        login();
         callPickUpCleanUp(callPickUpsList);
-        abbrevNumsCleanUp(shortNumbersList);
-        closeBrowser();
     }
 }
