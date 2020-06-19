@@ -1,7 +1,11 @@
 package pages.callForwardingPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import pages.basePage.BasePage;
+import tests.userPageTests.userPageTestData.User;
 
 public class CallForwardingPage extends BasePage {
     //<editor-fold desc="Locators">
@@ -10,7 +14,7 @@ public class CallForwardingPage extends BasePage {
     private String checkboxAfterXpath = "//span[contains(text(),\"After\")]//preceding-sibling::input";
     private String inputDelayXpath = "//input[@formcontrolname=\"delay\"]";
     private String dropdownAfterForwardToXpath = "//span[text()=\"After\"]//ancestor::section//select[@formcontrolname=\"forwardTo\"]";
-    private String inputAfterPhoneXpath = "//span[text()=\"After\"]//ancestor::section//input[@formcontrolname=\"number\"]";
+    private String inputAfterPhoneXpath = "//input[@formcontrolname=\"number\"]";
 
     private String checkboxIfbusyXpath = "//span[text()=\"If busy\"]//preceding-sibling::input";
     private String dropdownIfbusyForwardToXpath = "//span[text()=\"If busy\"]//ancestor::section//select[@formcontrolname=\"forwardTo\"]";
@@ -124,5 +128,77 @@ public class CallForwardingPage extends BasePage {
         return field(inputDateUntilXpath);
     }
     //</editor-fold>
+
+    @Step("Select number")
+    public CallForwardingPage selectNumber(String number){
+        getDropdownMyNumbers().selectOptionContainingText(number);
+        return this;
+    }
+
+    @Step("Activate \"After\" checkbox")
+    public CallForwardingPage activateAfter(){
+        getCheckboxAfter().click();
+        return this;
+    }
+
+    @Step("Fill in delay")
+    public CallForwardingPage enterDelay(String delay){
+        getInputDelay().setValue(delay);
+        return this;
+    }
+
+    @Step("Select value from \"ForwardTo\" dropdown")
+    public CallForwardingPage selectForwardTo(String option){
+        getDropdownAfterForwardTo().selectOptionContainingText(option);
+        return this;
+    }
+
+    @Step("Fill in phone field")
+    public CallForwardingPage enterPhone(String phone){
+        getInputAfterPhone().setValue(phone);
+        return this;
+    }
+
+    @Step("Save changes")
+    public CallForwardingPage saveChanges(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Verify if all entered data was saved")
+    public CallForwardingPage verifySavedData(User user, String delay, String forwardToPhone){
+        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+        getInputDelay().shouldHave(Condition.value(delay));
+        getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
+        getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
+        return this;
+    }
+
+    @Step("Verify if all entered data was saved")
+    public CallForwardingPage verifySavedData(User user, String forwardToPhone){
+        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+        getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
+        getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
+        return this;
+    }
+
+    @Step("Activate \"If Busy\" checkbox")
+    public CallForwardingPage activateIfBusy(){
+        getCheckboxIfbusy().click();
+        return this;
+    }
+
+    @Step("Activate \"If end device unavailable (not registered)\" checkbox")
+    public CallForwardingPage activateEndDevice(){
+        getCheckboxDeviceUnavailable().click();
+        return this;
+    }
+
+    @Step("Calls with suppressed numbers")
+    public CallForwardingPage activateSuppressedNumbers(){
+        getCheckboxSuppressedNumbers().click();
+        return this;
+    }
 
 }
