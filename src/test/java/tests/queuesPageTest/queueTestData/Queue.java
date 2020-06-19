@@ -1,10 +1,9 @@
 package tests.queuesPageTest.queueTestData;
 
 import flow.BaseTestMethods;
+import tests.userPageTests.userPageTestData.User;
 
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonValue;
+import javax.json.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -214,8 +213,8 @@ public class Queue extends BaseTestMethods {
     private String name;
     private String maxWaitTime;
     private String subscription;
-    private String manager;
-    private String reporter;
+    private String managerToDel;
+    private String reporterToDel;
     private String logInOut;
     private String priority;
     private String waitingMusic;
@@ -228,6 +227,8 @@ public class Queue extends BaseTestMethods {
     private String recordCalls;
     private String fromDateQueueRecordings;
     private String toDateQueueRecordings;
+    private User manager;
+    private User reporter;
     //</editor-fold>
 
     public Queue(){
@@ -242,6 +243,22 @@ public class Queue extends BaseTestMethods {
         this.recordCalls = RecordCalls.getRandomVal();
         this.fromDateQueueRecordings = "2015-04-23 13:22";
         this.toDateQueueRecordings = getDate("HOUR",1);
+    }
+
+    public Queue(User manager, User reporter){
+        this.name = getRandomString(10);
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
+        this.manager = manager;
+        this.reporter = reporter;
     }
 
     public Queue(String queueName){
@@ -260,6 +277,14 @@ public class Queue extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public User getReporter() {
+        return reporter;
+    }
+
+    public User getManager() {
+        return manager;
+    }
 
     public String getMonth() {
         return month;
@@ -326,20 +351,20 @@ public class Queue extends BaseTestMethods {
         return subscription;
     }
 
-    public void setManager(String manager) {
-        this.manager = manager;
+    public void setManagerToDel(String managerToDel) {
+        this.managerToDel = managerToDel;
     }
 
-    public String getManager() {
-        return manager;
+    public String getManagerToDel() {
+        return managerToDel;
     }
 
-    public void setReporter(String reporter) {
-        this.reporter = reporter;
+    public void setReporterToDel(String reporterToDel) {
+        this.reporterToDel = reporterToDel;
     }
 
-    public String getReporter() {
-        return reporter;
+    public String getReporterToDel() {
+        return reporterToDel;
     }
 
     public void setLogInOut(String logInOut) {
@@ -388,16 +413,23 @@ public class Queue extends BaseTestMethods {
     }
 
     public String getJson(){
+        JsonArrayBuilder managerArray = Json.createArrayBuilder();
+        JsonArrayBuilder reporterArray = Json.createArrayBuilder();
+        if (manager != null && reporter != null){
+            managerArray.add(getContactId(manager.getId()));
+            reporterArray.add(getContactId(reporter.getId()));
+        }
+
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
-        return factory.createObjectBuilder()
+        JsonObject json = factory.createObjectBuilder()
                 .add("globalDetail", factory.createObjectBuilder()
                         .add("queueName", getName())
                         .add("subscriptionId", getSubscriptionId())
                         .add("mohId",0)
                         .add("loginLogout", JsonValue.NULL)
                         .add("uploadType", "")
-                        .add("reporterIds",factory.createArrayBuilder())
-                        .add("managerIds",factory.createArrayBuilder())
+                        .add("reporterIds",reporterArray)
+                        .add("managerIds",managerArray)
                 )
                 .add("specificDetail",factory.createObjectBuilder()
                         .add("maxHoldTime", 30)
@@ -412,7 +444,9 @@ public class Queue extends BaseTestMethods {
                         .add("announcementId",0)
                 )
                 .add("name", generateNewId())
-                .build().toString();
+                .build();
+
+        return json.toString();
     }
 
     private String getSubscriptionId(){
@@ -473,6 +507,20 @@ public class Queue extends BaseTestMethods {
             }
         }
         return "";
+    }
+
+    private int getContactId(String id){
+        String query ="SELECT contact_id FROM webadmin_20170426.contact where customer_fk = %s";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,id));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getInt(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
 }

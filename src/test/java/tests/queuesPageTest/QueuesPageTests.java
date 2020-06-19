@@ -1,5 +1,6 @@
 package tests.queuesPageTest;
 
+import api.baseApiMethods.FileManagementApi;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -8,11 +9,16 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.FileManagementApi.*;
+import static api.baseApiMethods.QueueApi.createQueueApi;
+import static api.baseApiMethods.QueueApi.deleteQueueApi;
+import static api.baseApiMethods.UserApi.*;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.addStreamAttachmentAsync;
 import static io.qameta.allure.Allure.step;
@@ -26,100 +32,50 @@ public class QueuesPageTests extends BaseTestMethods {
     ArrayList<Queue> queuesList = new ArrayList<>();
     ArrayList<User> usersList = new ArrayList<>();
     ArrayList<AbbreviatedDialling> abbrevNumsList = new ArrayList<>();
+    ArrayList<FileManagementTestData> musicList = new ArrayList<>();
 
-    @Description("Verify if user can create new Queue")
+    @Description("Verify if user can create/delete new Queue")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
-    public void VerifyIfUserCanCreateNewQueue() {
-        step("Prepare test data - users, queue instances");
+    public void createDeleteQueueTest() {
+
         Queue queue = new Queue();
+        FileManagementTestData music = new FileManagementTestData();
         User user1 = new User();
         User user2 = new User();
 
         queuesList.add(queue);
         usersList.add(user1);
         usersList.add(user2);
+        musicList.add(music);
 
-        step("Log in the system");
-        login();
+        uploadMohApi(music);
+        createUsersApi(user1,user2);
 
-        step("Create test users");
-        createUser(user1);
-        createUser(user2);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
+        configureQueueTab
+                .clickCreateNewQueue()
+                .setQueueName(queue.getName())
+                .setSubscription()
+                .selectMaxWaitTime(queue.getMaxWaitTime())
+                .selectQueueManager(user1.getFullName())
+                .selectQueueReporter(user2.getFullName())
+                .selectPriority(queue.getPriority())
+                .selectWaitingMusic(music.getFileName())
+                .selectAnnoucFrequency(queue.getAnnouncementFrequency())
+                .selectRuleForAgent(queue.getRuleForFindingAgent())
+                .selectTimeout(queue.getTimeoutForCalling())
+                .selectRetryTime(queue.getWaitingTimeBeforeNextAttempt())
+                .selectWaitTimeBeforeNextCall(queue.getWaitingTimeBeforeNextCall())
+                .selectRecordCall(queue.getRecordCalls())
+                .saveChanges()
+                .verifyIfQueueExistsInTheList(queue.getName())
+                .deleteQueue(queue)
+                .verifyIfQueueNotExistInList(queue.getName());
 
-        step("Navigate to the Queue page, Configure tab");
-        basePage.getTabQueues().click();
-        queuesBasePage.getTabConfigureQueues().click();
-
-        step("Click \"Create new Queue\" button");
-        configureQueueTab.getButtonCreateNewQueue().click();
-
-        step("Fill in \"Queue name\" field");
-        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
-
-        step("Select \"Subscription\"");
-        createNewQueuePopup.getDropdownSubscription().selectOption(1);
-        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
-
-        step("Select random value from \"Max. waiting time for customer service\" dropdown");
-        createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
-
-        step("Select manager");
-        queue.setManager(user1.getFullName());
-        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManager());
-
-        step("Select reporter");
-        queue.setReporter(user2.getFullName());
-        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
-
-        step("Set priority value");
-        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
-
-        step("Select \"Waiting music\"");
-        createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
-        queue.setWaitingMusic(createNewQueuePopup.getDropdownWaitingMusic().getSelectedText());
-
-        step("Select \"Filename announcement\"");
-        createNewQueuePopup.getDropdownFileNameAnnounc().selectOption(1);
-        queue.setFilenameAnnouncement(createNewQueuePopup.getDropdownFileNameAnnounc().getSelectedText());
-
-        step("Select \"Announcement frequency\"");
-        createNewQueuePopup.getDropdownAnnounFreq().selectOptionByValue(queue.getAnnouncementFrequency());
-
-        step("Select \"Rule for finding agent\"");
-        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
-
-        step("Select \"Timeout for calling an agent\"");
-        createNewQueuePopup.getDropdownTimeOutForCall().selectOptionByValue(queue.getTimeoutForCalling());
-
-        step("Select \"Waiting time (in sec.) before next attempt\"");
-        createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
-
-        step("Select \"Waiting time (in sec.) for agents before next call\"");
-        createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
-
-        step("Select \"Record calls\"");
-        createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
-
-        step("Save Changes");
-        createNewQueuePopup.getButtonSave().click();
-        refreshPage();
-        waitUntilAlertDisappear();
-
-        step("Verify if Queue was created");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(exist);
-
-        step("Delete created Queue");
-        configureQueueTab.getButtonDeleteQueueByName(queue.getName()).click();
-        confirmationPopup.getYesButton().click();
-        refreshPage();
-        waitUntilAlertDisappear();
-
-        step("Verify if Queue was created");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).shouldNot(exist);
-
-        step("Delete created users");
-        deleteUser(user1);
-        deleteUser(user2);
+        deleteUsersApi(user1,user2);
+        deleteMohApi(music.getMohId());
     }
 
     @Description("Verify if user can edit Queue")
@@ -154,12 +110,12 @@ public class QueuesPageTests extends BaseTestMethods {
         waitUntilAlertDisappear();
 
         step("Select manager");
-        queue.setManager(user1.getFullName());
-        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManager());
+        queue.setManagerToDel(user1.getFullName());
+        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManagerToDel());
 
         step("Select reporter");
-        queue.setReporter(user2.getFullName());
-        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporter());
+        queue.setReporterToDel(user2.getFullName());
+        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporterToDel());
 
         step("Select short dial for login/loguot");
         createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
@@ -202,7 +158,7 @@ public class QueuesPageTests extends BaseTestMethods {
 
     @Description("Check if user can configure Queue for agents")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
-    public void CheckIfUserCanConfigureQueueForAgents(){
+    public void configureQueueForAgentsTest(){
         Queue queue = new Queue();
         User user1 = new User();
         User user2 = new User();
@@ -210,17 +166,18 @@ public class QueuesPageTests extends BaseTestMethods {
         usersList.add(user1);
         usersList.add(user2);
 
-        login();
-        userPage
-                .createUser(user1,user2);
+        createUsersApi(user1,user2);
+        createQueueApi(queue);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
-                .createQueue(queue)
                 .openQueueAgentPopup(queue)
                 .addAgentToQueue(user1, user2);
         queueForAgentsPopup
                 .validateAddedAgents(queue, user1, user2);
-        deleteQueue(queue.getName());
-        deleteUser(user1,user2);
+        deleteQueueApi(queue);
+        deleteUsersApi(user1,user2);
     }
 
     @Description("Check if user can change the Agent status Login/Logout/Wait on Status tab")
@@ -512,7 +469,7 @@ public class QueuesPageTests extends BaseTestMethods {
         startBrowser();
         login();
         queueCleanUp(queuesList);
-        userCleanUp(usersList);
+        userApiCleanUp(usersList);
         abbrevNumsCleanUp(abbrevNumsList);
         closeBrowser();
     }

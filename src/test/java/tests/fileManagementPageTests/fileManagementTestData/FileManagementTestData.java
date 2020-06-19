@@ -58,4 +58,18 @@ public class FileManagementTestData extends BaseTestMethods {
         }
         return "";
     }
+
+    public String getMohId(){
+        String query = "SELECT * FROM webadmin_20170426.moh where display_name = \"%s\";";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getFileName()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 }

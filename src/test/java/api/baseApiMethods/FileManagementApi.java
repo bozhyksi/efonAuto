@@ -6,8 +6,7 @@ import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestDa
 
 import java.io.File;
 
-import static api.data.endPoints.EndPoints.deleteAnnouncementDelete;
-import static api.data.endPoints.EndPoints.postAnnouncementUpload;
+import static api.data.endPoints.EndPoints.*;
 import static api.data.preparation.Preparation.login;
 
 public class FileManagementApi {
@@ -28,6 +27,24 @@ public class FileManagementApi {
     public static void deleteAnnouncementApi (String id){
         login()
                 .delete(deleteAnnouncementDelete,id);
+    }
+
+    @Step("Upload MOH via API")
+    public static void uploadMohApi(FileManagementTestData moh){
+        login().
+                given()
+                .contentType("multipart/form-data")
+                .accept(ContentType.JSON)
+                .multiPart("multipartFile", new File(moh.getFilePath()), "audio/wav")
+                .formParam("displayName", moh.getFileName())
+                .when()
+                .post(postMohUpload);
+    }
+
+    @Step("Delete MOH via API")
+    public static void deleteMohApi (String id){
+        login()
+                .delete(deleteMohDelete,id);
     }
 
 }

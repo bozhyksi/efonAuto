@@ -19,6 +19,8 @@ public abstract class EndPoints {
     //File management
     public final static String postAnnouncementUpload = "/uploader/upload/announcement";
     public final static String deleteAnnouncementDelete = "/announcements/{id}";
+    public final static String postMohUpload = "/uploader/upload/moh";
+    public final static String deleteMohDelete = "/moh/{id}";
 
     //Hunt group
     public final static String postHuntGroupCreate = "/hunt-groups";

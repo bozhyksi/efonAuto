@@ -161,4 +161,58 @@ public class CreateNewQueuePopup extends BasePopup {
         return this;
     }
 
+    @Step("Select random value from \"Max. waiting time for customer service\" dropdown")
+    public CreateNewQueuePopup selectMaxWaitTime(String time){
+        getDropdownMaxWaintingTime().selectOptionByValue(time);
+        return this;
+    }
+
+    @Step("Set priority value")
+    public CreateNewQueuePopup selectPriority(String priority){
+        getDropdownPriority().selectOptionContainingText(priority);
+        return this;
+    }
+
+    @Step("Select \"Waiting music\"")
+    public CreateNewQueuePopup selectWaitingMusic(String music){
+        getDropdownWaitingMusic().selectOptionContainingText(music);
+        return this;
+    }
+
+    @Step("Select \"Announcement frequency\"")
+    public CreateNewQueuePopup selectAnnoucFrequency(String frequency){
+        getDropdownAnnounFreq().selectOptionByValue(frequency);
+        return this;
+    }
+
+    @Step("Select \"Rule for finding agent\"")
+    public CreateNewQueuePopup selectRuleForAgent(String rule){
+        getDropdownRulesForFindAgent().selectOptionContainingText(rule);
+        return this;
+    }
+
+    @Step("Select \"Timeout for calling an agent\"")
+    public CreateNewQueuePopup selectTimeout(String timeout){
+        getDropdownTimeOutForCall().selectOptionByValue(timeout);
+        return this;
+    }
+
+    @Step("Select \"Waiting time (in sec.) before next attempt\"")
+    public CreateNewQueuePopup selectRetryTime (String time){
+        getDropdownRetry().selectOptionByValue(time);
+        return this;
+    }
+
+    @Step("Select \"Waiting time (in sec.) for agents before next call\"")
+    public CreateNewQueuePopup selectWaitTimeBeforeNextCall(String time){
+        getDropdownWrapUpTime().selectOptionByValue(time);
+        return this;
+    }
+
+    @Step("Select \"Record calls\"")
+    public CreateNewQueuePopup selectRecordCall(String recordCall){
+        getDropdownRecordCalls().selectOptionContainingText(recordCall);
+        return this;
+    }
+
 }
