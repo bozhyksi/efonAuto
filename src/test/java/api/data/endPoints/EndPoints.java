@@ -42,6 +42,7 @@ public abstract class EndPoints {
     //Abbreviated numbers
     public final static String postCreateAbbreviatedNumber = "/internal-numbers/{number}";
     public final static String deleteAbbreviatedNumberDelete = "/internal-numbers/{id}";
+    public final static String putUpdateShortNum = "/internal-numbers/details/update";
 
     //Call PickUps
     public final static String postCreateCallPickUp = "/call-intercept-groups/create";

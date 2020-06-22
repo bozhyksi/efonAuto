@@ -42,6 +42,7 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     }
     //</editor-fold>
 
+
     public void addSingleAbbrevNumber(String shortNumber){
         getInputAdd().setValue(shortNumber);
         waitUntilAlertDisappear();
@@ -50,7 +51,6 @@ public class ManageAbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     @Step("Create single abbreviated number")
     public ManageAbbreviatedNumbers addSingleAbbrevNumber(AbbreviatedDialling shortNumber){
-        goToMenuTab(MenuTabsBasePage.ABBREVIATED_DIALING).goToMenuTab(MenuTabsBasePage.MANAGE_ABBREVIATED_NUMBERS);
         getInputAdd().setValue(shortNumber.getSingleShortNum());
         Selenide.sleep(200);
         waitUntilAlertDisappear();

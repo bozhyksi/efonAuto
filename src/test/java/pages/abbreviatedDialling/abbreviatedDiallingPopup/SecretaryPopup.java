@@ -13,19 +13,16 @@ public class SecretaryPopup extends AbbreviatedNumbers {
     //SecretaryPopup === QueueForAgentsPopup;
     QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
 
-    public void addSecretaryToShortNumber(AbbreviatedDialling shortNumber, User user){
-        getButtonSecretaryByText(shortNumber.getSingleShortNum()).click();
-        waitUntilAlertDisappear();
+    public AbbreviatedNumbers addSecretaryToShortNumber(User user){
         executeDragDropScript(queueForAgentsPopup.getFieldNotSelectedAgentByName(user.getFirstName()),
                 queueForAgentsPopup.getSectionSelected());
         getButtonSave().click();
         waitUntilAlertDisappear();
         refreshPage();
+        return new AbbreviatedNumbers();
     }
 
-    public void validateAddedSecretaries(AbbreviatedDialling shortNumber, User ... users){
-        getButtonSecretaryByText(shortNumber.getSingleShortNum()).click();
-        waitUntilAlertDisappear();
+    public void validateAddedSecretaries(User ... users){
         for (User user: users) {
             queueForAgentsPopup.getFieldSelectedAgentByName(user.getFirstName()).should(exist);
             waitUntilAlertDisappear();

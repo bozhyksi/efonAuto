@@ -104,7 +104,7 @@ public class eFonApp extends PreparationsForRun{
     public AbbreviatedDiallingBasePage abbrevDialBasePage = new AbbreviatedDiallingBasePage();
     public AssignAbbreviatedDialling popupAssignAbbrevDial = new AssignAbbreviatedDialling();
     public ManageAbbreviatedNumbers manageAbbrevNumbersPage = new ManageAbbreviatedNumbers();
-    public AbbreviatedNumbers abbreviatedNumbers = new AbbreviatedNumbers();
+    public AbbreviatedNumbers abbreviatedNumbersPage = new AbbreviatedNumbers();
     public FaxPage faxPage = new FaxPage();
     public CallPickUpPage callPickUpPage = new CallPickUpPage();
     public GroupCallPickupPopup groupCallPickupPopup = new GroupCallPickupPopup();

@@ -1,8 +1,12 @@
 package pages.abbreviatedDialling.abbreviatedDiallingPopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
+import tests.userPageTests.userPageTestData.User;
+
+import static io.qameta.allure.Allure.step;
 
 public class AssignAbbreviatedDialling extends AbbreviatedNumbers {
     //<editor-fold desc="//-- AssignAbbreviatedDialling Locators --//">
@@ -71,10 +75,33 @@ public class AssignAbbreviatedDialling extends AbbreviatedNumbers {
     //</editor-fold>
 
 
+    @Step ("Set short number unused")
     public AssignAbbreviatedDialling setShortNumberUnused(){
         getRadioUnused().click();
         getButtonSave().click();
         waitUntilAlertDisappear();
         return this;
+    }
+
+    @Step ("Set short number to internal user ")
+    public AbbreviatedNumbers setShorNumToInternalUser(User user){
+        getRadioInternalUser().click();
+        getDropdrownSelectUser().selectOptionContainingText(user.getLastName());
+        getCheckboxForwardAsExternal().click();
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new AbbreviatedNumbers();
+    }
+
+    @Step("Set short number to external user ")
+    public AbbreviatedNumbers setShorNumToExternalUser(AbbreviatedDialling shortNum) {
+        getRadioExternalNumber().click();
+        getInputExternalNumber().setValue(shortNum.getExtPhoneNum());
+        getInputLastName().setValue(shortNum.getLastName());
+        getInputFirstName().setValue(shortNum.getFirstName());
+        getInputCompany().setValue(shortNum.getCompany());
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new AbbreviatedNumbers();
     }
 }

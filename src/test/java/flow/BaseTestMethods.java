@@ -427,7 +427,7 @@ public class BaseTestMethods extends eFonApp {
                 .addSingleAbbrevNumber(shortNumber)
                 .goToMenuTab(ABBREVIATED_NUMBERS);
 
-        abbreviatedNumbers
+        abbreviatedNumbersPage
                 .checkIfSingleAbbrevNumberExistsInList(shortNumber);
     }
 
@@ -436,7 +436,7 @@ public class BaseTestMethods extends eFonApp {
         manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
         waitUntilAlertDisappear();
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        abbreviatedNumbers.checkIfSingleAbbrevNumberExistsInList(abbrevNum);
+        abbreviatedNumbersPage.checkIfSingleAbbrevNumberExistsInList(abbrevNum);
     }
 
     @Step("Delete single short number")
@@ -446,10 +446,10 @@ public class BaseTestMethods extends eFonApp {
                 .goToMenuTab(ABBREVIATED_NUMBERS)
                 .setItemsPerPage(_All);
 
-        if (!abbreviatedNumbers.checkIfDeleteButtonExist(shortNumber))
-            abbreviatedNumbers.makeShortNumberUnused(shortNumber);
+        if (!abbreviatedNumbersPage.checkIfDeleteButtonExist(shortNumber))
+            abbreviatedNumbersPage.makeShortNumberUnused(shortNumber);
 
-        abbreviatedNumbers
+        abbreviatedNumbersPage
                 .deleteSingleAbbrevNumber(shortNumber)
                 .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
     }
@@ -462,10 +462,10 @@ public class BaseTestMethods extends eFonApp {
                 .setItemsPerPage(_All);
 
         for (AbbreviatedDialling shortNumber : shortNumbers) {
-            if (!abbreviatedNumbers.checkIfDeleteButtonExist(shortNumber))
-                abbreviatedNumbers.makeShortNumberUnused(shortNumber);
+            if (!abbreviatedNumbersPage.checkIfDeleteButtonExist(shortNumber))
+                abbreviatedNumbersPage.makeShortNumberUnused(shortNumber);
 
-            abbreviatedNumbers
+            abbreviatedNumbersPage
                     .deleteSingleAbbrevNumber(shortNumber)
                     .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
         }
@@ -474,14 +474,14 @@ public class BaseTestMethods extends eFonApp {
     public void deleteSingleAbbrevNumber(String abbrevNum) {
         basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(ABBREVIATED_NUMBERS);
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
-        if (!abbreviatedNumbers.getButtonDeleteByNum(abbrevNum).exists()) {
+        if (!abbreviatedNumbersPage.getButtonDeleteByNum(abbrevNum).exists()) {
             makeAbbrevNumberUnused(abbrevNum);
             refreshPage();
         }
-        abbreviatedNumbers.deleteSingleAbbrevNumber(abbrevNum);
+        abbreviatedNumbersPage.deleteSingleAbbrevNumber(abbrevNum);
         confirmationPopup.getYesButton().click();
         waitUntilAlertDisappear();
-        abbreviatedNumbers.checkIfSingleAbbrevNumberDoesNotExistInList(abbrevNum);
+        abbreviatedNumbersPage.checkIfSingleAbbrevNumberDoesNotExistInList(abbrevNum);
     }
 
     public void deleteAllAbbrevNumbers() {
@@ -490,10 +490,10 @@ public class BaseTestMethods extends eFonApp {
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
         refreshPage();
         basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
-        while (abbreviatedNumbers.getListNo().size() > 0) {
-            data = abbreviatedNumbers.getListNo().get(0).getText();
+        while (abbreviatedNumbersPage.getListNo().size() > 0) {
+            data = abbreviatedNumbersPage.getListNo().get(0).getText();
             if (data.equals("No Items")) break;
-            if (!abbreviatedNumbers.getButtonDeleteByNum(data).exists()) {
+            if (!abbreviatedNumbersPage.getButtonDeleteByNum(data).exists()) {
                 makeAbbrevNumberUnused(data);
                 refreshPage();
             }
@@ -506,11 +506,11 @@ public class BaseTestMethods extends eFonApp {
         abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
         manageAbbrevNumbersPage.addRangeAbbrevNumber(obj.getFromNumber(), obj.getUntilNumber());
         abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        abbreviatedNumbers.checkIfAbbrevNumberRangeCreated(obj);
+        abbreviatedNumbersPage.checkIfAbbrevNumberRangeCreated(obj);
     }
 
     public void makeAbbrevNumberUnused(String shortNumber) {
-        abbreviatedNumbers.editSingleAbbrevNumber(shortNumber);
+        abbreviatedNumbersPage.editSingleAbbrevNumber(shortNumber);
         waitUntilAlertDisappear();
         popupAssignAbbrevDial.getRadioUnused().click();
         popupAssignAbbrevDial.getButtonSave().click();
@@ -676,17 +676,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void userCleanUp(List<User> userList){
-        try {
-            refreshPage();
-            basePage.goToMenuTab(USER);
-            for (User user: userList) {
-                if (userPage.getListUserNames().filterBy(Condition.text(user.getFullName())).size()>0){
-                    deleteUser(user);
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("userCleanUp failed");
-            e.printStackTrace();
+        for (User user : userList) {
+            deleteUserApi(user.getId());
         }
     }
 
@@ -1057,7 +1048,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void assignAbbrevNumberToInternalUser(User user, AbbreviatedDialling shortNumber){
         step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbers.editSingleAbbrevNumber(shortNumber.getSingleShortNum());
+        abbreviatedNumbersPage.editSingleAbbrevNumber(shortNumber.getSingleShortNum());
 
         step("Assign short number to user");
         popupAssignAbbrevDial.getRadioInternalUser().click();
@@ -1068,7 +1059,7 @@ public class BaseTestMethods extends eFonApp {
         refreshPage();
 
         step("Check if short dial was assign to the user and user's info is showed in the grid");
-        abbreviatedNumbers.checkIfAbbrevNumberAssignedToUser(user,shortNumber);
+        abbreviatedNumbersPage.checkIfAbbrevNumberAssignedToUser(user,shortNumber);
     }
 
     public ArrayList<String> getListOfAllCustomerNumbers(){

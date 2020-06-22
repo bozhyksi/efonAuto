@@ -6,15 +6,18 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDialling;
+import pages.abbreviatedDialling.abbreviatedDiallingPopup.SecretaryPopup;
 import pages.basePage.basePopup.ConfirmationPopup;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Condition.*;
 
 public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
+
     //<editor-fold desc="//--  AbbreviatedNumbers locators --//">
     private String inputSearchXpath = "//h3[text()='Search']//following-sibling::input[(contains(@placeholder,'Company'))]";
     private String listNoXpath = "//table[@role=\"grid\"]//td[1]";
@@ -165,10 +168,10 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
     }
 
     @Step("Edit single short number, open edit popup")
-    public AbbreviatedNumbers clickEditSingleShortNumber(AbbreviatedDialling shortNumber){
+    public AssignAbbreviatedDialling clickEditSingleShortNumber(AbbreviatedDialling shortNumber){
         getButtonEditByNum(shortNumber.getSingleShortNum()).click();
         waitUntilAlertDisappear();
-        return this;
+        return new AssignAbbreviatedDialling();
     }
 
     public void editSingleAbbrevNumber(String shortNum){
@@ -184,11 +187,18 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
         getLastNameByText(shortNumber.getSingleShortNum(),user.getLastName()).should(exist);
     }
 
-    public void activateBLF(AbbreviatedDialling shortNumber){
+    @Step("Activate BLF pickup")
+    public AbbreviatedNumbers activateBLF(AbbreviatedDialling shortNumber){
         getCheckboxBlfPickupByText(shortNumber.getSingleShortNum()).click();
         waitUntilAlertDisappear();
-        refreshPage();
-        getCheckboxBlfPickupByText(shortNumber.getSingleShortNum()).shouldHave(attribute("aria-pressed","true"));
+        return this;
+    }
+
+    @Step("Verify if BLF is active")
+    public AbbreviatedNumbers verifyBlfActive(AbbreviatedDialling shortNum){
+        getCheckboxBlfPickupByText(shortNum.getSingleShortNum())
+                .shouldHave(attribute("aria-pressed","true"));
+        return this;
     }
 
     private boolean checkAbbrevNumExist(AbbreviatedDialling shortNumber){
@@ -203,5 +213,25 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     public boolean checkIfDeleteButtonExist(AbbreviatedDialling shortNumber){
         return getButtonDeleteByNum(shortNumber.getSingleShortNum()).exists();
+    }
+
+    @Step("Check if short dial was assign to the user and user's info is showed in the grid")
+    public AbbreviatedNumbers validateInternalUserShorDial(User user){
+        getListLastName().filterBy(Condition.text(user.getLastName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        getListFirstName().filterBy(Condition.text(user.getFirstName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        return this;
+    }
+
+    @Step("Check if External user info is displayed in the Abbreviated dialling grid")
+    public AbbreviatedNumbers validateExtNumber(AbbreviatedDialling shortNum){
+        checkIfExternalUserInfoIsDisplayedInTheAbbreviatedDiallingGrid(shortNum);
+        return this;
+    }
+
+    @Step("Click edit secretary")
+    public SecretaryPopup clickEditSecretary(AbbreviatedDialling shortNum){
+        getButtonSecretaryByText(shortNum.getSingleShortNum()).click();
+        waitUntilAlertDisappear();
+        return new SecretaryPopup();
     }
 }

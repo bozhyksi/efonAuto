@@ -208,7 +208,7 @@ public class IVRpageTests extends BaseTestMethods {
                 .deleteQueue(queue);
         userPage
                 .deleteUser(user);
-        abbreviatedNumbers
+        abbreviatedNumbersPage
                 .deleteSingleAbbrevNumber(shortNumber);
         announcementDisplayPage
                 .deleteAnnouncement(announcement);
