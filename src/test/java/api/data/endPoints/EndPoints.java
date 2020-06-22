@@ -29,6 +29,7 @@ public abstract class EndPoints {
     //Queues
     public final static String postCreateQueue = "/queues/details/";
     public final static String deleteDeleteQueue = "/queues/{id}";
+    public final static String postAddQueueAgent = "/queues/agents/{id}";
 
     //IVRs
     public final static String postIvrCreate = "ivrs/";

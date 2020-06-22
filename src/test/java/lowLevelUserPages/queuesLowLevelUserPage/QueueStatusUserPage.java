@@ -25,7 +25,7 @@ public class QueueStatusUserPage extends QueuesBaseUserPage {
         waitUntilAlertDisappear();
 
         step("Set penalty value and validate popup headers");
-        penaltyPopup.changePenaltyForAgent(user);
+        penaltyPopup.enterPenaltyForAgent(user.getPenalty());
         refreshPage();
 
         step("Validate if penalty was changed");

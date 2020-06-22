@@ -1,6 +1,7 @@
 package tests.queuesPageTest.queueTestData;
 
 import flow.BaseTestMethods;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.userPageTests.userPageTestData.User;
 
 import javax.json.*;
@@ -229,6 +230,8 @@ public class Queue extends BaseTestMethods {
     private String toDateQueueRecordings;
     private User manager;
     private User reporter;
+    private AbbreviatedDialling shortNum;
+    private User agent;
     //</editor-fold>
 
     public Queue(){
@@ -243,6 +246,21 @@ public class Queue extends BaseTestMethods {
         this.recordCalls = RecordCalls.getRandomVal();
         this.fromDateQueueRecordings = "2015-04-23 13:22";
         this.toDateQueueRecordings = getDate("HOUR",1);
+    }
+
+    public Queue(User agent){
+        this.name = getRandomString(10);
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
+        this.agent = agent;
     }
 
     public Queue(User manager, User reporter){
@@ -261,6 +279,23 @@ public class Queue extends BaseTestMethods {
         this.reporter = reporter;
     }
 
+    public Queue(User manager, User reporter, AbbreviatedDialling shortNum){
+        this.name = getRandomString(10);
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
+        this.manager = manager;
+        this.reporter = reporter;
+        this.shortNum = shortNum;
+    }
+
     public Queue(String queueName){
         this.name = queueName;
         this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
@@ -277,6 +312,14 @@ public class Queue extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public User getAgent() {
+        return agent;
+    }
+
+    public AbbreviatedDialling getShortNum() {
+        return shortNum;
+    }
 
     public User getReporter() {
         return reporter;
@@ -449,6 +492,15 @@ public class Queue extends BaseTestMethods {
         return json.toString();
     }
 
+    public String getAddAgentJson(){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createArrayBuilder()
+                .add(factory.createObjectBuilder()
+                        .add("accountId", agent.getAccountId())
+                        .add("displayName",getAccountDisplayName())
+                ).build().toString();
+    }
+
     private String getSubscriptionId(){
         String query ="SELECT abo_id FROM webadmin_20170426.abo \n" +
                 "where customer_fk = 906144 and display_name=\"Queue/ACD\" and abo_id not in \n" +
@@ -522,6 +574,25 @@ public class Queue extends BaseTestMethods {
         }
         return 0;
     }
+
+    private String getAccountDisplayName(){
+        String query ="SELECT c. display_name,a.name\n" +
+                "FROM webadmin_20170426.account a\n" +
+                "join customer c on c.customer_id = a.customer_fk\n" +
+                "where a.account_id= 792888;";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,agent.getAccountId()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1)+" "+resultSet.getString(2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+
 
 }
 

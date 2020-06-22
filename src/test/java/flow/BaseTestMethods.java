@@ -26,8 +26,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
 import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
 import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
+import static api.baseApiMethods.QueueApi.deleteQueueApi;
 import static api.baseApiMethods.UserApi.deleteUserApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
@@ -767,19 +769,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void queueCleanUp(List<Queue> queueList){
-        try {
-            refreshPage();
-            if (!basePage.getPageTitle().equals("Queues")){
-                basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-            }
-            for (Queue queue: queueList) {
-                if (configureQueueTab.getFieldQueueNameByText(queue.getName()).exists()){
-                    deleteQueue(queue.getName());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("queueCleanUp failed");
-            e.printStackTrace();
+        for (Queue queue : queueList) {
+            deleteQueueApi(queue);
         }
     }
 
@@ -821,19 +812,8 @@ public class BaseTestMethods extends eFonApp {
 
     @Step("Clean up abbreviated numbers - delete test data")
     public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
-        try {
-            basePage.getTabAbbreviatedDialling().click();
-            waitUntilAlertDisappear();
-            abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-            waitUntilAlertDisappear();
-            for (AbbreviatedDialling num: abbrevDialList) {
-                if (abbreviatedNumbers.getFieldNumberByText(num.getSingleShortNum()).exists()){
-                    deleteSingleAbbrevNumber(num.getSingleShortNum());
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("abbrevNumsCleanUp failed");
-            e.printStackTrace();
+        for (AbbreviatedDialling abbreviatedDial : abbrevDialList) {
+            deleteAbbreviatedNumberApi(abbreviatedDial);
         }
     }
 

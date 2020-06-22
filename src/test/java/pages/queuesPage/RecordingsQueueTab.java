@@ -1,6 +1,13 @@
 package pages.queuesPage;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
+
+import static com.codeborne.selenide.Condition.exist;
+import static io.qameta.allure.Allure.step;
+
 
 public class RecordingsQueueTab extends QueuesBasePage {
     //<editor-fold desc="locators">
@@ -12,7 +19,6 @@ public class RecordingsQueueTab extends QueuesBasePage {
     private String buttonSearchXpath = "//button[text()=\"Search\"]";
     private String fieldByNameXpath = "//td[contains(text(),\"%s\")]";
     //</editor-fold>
-
 
     //<editor-fold desc="get\set">
     public SelenideElement getDropdownQueueDisplayName() {
@@ -44,5 +50,36 @@ public class RecordingsQueueTab extends QueuesBasePage {
     }
     //</editor-fold>
 
+    @Step("Select created queue in the dropdown")
+    public RecordingsQueueTab selectQueue(Queue queue){
+        getDropdownQueueDisplayName().selectOptionContainingText(queue.getName());
+        return this;
+    }
+
+    @Step("Select agent")
+    public RecordingsQueueTab selectAgent(User user){
+        getDropdownAgent().selectOptionContainingText(user.getLastName());
+        return this;
+    }
+
+    @Step("Enter data")
+    public RecordingsQueueTab enterDate(String fromDate, String toDate){
+        getInputFrom().setValue(fromDate).pressTab();
+        getInputTo().setValue(toDate).pressTab();
+        return this;
+    }
+
+    @Step("Click search")
+    public RecordingsQueueTab clickSearch(){
+        getButtonSearch().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Verify search results")
+    public RecordingsQueueTab verifySearchResults(){
+        getFieldByName("No Items").should(exist);
+        return this;
+    }
 
 }

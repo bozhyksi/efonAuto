@@ -2,7 +2,12 @@ package pages.queuesPage;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import pages.queuesPage.queuePagePopups.PenaltyPopup;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
 
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 
 public class StatusQueueTab extends QueuesBasePage {
@@ -71,13 +76,15 @@ public class StatusQueueTab extends QueuesBasePage {
     }
     //</editor-fold>
 
-    public void changeStatus(String agentName, ChangeState state){
+    @Step("Change and verify agent statuses")
+    public StatusQueueTab changeStatus(String agentName, ChangeState state){
         getButtonChangeStateByName(agentName,state.getStatus()).click();
         waitUntilAlertDisappear();
         getFieldStatusByName(agentName).shouldHave(text(getCurrentAgentStatus(state)));
+        return this;
     }
 
-    public String getCurrentAgentStatus(ChangeState state){
+    private String getCurrentAgentStatus(ChangeState state){
         switch (state){
             case Login: return "Online";
             case Wait: return "Wait";
@@ -87,5 +94,24 @@ public class StatusQueueTab extends QueuesBasePage {
             case End_Pause:return "Online";
             default:return "";
         }
+    }
+
+    @Step("Select Queue from drop-down")
+    public StatusQueueTab selectQueue(Queue queue){
+        getDropdownSearch().selectOptionContainingText(queue.getName());
+        return this;
+    }
+
+    @Step("Click edit penalty. Open Penalty popup")
+    public PenaltyPopup clickEditPenalty(User user){
+        getButtonEditByName(user.getFirstName()).click();
+        waitUntilAlertDisappear();
+        return new PenaltyPopup();
+    }
+
+    @Step("Verify penalty value")
+    public StatusQueueTab verifyPenalty(String penalty){
+        getFieldPenaltyByText(penalty).should(exist);
+        return this;
     }
 }

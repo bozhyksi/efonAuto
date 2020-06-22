@@ -19,15 +19,19 @@ import static api.baseApiMethods.FileManagementApi.uploadMohApi;
 import static api.baseApiMethods.IVRApi.createIvrApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.*;
+import static api.baseApiMethods.UserApi.createUsersApi;
 import static core.configuration.preparations.eFonApp.dataBaseWorker;
 import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 public class test2 {
     public static void main(String[] args) {
-        FileManagementTestData moh = new FileManagementTestData();
 
-        uploadMohApi(moh);
-        deleteMohApi(moh.getMohId());
+        Queue queue = new Queue(new User());
+        createUsersApi(queue.getAgent());
+        createQueueApi(queue);
+        addQueueAgentApi(queue);
+
     }
+
 
 }

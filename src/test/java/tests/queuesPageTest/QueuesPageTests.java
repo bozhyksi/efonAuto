@@ -15,9 +15,10 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.AbbreviatedNumbersApi.createAbbreviatedNumberApi;
+import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
 import static api.baseApiMethods.FileManagementApi.*;
-import static api.baseApiMethods.QueueApi.createQueueApi;
-import static api.baseApiMethods.QueueApi.deleteQueueApi;
+import static api.baseApiMethods.QueueApi.*;
 import static api.baseApiMethods.UserApi.*;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.addStreamAttachmentAsync;
@@ -25,6 +26,7 @@ import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.queuesPage.ReportsQueueTab.ReportBy.*;
 import static pages.queuesPage.StatusQueueTab.ChangeState.*;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 @Listeners(CustomListeners.class)
 
@@ -49,7 +51,7 @@ public class QueuesPageTests extends BaseTestMethods {
         musicList.add(music);
 
         uploadMohApi(music);
-        createUsersApi(user1,user2);
+        createUsersApi(user1, user2);
 
         login()
                 .goToMenuTab(QUEUES)
@@ -74,337 +76,222 @@ public class QueuesPageTests extends BaseTestMethods {
                 .deleteQueue(queue)
                 .verifyIfQueueNotExistInList(queue.getName());
 
-        deleteUsersApi(user1,user2);
+        deleteUsersApi(user1, user2);
         deleteMohApi(music.getMohId());
     }
 
     @Description("Verify if user can edit Queue")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
-    public void VerifyIfUserCanEditQueue(){
-        step("Prepare test data - users, queue instances");
+    public void editQueueTest() {
+        User manager = new User();
+        User reporter = new User();
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(SINGLE);
         Queue queue = new Queue();
-        User user1 = new User();
-        User user2 = new User();
-        AbbreviatedDialling shortNum = new AbbreviatedDialling(10,99);
 
         queuesList.add(queue);
-        usersList.add(user1);
-        usersList.add(user2);
+        usersList.add(manager);
+        usersList.add(reporter);
         abbrevNumsList.add(shortNum);
 
-        step("Log in the system");
-        login();
+        createUsersApi(manager, reporter);
+        createQueueApi(queue);
+        createAbbreviatedNumberApi(shortNum);
 
-        step("Create test users");
-        createUser(user1);
-        createUser(user2);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
+        configureQueueTab
+                .clickEditQueueButton(queue)
+                .selectQueueManager(manager.getFirstName())
+                .selectQueueReporter(reporter.getFirstName())
+                .selectLoginShortNum(shortNum)
+                .selectMaxWaitTime(queue.getMaxWaitTime())
+                .selectPriority(queue.getPriority())
+                .selectRuleForAgent(queue.getRuleForFindingAgent())
+                .saveChanges()
+                .verifyQueueManagerReporterExist(manager.getFullName())
+                .verifyQueueManagerReporterExist(reporter.getFullName());
+        configureQueueTab
+                .clickEditQueueButton(queue)
+                .verifyMaxWaitTime(queue.getMaxWaitTime())
+                .verifyPriority(queue.getPriority())
+                .verifyRuleForAgents(queue.getRuleForFindingAgent())
+                .verifyShortNum(shortNum.getSingleShortNum());
 
-        step("Add short number");
-        addSingleAbbrevNumber(shortNum.getSingleShortNum());
-
-        step("Create new Queue");
-        createQueue(queue);
-
-        step("Open edit popup, click edit button");
-        configureQueueTab.getButtonEditQueueByName(queue.getName()).click();
-        waitUntilAlertDisappear();
-
-        step("Select manager");
-        queue.setManagerToDel(user1.getFullName());
-        createNewQueuePopup.getDropdownManager().selectOptionContainingText(queue.getManagerToDel());
-
-        step("Select reporter");
-        queue.setReporterToDel(user2.getFullName());
-        createNewQueuePopup.getDropdownReporter().selectOptionContainingText(queue.getReporterToDel());
-
-        step("Select short dial for login/loguot");
-        createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
-
-        step("Change \"Max. waiting time for customer\" field value");
-        queue.setMaxWaitTime(Queue.MaxWaitTime.getRandomVal().getWaitTime());
-        createNewQueuePopup.getDropdownMaxWaintingTime().setValue(queue.getMaxWaitTime());
-
-        step("Change \"Priority\" drop down value");
-        queue.setPriority(Queue.Priority.getRandomVal().getPrior());
-        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
-
-        step("Change \"Set Rule For Finding Agent\" drop down value");
-        queue.setRuleForFindingAgent(Queue.RuleForFindingAgent.getRandomVal().getRule());
-        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
-
-        step("Save made changes");
-        createNewQueuePopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-
-        step("Verify if Queue exists in grid");
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(exist);
-
-        step("Open edit popup, click edit button");
-        configureQueueTab.getButtonEditQueueByName(queue.getName()).click();
-        waitUntilAlertDisappear();
-
-        step("Verify if all made changes were saved");
-        createNewQueuePopup.getDropdownMaxWaintingTime().getSelectedText().contains(queue.getMaxWaitTime());
-        createNewQueuePopup.getDropdownPriority().getSelectedText().contains(queue.getPriority());
-        createNewQueuePopup.getDropdownRulesForFindAgent().getSelectedText().contains(queue.getRuleForFindingAgent());
-        createNewQueuePopup.getButtonCancel().click();
-
-        step("Clear test data");
-        deleteQueue(queue.getName());
-        deleteUser(user1);
-        deleteUser(user2);
-        deleteSingleAbbrevNumber(shortNum.getSingleShortNum());
+        deleteQueueApi(queue);
+        deleteUsersApi(manager, reporter);
+        deleteAbbreviatedNumberApi(shortNum);
     }
 
     @Description("Check if user can configure Queue for agents")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "queuePageTest"})
-    public void configureQueueForAgentsTest(){
+    public void configureQueueForAgentsTest() {
         Queue queue = new Queue();
-        User user1 = new User();
-        User user2 = new User();
+        User agent1 = new User();
+        User agent2 = new User();
         queuesList.add(queue);
-        usersList.add(user1);
-        usersList.add(user2);
+        usersList.add(agent1);
+        usersList.add(agent2);
 
-        createUsersApi(user1,user2);
+        createUsersApi(agent1, agent2);
         createQueueApi(queue);
         login()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
                 .openQueueAgentPopup(queue)
-                .addAgentToQueue(user1, user2);
+                .addAgentToQueue(agent1, agent2);
         queueForAgentsPopup
-                .validateAddedAgents(queue, user1, user2);
+                .validateAddedAgents(queue, agent1, agent2);
         deleteQueueApi(queue);
-        deleteUsersApi(user1,user2);
+        deleteUsersApi(agent1, agent2);
     }
 
     @Description("Check if user can change the Agent status Login/Logout/Wait on Status tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfUserCanChangeAgentStatusOnStatusTab(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void changeAgentStatusTest() {
+        Queue queue = new Queue(new User());
 
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createQueueApi(queue);
+        createUsersApi(queue.getAgent());
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
-
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto status tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(STATUS_QUEUES);
-
-        step("Select created Queue in search drop down");
-        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
-
-        step("Verify if selected Queue agents appeared in search results");
-        statusQueuePage.getFieldAgentByText(user.getFirstName()).should(exist);
-
-        step("Change agent status and verify if status was changed correctly");
-        statusQueuePage.changeStatus(user.getFirstName(), Login);
-        statusQueuePage.changeStatus(user.getFirstName(), Pause);
-        statusQueuePage.changeStatus(user.getFirstName(), End_Pause);
-        statusQueuePage.changeStatus(user.getFirstName(), Wait);
-        statusQueuePage.changeStatus(user.getFirstName(), End_Wait);
-        statusQueuePage.changeStatus(user.getFirstName(), Logout);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(STATUS_QUEUES);
+        statusQueuePage
+                .selectQueue(queue)
+                .changeStatus(queue.getAgent().getFirstName(), Login)
+                .changeStatus(queue.getAgent().getFirstName(), Pause)
+                .changeStatus(queue.getAgent().getFirstName(), End_Pause)
+                .changeStatus(queue.getAgent().getFirstName(), Wait)
+                .changeStatus(queue.getAgent().getFirstName(), End_Wait)
+                .changeStatus(queue.getAgent().getFirstName(), Logout);
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if admin can change the Agent penalty on Status tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfAdminCanChangeTheAgentPenaltyStatusTab(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void changeAgentPenaltyTest() {
+        Queue queue = new Queue(new User());
 
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createQueueApi(queue);
+        createUsersApi(queue.getAgent());
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(STATUS_QUEUES);
+        statusQueuePage
+                .selectQueue(queue)
+                .clickEditPenalty(queue.getAgent())
+                .enterPenaltyForAgent(queue.getAgent().getPenalty())
+                .saveChanges()
+                .verifyPenalty(queue.getAgent().getPenalty());
 
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto status tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(STATUS_QUEUES);
-
-        step("Select created Queue in search drop down");
-        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
-
-        step("Verify if selected Queue agents appeared in search results");
-        statusQueuePage.getFieldAgentByText(user.getFirstName()).should(exist);
-
-        step("Open Penalty popup");
-        statusQueuePage.getButtonEditByName(user.getFirstName()).click();
-        waitUntilAlertDisappear();
-
-        step("Set penalty value and validate popup headers");
-        penaltyPopup.changePenaltyForAgent(user);
-        refreshPage();
-
-        step("Validate if penalty was changed");
-        statusQueuePage.getDropdownSearch().selectOptionContainingText(queue.getName());
-        statusQueuePage.getFieldPenaltyByText(user.getPenalty()).should(exist);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
-
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if admin can search Queue for recordings")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfAdminSearchQueueForRecordings(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
-
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void searchQueuesForRecordingsTest() {
+        Queue queue = new Queue(new User());
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createUsersApi(queue.getAgent());
+        createQueueApi(queue);
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
-
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto status tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(RECORDINGS_QUEUES);
-
-        step("Select created queue in the dropdown");
-        recordingsQueuePage.getDropdownQueueDisplayName().selectOptionContainingText(queue.getName());
-
-        step("Select agent in the proper dropdown");
-        recordingsQueuePage.getDropdownAgent().selectOptionContainingText(user.getLastName());
-
-        step("Fill in From/To date");
-        recordingsQueuePage.getInputFrom().setValue(queue.getFromDateQueueRecordings());
-        recordingsQueuePage.getInputTo().setValue(queue.getToDateQueueRecordings());
-
-        step("Click search and validate the results");
-        recordingsQueuePage.getButtonSearch().click();
-        waitUntilAlertDisappear();
-        recordingsQueuePage.getFieldByName("No Items").should(exist);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(RECORDINGS_QUEUES);
+        recordingsQueuePage
+                .enterDate(queue.getFromDate(),queue.getToDate())
+                .selectQueue(queue)
+                .selectAgent(queue.getAgent())
+                .clickSearch()
+                .verifySearchResults();
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if VPBX admin can create Report by Day")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfVpbxAdminCanCreateReportByDay(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void createReportByDayTest() {
+        Queue queue = new Queue(new User());
+
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createUsersApi(queue.getAgent());
+        createQueueApi(queue);
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
-
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto REPORTS tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
-
-        step("Check if user can create daily reports");
-        reportsQueuePage.createReportForEveryType(Day,queue,user);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(REPORT_QUEUES);
+        reportsQueuePage
+                .createReportForEveryType(Day, queue, queue.getAgent());
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if VPBX admin can create Report by Month")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfVpbxAdminCanCreateReportByMonth(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void createReportByMonthTest() {
+        Queue queue = new Queue(new User());
+
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createUsersApi(queue.getAgent());
+        createQueueApi(queue);
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(REPORT_QUEUES);
+        reportsQueuePage
+                .createReportForEveryType(Month, queue, queue.getAgent());
 
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto REPORTS tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
-
-        step("Check if user can create daily reports");
-        reportsQueuePage.createReportForEveryType(Month,queue,user);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if VPBX admin can create Report by Period")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void CheckIfVpbxAdminCanCreateReportByPeriod(){
-        step("Prepare test data - users, queue instances");
-        Queue queue = new Queue();
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void CheckIfVpbxAdminCanCreateReportByPeriod() {
+        Queue queue = new Queue(new User());
+
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(queue.getAgent());
 
-        step("Log in the system");
-        login();
+        createUsersApi(queue.getAgent());
+        createQueueApi(queue);
+        addQueueAgentApi(queue);
 
-        step("Create test data - Queue, Users");
-        createUser(user);
-        createQueueOnlyRequiredFields(queue);
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(REPORT_QUEUES);
+        reportsQueuePage
+                .createReportForEveryType(Period, queue, queue.getAgent());
 
-        step("Add agent to queue");
-        addAgentToQueue(queue,user);
-
-        step("Goto REPORTS tab");
-        basePage.goToMenuTab(QUEUES).goToMenuTab(REPORT_QUEUES);
-
-        step("Check if user can create daily reports");
-        reportsQueuePage.createReportForEveryType(Period,queue,user);
-
-        step("Clean test data");
-        deleteUser(user);
-        deleteQueue(queue.getName());
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if Queue changed name shown in the grid")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void queueChangedNameDisplayingTest(){
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void queueChangedNameDisplayingTest() {
 
         Queue queue = new Queue();
         queuesList.add(queue);
@@ -413,64 +300,65 @@ public class QueuesPageTests extends BaseTestMethods {
         configureQueueTab
                 .createQueue(queue)
                 .clickEditQueueButton(queue)
-                    .setQueueName(queue.changeName())
-                    .saveChanges()
+                .setQueueName(queue.changeName())
+                .saveChanges()
                 .verifyIfQueueExistsInTheList(queue.getName())
                 .deleteQueue(queue);
     }
 
     @Description("Check if Queue changed Manager shown in the grid")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void queueChangedManagerDisplayingTest(){
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void queueChangedManagerDisplayingTest() {
+        User manager = new User();
         Queue queue = new Queue();
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(manager);
 
-        login();
-        userPage
-                .createUser(user);
+        createUsersApi(manager);
+        createQueueApi(queue);
+
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
-                .createQueue(queue)
                 .clickEditQueueButton(queue)
-                .selectQueueManager(user.getFirstName())
+                .selectQueueManager(manager.getFirstName())
                 .saveChanges()
-                .verifyQueueManagerReporterExist(user.getFullName())
-                .deleteQueue(queue);
-        userPage
-                .deleteUser(user);
+                .verifyQueueManagerReporterExist(manager.getFullName());
+
+        deleteUsersApi(manager);
+        deleteQueueApi(queue);
     }
 
     @Description("Check if Queue changed Reporter shown in the grid")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queuePageTest"})
-    public void queueChangedReporterDisplayingTest(){
-        User user = new User();
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
+    public void queueChangedReporterDisplayingTest() {
+        User reporter = new User();
         Queue queue = new Queue();
         queuesList.add(queue);
-        usersList.add(user);
+        usersList.add(reporter);
 
-        login();
-        userPage
-                .createUser(user);
+        createUsersApi(reporter);
+        createQueueApi(queue);
+
+        login()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
-                .createQueue(queue)
                 .clickEditQueueButton(queue)
-                .selectQueueReporter(user.getFirstName())
+                .selectQueueReporter(reporter.getFirstName())
                 .saveChanges()
-                .verifyQueueManagerReporterExist(user.getFullName())
-                .deleteQueue(queue);
-        userPage
-                .deleteUser(user);
+                .verifyQueueManagerReporterExist(reporter.getFullName());
+
+        deleteQueueApi(queue);
+        deleteUsersApi(reporter);
     }
 
 
     @AfterClass(alwaysRun = true)
-    private void cleanUp(){
-        startBrowser();
-        login();
+    private void cleanUp() {
         queueCleanUp(queuesList);
         userApiCleanUp(usersList);
         abbrevNumsCleanUp(abbrevNumsList);
-        closeBrowser();
     }
 }

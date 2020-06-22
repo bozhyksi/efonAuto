@@ -1,7 +1,9 @@
 package pages.queuesPage.queuePagePopups;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
+import pages.queuesPage.StatusQueueTab;
 import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.text;
@@ -37,11 +39,16 @@ public class PenaltyPopup extends BasePopup {
     }
     //</editor-fold>
 
+    @Step("Enter penalty for agent")
+    public PenaltyPopup enterPenaltyForAgent(String penalty){
+        getInputPenalty().setValue(penalty);
+        return this;
+    }
 
-    public void changePenaltyForAgent(User user){
-        getFieldAgentName().shouldHave(text(user.getFirstName()));
-        getInputPenalty().setValue(user.getPenalty());
+    @Step("Save changes")
+    public StatusQueueTab saveChanges(){
         getButtonSave().click();
         waitUntilAlertDisappear();
+        return new StatusQueueTab();
     }
 }

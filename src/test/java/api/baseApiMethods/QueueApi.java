@@ -62,4 +62,13 @@ public class QueueApi {
         UserApi.deleteUserApi(queue.getManager().getId());
         UserApi.deleteUserApi(queue.getReporter().getId());
     }
+
+    @Step("Add agent to Queue via API")
+    public static void addQueueAgentApi(Queue queue){
+        login()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(queue.getAddAgentJson())
+                .post(postAddQueueAgent,queue.getId());
+    }
 }

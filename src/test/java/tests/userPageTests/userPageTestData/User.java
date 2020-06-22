@@ -196,7 +196,7 @@ public class User extends BaseTestMethods {
     }
 
     public String getId(){
-        String query ="SELECT * FROM webadmin_20170426.customer where display_name = \"%s\"";
+        String query ="SELECT customer_id FROM webadmin_20170426.customer where display_name = \"%s\"";
         ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getFullName()));
         while (true){
             try {
@@ -214,6 +214,23 @@ public class User extends BaseTestMethods {
                 "FROM webadmin_20170426.account " +
                 "where owner_fk = 906144 and name like \"%s\"";
         ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getEndDevices()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    public String getAccountId(){
+        String query = "SELECT account_id \n" +
+                "FROM webadmin_20170426.account a\n" +
+                "join customer c on c.customer_id = a.customer_fk\n" +
+                "where c.display_name = \"%s\";";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getFullName()));
         while (true){
             try {
                 if (!resultSet.next()) break;

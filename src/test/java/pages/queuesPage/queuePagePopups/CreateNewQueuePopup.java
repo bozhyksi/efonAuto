@@ -215,4 +215,29 @@ public class CreateNewQueuePopup extends BasePopup {
         return this;
     }
 
+
+    @Step("Verify Queue max wait time")
+    public CreateNewQueuePopup verifyMaxWaitTime(String time) {
+        getDropdownMaxWaintingTime().getSelectedText().contains(time);
+        return this;
+    }
+
+    @Step("Verify Queue priority")
+    public CreateNewQueuePopup verifyPriority(String priority) {
+        getDropdownPriority().getSelectedText().contains(priority);
+        return this;
+    }
+
+    @Step("Verify Queue rule for finding agents")
+    public CreateNewQueuePopup verifyRuleForAgents(String rule) {
+        getDropdownRulesForFindAgent().getSelectedText().contains(rule);
+        return this;
+    }
+
+    @Step("Verify Queue Login short number")
+    public CreateNewQueuePopup verifyShortNum(String shortNum) {
+        getDropdownLoginLogout().getSelectedText().contains(shortNum);
+        return this;
+    }
+
 }
