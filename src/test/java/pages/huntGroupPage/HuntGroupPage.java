@@ -187,7 +187,6 @@ public class HuntGroupPage extends BasePage {
             getButtonDeleteByName(huntGroup.getHuntGroupName()).click();
             confirmationPopup.getYesButton().click();
             waitUntilAlertDisappear();
-            refreshPage();
             getfieldNameByText(huntGroup.getHuntGroupName()).shouldNot(Condition.exist);
         }
         return this;

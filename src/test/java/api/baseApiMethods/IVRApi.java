@@ -42,13 +42,12 @@ public class IVRApi {
     }
 
     @Step("Delete IVR via API")
-    public static void deleteIvrApi(IVRtestData ivr){
-
-        login()
-                .delete(deleteIvrDelete,ivr.getId());
-
-        deleteAnnouncementApi(ivr.getAnnouncement().getId());
-
+    public static void deleteIvrApi(IVRtestData ... ivrs){
+        for (IVRtestData ivr:ivrs) {
+            login()
+                    .delete(deleteIvrDelete,ivr.getId());
+            deleteAnnouncementApi(ivr.getAnnouncement().getId());
+        }
     }
 
 }

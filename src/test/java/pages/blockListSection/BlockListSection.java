@@ -106,6 +106,7 @@ public class BlockListSection extends BasePage {
     @Step("Select number from drop-down")
     public BlockListSection selectNumber(String num){
         getDropdownNumbers().selectOptionContainingText(num);
+        waitUntilAlertDisappear();
         return this;
     }
 
@@ -150,7 +151,8 @@ public class BlockListSection extends BasePage {
     @Step("Activate Use blocklist")
     public BlockListSection activateUseBlocklist(){
         if (!getCheckboxBlockIncomCalls().isSelected()) {
-            clickBlockIncomingCalls().selectForwardTo("Voicemail");
+            clickBlockIncomingCalls()
+                    .selectForwardTo("Voicemail");
         }
         if (!getCheckboxUseBlockList().isSelected()){
             getCheckboxUseBlockList().click();

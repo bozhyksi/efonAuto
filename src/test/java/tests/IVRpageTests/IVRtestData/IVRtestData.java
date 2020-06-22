@@ -117,6 +117,19 @@ public class IVRtestData extends BaseTestMethods {
         this.pinCode = getRandomNumber(1111,9999);
     }
 
+    public IVRtestData(String num, FileManagementTestData announcement){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = num;
+        this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
+    }
+
     //<editor-fold desc="get\set">
 
 

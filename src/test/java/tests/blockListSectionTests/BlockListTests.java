@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.blockListSectionTests.blockListTestData.BlockListTestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -14,6 +15,15 @@ import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 
 import java.util.ArrayList;
+
+import static api.baseApiMethods.ConferenceCallsApi.createConferenceCallApi;
+import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
+import static api.baseApiMethods.HuntGroupApi.createHuntGroupApi;
+import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
+import static api.baseApiMethods.IVRApi.createIvrApi;
+import static api.baseApiMethods.IVRApi.deleteIvrApi;
+import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 @Listeners(CustomListeners.class)
 
@@ -54,9 +64,10 @@ public class BlockListTests extends BaseTestMethods {
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .clickBlockIncomingCalls()
@@ -67,20 +78,21 @@ public class BlockListTests extends BaseTestMethods {
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .verifyCallsWithSuppressedNumbers();
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
 
+        deleteHuntGroupApi(huntGroup);
     }
 
+    //974
     @Description("Check Use blocklist configurations")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
     public void configUseBlocklistTest (){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
@@ -89,23 +101,22 @@ public class BlockListTests extends BaseTestMethods {
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .verifyUseBlocklistConfigs();
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
 
+        deleteHuntGroupApi(huntGroup);
     }
 
-    //EPRO-1078
     @Description("Check Add/Delete blocked number functionality")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void addDeleteBlockedNumberTest (){
 
         BlockListTestData blockList = new BlockListTestData();
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
@@ -118,8 +129,8 @@ public class BlockListTests extends BaseTestMethods {
                 .clickEdit()
                 .bulkDeleteNumber(blockList.getBlockedNumber())
                 .verifyBlockedNumberNotExists(blockList.getBlockedNumber());
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
+
+        deleteHuntGroupApi(huntGroup);
     }
 
     @Description("Check Edit blocked number functionality")
@@ -130,9 +141,10 @@ public class BlockListTests extends BaseTestMethods {
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
@@ -145,10 +157,9 @@ public class BlockListTests extends BaseTestMethods {
                     .saveChanges()
                 .clickClose()
                 .clickEdit()
-                .verifyBlockedNumberExists(blockList.getBlockedNumber())
-                .refreshPage();
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
+                .verifyBlockedNumberExists(blockList.getBlockedNumber());
+
+        deleteHuntGroupApi(huntGroup);
     }
 
     @Description("Check delete blocked number functionality")
@@ -159,9 +170,10 @@ public class BlockListTests extends BaseTestMethods {
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
@@ -172,62 +184,56 @@ public class BlockListTests extends BaseTestMethods {
                 .deleteNumber(blockList.getBlockedNumber())
                 .clickClose()
                 .clickEdit()
-                .verifyBlockedNumberNotExists(blockList.getBlockedNumber())
-                .refreshPage();
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
+                .verifyBlockedNumberNotExists(blockList.getBlockedNumber());
+
+        deleteHuntGroupApi(huntGroup);
     }
 
-    //bug EPRO-1075
     @Description("Check after configuring blocklist and deleting HuntGruops phone number can be re-used")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void phoneNumberReUseHuntGroupTest(){
         HuntGroup huntGroup = new HuntGroup();
         HuntGroup huntGroup2 = new HuntGroup(getRandomString(15), huntGroup.getHuntGroupNumber());
         huntGroupsList.add(huntGroup);
         huntGroupsList.add(huntGroup2);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
-                .saveChanges()
-                .refreshPage();
+                .saveChanges();
         huntGroupPage
                 .deleteHuntGroup(huntGroup)
-                .createHuntGroup(huntGroup2)
-                .deleteHuntGroup(huntGroup2);
+                .createHuntGroup(huntGroup2);
+
+        deleteHuntGroupApi(huntGroup,huntGroup2);
     }
 
     @Description("Check if after configuring blocklist and deleting IVRs phone number can be re-used")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
     public void phoneNumberReUseIVRTest(){
 
-        BlockListTestData blockList = new BlockListTestData();
-        IVRtestData ivr = new IVRtestData();
-        IVRtestData ivr2 = new IVRtestData(ivr.getIvrNumber());
-        FileManagementTestData announcement = new FileManagementTestData();
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
+        IVRtestData ivr2 = new IVRtestData(ivr.getIvrNumber(), ivr.getAnnouncement());
         ivrList.add(ivr);
         ivrList.add(ivr2);
-        announcementList.add(announcement);
+        announcementList.add(ivr.getAnnouncement());
 
+        createIvrApi(ivr);
 
-        login();
-        announcementDisplayPage
-                .uploadAnnouncement(announcement);
-        ivrPage
-                .createIvr(ivr,announcement);
+        login()
+                .goToMenuTab(IVRs);
         blockListSections
                 .selectNumber(ivr.getIvrNumber())
                 .activateUseBlocklist();
         ivrPage
                 .deleteIvr(ivr)
-                .createIvr(ivr2,announcement)
-                .deleteIvr(ivr2);
-        announcementDisplayPage
-                .deleteAnnouncement(announcement);
+                .createIvr(ivr2,ivr2.getAnnouncement());
+
+        deleteIvrApi(ivr,ivr2);
     }
 
     //bug 1075
@@ -239,20 +245,20 @@ public class BlockListTests extends BaseTestMethods {
         confCallList.add(confCall);
         confCallList.add(confCall2);
 
-        login();
-        conferenceCallsPage
-                .createConfCall(confCall);
+        createConferenceCallApi(confCall);
+
+        login()
+                .goToMenuTab(CONFERENCE_CALLS);
         blockListSections
                 .selectNumber(confCall.getConferenceNumber())
                 .activateUseBlocklist()
                 .saveChanges();
         conferenceCallsPage
                 .deleteConfCall(confCall)
-                .createConfCall(confCall2)
-                .deleteConfCall(confCall2);
+                .createConfCall(confCall2);
+
+        deleteConferenceCallApi(confCall,confCall2);
     }
-
-
 
 
     @AfterClass(alwaysRun = true)

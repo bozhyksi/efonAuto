@@ -29,6 +29,7 @@ import java.util.*;
 import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
 import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
 import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
+import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
 import static api.baseApiMethods.UserApi.deleteUserApi;
 import static com.codeborne.selenide.Condition.*;
@@ -384,20 +385,6 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void deleteAllCustomerUsers() {
-        String userName;
-        basePage.getTabUser().click();
-        while (userPage.getListUserNames().size() > 0) {
-            userName = userPage.getListUserNames().get(0).getText();
-            if (!userName.contains("No Items")) {
-                userPage.deleteUserButtonClick(userName);
-                confirmationPopup.getYesButton().click();
-                waitUntilAlertDisappear();
-            } else break;
-        }
-        userPage.getListUserNames().shouldHaveSize(1).shouldHave(CollectionCondition.texts("No Items"));
-    }
-
     public void uploadPhoneBook(Phonebook phonebook) {
         phonebook.createExcelPhonebookFile();
         basePage.getTabPhonebook().click();
@@ -417,164 +404,10 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    @Step("Add single abbreviated number")
-    public void addSingleAbbreviatedNumber(AbbreviatedDialling shortNumber){
-        basePage
-                .goToMenuTab(ABBREVIATED_DIALING)
-                .goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
-
-        manageAbbrevNumbersPage
-                .addSingleAbbrevNumber(shortNumber)
-                .goToMenuTab(ABBREVIATED_NUMBERS);
-
-        abbreviatedNumbersPage
-                .checkIfSingleAbbrevNumberExistsInList(shortNumber);
-    }
-
-    public void addSingleAbbrevNumber(String abbrevNum) {
-        basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(MANAGE_ABBREVIATED_NUMBERS);
-        manageAbbrevNumbersPage.addSingleAbbrevNumber(abbrevNum);
-        waitUntilAlertDisappear();
-        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        abbreviatedNumbersPage.checkIfSingleAbbrevNumberExistsInList(abbrevNum);
-    }
-
-    @Step("Delete single short number")
-    public void deleteSingleAbbreviatedNumber(AbbreviatedDialling shortNumber) {
-        basePage
-                .goToMenuTab(ABBREVIATED_DIALING)
-                .goToMenuTab(ABBREVIATED_NUMBERS)
-                .setItemsPerPage(_All);
-
-        if (!abbreviatedNumbersPage.checkIfDeleteButtonExist(shortNumber))
-            abbreviatedNumbersPage.makeShortNumberUnused(shortNumber);
-
-        abbreviatedNumbersPage
-                .deleteSingleAbbrevNumber(shortNumber)
-                .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
-    }
-
-    @Step("Delete single short number")
-    public void deleteSingleAbbreviatedNumber(AbbreviatedDialling ... shortNumbers) {
-        basePage
-                .goToMenuTab(ABBREVIATED_DIALING)
-                .goToMenuTab(ABBREVIATED_NUMBERS)
-                .setItemsPerPage(_All);
-
-        for (AbbreviatedDialling shortNumber : shortNumbers) {
-            if (!abbreviatedNumbersPage.checkIfDeleteButtonExist(shortNumber))
-                abbreviatedNumbersPage.makeShortNumberUnused(shortNumber);
-
-            abbreviatedNumbersPage
-                    .deleteSingleAbbrevNumber(shortNumber)
-                    .checkIfSingleAbbrevNumberDoesNotExistInList(shortNumber);
-        }
-    }
-
-    public void deleteSingleAbbrevNumber(String abbrevNum) {
-        basePage.goToMenuTab(ABBREVIATED_DIALING).goToMenuTab(ABBREVIATED_NUMBERS);
-        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
-        if (!abbreviatedNumbersPage.getButtonDeleteByNum(abbrevNum).exists()) {
-            makeAbbrevNumberUnused(abbrevNum);
-            refreshPage();
-        }
-        abbreviatedNumbersPage.deleteSingleAbbrevNumber(abbrevNum);
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        abbreviatedNumbersPage.checkIfSingleAbbrevNumberDoesNotExistInList(abbrevNum);
-    }
-
-    public void deleteAllAbbrevNumbers() {
-        String data;
-        basePage.getTabAbbreviatedDialling().click();
-        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        refreshPage();
-        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
-        while (abbreviatedNumbersPage.getListNo().size() > 0) {
-            data = abbreviatedNumbersPage.getListNo().get(0).getText();
-            if (data.equals("No Items")) break;
-            if (!abbreviatedNumbersPage.getButtonDeleteByNum(data).exists()) {
-                makeAbbrevNumberUnused(data);
-                refreshPage();
-            }
-            deleteSingleAbbrevNumber(data);
-        }
-    }
-
-    public void createAbbrevNumberRange(AbbreviatedDialling obj) {
-        basePage.getTabAbbreviatedDialling().click();
-        abbrevDialBasePage.getTabManageAbbreviatedNumbers().click();
-        manageAbbrevNumbersPage.addRangeAbbrevNumber(obj.getFromNumber(), obj.getUntilNumber());
-        abbrevDialBasePage.getTabAbbreviatedNumbers().click();
-        abbreviatedNumbersPage.checkIfAbbrevNumberRangeCreated(obj);
-    }
-
-    public void makeAbbrevNumberUnused(String shortNumber) {
-        abbreviatedNumbersPage.editSingleAbbrevNumber(shortNumber);
-        waitUntilAlertDisappear();
-        popupAssignAbbrevDial.getRadioUnused().click();
-        popupAssignAbbrevDial.getButtonSave().click();
-        waitUntilAlertDisappear();
-    }
-
-    public void configFaxForNewUser(User user) {
-        login();
-        createUser(user);
-        basePage.getTabFax().click();
-        faxPage.getDropdownSelectNumber().selectOption(0);
-        faxPage.getEditButton().click();
-        faxPage.getInputEmail().setValue(getRandomEmail());
-        faxPage.getRadioPdfOnly().click();
-        faxPage.getButtonSave().click();
-        alertPopup.getAlertDialog().should(Condition.appears);
-    }
-
-    @Step("Create call pick up")
-    public void createCallPickUpGroup(CallPickUp callPickUp) {
-        basePage.goToMenuTab(CALL_PICKUPs);
-        callPickUpPage
-                .clickCreateNewGroup()
-                .configureGroupForCallPickup(callPickUp)
-                .verifyIfCallPickUpExists(callPickUp);
-    }
-
-    @Step("Delete call pickup")
-    public void deleteCallPickup(CallPickUp callPickUp){
-        basePage
-                .goToMenuTab(CALL_PICKUPs);
-        callPickUpPage
-                .deleteCallPickUp(callPickUp)
-                .verifyIfCallPickUpDoesNotExist(callPickUp);
-    }
-
-    @Step("Delete call pickup")
-    public void deleteCallPickup(CallPickUp ... callPickUps){
-        basePage
-                .goToMenuTab(CALL_PICKUPs);
-        for (CallPickUp callPickUp:callPickUps) {
-            callPickUpPage
-                    .deleteCallPickUp(callPickUp)
-                    .verifyIfCallPickUpDoesNotExist(callPickUp);
-        }
-    }
-
     public void callPickUpCleanUp(ArrayList<CallPickUp> callPickUpsList){
         for (CallPickUp callPickUp : callPickUpsList) {
             deleteCallPickupApi(callPickUp);
         }
-    }
-
-    public void createConferenceCall(ConferenceCallTestData conferenceCallTestData) {
-        basePage.getTabConferenceCalls().click();
-        conferenceCallsPage.getButtonNewConferenceCall().click();
-        waitUntilAlertDisappear();
-        createNewConfCallPopup.getInputName().setValue(conferenceCallTestData.getName());
-        createNewConfCallPopup.getDropdownConferenceCallNum().selectOption(1);
-        conferenceCallTestData.setConferenceNumber(createNewConfCallPopup.getDropdownConferenceCallNum().getSelectedText());
-        createNewConfCallPopup.getInputPin().setValue(conferenceCallTestData.getPin());
-        createNewConfCallPopup.getDropdownLanguage().selectOptionByValue(conferenceCallTestData.getLanguage());
-        createNewConfCallPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
     }
 
     public void createIVR(IVRtestData ivr, FileManagementTestData file) {
@@ -661,17 +494,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void huntGroupCleanUp(List<HuntGroup> huntGroupList){
-        try {
-            refreshPage();
-            basePage.goToMenuTab(HUNT_GROUPS);
-            for (HuntGroup huntGroup: huntGroupList) {
-                if (huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).exists()){
-                    deleteHuntGroup(huntGroup.getHuntGroupName());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("huntGroupCleanUp failed");
-            e.printStackTrace();
+        for (HuntGroup huntGroup:huntGroupList) {
+            deleteHuntGroupApi(huntGroup);
         }
     }
 
@@ -685,55 +509,6 @@ public class BaseTestMethods extends eFonApp {
         for (User user : userList) {
             deleteUserApi(user.getId());
         }
-    }
-
-    public void createQueue(Queue queue){
-        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab.getButtonCreateNewQueue().click();
-        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
-        createNewQueuePopup.selectRandomSubscriptionForQueue();
-        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
-        createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
-        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
-        createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
-        queue.setWaitingMusic(createNewQueuePopup.getDropdownWaitingMusic().getSelectedText());
-        createNewQueuePopup.getDropdownFileNameAnnounc().selectOption(1);
-        queue.setFilenameAnnouncement(createNewQueuePopup.getDropdownFileNameAnnounc().getSelectedText());
-        createNewQueuePopup.getDropdownAnnounFreq().selectOptionByValue(queue.getAnnouncementFrequency());
-        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
-        createNewQueuePopup.getDropdownTimeOutForCall().selectOptionByValue(queue.getTimeoutForCalling());
-        createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
-        createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
-        createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
-        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
-    }
-
-    public void createQueue(Queue queue, AbbreviatedDialling shortNum){
-        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab.getButtonCreateNewQueue().click();
-        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
-        createNewQueuePopup.selectRandomSubscriptionForQueue();
-        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
-        createNewQueuePopup.getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());
-        createNewQueuePopup.getDropdownMaxWaintingTime().selectOptionByValue(queue.getMaxWaitTime());
-        createNewQueuePopup.getDropdownPriority().selectOptionContainingText(queue.getPriority());
-        createNewQueuePopup.getDropdownWaitingMusic().selectOption(1);
-        queue.setWaitingMusic(createNewQueuePopup.getDropdownWaitingMusic().getSelectedText());
-        createNewQueuePopup.getDropdownFileNameAnnounc().selectOption(1);
-        queue.setFilenameAnnouncement(createNewQueuePopup.getDropdownFileNameAnnounc().getSelectedText());
-        createNewQueuePopup.getDropdownAnnounFreq().selectOptionByValue(queue.getAnnouncementFrequency());
-        createNewQueuePopup.getDropdownRulesForFindAgent().selectOptionContainingText(queue.getRuleForFindingAgent());
-        createNewQueuePopup.getDropdownTimeOutForCall().selectOptionByValue(queue.getTimeoutForCalling());
-        createNewQueuePopup.getDropdownRetry().selectOptionByValue(queue.getWaitingTimeBeforeNextAttempt());
-        createNewQueuePopup.getDropdownWrapUpTime().selectOptionByValue(queue.getWaitingTimeBeforeNextCall());
-        createNewQueuePopup.getDropdownRecordCalls().selectOptionContainingText(queue.getRecordCalls());
-        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
     }
 
     public void createQueueOnlyRequiredFields(Queue queue){
@@ -942,13 +717,6 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
     }
 
-    public void addAgentToQueue(Queue queue, User user){
-        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab.openQueueAgentPopup(queue);
-        queueForAgentsPopup.addAgentToQueue(user);
-        queueForAgentsPopup.validateAddedAgents(queue,user);
-    }
-
     public void addAgentToQueue(String queue, User user){
         basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab.openQueueAgentPopup(queue);
@@ -1046,22 +814,6 @@ public class BaseTestMethods extends eFonApp {
         smsConfirmationPopup.getButtonClose().click();
     }
 
-    public void assignAbbrevNumberToInternalUser(User user, AbbreviatedDialling shortNumber){
-        step("Click on Edit button and open Assign abbreviated dialling popup");
-        abbreviatedNumbersPage.editSingleAbbrevNumber(shortNumber.getSingleShortNum());
-
-        step("Assign short number to user");
-        popupAssignAbbrevDial.getRadioInternalUser().click();
-        popupAssignAbbrevDial.getDropdrownSelectUser().selectOptionContainingText(user.getLastName());
-        popupAssignAbbrevDial.getCheckboxForwardAsExternal().click();
-        popupAssignAbbrevDial.getButtonSave().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-
-        step("Check if short dial was assign to the user and user's info is showed in the grid");
-        abbreviatedNumbersPage.checkIfAbbrevNumberAssignedToUser(user,shortNumber);
-    }
-
     public ArrayList<String> getListOfAllCustomerNumbers(){
         ArrayList<String> customerNumbersList;
         login();
@@ -1092,11 +844,5 @@ public class BaseTestMethods extends eFonApp {
             deleteConferenceCallApi(entry.getId());
         }
     }
-
- /*   public void baseCleanUp(MenuNavigator.CleanUp ...cleanObj){
-        startBrowser();
-        login();
-        closeBrowser();
-    }*/
 
 }
