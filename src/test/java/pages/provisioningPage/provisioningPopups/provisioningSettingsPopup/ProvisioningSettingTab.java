@@ -108,19 +108,6 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
         return this;
     }
 
-    @Step("Verify configured functions")
-    public ProvisioningSettingTab verifyConfiguredFunctions(String destNum, String dispName){
-        verifyFunc(1,destNum,dispName);
-        verifyFunc(2,destNum,dispName);
-        verifyFunc(3,destNum,dispName);
-        return this;
-    }
-
-    private void verifyFunc(int num, String destNum, String dispName){
-        getInputDestinationNumberByNumber(String.valueOf(num)).shouldHave(value(destNum));
-        getInputDisplayNameByNumber(String.valueOf(num)).shouldHave(value(dispName));
-    }
-
     @Step("Make phone function fixed")
     public ProvisioningSettingTab makeFixed(String number){
         if (!getCheckboxIsFixedByText(number).isSelected())

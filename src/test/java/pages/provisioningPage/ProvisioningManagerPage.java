@@ -28,7 +28,6 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
     private final String fieldFullProvisioningListXpath = "//i[contains(@class,\"green\")]";
     //</editor-fold>
 
-
     //<editor-fold desc="get\set">
 
 
@@ -93,7 +92,7 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
     }
     //</editor-fold>
 
-
+    @Step("Activate provisioning manager")
     public ProvisioningManagerPage activateProvisioningManager(ProvisioningTestData.ProvisioningManagerData dto){
         if (getFieldProvisioningMode().has(text("enabled"))) deactivateProvisioningManager();
         getButtonEnable().click();
@@ -109,6 +108,7 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
         return this;
     }
 
+    @Step("Deactivate provisioning manager")
     public ProvisioningManagerPage deactivateProvisioningManager(){
         getButtonDisable().click();
         waitUntilAlertDisappear();
@@ -118,6 +118,7 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
         return this;
     }
 
+    @Step("Verify provisioning manager configurations")
     public ProvisioningManagerPage verifyProvisioningManagerConfiguration(ProvisioningTestData.ProvisioningManagerData dto){
         getFieldProvisioningMode().shouldHave(text("enabled"));
         getFieldIpAddress().shouldHave(text(dto.getIpAddress()));
@@ -126,6 +127,7 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
         return this;
     }
 
+    @Step("Re-enable provisioning manager")
     public ProvisioningManagerPage reEnableProvisioningManager(ProvisioningTestData.ProvisioningManagerData dto){
         getButtonReEnable().click();
         waitUntilAlertDisappear();
@@ -139,6 +141,7 @@ public class ProvisioningManagerPage extends ProvisioningBasePage {
         return this;
     }
 
+    @Step("Re-enable provisioning manager")
     public ProvisioningManagerPage reEnableAndDeactivateProvisioningManager(ProvisioningTestData.ProvisioningManagerData dto){
         getButtonReEnable().click();
         getButtonDeActivate().click();

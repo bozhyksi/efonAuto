@@ -28,72 +28,49 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     @Description("Check if user can configure and ACTIVATE Provisioning Manager")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "provisioningPageTests"})
-    public void CheckIfUserCanConfigureAndActivateProvisioningManager(){
+    public void activateProvisioningManagerTest(){
 
-        step("Prepare test data");
         ProvisioningTestData.ProvisioningManagerData provisioningManagerData = new ProvisioningTestData.ProvisioningManagerData();
 
-        step("LogIn the system and navigate to Provisioning manager page");
-        login();
-        basePage.goToMenuTab(PROVISIONING).goToMenuTab(PROVISIONING_MANAGER);
-
-        step("Configure and activate Provisioning manager");
+        login()
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_MANAGER);
         provisioningManagerPage
                 .activateProvisioningManager(provisioningManagerData)
                 .verifyProvisioningManagerConfiguration(provisioningManagerData)
                 .deactivateProvisioningManager();
-
-        step("Deactivate manager and clear test data");
-
     }
 
     @Description("Check if user can RE-ENABLE Provisioning Manager")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void CheckIfUserCanReEnableProvisioningManager(){
-        step("Prepare test data");
+    public void reEnableProvisioningManagerTest(){
+
         ProvisioningTestData.ProvisioningManagerData provisioningManagerData = new ProvisioningTestData.ProvisioningManagerData();
         ProvisioningTestData.ProvisioningManagerData provisioningManagerData2 = new ProvisioningTestData.ProvisioningManagerData();
 
-        step("LogIn the system and navigate to Provisioning manager page");
-        login();
-        basePage.goToMenuTab(PROVISIONING).goToMenuTab(PROVISIONING_MANAGER);
-
-        step("Configure and activate Provisioning manager");
+        login()
+                .goToMenuTab(PROVISIONING).goToMenuTab(PROVISIONING_MANAGER);
         provisioningManagerPage
                 .activateProvisioningManager(provisioningManagerData)
-                .verifyProvisioningManagerConfiguration(provisioningManagerData);
-
-        step("Re-Enable Provisioning manager");
-        provisioningManagerPage
+                .verifyProvisioningManagerConfiguration(provisioningManagerData)
                 .reEnableProvisioningManager(provisioningManagerData2)
                 .verifyProvisioningManagerConfiguration(provisioningManagerData2)
                 .deactivateProvisioningManager();
-
-        step("Deactivate manager and clear test data");
-
     }
 
     @Description("Check if user can DEACTIVATE Provisioning Manager")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void CheckIfUserCanDeactivateProvisioningManager(){
+    public void deactivateProvisioningManagerTest(){
 
-        step("Prepare test data");
         ProvisioningTestData.ProvisioningManagerData provisioningManagerData = new ProvisioningTestData.ProvisioningManagerData();
 
-        step("LogIn the system and navigate to Provisioning manager page");
-        login();
-        basePage.goToMenuTab(PROVISIONING).goToMenuTab(PROVISIONING_MANAGER);
-
-        step("Configure and activate Provisioning manager");
+        login()
+                .goToMenuTab(PROVISIONING)
+                .goToMenuTab(PROVISIONING_MANAGER);
         provisioningManagerPage
                 .activateProvisioningManager(provisioningManagerData)
-                .verifyProvisioningManagerConfiguration(provisioningManagerData);
-
-        step("Deactivate Provisioning manager");
-        provisioningManagerPage.deactivateProvisioningManager();
-
-        step("Re-enable and DEACTIVATE Provisioning manager");
-        provisioningManagerPage
+                .verifyProvisioningManagerConfiguration(provisioningManagerData)
+                .deactivateProvisioningManager()
                 .activateProvisioningManager(provisioningManagerData)
                 .reEnableProvisioningManager(provisioningManagerData)
                 .verifyProvisioningManagerConfiguration(provisioningManagerData)
@@ -102,7 +79,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     @Description("Check if vpbx admin can upload Configuration template")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void CheckIfVpbxAdminCanUploadConfigurationTemplate(){
+    public void uploadConfigurationTemplateTest(){
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         ProvisioningTestData.ConfigurationTemplate configTemplate = new ProvisioningTestData.ConfigurationTemplate();
         userArrayList.add(user);
@@ -152,7 +129,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     @Description("Check if vpbx admin can select firmware template from drop-down")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void CheckIfVpbxAdminCanSelectFirmware(){
+    public void selectFirmwareTest(){
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         userArrayList.add(user);
 
@@ -171,37 +148,6 @@ public class ProvisioningPageTests extends BaseTestMethods {
         deleteUsersApi(user);
     }
 
-    @Description("Check if vpbx admin can configure Functions on provisioning settings")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
-    public void checkIfVpbxAdminCanConfigureFunctions(){
-        User user = new User(getAutoProvisionedEndDeviceFromDB());
-        ProvisioningTestData.ProvisioningSettings provisioningSettings = new ProvisioningTestData.ProvisioningSettings();
-        userArrayList.add(user);
-
-        login();
-        userPage
-                .createUser(user);
-        basePage
-                .goToMenuTab(PROVISIONING)
-                .goToMenuTab(PROVISIONING_END_DEVICES);
-        provisioningEndDevicesPage
-                .clickEditButton(user.getFirstName())
-                .gotoProvisioningSettingsTab()
-                .selectLanguage(provisioningSettings.getLanguageValue())
-                .selectWebLanguage(provisioningSettings.getWebLanguageVal())
-                .configureWebAuthentication(provisioningSettings.getWebUser(),provisioningSettings.getWebPassword())
-                .configureFunction(provisioningSettings.getDestNum(), provisioningSettings.getDispName())
-                .saveChanges();
-        provisioningEndDevicesPage
-                .clickEditButton(user.getFirstName())
-                .gotoProvisioningSettingsTab()
-                .verifyConfiguredFunctions(provisioningSettings.getDestNum(),provisioningSettings.getDispName());
-
-        refreshPage();
-        deleteUser(user);
-
-    }
-
     @Description("Check if provisioning settings popup shows end device and user name")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
     public void checkIfProvisioningSettingsPopupShownEndDeviceAndUserName(){
@@ -209,18 +155,16 @@ public class ProvisioningPageTests extends BaseTestMethods {
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user)
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .clickEditButton(user.getFirstName())
                 .checkEndDeviceAndUserName(user.getEndDevices(),user.getFirstName());
 
-        refreshPage();
-        deleteUser(user);
-
+        deleteUsersApi(user);
     }
 
     @Description("Check if user can Select/Deselect for provisioning end device")
@@ -230,16 +174,16 @@ public class ProvisioningPageTests extends BaseTestMethods {
         User user = new User();
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user)
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .selectForProvisioning(user.getFirstName())
                 .deSelectForProvisioning(user.getFirstName());
-        userPage
-                .deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if user can Set/ReSet as manually provisioned end device")
@@ -249,35 +193,36 @@ public class ProvisioningPageTests extends BaseTestMethods {
         User user = new User();
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user)
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .setManuallyProvisioned(user.getFirstName())
                 .resetManuallyProvisioned(user.getFirstName());
-        userPage
-                .deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
+    //EPRO-1101
     @Description("Check if user can Select/Deselect for MAC end device")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"},enabled = false)
     public void selectForMacTest(){
         String macAddress = getRandomMAC();
         User user = new User();
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user)
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .selectForMacProvisioning(user.getFirstName(),macAddress)
                 .deSelectForProvisioning(user.getFirstName());
-        userPage
-                .deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if user can change IP address of end device")
@@ -287,15 +232,15 @@ public class ProvisioningPageTests extends BaseTestMethods {
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user)
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
                 .changeIpAddress(user.getFirstName(),ipAddress);
-        userPage
-                .deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if user can open Phone Model provisioning settings popup")
@@ -304,15 +249,13 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
         PhoneModelTestData phoneModel = new PhoneModelTestData();
 
-        login();
-        basePage
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
                 .verifyPhoneModelName(phoneModel.getPhoneModel());
-
     }
 
     @Description("Check if user can configure PANASONIC KX-UT670NE functions")
