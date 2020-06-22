@@ -144,9 +144,10 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
             String index = String.valueOf(getFunctionSize() - i);
             getDropdownFunctionByNumber(index).selectOption(i);
             getInputDisplayNameByNumber(index).setValue(obj.getDisplName());
-            getInputDestinationNumberByNumber(index).setValue(obj.getDestinNumber());
+            if (getInputDestinationNumberByNumber(index).isEnabled()){
+                getInputDestinationNumberByNumber(index).setValue(obj.getDestinNumber());
+            }
             makeFixed(index);
-            waitUntilAlertDisappear();
         }
         return this;
     }
@@ -154,10 +155,14 @@ public class ProvisioningSettingTab extends ProvisioningSettingsPopup {
     @Step("Validate configured functions")
     public ProvisioningSettingTab validateFunctions(PhoneModelTestData obj){
         for (SelenideElement element : fields("//input[@formcontrolname=\"destinationNumber\"]")) {
-            element.shouldHave(value(obj.getDestinNumber()));
+            if (element.isEnabled()){
+                element.shouldHave(value(obj.getDestinNumber()));
+            }
         }
         for (SelenideElement element : fields("//input[@formcontrolname=\"displayName\"]")) {
-            element.shouldHave(value(obj.getDisplName()));
+            if (element.isEnabled()){
+                element.shouldHave(value(obj.getDisplName()));
+            }
         }
         return this;
     }

@@ -13,6 +13,8 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.ProvisioningApi.deactivatePhoneModelFunctionsApi;
+import static api.baseApiMethods.UserApi.*;
 import static com.codeborne.selenide.Condition.exist;
 import static flow.PublicEnums.DragDropSection.SECTION_NOT_SELECTED;
 import static flow.PublicEnums.DragDropSection.SECTION_SELECTED;
@@ -105,10 +107,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
         ProvisioningTestData.ConfigurationTemplate configTemplate = new ProvisioningTestData.ConfigurationTemplate();
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user);
-        basePage
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
@@ -119,8 +120,8 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .clickEditButton(user.getFirstName())
                 .gotoProvisioningConfigurationTab()
                 .getButtonDownloadConfigtemplate().should(exist);
-        refreshPage();
-        deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if vpbx admin can download Configuration template  --  cant resolve This file can harm...")
@@ -130,10 +131,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
         ProvisioningTestData.ConfigurationTemplate configTemplate = new ProvisioningTestData.ConfigurationTemplate();
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user);
-        basePage
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
@@ -146,8 +146,8 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .downloadCurrentConfigurationTemplate()
                 .verifyIfConfigFileWaDownloaded()
                 .deleteDownloadedFile();
-        refreshPage();
-        deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if vpbx admin can select firmware template from drop-down")
@@ -156,10 +156,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
         User user = new User(getAutoProvisionedEndDeviceFromDB());
         userArrayList.add(user);
 
-        login();
-        userPage
-                .createUser(user);
-        basePage
+        createUsersApi(user);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
@@ -168,7 +167,8 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .selectFirmware()
                 .saveChanges();
         refreshPage();
-        deleteUser(user);
+
+        deleteUsersApi(user);
     }
 
     @Description("Check if vpbx admin can configure Functions on provisioning settings")
@@ -315,9 +315,8 @@ public class ProvisioningPageTests extends BaseTestMethods {
 
     }
 
-    // EPRO-1074
     @Description("Check if user can configure PANASONIC KX-UT670NE functions")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
     public void configFunctionsForPanasonicTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("panasonic KX-UT670NE");
 
@@ -332,10 +331,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges()
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .validateFunctions(phoneModel)
-                .deactivateAllFunctions()
-                .savePhoneModelChanges();
+                .validateFunctions(phoneModel);
 
+        deactivatePhoneModelFunctionsApi(phoneModel);
     }
 
     @Description("Check if user can configure SNOM D765 functions")
@@ -343,8 +341,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
     public void configFunctionsForSnomTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("snom D765");
 
-        login();
-        basePage
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
@@ -354,9 +351,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges()
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .validateFunctions(phoneModel)
-                .deactivateAllFunctions()
-                .savePhoneModelChanges();
+                .validateFunctions(phoneModel);
+
+        deactivatePhoneModelFunctionsApi(phoneModel);
     }
 
     @Description("Check if user can configure Gigaset D765 functions")
@@ -364,8 +361,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
     public void configFunctionsForGigasetTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("Gigaset DE900 IP PRO");
 
-        login();
-        basePage
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
@@ -375,9 +371,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges()
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .validateFunctions(phoneModel)
-                .deactivateAllFunctions()
-                .savePhoneModelChanges();
+                .validateFunctions(phoneModel);
+
+        deactivatePhoneModelFunctionsApi(phoneModel);
     }
 
     @Description("Check if user can configure Alcatel Temporis IP301G functions")
@@ -385,8 +381,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
     public void configFunctionsForAlcatelTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("Alcatel Temporis IP301G");
 
-        login();
-        basePage
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
@@ -396,9 +391,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges()
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .validateFunctions(phoneModel)
-                .deactivateAllFunctions()
-                .savePhoneModelChanges();
+                .validateFunctions(phoneModel);
+
+        deactivatePhoneModelFunctionsApi(phoneModel);
     }
 
     @Description("Check if user can configure AASTRA 6869i functions")
@@ -406,8 +401,7 @@ public class ProvisioningPageTests extends BaseTestMethods {
     public void configFunctionsForAastraTest(){
         PhoneModelTestData phoneModel = new PhoneModelTestData("aastra 6869i");
 
-        login();
-        basePage
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_PHONE_MODELS);
         provisioningPhoneModelsPage
@@ -417,9 +411,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .savePhoneModelChanges()
                 .clickEditPhoneModel(phoneModel.getPhoneModel())
                 .gotoProvisioningSettingsTab()
-                .validateFunctions(phoneModel)
-                .deactivateAllFunctions()
-                .savePhoneModelChanges();
+                .validateFunctions(phoneModel);
+
+        deactivatePhoneModelFunctionsApi(phoneModel);
     }
 
     @Description("Check if user can create Additional end devices")
@@ -430,10 +424,9 @@ public class ProvisioningPageTests extends BaseTestMethods {
         userArrayList.add(user2);
         userArrayList.add(user1);
 
-        login();
-        userPage
-                .createUser(user1, user2);
-        basePage
+        createUsersApi(user1,user2);
+
+        login()
                 .goToMenuTab(PROVISIONING)
                 .goToMenuTab(PROVISIONING_END_DEVICES);
         provisioningEndDevicesPage
@@ -444,16 +437,12 @@ public class ProvisioningPageTests extends BaseTestMethods {
                 .dragDrop(SECTION_NOT_SELECTED, user2.getFirstName())
                 .saveChanges()
                 .refreshPage();
-        userPage
-                .deleteUser(user1,user2);
 
+        deleteUsersApi(user1,user2);
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        login();
         userCleanUp(userArrayList);
-        closeBrowser();
     }
 }

@@ -20,7 +20,7 @@ import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
 public class EndDevicesUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can edit his own End Devices")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
+    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "endDevicesUserPageTests"})
     public void CheckIfLowLevelUserCanEditHisOwnEndDevices(){
         EndDevice endDevice = new EndDevice();
 

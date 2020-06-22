@@ -34,16 +34,12 @@ public class EndDevicesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if vpbx admin can edit end-device")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "endDevicesPageTests"})
-    public void CheckIfVpbxAdminCanEditEndDevice(){
-        step("Prepare test data");
+    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "smoke", "endDevicesPageTests"})
+    public void editEndDeviceTest(){
         EndDevice endDevice = new EndDevice();
 
-        login();
-
-        basePage
+        login()
                 .goToMenuTab(END_DEVICES);
-
         endDevicesPage
                 .configureEndDevice(endDevice.getRandomEndDeviceForEdit())
                 .setName(endDevice.getEndDevName())
@@ -54,11 +50,10 @@ public class EndDevicesPageTests extends BaseTestMethods {
                 .selectLanguage(endDevice.getEndDevPhoneLanguage())
                 .setDisplayName(endDevice.getEndDevDisplayName())
                 .selectOutgoingNumber(endDevice.getEndDevOutgoingNumber())
-                //.setLocation(endDevice.getEndDevLocation())
+                .setLocation(endDevice.getEndDevLocation())
                 .setSuppressed(endDevice.getEndDevSuppressed())
                 .saveChanges()
                 .refreshPage();
-
         endDevicesPage
                 .configureEndDevice(endDevice.getEndDevName())
                 .verifyEndDeviceConfiguration(endDevice);

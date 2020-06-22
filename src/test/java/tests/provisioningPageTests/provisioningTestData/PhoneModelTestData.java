@@ -3,6 +3,9 @@ package tests.provisioningPageTests.provisioningTestData;
 import flow.BaseTestMethods;
 import flow.PublicEnums;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class PhoneModelTestData extends BaseTestMethods {
 
     //<editor-fold desc="properties">
@@ -75,5 +78,21 @@ public class PhoneModelTestData extends BaseTestMethods {
         return webLanguage;
     }
     //</editor-fold>
+
+    public String getId(){
+        String query ="SELECT phone_model_id\n" +
+                "FROM webadmin_20170426.phone_model\n" +
+                "where phone_model= \"%s\"";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getPhoneModel()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 
 }

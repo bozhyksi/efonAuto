@@ -47,4 +47,7 @@ public abstract class EndPoints {
     //Call PickUps
     public final static String postCreateCallPickUp = "/call-intercept-groups/create";
     public final static String deleteCreateCallPickUp = "call-intercept-groups/{id}";
+
+    //Provisioning
+    public final static String putPhoneModelSettingUpdate = "/provisioning/settings/CUSTOMER/{id}";
 }
