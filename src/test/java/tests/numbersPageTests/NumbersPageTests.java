@@ -39,10 +39,12 @@ public class NumbersPageTests extends BaseTestMethods {
         userList.add(user);
 
         createUserApi(user.getJson());
+
         login()
             .goToMenuTab(NUMBERS);
         numbersPage
                 .verifyIfNumberInfoShown(user);
+
         deleteUserApi(user.getId());
     }
 
@@ -54,10 +56,12 @@ public class NumbersPageTests extends BaseTestMethods {
         announcementList.add(ivr.getAnnouncement());
 
         createIvrApi(ivr);
+
         login()
                 .goToMenuTab(NUMBERS);
         numbersPage
                 .verifyIfNumberInfoShown(ivr);
+
         deleteIvrApi(ivr);
 
     }

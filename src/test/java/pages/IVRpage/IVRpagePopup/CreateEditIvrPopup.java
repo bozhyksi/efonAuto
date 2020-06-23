@@ -1,5 +1,6 @@
 package pages.IVRpage.IVRpagePopup;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import flow.PublicEnums;
 import io.qameta.allure.Step;
@@ -11,6 +12,7 @@ import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
+import static com.codeborne.selenide.Condition.value;
 import static flow.PublicEnums.IvrActions.*;
 import static flow.PublicEnums.IvrEvents.*;
 
@@ -349,6 +351,30 @@ public class CreateEditIvrPopup extends IVRpage {
         return this;
     }
 
+    @Step("Verify ivr action")
+    public CreateEditIvrPopup verifyIvrAction(PublicEnums.IvrActions action, IVRtestData ivr){
+        switch (action){
+            case PHONE_EXTERNAL:
+                getInputParameterByEvent(_4.getVal()).shouldHave(value(ivr.getParameterExtTelNumber()));
+                break;
+            case RINGRUF:
+                getDropdownParameterByEvent(_1.getVal()).getSelectedText().contains(ivr.getHuntGroup().getHuntGroupName());
+                break;
+            case PHONE_DIRECT:
+                getDropdownParameterByEvent(_2.getVal()).getSelectedText().contains(ivr.getUser().getFirstName());
+                break;
+            case VM_NO_ANNOUNCE:
+                getDropdownIvrActionByEvent(_7.getVal()).getSelectedValue().contains("VM_NO_ANNOUNCE");
+                break;
+            case PLAY_HANGUP:
+                getDropdownParameterByEvent(_9.getVal()).getSelectedText().contains(ivr.getAnnouncement().getFileName());
+                break;
+            case CALL_CENTER_QUEUE:
+                getDropdownParameterByEvent(_star.getVal()).getSelectedText().contains(ivr.getQueue().getName());
+                break;
 
+        }
+        return this;
+    }
 
 }

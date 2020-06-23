@@ -296,6 +296,24 @@ public class Queue extends BaseTestMethods {
         this.shortNum = shortNum;
     }
 
+    public Queue(User manager, User reporter, User agent, AbbreviatedDialling shortNum){
+        this.name = getRandomString(10);
+        this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
+        this.priority = Priority.getRandomVal().getPrior();
+        this.announcementFrequency = MaxWaitTime.getRandomVal().getWaitTime();
+        this.ruleForFindingAgent = RuleForFindingAgent.getRandomVal().getRule();
+        this.timeoutForCalling = TimeoutForCallingAnAgent.getRandomVal().getTimeOut();
+        this.waitingTimeBeforeNextAttempt = WaitingTimeBeforeNextAttempt.getRandomVal().getWait();
+        this.waitingTimeBeforeNextCall = WaitingTimeBeforeNextCall.getRandomVal().getWait();
+        this.recordCalls = RecordCalls.getRandomVal();
+        this.fromDateQueueRecordings = "2015-04-23 13:22";
+        this.toDateQueueRecordings = getDate("HOUR",1);
+        this.manager = manager;
+        this.reporter = reporter;
+        this.shortNum = shortNum;
+        this.agent = agent;
+    }
+
     public Queue(String queueName){
         this.name = queueName;
         this.maxWaitTime = MaxWaitTime.getRandomVal().getWaitTime();
@@ -458,9 +476,17 @@ public class Queue extends BaseTestMethods {
     public String getJson(){
         JsonArrayBuilder managerArray = Json.createArrayBuilder();
         JsonArrayBuilder reporterArray = Json.createArrayBuilder();
+        JsonObjectBuilder shortNumJson = Json.createObjectBuilder();
         if (manager != null && reporter != null){
             managerArray.add(getContactId(manager.getId()));
             reporterArray.add(getContactId(reporter.getId()));
+        }
+
+        if (shortNum != null){
+            shortNumJson.add("loginLogout", shortNum.getId());
+        }else {
+            shortNumJson.add("loginLogout", JsonValue.NULL);
+
         }
 
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -469,7 +495,7 @@ public class Queue extends BaseTestMethods {
                         .add("queueName", getName())
                         .add("subscriptionId", getSubscriptionId())
                         .add("mohId",0)
-                        .add("loginLogout", JsonValue.NULL)
+                        .addAll(shortNumJson)
                         .add("uploadType", "")
                         .add("reporterIds",reporterArray)
                         .add("managerIds",managerArray)

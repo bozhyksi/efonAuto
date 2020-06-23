@@ -36,8 +36,10 @@ public class UserApi {
 
     public static void deleteUsersApi(User ... users){
         for (User user : users) {
-            login()
-                    .delete(deleteDeleteUser, user.getId());
+            if (!user.getId().equals("")) {
+                login()
+                        .delete(deleteDeleteUser, user.getId());
+            }
         }
     }
 

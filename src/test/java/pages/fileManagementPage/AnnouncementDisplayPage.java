@@ -91,5 +91,4 @@ public class AnnouncementDisplayPage extends FileManagementBasePage {
         getFieldNameByText(file.getFileName()).shouldNot(exist);
         return this;
     }
-
 }

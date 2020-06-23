@@ -34,7 +34,7 @@ public class EndDevicesPageTests extends BaseTestMethods {
     }
 
     @Description("Check if vpbx admin can edit end-device")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "smoke", "endDevicesPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "endDevicesPageTests"})
     public void editEndDeviceTest(){
         EndDevice endDevice = new EndDevice();
 

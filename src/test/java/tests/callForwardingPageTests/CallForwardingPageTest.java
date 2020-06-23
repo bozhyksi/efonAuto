@@ -115,6 +115,6 @@ public class CallForwardingPageTest extends BaseTestMethods {
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        userApiCleanUp(usersList);
+        userCleanUp(usersList);
     }
 }

@@ -77,7 +77,7 @@ public class QueuesPageTests extends BaseTestMethods {
                 .verifyIfQueueNotExistInList(queue.getName());
 
         deleteUsersApi(user1, user2);
-        deleteMohApi(music.getMohId());
+        deleteMohApi(music);
     }
 
     @Description("Verify if user can edit Queue")
@@ -358,7 +358,7 @@ public class QueuesPageTests extends BaseTestMethods {
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
         queueCleanUp(queuesList);
-        userApiCleanUp(usersList);
+        userCleanUp(usersList);
         abbrevNumsCleanUp(abbrevNumsList);
     }
 }

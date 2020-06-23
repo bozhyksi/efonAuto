@@ -29,9 +29,13 @@ import java.util.*;
 import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
 import static api.baseApiMethods.CallPickUpsApi.deleteCallPickupApi;
 import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
+import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.deleteMohApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
+import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
 import static api.baseApiMethods.UserApi.deleteUserApi;
+import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
@@ -479,17 +483,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void ivrCleanUp(List<IVRtestData> ivrList){
-        try {
-            refreshPage();
-            basePage.goToMenuTab(IVRs);
-            for (IVRtestData ivr: ivrList) {
-                if (ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).size()>0){
-                    deleteIVR(ivr.getIvrName());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("ivrCleanUp failed");
-            e.printStackTrace();
+        for (IVRtestData ivr : ivrList) {
+            deleteIvrApi(ivr);
         }
     }
 
@@ -501,13 +496,7 @@ public class BaseTestMethods extends eFonApp {
 
     public void userCleanUp(List<User> userList){
         for (User user : userList) {
-            deleteUserApi(user.getId());
-        }
-    }
-
-    public void userApiCleanUp(List<User> userList){
-        for (User user : userList) {
-            deleteUserApi(user.getId());
+            deleteUsersApi(user);
         }
     }
 
@@ -560,19 +549,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void mohCleanUp(List<FileManagementTestData> filesList){
-        try {
-            basePage.getTabFileManagement().click();
-            waitUntilAlertDisappear();
-            fileManagementBasePage.getTabMusicOnHold().click();
-            waitUntilAlertDisappear();
-            for (FileManagementTestData file: filesList) {
-                if (musicOnHoldPage.getFieldNameByText(file.getFileName()).exists()){
-                    deleteMusicOnHoldFile(file.getFileName());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("mohCleanUp failed");
-            e.printStackTrace();
+        for (FileManagementTestData moh : filesList) {
+            deleteMohApi(moh);
         }
     }
 
@@ -616,17 +594,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void announcementCleanUp(List<FileManagementTestData> filesList){
-        try {
-            refreshPage();
-            basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
-            for (FileManagementTestData file: filesList) {
-                if (announcementDisplayPage.getFieldNameByText(file.getFileName()).exists()){
-                    deleteAnnouncementFile(file.getFileName());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("announcementCleanUp failed");
-            e.printStackTrace();
+        for (FileManagementTestData announcement: filesList) {
+            deleteAnnouncementApi(announcement);
         }
     }
 

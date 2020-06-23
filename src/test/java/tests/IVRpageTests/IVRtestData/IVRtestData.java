@@ -5,6 +5,9 @@ import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import flow.BaseTestMethods;
 import flow.PublicEnums;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
 
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
@@ -13,49 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IVRtestData extends BaseTestMethods {
-
-    public enum IvrActions{
-        RINGRUF,
-        PHONE_DIRECT,
-        PHONE_INTERNAL,
-        PHONE_EXTERNAL,
-        IVR,
-        VM_UNAVAILABLE,
-        VM_NO_ANNOUNCE,
-        VM_PERSONAL,
-        HANGUP,
-        RESTART,
-        PLAY_HANGUP,
-        VM_BUSY,
-        PLAY_RESTART,
-        CALL_CENTER_QUEUE
-    }
-
-    public enum EventNumber{
-        Event_1("1"),
-        Event_2("2"),
-        Event_3("3"),
-        Event_4("4"),
-        Event_5("5"),
-        Event_6("6"),
-        Event_7("7"),
-        Event_8("8"),
-        Event_9("9"),
-        Event_0("0"),
-        Event_star("*"),
-        Event_diez("#"),
-        Event_abbrevNumber("Abbreviated number");
-
-        private String event;
-
-        EventNumber(String event){
-            this.event = event;
-        }
-
-        public String getEvent() {
-            return event;
-        }
-    }
 
     //<editor-fold desc="properties">
     private String ivrName;
@@ -78,19 +38,10 @@ public class IVRtestData extends BaseTestMethods {
     private String parameterMaxWaitingTime;
     private String pinCode;
     private FileManagementTestData announcement;
+    private HuntGroup huntGroup;
+    private User user;
+    private Queue queue;
     //</editor-fold>
-
-    public IVRtestData(){
-        this.parameterMaxThroughputs = getRandomNumber(1,9);
-        this.parameterMaxWaitingTime = getRandomNumber(10,19);
-        this.ivrName = getRandomString(10);
-        this.ivrDisplName = getRandomString(10);
-        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
-        this.active = getRandomBoolean();
-        this.parameterExtTelNumber = getRandomPhone();
-        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
-        this.pinCode = getRandomNumber(1111,9999);
-    }
 
     public IVRtestData(FileManagementTestData announcement){
         this.parameterMaxThroughputs = getRandomNumber(1,9);
@@ -105,7 +56,7 @@ public class IVRtestData extends BaseTestMethods {
         this.announcement = announcement;
     }
 
-    public IVRtestData(String num){
+    public IVRtestData(FileManagementTestData announcement, Queue queue){
         this.parameterMaxThroughputs = getRandomNumber(1,9);
         this.parameterMaxWaitingTime = getRandomNumber(10,19);
         this.ivrName = getRandomString(10);
@@ -113,8 +64,38 @@ public class IVRtestData extends BaseTestMethods {
         this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
         this.active = getRandomBoolean();
         this.parameterExtTelNumber = getRandomPhone();
-        this.ivrNumber = num;
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
+        this.queue = queue;
+    }
+
+    public IVRtestData(FileManagementTestData announcement, User user){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
+        this.user = user;
+    }
+
+    public IVRtestData(FileManagementTestData announcement, HuntGroup huntGroup){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
+        this.huntGroup = huntGroup;
     }
 
     public IVRtestData(String num, FileManagementTestData announcement){
@@ -132,6 +113,18 @@ public class IVRtestData extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public Queue getQueue() {
+        return queue;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public HuntGroup getHuntGroup() {
+        return huntGroup;
+    }
 
     public FileManagementTestData getAnnouncement() {
         return announcement;
@@ -207,10 +200,6 @@ public class IVRtestData extends BaseTestMethods {
 
     public String getParameterExtTelNumber() {
         return parameterExtTelNumber;
-    }
-
-    public void setAction(IvrActions action) {
-        this.action = action.toString();
     }
 
     public String getAction() {

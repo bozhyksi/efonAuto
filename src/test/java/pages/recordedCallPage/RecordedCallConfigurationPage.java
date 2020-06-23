@@ -2,6 +2,7 @@ package pages.recordedCallPage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import tests.recordedCallsPageTests.recordedCallsTestData.RecordedCalls;
 
 public class RecordedCallConfigurationPage extends RecordedCallsBasePage {
@@ -56,7 +57,8 @@ public class RecordedCallConfigurationPage extends RecordedCallsBasePage {
     }
     //</editor-fold>
 
-    public void configureRecordedCallsFtpUpload(RecordedCalls recordedCall){
+    @Step("Configure FTP connection")
+    public RecordedCallConfigurationPage configureRecordedCallsFtpUpload(RecordedCalls recordedCall){
         if (getCheckboxUpload().isSelected()){
             getCheckboxUpload().click();
             getButtonSave().click();
@@ -71,11 +73,13 @@ public class RecordedCallConfigurationPage extends RecordedCallsBasePage {
         getInputPassword().setValue(recordedCall.getPass());
         getInputPath().setValue(recordedCall.getPath());
         getButtonSave().click();
-        refreshPage();
         waitUntilAlertDisappear();
+        refreshPage();
+        return this;
     }
 
-    public void verifyRecordedCallsFtpUploadConfiguration(RecordedCalls recordedCall){
+    @Step("Verify FTP connection")
+    public RecordedCallConfigurationPage verifyRecordedCallsFtpUploadConfiguration(RecordedCalls recordedCall){
         getCheckboxUpload().shouldBe(Condition.selected);
         getInputHost().shouldHave(Condition.value(recordedCall.getHost()));
         getInputPort().shouldHave(Condition.value(recordedCall.getPort()));
@@ -85,5 +89,6 @@ public class RecordedCallConfigurationPage extends RecordedCallsBasePage {
         getCheckboxUpload().click();
         getButtonSave().click();
         waitUntilAlertDisappear();
+        return this;
     }
 }

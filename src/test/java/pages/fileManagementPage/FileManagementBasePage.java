@@ -1,9 +1,13 @@
 package pages.fileManagementPage;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 
 import java.io.File;
+
+import static core.configuration.preparations.eFonApp.confirmationPopup;
 
 public class FileManagementBasePage extends BasePage {
     //<editor-fold desc="Locators">
@@ -36,7 +40,23 @@ public class FileManagementBasePage extends BasePage {
     }
     //</editor-fold>
 
-    public void uploadFile(String filePath){
+    @Step("Upload file")
+    public FileManagementBasePage uploadFile(String filePath){
         getInputFileUpload().uploadFile(new File(filePath));
+        return this;
+    }
+
+    @Step("Enter file name")
+    public FileManagementBasePage enterFileName(String name){
+        getInputName().setValue(name);
+        return this;
+    }
+
+    @Step("Save changes")
+    public <T extends FileManagementBasePage> T save(T obj){
+        getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        return (T) this;
     }
 }

@@ -45,6 +45,6 @@ public class FaxPageTests extends BaseTestMethods {
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        userApiCleanUp(userArrayList);
+        userCleanUp(userArrayList);
     }
 }

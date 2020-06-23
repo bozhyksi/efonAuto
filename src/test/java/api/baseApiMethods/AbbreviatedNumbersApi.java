@@ -34,8 +34,9 @@ public class AbbreviatedNumbersApi {
 
     @Step("Delete single short number via API")
     public static void deleteAbbreviatedNumberApi(AbbreviatedDialling abbreviatedDial){
-
-        unusedAbbrevNumApi(abbreviatedDial);
+        if (!abbreviatedDial.isUnused()) {
+            unusedAbbrevNumApi(abbreviatedDial);
+        }
         login()
                 .delete(deleteAbbreviatedNumberDelete, abbreviatedDial.getId());
     }

@@ -181,4 +181,19 @@ public class AbbreviatedDialling extends BaseTestMethods {
         return "";
     }
 
+    public boolean isUnused(){
+        boolean result = true;
+        String query = "SELECT type FROM webadmin_20170426.internal_number where number=%s and abo_fk=1212363";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,getSingleShortNum()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                    if (resultSet.getInt(1) != 0) result = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
 }
