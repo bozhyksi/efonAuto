@@ -12,12 +12,10 @@ public class DataBaseWorker {
     private final String DB_PASSWORD = readProperty("dB.password", "core.properties");
 
     private Connection connection = null;
-    private Statement statement = null;
 
     public DataBaseWorker(){
         try {
             connection = DriverManager.getConnection(DB_URL, DB_LOGIN,DB_PASSWORD);
-            statement = connection.createStatement();
         } catch (SQLException e) {
             System.out.println("Connection to dB FAILED!");
             e.printStackTrace();
@@ -25,14 +23,13 @@ public class DataBaseWorker {
     }
 
     public ResultSet execSqlQuery(String query){
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery(query);
-            return resultSet;
+            resultSet = connection.createStatement().executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return resultSet;
     }
 
 }
