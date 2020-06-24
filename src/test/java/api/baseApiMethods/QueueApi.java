@@ -10,16 +10,6 @@ import static api.data.preparation.Preparation.login;
 public class QueueApi {
 
     @Step("Create Queue via API")
-    public static void createQueueApi(String json){
-        login()
-                .given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .body(json)
-                .post(postCreateQueue);
-    }
-
-    @Step("Create Queue via API")
     public static void createQueueApi(Queue queue){
         login()
                 .given()

@@ -1,6 +1,8 @@
 package tests.huntGroupPageTest.huntGroupTestData;
 
 import flow.BaseTestMethods;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
 import javax.json.Json;
@@ -11,24 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HuntGroup extends BaseTestMethods {
-    public enum TimerLevels{
-        NumberEndDevice ("0"),
-        VoicemailUnavailable("1"),
-        Announcements("2"),
-        VoicemailBusy("3"),
-        VoicemailNoAnnouncement("4"),
-        Queue("5");
-        private String level;
-
-        TimerLevels(String level){
-            this.level = level;
-        }
-        public String getLevel() {
-            return level;
-        }
-    }
 
     //<editor-fold desc="properties">
+
+    private FileManagementTestData announcement;
+    private Queue queue;
+    private User authorisedUser;
 
     //Edit hunt group section
     private String huntGroupNumber;
@@ -84,6 +74,29 @@ public class HuntGroup extends BaseTestMethods {
         fullDayPhoneNumber = getRandomPhone();
     }
 
+    public HuntGroup(User authorisedUser){
+        this.authorisedUser= authorisedUser;
+
+        //Edit hunt group section
+        this.huntGroupLanguage = "en";
+        this.huntGroupName = getRandomString(10);
+        this.huntGroupDisplayName = "Display_"+this.huntGroupName;
+        this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
+
+        //Voicemail settings
+        this.pinCode = getRandomNumber(1111,9999);
+        this.voicemailEmail = getRandomEmail();
+        this.salutation = "Dear Ms";
+
+        //If end devices not available (not registered) section
+        this.backUpNumber = getRandomPhone();
+
+        //Full days
+        this.fullDayName = getRandomString(10);
+        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
+        fullDayPhoneNumber = getRandomPhone();
+    }
+
     public HuntGroup(String huntGroupName, String huntGroupNumber){
         //Edit hunt group section
         this.huntGroupLanguage = "en";
@@ -105,8 +118,44 @@ public class HuntGroup extends BaseTestMethods {
         fullDayPhoneNumber = getRandomPhone();
     }
 
+    public HuntGroup(FileManagementTestData announcement, Queue queue){
+        this.queue = queue;
+        this.announcement = announcement;
+
+        //Edit hunt group section
+        this.huntGroupLanguage = "en";
+        this.huntGroupName = getRandomString(10);
+        this.huntGroupDisplayName = "Display_"+this.huntGroupName;
+        this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
+
+        //Voicemail settings
+        this.pinCode = getRandomNumber(1111,9999);
+        this.voicemailEmail = getRandomEmail();
+        this.salutation = "Dear Ms";
+
+        //If end devices not available (not registered) section
+        this.backUpNumber = getRandomPhone();
+
+        //Full days
+        this.fullDayName = getRandomString(10);
+        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
+        fullDayPhoneNumber = getRandomPhone();
+    }
+
     //<editor-fold desc="get\set">
 
+
+    public User getAuthorisedUser() {
+        return authorisedUser;
+    }
+
+    public FileManagementTestData getAnnouncement() {
+        return announcement;
+    }
+
+    public Queue getQueue() {
+        return queue;
+    }
 
     public ArrayList<String> getHuntGroupAuthorizedUsers() {
         return huntGroupAuthorizedUsers;

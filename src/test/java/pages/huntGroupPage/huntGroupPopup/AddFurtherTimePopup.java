@@ -1,6 +1,9 @@
 package pages.huntGroupPage.huntGroupPopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.TimersSection;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 public class AddFurtherTimePopup extends CreateHuntGroupPopup {
@@ -59,7 +62,14 @@ public class AddFurtherTimePopup extends CreateHuntGroupPopup {
     }
     //</editor-fold>
 
-    public void fillInTimers(HuntGroup huntGroup){
+    @Step("Enter time Name")
+    public AddFurtherTimePopup enterTimeName(String name){
+        getInputTimeName().setValue(name);
+        return this;
+    }
+
+    @Step("Enter timers")
+    public AddFurtherTimePopup enterTimers(HuntGroup huntGroup){
         getInputTimeName().setValue(huntGroup.getFurtherTimeName());
         getInputMonday().setValue(huntGroup.getFurtherTimeMonday());
         getInputTuesday().setValue(huntGroup.getFurtherTimeTuesday());
@@ -68,5 +78,19 @@ public class AddFurtherTimePopup extends CreateHuntGroupPopup {
         getInputFriday().setValue(huntGroup.getFurtherTimeFriday());
         getInputSaturday().setValue(huntGroup.getFurtherTimeSaturday());
         getInputSunday().setValue(huntGroup.getFurtherTimeSunday());
+        return this;
+    }
+
+    @Step("Configure steps")
+    public AddFurtherTimePopup configureSteps(HuntGroup huntGroup){
+        new TimersSection().configureStandartTimer(huntGroup);
+        return this;
+    }
+
+    @Step("Save")
+    public CreateHuntGroupPopup saveTimers(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new CreateHuntGroupPopup();
     }
 }

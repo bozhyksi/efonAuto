@@ -60,7 +60,7 @@ import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
 import pages.huntGroupPage.HuntGroupPage;
 import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
 import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
-import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
 import pages.lastCallsPage.IncomingCallsTab;
 import pages.lastCallsPage.LastCallsPage;
 import pages.lastCallsPage.MissedCallsTab;

@@ -25,7 +25,13 @@ public class PublicEnums {
             return val;
         }
     }
+    public enum DragDropSection {
+        SECTION_SELECTED,
+        SECTION_NOT_SELECTED
+    }
 
+
+    //IVRs
     public enum IvrActions{
         RINGRUF,
         PHONE_DIRECT,
@@ -46,7 +52,6 @@ public class PublicEnums {
             return IvrActions.values()[new Random().nextInt(IvrActions.values().length)];
         }
     }
-
     public enum IvrEvents{
         _1("1"),
         _2("2"),
@@ -80,6 +85,7 @@ public class PublicEnums {
         }
     }
 
+    //Provisioning
     public enum PhoneModelFunctions{
 
         NOT_SELECTED("Not selected"),
@@ -102,9 +108,38 @@ public class PublicEnums {
 
     }
 
-    public enum DragDropSection {
-        SECTION_SELECTED,
-        SECTION_NOT_SELECTED
+    //Hunt Groups
+    public enum HuntGroupTimerGroup{
+        FULL_DAYS("Full days"),
+        TIME("Time");
+
+        private String type;
+
+        HuntGroupTimerGroup(String type){
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+    public enum HuntGroupStepActions {
+        NumberEndDevice("0"),
+        VoicemailUnavailable("1"),
+        Announcements("2"),
+        VoicemailBusy("3"),
+        VoicemailNoAnnouncement("4"),
+        Queue("5");
+
+        private String value;
+
+        HuntGroupStepActions(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
 }

@@ -56,12 +56,12 @@ public class AutoProvisioningInfoToolTip extends EndDevicesPage {
     //</editor-fold>
 
     public AutoProvisioningInfoToolTip verifyAutoProvisioningToolTipInfo(EndDevicesTestData.AutoProvisionedInfo obj){
-        getFieldPhoneModel().shouldHave(text(obj.getPhoneModel()));
-        getFieldFirmwareVersion().shouldHave(text(obj.getFirmwareVersion()));
+        getFieldPhoneModel().should(exist);
+        getFieldFirmwareVersion().should(exist);
         getFieldMAC().should(exist);
-        getFieldLastBootIP().shouldHave(text(obj.getLastBootIp()));
-        getFieldDateFirstProvisioning().shouldHave(text(obj.getDateOfFirstProvisioning()));
-        getFieldDateLastProvisioning().shouldHave(text(obj.getDateOfLastProvisioning()));
+        getFieldLastBootIP().should(exist);
+        getFieldDateFirstProvisioning().should(exist);
+        getFieldDateLastProvisioning().should(exist);
         return new AutoProvisioningInfoToolTip();
     }
 

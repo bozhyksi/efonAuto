@@ -177,7 +177,7 @@
                 <login>AutoTest@AutoTest.aa</login>
                 <password>Login123!!!</password>
                 <dB.jdbc.driver>com.mysql.cj.jdbc.Driver</dB.jdbc.driver>
-                <dB.url>jdbc:mysql://192.168.101.240:3306/webadmin_20170426?serverTimezone=UTC&amp;pinGlobalTxToPhysicalConnection=true</dB.url>
+                <dB.url>jdbc:mysql://192.168.101.240:3306/webadmin_20170426?autoReconnect=true&amp;serverTimezone=UTC&amp;pinGlobalTxToPhysicalConnection=true</dB.url>
                 <dB.login>root</dB.login>
                 <dB.password>root</dB.password>
                 <lowLevelUserLogin>AutoTestUser@aa.aa</lowLevelUserLogin>

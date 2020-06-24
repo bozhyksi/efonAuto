@@ -5,8 +5,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.BasePage;
-import pages.basePage.basePopup.ConfirmationPopup;
-import pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.userPageTests.userPageTestData.User;
 
@@ -17,6 +16,8 @@ import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 public class HuntGroupPage extends BasePage {
 
     //<editor-fold desc="Locators">
+
+    private final String buttonCloseXpath = "//div[@class=\"modal-header\"]//button[@class=\"close\"]";
     private String buttonCreateNewHuntGroupXpath = "//a[text()='New hunt group']";
     private String buttonDeleteByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteHuntGroup\"]";
     private String buttonEditByNameXpath = "//td[1]/div[contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editHuntGroup\"]";
@@ -109,14 +110,21 @@ public class HuntGroupPage extends BasePage {
     }
 
     @Step("Click Edit hunt group")
-    public CreateHuntGroupPopup editHuntGroup(HuntGroup huntGroup){
+    public CreateHuntGroupPopup clickEditHuntGroup(HuntGroup huntGroup){
         getButtonEditByName(huntGroup.getHuntGroupName()).click();
         waitUntilAlertDisappear();
         return new CreateHuntGroupPopup();
     }
 
+    @Step("Close Create HuntGroup popup")
+    public HuntGroupPage closeCreateHuntGroupPopup(){
+        field(buttonCloseXpath).click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
     @Step("Click Edit hunt group")
-    public CreateHuntGroupPopup editHuntGroup(String huntGroupName){
+    public CreateHuntGroupPopup clickEditHuntGroup(String huntGroupName){
         getButtonEditByName(huntGroupName).click();
         waitUntilAlertDisappear();
         return new CreateHuntGroupPopup();
@@ -162,7 +170,7 @@ public class HuntGroupPage extends BasePage {
 
     @Step("Add authorized user to hunt group")
     public HuntGroupPage addAuthorizedUserToHuntGroup(HuntGroup huntGroup, User ... users){
-        editHuntGroup(huntGroup.getHuntGroupName())
+        clickEditHuntGroup(huntGroup.getHuntGroupName())
                 .selectAuthorizedUser(users)
                 .saveChanges();
         return this;

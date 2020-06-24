@@ -19,9 +19,10 @@ import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
 
 public class EndDevicesUserPageTests extends BaseTestMethods {
 
+    //EPRO-1103
     @Description("Check if low-level user can edit his own End Devices")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "endDevicesUserPageTests"})
-    public void CheckIfLowLevelUserCanEditHisOwnEndDevices(){
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"},enabled = false)
+    public void editOwnEndDevicesTest(){
         EndDevice endDevice = new EndDevice();
 
         loginAsLowLevelUser();

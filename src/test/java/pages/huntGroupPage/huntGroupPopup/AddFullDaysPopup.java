@@ -2,8 +2,10 @@ package pages.huntGroupPage.huntGroupPopup;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import pages.huntGroupPage.HuntGroupPage;
-import pages.userPage.userPagePopup.CreateUserPopup;
+import io.qameta.allure.Step;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
+import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.TimersSection;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 public class AddFullDaysPopup extends CreateHuntGroupPopup {
     //<editor-fold desc="Locators">
@@ -58,4 +60,31 @@ public class AddFullDaysPopup extends CreateHuntGroupPopup {
         return field(buttonCloseXpath);
     }
     //</editor-fold>
+
+    @Step("Enter Full days name")
+    public AddFullDaysPopup enterFullDaysName(String name){
+        getInputFullDay().setValue(name);
+        return this;
+    }
+
+    @Step("Enter dates")
+    public AddFullDaysPopup enterDates(String dates){
+        getInputDates().setValue(dates);
+        return this;
+    }
+
+    @Step("Configure steps")
+    public AddFullDaysPopup configureSteps(HuntGroup huntGroup){
+        new TimersSection().configureStandartTimer(huntGroup);
+        return this;
+    }
+
+    @Step("Save full days")
+    public CreateHuntGroupPopup saveFullDays(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new CreateHuntGroupPopup();
+    }
+
+
 }

@@ -1,44 +1,24 @@
-package pages.huntGroupPage.huntGroupPopup;
+package pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import flow.PublicEnums;
 import io.qameta.allure.Step;
 import pages.huntGroupPage.HuntGroupPage;
+import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
+import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
-import java.util.ArrayList;
-
 import static com.codeborne.selenide.Condition.*;
-import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.Announcements;
-import static pages.huntGroupPage.huntGroupPopup.CreateHuntGroupPopup.QueueActions.VoicemailUnavailable;
 
 public class CreateHuntGroupPopup extends HuntGroupPage {
-    private int level = 1;
-
-    public enum QueueActions {
-        NumberEndDevice("0"),
-        VoicemailUnavailable("1"),
-        Announcements("2"),
-        VoicemailBusy("3"),
-        VoicemailNoAnnouncement("4"),
-        Queue("5");
-
-        private String value;
-
-        QueueActions(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 
     //<editor-fold desc="Locators">
+
     //Edit hunt group section
     private String buttonSubmitEditHuntGroupXpath = "//h2[text()=\"Edit hunt group\"]/a";
     private String buttonEditHuntGroupXpath = "//h2[text()=\"Edit hunt group\"]//i[contains(@class,\"fa-cog\")]/..";
@@ -320,91 +300,16 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         getDropdownNumber().selectOption(index.getAndIncrement());
     }
 
-    public void configureLevel(String delay, QueueActions actionValue, String number) {
-        String levelNumber = String.valueOf(level);
-        getButtonAddNewStep().click();
-        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
-        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
-        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
-        getDropDownEndDevicesByLabel(levelNumber).selectOption(1);
-        getInputNumberByLabel(levelNumber).setValue(number);
-        level++;
-    }
-
-    public void configureLevel(String delay, QueueActions actionValue) {
-        String levelNumber = String.valueOf(level);
-        getButtonAddNewStep().click();
-        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
-        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
-        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
-        level++;
-    }
-
-    public void configureLevel(String delay, QueueActions actionValue, FileManagementTestData file) {
-        String levelNumber = String.valueOf(level);
-        getButtonAddNewStep().click();
-        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
-        getDropdownAnnouncementIdByLabel(levelNumber).selectOptionContainingText(file.getFileName());
-        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
-        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
-        level++;
-    }
-
-    public void configureLevel(String delay, QueueActions actionValue, Queue queue) {
-        String levelNumber = String.valueOf(level);
-        getButtonAddNewStep().click();
-        getDropdownActionTypeByLabel(levelNumber).selectOptionByValue(actionValue.getValue());
-        getDropdownQueueIdByLabel(levelNumber).selectOptionContainingText(queue.getName());
-        //if (level > 1) getInputDelayByLabel(levelNumber).setValue(delay);
-        if (getInputDelayByLabel(levelNumber).exists()) getInputDelayByLabel(levelNumber).setValue(delay);
-        level++;
-    }
-
-    public void checkIfFurtherTimersSaved(HuntGroup huntGroup){
-        getInputTimeName().shouldHave(Condition.value(huntGroup.getFurtherTimeName()));
-        getInputMonday().shouldHave(Condition.value(huntGroup.getFurtherTimeMonday()));
-        getInputTuesday().shouldHave(Condition.value(huntGroup.getFurtherTimeTuesday()));
-        getInputWednesday().shouldHave(Condition.value(huntGroup.getFurtherTimeWednesday()));
-        getInputThursday().shouldHave(Condition.value(huntGroup.getFurtherTimeThursday()));
-        getInputFriday().shouldHave(Condition.value(huntGroup.getFurtherTimeWednesday()));
-        getInputSaturday().shouldHave(Condition.value(huntGroup.getFurtherTimeSaturday()));
-        getInputSaturday().shouldHave(Condition.value(huntGroup.getFurtherTimeSunday()));
-    }
-
-    public void activateCallRecordings(){
+    @Step("Activate call recording")
+    public CreateHuntGroupPopup activateCallRecordings(){
         getCheckboxCallRecording().click();
-        getButtonSave().click();
-        waitUntilAlertDisappear();
+        return this;
     }
 
     public void changeHuntGroupLanguage(String value){
         getButtonSubmitEditHuntGroup().click();
         getDropdownLanguage().selectOptionByValue(value);
         getButtonSubmitEditHuntGroup().click();
-    }
-
-    public void configureStandartTimers(FileManagementTestData announcement,Queue queue){
-        getButtonSubmitTimer().click();
-        configureLevel("10", QueueActions.VoicemailUnavailable);
-        configureLevel("12", QueueActions.Announcements,announcement);
-        configureLevel("22", QueueActions.Queue,queue);
-        configureLevel("25", QueueActions.NumberEndDevice,queue.getRandomPhone("04",8));
-        configureLevel("28", QueueActions.VoicemailNoAnnouncement);
-        configureLevel("30", QueueActions.VoicemailBusy);
-        getButtonSubmitTimer().click();
-        getButtonSave().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-    }
-
-    public void verifyStandartTimersConfiguration(){
-        getButtonSubmitTimer().click();
-        getDropdownActionTypeByLabel("1").getSelectedOption().shouldHave(text("Voicemail: unavailable"));
-        getDropdownActionTypeByLabel("2").getSelectedOption().shouldHave(text("Announcements"));
-        getDropdownActionTypeByLabel("3").getSelectedOption().shouldHave(text("Queue"));
-        getDropdownActionTypeByLabel("4").getSelectedOption().shouldHave(text("Number/end device"));
-        getDropdownActionTypeByLabel("5").getSelectedOption().shouldHave(text("Voicemail: no announcement"));
-        getDropdownActionTypeByLabel("6").getSelectedOption().shouldHave(text("Voicemail: busy"));
     }
 
     @Step("Select hunt group number")
@@ -482,5 +387,72 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
             waitUntilAlertDisappear();
         }
         return this;
+    }
+
+    @Step("Click edit Voicemail section")
+    public VoicemailSection clickEditVoicemail(){
+        getButtonSubmitVoicemail().click();
+        return new VoicemailSection();
+    }
+
+    @Step("Click edit If end devices not available")
+    public EndDevicesNotAvailableSection clickEditEndDevNotAvailable(){
+        field(buttonSubmitRelevantAccountXpath).click();
+        waitUntilAlertDisappear();
+        return new EndDevicesNotAvailableSection();
+    }
+
+    @Step("Click edit timers")
+    public TimersSection clickEditTimers(){
+        field(buttonSubmitTimerXpath).click();
+        waitUntilAlertDisappear();
+        return new TimersSection();
+    }
+
+    @Step("Click Edit full days")
+    public CreateHuntGroupPopup clickEditFullDays(){
+        getButtonEditFullDay().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Click Further Timers timers")
+    public CreateHuntGroupPopup clickEditFurtherTimers(){
+        getButtonEditFurtherTime().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Verify full days configurations")
+    public CreateHuntGroupPopup verifyFullDaysConfig(HuntGroup huntGroup){
+        getInputFullDayName().shouldHave(value(huntGroup.getFullDayName()));
+        getInputFullDayDate().shouldHave(value(huntGroup.getFullDayDate()));
+        return this;
+    }
+
+    @Step("Verify timers configurations")
+    public CreateHuntGroupPopup verifyTimersConfig(HuntGroup huntGroup){
+        getInputTimeName().shouldHave(value(huntGroup.getFurtherTimeName()));
+        return this;
+    }
+
+    @Step("Select Hunt Group timer group")
+    public CreateHuntGroupPopup selectTimerGroups(PublicEnums.HuntGroupTimerGroup type){
+        field(dropdownTimerGroupXpath).selectOptionContainingText(type.getType());
+        return this;
+    }
+
+    @Step("Click Add new Full Days group")
+    public AddFullDaysPopup clickAddFullDays(){
+        field(buttonAddXpath).click();
+        waitUntilAlertDisappear();
+        return new AddFullDaysPopup();
+    }
+
+    @Step("Click Add new Timers group")
+    public AddFurtherTimePopup clickAddTimers(){
+        field(buttonAddXpath).click();
+        waitUntilAlertDisappear();
+        return new AddFurtherTimePopup();
     }
 }

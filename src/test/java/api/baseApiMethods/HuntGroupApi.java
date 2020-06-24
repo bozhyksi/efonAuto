@@ -41,8 +41,10 @@ public class HuntGroupApi {
     @Step("Delete Hunt Group via API")
     public static void deleteHuntGroupApi(HuntGroup ... huntGroups){
         for (HuntGroup huntGroup: huntGroups) {
-            login()
-                    .delete(deleteHuntGroup,huntGroup.getId());
+            if (!huntGroup.getId().equals("")) {
+                login()
+                        .delete(deleteHuntGroup, huntGroup.getId());
+            }
         }
     }
 

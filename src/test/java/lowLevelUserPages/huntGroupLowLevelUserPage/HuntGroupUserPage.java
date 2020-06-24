@@ -1,9 +1,7 @@
 package lowLevelUserPages.huntGroupLowLevelUserPage;
 
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
-import pages.huntGroupPage.HuntGroupPage;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 
 import static com.codeborne.selenide.Condition.exist;
@@ -13,7 +11,7 @@ import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
 public class HuntGroupUserPage extends BasePageLowLevelUser {
 
     public void editHuntGroup(HuntGroup huntGroup){
-        huntGroupPage.editHuntGroup(huntGroup.getHuntGroupName());
+        huntGroupPage.clickEditHuntGroup(huntGroup.getHuntGroupName());
     }
 
     public void verifyIfCallRecordingActive(HuntGroup huntGroup){

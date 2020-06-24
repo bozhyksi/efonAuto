@@ -19,15 +19,11 @@ public class EndDevicesPageTests extends BaseTestMethods {
 
     @Description("Check if system shows additional info tooltip for autoprovisioned end devices.")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "endDevicesPageTests"})
-    public void CheckIfSystemShowsAdditionalInfoTooltipForAutoProvisionedEndDevices(){
-        step("Prepare test data");
+    public void additionalInfoTooltipTest(){
         EndDevicesTestData.AutoProvisionedInfo autoProvisionedInfo = new EndDevicesTestData.AutoProvisionedInfo();
 
-        step("Log in the system and goto End-Devices tab");
-        login();
-        basePage.goToMenuTab(END_DEVICES);
-
-        step("Open auto-provisioned info tool tip and verify shown data");
+        login()
+                .goToMenuTab(END_DEVICES);
         endDevicesPage
                 .openAutoProvisionedInfoToolTip()
                 .verifyAutoProvisioningToolTipInfo(autoProvisionedInfo);
