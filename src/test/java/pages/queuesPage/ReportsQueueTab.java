@@ -2,6 +2,7 @@ package pages.queuesPage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
@@ -95,7 +96,7 @@ public class ReportsQueueTab extends QueuesBasePage {
     }
     //</editor-fold>
 
-
+    @Step("Goto report")
     public void goToReport(ReportBy tabName){
         getMenuTab(tabName).click();
         waitUntilAlertDisappear();
@@ -110,10 +111,12 @@ public class ReportsQueueTab extends QueuesBasePage {
         }
     }
 
+    @Step("Select report type")
     public void selectReportType(Queue.Report reportType){
         getDropdownReport().selectOptionContainingText(reportType.getReportType());
     }
 
+    @Step("Create reports for every type")
     public void createReportForEveryType(ReportBy report, Queue queue, User user){
         goToReport(report);
         for (Queue.Report reportType : Queue.Report.values()) {

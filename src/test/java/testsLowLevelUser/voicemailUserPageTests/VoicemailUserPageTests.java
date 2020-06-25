@@ -18,7 +18,8 @@ import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL_SETTING;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserPhone;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserPhone;
+
 
 @Listeners(CustomListeners.class)
 

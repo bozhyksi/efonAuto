@@ -20,15 +20,12 @@ public class QueueApi {
     }
 
     @Step("Create Queue with manager and reporter via API")
-    public static void createQueueWithMangerReporterApi(Queue queue){
-        UserApi.createUserApi(queue.getReporter().getJson());
-        UserApi.createUserApi(queue.getManager().getJson());
-
+    public static void createQueueWithMangerReporterApi(Queue queue, String managerContactID, String reporterContactID){
         login()
                 .given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body(queue.getJson())
+                .body(queue.getJson(managerContactID, reporterContactID))
                 .post(postCreateQueue);
     }
 

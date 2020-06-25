@@ -12,8 +12,9 @@ import tests.userPageTests.userPageTestData.EndDevice;
 import java.util.ArrayList;
 
 import static io.qameta.allure.Allure.step;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserEndDevname;
+
 import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserEndDevname;
 
 @Listeners(CustomListeners.class)
 

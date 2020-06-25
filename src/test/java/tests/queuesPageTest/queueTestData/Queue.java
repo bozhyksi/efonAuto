@@ -518,6 +518,40 @@ public class Queue extends BaseTestMethods {
         return json.toString();
     }
 
+    public String getJson(String managerID, String reporterID){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonObject json = factory.createObjectBuilder()
+                .add("globalDetail", factory.createObjectBuilder()
+                        .add("queueName", getName())
+                        .add("subscriptionId", getSubscriptionId())
+                        .add("mohId",0)
+                        .add("loginLogout", JsonValue.NULL)
+                        .add("uploadType", "")
+                        .add("reporterIds",factory.createArrayBuilder()
+                                .add(reporterID)
+                        )
+                        .add("managerIds",factory.createArrayBuilder()
+                                .add(managerID)
+                        )
+                )
+                .add("specificDetail",factory.createObjectBuilder()
+                        .add("maxHoldTime", 30)
+                        .add("priority", 100)
+                        .add("announcementFilename","")
+                        .add("announcementFrequency", 30)
+                        .add("strategy", "fewestcalls")
+                        .add("timeout", 10)
+                        .add("retry", 10)
+                        .add("wrapUpTime", 10)
+                        .add("recordCalls", true)
+                        .add("announcementId",0)
+                )
+                .add("name", generateNewId())
+                .build();
+
+        return json.toString();
+    }
+
     public String getAddAgentJson(){
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         return factory.createArrayBuilder()

@@ -3,6 +3,7 @@ package testsLowLevelUser.huntGroupUserPageTests;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
@@ -10,13 +11,22 @@ import org.testng.annotations.Test;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
+import testsLowLevelUser.testData.AutotestUserData;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
+import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
 import static api.baseApiMethods.HuntGroupApi.*;
+import static api.baseApiMethods.QueueApi.createQueueApi;
+import static api.baseApiMethods.QueueApi.deleteQueueApi;
+import static flow.PublicEnums.HuntGroupTimerGroup.FULL_DAYS;
+import static flow.PublicEnums.HuntGroupTimerGroup.TIME;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.*;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserDisplayName;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserId;
 
 @Listeners(CustomListeners.class)
 
@@ -100,118 +110,100 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
     }
 
-    //bug EPRO-1023
+    //1023
     @Description("Check if low-level user can configure \"Full Days\" section on HuntGroup")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
-    public void CheckIfUserCanConfigureFullDays(){
-        step("Prepare test data");
-        HuntGroup huntGroup = new HuntGroup();
-        Queue queue = new Queue();
-        FileManagementTestData announcement = new FileManagementTestData();
-
-        filesList.add(announcement);
+    public void configureFullDaysTest(){
+        HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
+        filesList.add(huntGroup.getAnnouncement());
         huntGroupsList.add(huntGroup);
-        queuesList.add(queue);
+        queuesList.add(huntGroup.getQueue());
 
-        step("Log in as customer admin and create Huntgruop, Queue and upload announcement for low-level user");
-        login();
-        createHuntGroup(huntGroup, "AutoTestUser AutoTestUser");
-        createQueueOnlyRequiredFields(queue);
-        uploadAnnouncementFile(announcement);
-        logOut();
+        createHuntGroupWithAuthorizedUserApi(huntGroup, autotestUserId, autotestUserDisplayName);
+        createQueueApi(huntGroup.getQueue());
+        uploadAnnouncementApi(huntGroup.getAnnouncement());
 
-        step("Log in as low-level user and goto HuntGroups page");
-        loginAsLowLevelUser();
-        basePageLowLevelUser.goToMenuTab(HUNT_GROUPS);
+        loginAsLowLevelUser()
+            .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                .selectTimerGroups(FULL_DAYS)
+                .clickAddFullDays()
+                    .enterFullDaysName(huntGroup.getFullDayName())
+                    .enterDates(huntGroup.getFullDayDate())
+                    .configureSteps(huntGroup)
+                    .saveFullDays()
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .clickEditFullDays()
+                .verifyFullDaysConfig(huntGroup);
 
-        step("Edit hunt group and configure Full Days section");
-        //huntGroupUserPage.editHuntGroup(huntGroup);
-        editHuntGroupLowLevelUserPopup.configureFullDays(huntGroup,queue,announcement);
-        editHuntGroupLowLevelUserPopup.verifyFullDayConfiguration(huntGroup);
-
-        step("Login as admin and delete test data");
-        login();
-        deleteHuntGroup(huntGroup.getHuntGroupName());
-        deleteQueue(queue.getName());
-        deleteAnnouncementFile(announcement.getFileName());
+        deleteHuntGroupApi(huntGroup);
+        deleteQueueApi(huntGroup.getQueue());
+        deleteAnnouncementApi(huntGroup.getAnnouncement());
     }
 
     //bug EPRO-1023
     @Description("Check if low-level user can configure \"Standart Timers\" section on HuntGroup")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
-    public void CheckIfUserCanConfigureStandartTimers(){
-        step("Prepare test data");
-        HuntGroup huntGroup = new HuntGroup();
-        Queue queue = new Queue();
-        FileManagementTestData announcement = new FileManagementTestData();
-
-        filesList.add(announcement);
+    public void configureStandartTimersTest(){
+        HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
+        filesList.add(huntGroup.getAnnouncement());
         huntGroupsList.add(huntGroup);
-        queuesList.add(queue);
+        queuesList.add(huntGroup.getQueue());
 
-        step("Log in as customer admin and create Huntgruop, Queue and upload announcement for low-level user");
-        login();
-        createHuntGroup(huntGroup, "AutoTestUser AutoTestUser");
-        createQueueOnlyRequiredFields(queue);
-        uploadAnnouncementFile(announcement);
-        logOut();
+        createHuntGroupWithAuthorizedUserApi(huntGroup, autotestUserId, autotestUserDisplayName);
+        createQueueApi(huntGroup.getQueue());
+        uploadAnnouncementApi(huntGroup.getAnnouncement());
 
-        step("Log in as low-level user and goto HuntGroups page");
-        loginAsLowLevelUser();
-        basePageLowLevelUser.goToMenuTab(HUNT_GROUPS);
+        loginAsLowLevelUser()
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                .clickEditTimers()
+                    .configureStandartTimer(huntGroup)
+                    .submit()
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .clickEditTimers()
+                    .verifyStandartTimersConfiguration();
 
-        step("Edit hunt group and configure Full Days section");
-        //huntGroupUserPage.editHuntGroup(huntGroup);
-        editHuntGroupLowLevelUserPopup.configureStandartTimers(announcement,queue);
-
-        step("Verify made changes");
-        //huntGroupUserPage.editHuntGroup(huntGroup);
-        editHuntGroupLowLevelUserPopup.verifyStandartTimers();
-        logOut();
-
-        step("Clear test data");
-        login();
-        deleteHuntGroup(huntGroup.getHuntGroupName());
-        deleteQueue(queue.getName());
-        deleteAnnouncementFile(announcement.getFileName());
+        deleteHuntGroupApi(huntGroup);
+        deleteQueueApi(huntGroup.getQueue());
+        deleteAnnouncementApi(huntGroup.getAnnouncement());
     }
 
     //bug EPRO-1023
     @Description("Check if low-level user can configure \"Further Time groups\" section on HuntGroup")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"}, enabled =  false)
-    public void CheckIfUserCanConfigureFurtherTimeGroups(){
-        step("Prepare test data");
-        HuntGroup huntGroup = new HuntGroup();
-        Queue queue = new Queue();
-        FileManagementTestData announcement = new FileManagementTestData();
-
-        filesList.add(announcement);
+    public void vanConfigureFurtherTimeGroupsTest(){
+        HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
+        filesList.add(huntGroup.getAnnouncement());
         huntGroupsList.add(huntGroup);
-        queuesList.add(queue);
+        queuesList.add(huntGroup.getQueue());
 
-        step("Log in as customer admin and create Huntgruop, Queue and upload announcement for low-level user");
-        login();
-        createHuntGroup(huntGroup, "AutoTestUser AutoTestUser");
-        createQueueOnlyRequiredFields(queue);
-        uploadAnnouncementFile(announcement);
-        logOut();
+        createHuntGroupWithAuthorizedUserApi(huntGroup, autotestUserId, autotestUserDisplayName);
+        createQueueApi(huntGroup.getQueue());
+        uploadAnnouncementApi(huntGroup.getAnnouncement());
 
-        step("Log in as low-level user and goto HuntGroups page");
-        loginAsLowLevelUser();
-        basePageLowLevelUser.goToMenuTab(HUNT_GROUPS);
+        loginAsLowLevelUser()
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                .selectTimerGroups(TIME)
+                .clickAddTimers()
+                    .enterTimeName(huntGroup.getFurtherTimeName())
+                    .enterTimers(huntGroup)
+                    .configureSteps(huntGroup)
+                    .saveTimers()
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .clickEditFurtherTimers()
+                    .verifyTimersConfig(huntGroup);
 
-        step("Edit hunt group and configure  \"Further Time groups\" section");
-        //huntGroupUserPage.editHuntGroup(huntGroup);
-        editHuntGroupLowLevelUserPopup.configureFurtherTimers(huntGroup,queue,announcement);
-
-        step("Log out the system");
-        logOut();
-
-        step("Log in as vpbx admin and clear test data");
-        login();
-        deleteHuntGroup(huntGroup.getHuntGroupName());
-        deleteQueue(queue.getName());
-        deleteAnnouncementFile(announcement.getFileName());
+        deleteHuntGroupApi(huntGroup);
+        deleteQueueApi(huntGroup.getQueue());
+        deleteAnnouncementApi(huntGroup.getAnnouncement());
     }
 
     @Description("Check if user has access to HuntGroup where he was assigned as authorised user")

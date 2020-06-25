@@ -2,7 +2,8 @@ package testsLowLevelUser.lastCallsUserPageTests.lastCallsUserPageTestData;
 
 import flow.BaseTestMethods;
 
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserPhone;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserPhone;
+
 
 public class LastCallsUserPageTestData extends BaseTestMethods {
 

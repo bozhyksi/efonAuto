@@ -18,11 +18,12 @@ import java.util.ArrayList;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_ARRIVED;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.SEND_FAX;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.autotestUserName;
+
 
 import static lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage.FaxesBaseUserPageTabs.FAX_SETTINGS;
 import static pages.basePage.BasePage.MenuTabsBasePage.FAX;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.ALLOCATIONS;
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserFullName;
 
 
 @Listeners(CustomListeners.class)
@@ -114,7 +115,7 @@ public class FaxUserPageTests extends BaseTestMethods {
         createUser(user);
         refreshPage();
         userPage
-                .openEditUserPopup(autotestUserName)
+                .openEditUserPopup(autotestUserFullName)
                 .goToTab(ALLOCATIONS);
         allocationTabConfigUserPopup
                 .selectNumberAssignFax2EmailAccess(user.getPhoneNumber())

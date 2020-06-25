@@ -66,11 +66,10 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
     }
 
     @Step("Add agent to Queue")
-    public ConfigureQueueTab addAgentToQueue(String queue, User ... users){
-        getButtonEditAgentsQueueByText(queue).click();
+    public ConfigureQueueTab addAgentToQueue(String ... users){
         waitUntilAlertDisappear();
-        for (User user:users) {
-            executeDragDropScript(getFieldNotSelectedAgentByName(user.getFirstName()), getSectionSelected());
+        for (String userName:users) {
+            executeDragDropScript(getFieldNotSelectedAgentByName(userName), getSectionSelected());
         }
         getButtonSave().click();
         waitUntilAlertDisappear();
@@ -90,11 +89,9 @@ public class QueueForAgentsPopup extends ConfigureQueueTab {
     }
 
     @Step("Check Queue agent")
-    public QueueForAgentsPopup validateAddedAgents(String queue, User ... users){
-        getButtonEditAgentsQueueByText(queue).click();
-        waitUntilAlertDisappear();
-        for (User user: users) {
-            getFieldSelectedAgentByName(user.getFirstName()).should(exist);
+    public QueueForAgentsPopup validateAddedAgents(String ... users){
+        for (String userName: users) {
+            getFieldSelectedAgentByName(userName).should(exist);
             waitUntilAlertDisappear();
         }
         getButtonCancel().click();

@@ -16,11 +16,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static core.configuration.preparations.eFonApp.dataBaseWorker;
 
 public class BasePageLowLevelUser extends BasePage {
-    public final static String autotestUserPhone = "00451245789908";
-    public final static String autotestUserName = "AutoTestUser AutoTestUser";
-    public final static String autotestUserEndDevname = getAutoTestUserEndDeviceNameFromDB();
-    public final static String autotestUserId = "906645";
-    public final static String autotestUserDisplayName = "AutoTestUser AutoTestUser";
 
     public enum MenuTabsLowLevelUser{
         SEND_SMS,
@@ -190,16 +185,5 @@ public class BasePageLowLevelUser extends BasePage {
         return customerPhoneNumbersList;
     }
 
-    private static String getAutoTestUserEndDeviceNameFromDB(){
-        String query = "SELECT name FROM webadmin_20170426.account where account_id=792888";
-        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
-        String endDevName ="";
-        while (true) try {
-            if (!resultSet.next()) break;
-            endDevName = resultSet.getString(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return endDevName;
-    }
+
 }

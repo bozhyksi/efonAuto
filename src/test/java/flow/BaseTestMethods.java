@@ -616,13 +616,6 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
     }
 
-    public void addAgentToQueue(String queue, User user){
-        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab.openQueueAgentPopup(queue);
-        queueForAgentsPopup.addAgentToQueue(queue, user);
-        queueForAgentsPopup.validateAddedAgents(queue,user);
-    }
-
     public void createNonAthorizedSmsSenderNumber(String senderNumber){
         basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
         manageSenderNumbersUserPage.getButtonAdd().click();

@@ -205,9 +205,8 @@ public class ProvisioningPageTests extends BaseTestMethods {
         deleteUsersApi(user);
     }
 
-    //EPRO-1101
     @Description("Check if user can Select/Deselect for MAC end device")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "provisioningPageTests"})
     public void selectForMacTest(){
         String macAddress = getRandomMAC();
         User user = new User();
