@@ -71,13 +71,13 @@ public class NumbersPageTests extends BaseTestMethods {
     public void VerifyIfHuntGroupDataIsShownInNumbersPage(){
 
         HuntGroup huntGroup = new HuntGroup();
-        createHuntGroupApi(huntGroup.getJson());
+        createHuntGroupApi(huntGroup);
         login();
         basePage
                 .goToMenuTab(NUMBERS);
         numbersPage
                 .verifyIfNumberInfoShown(huntGroup);
-        deleteHuntGroupApi(huntGroup.getId());
+        deleteHuntGroupApi(huntGroup);
 
     }
 

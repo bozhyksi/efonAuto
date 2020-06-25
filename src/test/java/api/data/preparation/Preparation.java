@@ -10,6 +10,8 @@ import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.FilterableResponseSpecification;
 import io.restassured.specification.RequestSpecification;
 
+import static core.configuration.preparations.PreparationsForRun.getLogin;
+import static core.configuration.preparations.PreparationsForRun.getPassword;
 import static io.restassured.RestAssured.given;
 
 public abstract class Preparation {
@@ -18,7 +20,7 @@ public abstract class Preparation {
         setup();
         return given()
                 .auth()
-                .form("AutoTest@AutoTest.aa", "Login123!!!",
+                .form(getLogin(), getPassword(),
                         new FormAuthConfig(
                                 "/portal/j_spring_security_check",
                                 "j_username",

@@ -11,24 +11,24 @@ import static core.configuration.preparations.PropertyReader.readProperty;
 
 public class PreparationsForRun extends DriverConfigurator {
 
-    public String getLogin(){
+    public static String getLogin(){
         return readProperty("login", "core.properties");
     }
 
-    public String getPassword(){
+    public static String getPassword(){
         return readProperty("password", "core.properties");
     }
 
-    public String getBaseURL(){
+    public static String getBaseURL(){
         baseUrl = readProperty("baseUrl", "core.properties");
         return baseUrl;
     }
 
-    public String getLowLevelUserLogin(){
+    public static String getLowLevelUserLogin(){
         return readProperty("lowLevelUserLogin", "core.properties");
     }
 
-    public String getLowLevelUserPassword(){
+    public static String getLowLevelUserPassword(){
         return readProperty("lowLevelUserPassword", "core.properties");
     }
 

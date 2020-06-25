@@ -328,11 +328,12 @@ public class BaseTestMethods extends eFonApp {
     }
 
     @Step("Log in as Low-Level user")
-    public void loginAsLowLevelUser(){
+    public BasePageLowLevelUser loginAsLowLevelUser(){
         loginPage.fillInLogin(getLowLevelUserLogin());
         loginPage.fillInPassword(getLowLevelUserPassword());
         loginPage.getButtonLogin().click();
         waitUntilAlertDisappear();
+        return new BasePageLowLevelUser();
     }
 
     public void login(String login, String pass) {
@@ -377,18 +378,6 @@ public class BaseTestMethods extends eFonApp {
         userPage.checkIfUserDeleted(user);
     }
 
-    @Step("Delete the user")
-    public void deleteUser(User ... users) {
-        basePage.getTabUser().click();
-        waitUntilAlertDisappear();
-        for (User user: users) {
-            userPage.deleteUserButtonClick(user.getFullName());
-            confirmationPopup.getYesButton().click();
-            waitUntilAlertDisappear();
-            userPage.checkIfUserDeleted(user);
-        }
-    }
-
     public void uploadPhoneBook(Phonebook phonebook) {
         phonebook.createExcelPhonebookFile();
         basePage.getTabPhonebook().click();
@@ -412,46 +401,6 @@ public class BaseTestMethods extends eFonApp {
         for (CallPickUp callPickUp : callPickUpsList) {
             deleteCallPickupApi(callPickUp);
         }
-    }
-
-    public void createIVR(IVRtestData ivr, FileManagementTestData file) {
-        basePage.goToMenuTab(IVRs);
-        ivrPage.getButtonNewIvr().click();
-        waitUntilAlertDisappear();
-        createNewIvrPopup.getInputName().setValue(ivr.getIvrName());
-        createNewIvrPopup.getInputDisplayName().setValue(ivr.getIvrDisplName());
-        createNewIvrPopup.getDropdownLanguage().selectOptionByValue(ivr.getIvrLanguage());
-        createNewIvrPopup.selectIvrNumber();
-        ivr.setIvrNumber(createNewIvrPopup.getDropdownSelectIvrNumber().getSelectedText());
-        createNewIvrPopup.getDropdownSelectAnnounc().selectOptionContainingText(file.getFileName());
-        ivr.setIvrAnnounce(createNewIvrPopup.getDropdownSelectAnnounc().getSelectedText());
-        createNewIvrPopup.getButtonSave().shouldBe(enabled).click();
-        waitUntilAlertDisappear();
-        ivrPage.getListName().filterBy(Condition.text(ivr.getIvrName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
-    }
-
-    public void deleteIVR(String name) {
-        basePage.getTabIVRs().click();
-        waitUntilAlertDisappear();
-        ivrPage.getButtonDeleteIvrByName(name).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        ivrPage.getListName().filterBy(Condition.text(name)).shouldHave(CollectionCondition.size(0));
-    }
-
-    public void createHuntGroup(HuntGroup huntGroup){
-        basePage.goToMenuTab(HUNT_GROUPS);
-        huntGroupPage.getButtonCreateNewHuntGroup().click();
-        waitUntilAlertDisappear();
-        createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
-        createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
-        createHuntGroupPopup.selectRandomNumber();
-        huntGroup.setHuntGroupNumber(createHuntGroupPopup.getDropdownNumber().getSelectedText());
-        createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
-        createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
-        createHuntGroupPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
     }
 
     public void createHuntGroup(HuntGroup huntGroup, String authorisedUser){
@@ -527,25 +476,6 @@ public class BaseTestMethods extends eFonApp {
         for (Queue queue : queueList) {
             deleteQueueApi(queue);
         }
-    }
-
-    public void uploadMusicOnHoldFile(FileManagementTestData file){
-        basePage.getTabFileManagement().click();
-        fileManagementBasePage.getTabMusicOnHold().click();
-        musicOnHoldPage.uploadFile(file.getFilePath());
-        musicOnHoldPage.getInputName().setValue(file.getFileName());
-        musicOnHoldPage.getButtonSave().click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        musicOnHoldPage.getFieldNameByText(file.getFileName()).should(Condition.exist);
-    }
-
-    public void deleteMusicOnHoldFile(String MOHfileName){
-        musicOnHoldPage.getButtonDeleteByName(MOHfileName).click();
-        confirmationPopup.getYesButton().click();
-        refreshPage();
-        waitUntilAlertDisappear();
-        musicOnHoldPage.getFieldNameByText(MOHfileName).shouldNot(Condition.exist);
     }
 
     public void mohCleanUp(List<FileManagementTestData> filesList){
@@ -691,27 +621,6 @@ public class BaseTestMethods extends eFonApp {
         configureQueueTab.openQueueAgentPopup(queue);
         queueForAgentsPopup.addAgentToQueue(queue, user);
         queueForAgentsPopup.validateAddedAgents(queue,user);
-    }
-
-    public void configureBlockList(IVRtestData ivr, BlockListTestData blockList){
-        step("Configure Block list section - select number");
-        blockListSection.getDropdownNumbers().selectOptionContainingText(ivr.getIvrNumber());
-
-        step("Activate \"Block incoming calls\" and select \"Forward to\" option");
-        blockListSection.getCheckboxBlockIncomingCalls().click();
-        blockListSection.getDropdownForwardTo().selectOptionByValue("VOICEMAIL");
-
-        step("Activate option \"Calls with suppressed numbers\"");
-        blockListSection.getCheckboxCallsSuppressedNumbers().click();
-
-        step("Activate option \"Use blocklist\"");
-        blockListSection.getCheckboxUseBlocklist().click();
-        blockListSection.getDropdownBlocklistType().selectOptionByValue("BLOCKED_NUMBERS");
-
-        step("Add numbers to Block list");
-        blockListSection.getButtonEditBlocklist().click();
-        waitUntilAlertDisappear();
-        blocklistPopup.addNumberToBlockList(blockList);
     }
 
     public void createNonAthorizedSmsSenderNumber(String senderNumber){

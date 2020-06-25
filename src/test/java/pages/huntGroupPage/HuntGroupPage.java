@@ -104,11 +104,6 @@ public class HuntGroupPage extends BasePage {
     }
     //</editor-fold>
 
-    public void openEditPopup(HuntGroup huntGroup){
-        getButtonEditByName(huntGroup.getHuntGroupName()).click();
-        waitUntilAlertDisappear();
-    }
-
     @Step("Click Edit hunt group")
     public CreateHuntGroupPopup clickEditHuntGroup(HuntGroup huntGroup){
         getButtonEditByName(huntGroup.getHuntGroupName()).click();
@@ -155,39 +150,6 @@ public class HuntGroupPage extends BasePage {
         return this;
     }
 
-    @Step("Create hunt group with authorized users")
-    public HuntGroupPage createHuntGroup(HuntGroup huntGroup, String userName){
-        goToMenuTab(HUNT_GROUPS);
-        clickCreateNewHuntGroup()
-                .setName(huntGroup.getHuntGroupName())
-                .setDisplayName(huntGroup.getHuntGroupDisplayName())
-                .selectAuthorizedUser(userName)
-                .selectLanguage(huntGroup.getHuntGroupLanguage())
-                .selectNumber(huntGroup.getHuntGroupNumber())
-                .saveChanges();
-        return this;
-    }
-
-    @Step("Add authorized user to hunt group")
-    public HuntGroupPage addAuthorizedUserToHuntGroup(HuntGroup huntGroup, User ... users){
-        clickEditHuntGroup(huntGroup.getHuntGroupName())
-                .selectAuthorizedUser(users)
-                .saveChanges();
-        return this;
-    }
-
-    @Step("Delete hunt group")
-    public void deleteHuntGroup(String ...huntGroupNames){
-        goToMenuTab(HUNT_GROUPS);
-        for (String huntGroupName : huntGroupNames) {
-            getButtonDeleteByName(huntGroupName).click();
-            confirmationPopup.getYesButton().click();
-            waitUntilAlertDisappear();
-            refreshPage();
-            getfieldNameByText(huntGroupName).shouldNot(Condition.exist);
-        }
-    }
-
     @Step("Delete hunt group")
     public HuntGroupPage deleteHuntGroup(HuntGroup ...huntGroups){
         goToMenuTab(HUNT_GROUPS);
@@ -215,6 +177,12 @@ public class HuntGroupPage extends BasePage {
     @Step("Verify if Huntgroup Phone Number exists in the list")
     public HuntGroupPage verifyIfHuntGroupNumberExists(String number){
         getFieldNumberByText(number).should(exist);
+        return this;
+    }
+
+    @Step("Verify if Huntgroup does not exist in the list")
+    public HuntGroupPage verifyIfHuntGroupNameNotExist(String number){
+        getFieldNumberByText(number).shouldNot(exist);
         return this;
     }
 

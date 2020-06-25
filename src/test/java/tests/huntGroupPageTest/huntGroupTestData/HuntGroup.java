@@ -1,6 +1,7 @@
 package tests.huntGroupPageTest.huntGroupTestData;
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
@@ -257,6 +258,10 @@ public class HuntGroup extends BaseTestMethods {
         this.huntGroupAuthorizedUser = huntGroupAuthorizedUser;
     }
     //</editor-fold>
+
+    public String changeLanguage(){
+        return this.huntGroupLanguage = PublicEnums.LanguageValues.getRandLangVal();
+    }
 
     public String changeHuntGroupName(){
         return this.huntGroupName = "ChangedName "+getRandomString(15);
