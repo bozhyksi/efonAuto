@@ -1,7 +1,7 @@
 package pages.queuesPage;
 
 import com.codeborne.selenide.SelenideElement;
-import lowLevelUserPages.queuesLowLevelUserPage.QueuesBaseUserPage;
+
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import pages.basePage.BasePage;

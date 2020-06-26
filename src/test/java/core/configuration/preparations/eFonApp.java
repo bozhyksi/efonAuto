@@ -14,10 +14,6 @@ import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.IncomingLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.MissedLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.OutgoingLastCallsUserPage;
-import lowLevelUserPages.queuesLowLevelUserPage.QueueRecordingsUserPage;
-import lowLevelUserPages.queuesLowLevelUserPage.QueueReportsUserPage;
-import lowLevelUserPages.queuesLowLevelUserPage.QueueStatusUserPage;
-import lowLevelUserPages.queuesLowLevelUserPage.queuePopups.QueueForAgentsUserPopup;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.ManageSenderNumbersAndNamesUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
@@ -152,8 +148,7 @@ public class eFonApp extends PreparationsForRun{
     public static PenaltyPopup penaltyPopup = new PenaltyPopup();
     public static RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
     public static ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
-    public static QueueStatusUserPage queueStatusUserPage = new QueueStatusUserPage();
-    public QueueReportsUserPage queueReportsUserPage = new QueueReportsUserPage();
+
     public static ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
     public static ProvisioningManagerPage provisioningManagerPage = new ProvisioningManagerPage();
     public static FaxArrivedUserPage faxArrivedUserPage = new FaxArrivedUserPage();
@@ -161,7 +156,7 @@ public class eFonApp extends PreparationsForRun{
     public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
     public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
     public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
-    public static QueueRecordingsUserPage queueRecordingsUserPage = new QueueRecordingsUserPage();
+
     public static ProvisioningEndDevicesPage provisioningEndDevicesPage = new ProvisioningEndDevicesPage();
     public static pages.blockListSection.BlockListSection blockListSections = new pages.blockListSection.BlockListSection();
 
