@@ -1,5 +1,6 @@
 package testsLowLevelUser.queueUserPageTests;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -13,6 +14,8 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static api.baseApiMethods.QueueApi.*;
+import static api.baseApiMethods.UserApi.*;
+import static com.codeborne.selenide.Condition.value;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.*;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
@@ -28,9 +31,11 @@ public class QueueUserPageTests extends BaseTestMethods {
     @Description("Check if low-level user can select/deselect agents to Queue")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"})
     public void addAgentsToQueueTest(){
-        Queue queue = new Queue();
+        Queue queue = new Queue(new User());
         queuesList.add(queue);
+        usersList.add(queue.getAgent());
 
+        createUsersApi(queue.getAgent());
         createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
 
         loginAsLowLevelUser()
@@ -38,34 +43,39 @@ public class QueueUserPageTests extends BaseTestMethods {
                 .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
                 .openQueueAgentPopup(queue)
-                .addAgentToQueue(autotestUserFirstName)
+                .addAgentToQueue(queue.getAgent())
                 .openQueueAgentPopup(queue)
-                .validateAddedAgents(autotestUserFirstName);
+                .validateAddedAgents(queue.getAgent().getFirstName());
 
         deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
-    // test fails, bug created EPRO-1011
-    @Description("Check if low-level user can change penalty for Queue agent ==== test fails, bug created EPRO-1011")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"}, enabled = false)
-    public void CheckIfLowLevelUserCanChangePenaltyForQueueAgent(){
-        step("Prepare test data, create test user");
-        User user = new User();
-        usersList.add(user);
+    @Description("Check if low-level user can change penalty for Queue agent")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queueUserPageTest"})
+    public void changePenaltyTest(){
+        Queue queue = new Queue(new User());
+        usersList.add(queue.getAgent());
+        queuesList.add(queue);
 
-        login();
-        createUser(user);
-        logOut();
+        createQueueWithMangerReporterApi(queue,autotestUserContactID, autotestUserContactID);
+        createUsersApi(queue.getAgent());
+        addQueueAgentApi(queue);
 
-        step("Log in");
-        loginAsLowLevelUser();
+        loginAsLowLevelUser()
+                .goToMenuTab(QUEUES)
+                .goToMenuTab(STATUS_QUEUES);
+        statusQueuePage
+                .selectQueue(queue)
+                .clickEditPenalty(queue.getAgent())
+                .enterPenaltyForAgent(queue.getAgent().getPenalty())
+                .saveChanges()
+                .selectQueue(queue)
+                .clickEditPenalty(queue.getAgent())
+                .getInputPenalty().shouldHave(value(queue.getAgent().getPenalty()));
 
-        step("Add created user as agent to queue");
-        //addAgentToQueue("AutoTestQueue",user);
-
-        step("Goto Status tab and change penalty for created user");
-        basePageLowLevelUser.goToMenuTab(QUEUES).goToMenuTab(STATUS_QUEUES);
-        queueStatusUserPage.changePenaltyForAgent("AutoTestQueue",user);
+        deleteQueueApi(queue);
+        deleteUsersApi(queue.getAgent());
     }
 
     @Description("Check if low-level user can create Queues Report by DAY")
@@ -75,12 +85,13 @@ public class QueueUserPageTests extends BaseTestMethods {
         queuesList.add(queue);
 
         createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+        addQueueAgentApi(queue,autotestUserAccountID);
 
         loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
-        queueReportsUserPage
-                .createDayReports(Day,queue);
+        reportsQueuePage
+                .createReportForEveryType(Day, queue,autotestUserFirstName);
 
         deleteQueueApi(queue);
     }
@@ -92,12 +103,13 @@ public class QueueUserPageTests extends BaseTestMethods {
         queuesList.add(queue);
 
         createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+        addQueueAgentApi(queue,autotestUserAccountID);
 
         loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
-        queueReportsUserPage
-                .createDayReports(Month,queue);
+        reportsQueuePage
+                .createReportForEveryType(Month, queue,autotestUserFirstName);
 
         deleteQueueApi(queue);
     }
@@ -109,12 +121,13 @@ public class QueueUserPageTests extends BaseTestMethods {
         queuesList.add(queue);
 
         createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+        addQueueAgentApi(queue,autotestUserAccountID);
 
         loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
-        queueReportsUserPage
-                .createDayReports(Period,queue);
+        reportsQueuePage
+                .createReportForEveryType(Period,queue,autotestUserFirstName);
 
         deleteQueueApi(queue);
     }
@@ -155,107 +168,76 @@ public class QueueUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can NOT see Queues where he was unassigned as a manager")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
-    public void CheckIfUserCanNotSeeQueuesWhereHeWasUnAssignedAsAManager(){
-
+    public void unAssignedManagerAccessQueue(){
         Queue queue = new Queue();
         queuesList.add(queue);
 
-        login();
-        basePage
+        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+
+        login()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
-                .clickCreateNewQueue()
-                .setQueueName(queue.getName())
-                .setSubscription()
-                .selectQueueManager(autotestUserFullName)
-                .saveChanges()
-                .refreshPage();
-        configureQueueTab
                 .clickEditQueueButton(queue.getName())
                 .unassignQueueManager(autotestUserFullName)
+                .unassignQueueReporter(autotestUserFullName)
                 .saveChanges()
                 .refreshPage();
         logOut();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(CONFIGURE_QUEUES);
         configureQueueTab
                 .verifyIfQueueNotExistInList(queue.getName());
-        logOut();
 
-        login();
-        deleteQueue(queue.getName());
+        deleteQueueApi(queue);
     }
 
     @Description("Verify if Queues where user is NOT a manager are not available in Search dropdown on Queue status tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
-    public void VerifyIfQueuesWhereUserIsNotAManagerAreNotAvailableInSearchDropdownOnQueueStatusTab(){
+    public void verifyIfQueuesWhereUserIsNotAManagerAreNotAvailableInSearchDropdownOnQueueStatusTab(){
         Queue queue = new Queue();
+        Queue queue2 = new Queue();
         queuesList.add(queue);
+        queuesList.add(queue2);
 
-        login();
-        basePage
-                .goToMenuTab(QUEUES)
-                .goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab
-                .clickCreateNewQueue()
-                .setQueueName(queue.getName())
-                .setSubscription()
-                .saveChanges()
-                .refreshPage();
-        logOut();
+        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+        createQueueApi(queue2);
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(STATUS_QUEUES);
-        queueStatusUserPage.
-                verifyIfSearchDropDownDoesNotContainQueue(queue.getName());
-        logOut();
+        statusQueuePage
+                .verifyIfSearchDropDownDoesNotContainQueue(queue.getName());
 
-        login();
-        deleteQueue(queue.getName());
+        deleteQueueApi(queue, queue2);
     }
 
     @Description("Verify if Queues where user is NOT a manager are not available in \"Queue display name\" dropdown on Queue RECORDINGS tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
-    public void VerifyIfQueuesWhereUserIsNotAManagerAreNotAvailableInQueueDisplayNameDropdownOnQueueRecordingsTab(){
+    public void verifyIfQueuesWhereUserIsNotAManagerAreNotAvailableInQueueDisplayNameDropdownOnQueueRecordingsTab(){
         Queue queue = new Queue();
+        Queue queue2 = new Queue();
         queuesList.add(queue);
+        queuesList.add(queue2);
 
-        login();
-        basePage
-                .goToMenuTab(QUEUES)
-                .goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab
-                .clickCreateNewQueue()
-                .setQueueName(queue.getName())
-                .setSubscription()
-                .saveChanges()
-                .refreshPage();
-        logOut();
+        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
+        createQueueApi(queue2);
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(RECORDINGS_QUEUES);
-        queueRecordingsUserPage.
-                verifyIfQueueDisplayNameDropdownDoesNotContainQueue(queue.getName());
+        recordingsQueuePage
+                .verifyIfDisplayNameDropDownDoesNotContainQueue(queue.getName());
         logOut();
 
-        login();
-        deleteQueue(queue.getName());
+        deleteQueueApi(queue,queue2);
     }
-
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
         userCleanUp(usersList);
         queueCleanUp(queuesList);
     }
-
-
 }

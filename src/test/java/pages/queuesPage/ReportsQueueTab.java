@@ -140,4 +140,29 @@ public class ReportsQueueTab extends QueuesBasePage {
             getFieldByText("No Items").should(exist);
         }
     }
+
+    @Step("Create reports for every type")
+    public void createReportForEveryType(ReportBy report, Queue queue, String agentName){
+        goToReport(report);
+        for (Queue.Report reportType : Queue.Report.values()) {
+            selectReportType(reportType);
+            getDropdownQueue().selectOptionContainingText(queue.getName());
+            getDropdownAgent().selectOptionContainingText(agentName);
+            switch (report){
+                case Day:
+                    getInputDay().setValue(queue.getDay());
+                    break;
+                case Month:
+                    getInputMonth().setValue(queue.getMonth());
+                    break;
+                case Period:
+                    getInputFrom().setValue(queue.getFromDate()).pressTab();
+                    getInputTo().setValue(queue.getToDate()).pressTab();
+                    break;
+            }
+            getButtonSearch().click();
+            waitUntilAlertDisappear();
+            getFieldByText("No Items").should(exist);
+        }
+    }
 }

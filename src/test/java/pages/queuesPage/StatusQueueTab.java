@@ -3,12 +3,14 @@ package pages.queuesPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import lowLevelUserPages.queuesLowLevelUserPage.QueueStatusUserPage;
 import pages.queuesPage.queuePagePopups.PenaltyPopup;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
+import static core.configuration.preparations.eFonApp.statusQueuePage;
 
 public class StatusQueueTab extends QueuesBasePage {
     public enum ChangeState{
@@ -112,6 +114,12 @@ public class StatusQueueTab extends QueuesBasePage {
     @Step("Verify penalty value")
     public StatusQueueTab verifyPenalty(String penalty){
         getFieldPenaltyByText(penalty).should(exist);
+        return this;
+    }
+
+    @Step("Verify if Search dropdown does not contain queue")
+    public StatusQueueTab verifyIfSearchDropDownDoesNotContainQueue(String queueName){
+        super.verifyIfDropDownDoesNotContainQueue(getDropdownSearch(),queueName);
         return this;
     }
 }

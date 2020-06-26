@@ -1,7 +1,12 @@
 package pages.queuesPage;
 
 import com.codeborne.selenide.SelenideElement;
+import lowLevelUserPages.queuesLowLevelUserPage.QueuesBaseUserPage;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import pages.basePage.BasePage;
+
+import static testsLowLevelUser.testData.AutotestUserData.autotestUserFullName;
 
 public class QueuesBasePage extends BasePage {
     private String tabConfigureQueuesXpath = "//a[@href=\"/portal/call-queues/overview\"]";
@@ -23,5 +28,15 @@ public class QueuesBasePage extends BasePage {
 
     public SelenideElement getTabRecordings() {
         return field(tabRecordingsXpath);
+    }
+
+    protected QueuesBasePage verifyIfDropDownDoesNotContainQueue(SelenideElement dropdown, String queueName){
+        dropdown.click();
+        Select select = new Select(dropdown);
+        waitUntilAlertDisappear();
+        Assert.assertEquals(select.getOptions().contains(queueName), false,
+                "\nSearch dropdown should not contain queue: \""+queueName+"\"\n" +
+                        "User \""+ autotestUserFullName +"\" is not a manager of queue: \""+queueName+"\"\n");
+        return this;
     }
 }

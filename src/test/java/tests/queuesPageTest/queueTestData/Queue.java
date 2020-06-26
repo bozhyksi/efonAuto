@@ -561,6 +561,15 @@ public class Queue extends BaseTestMethods {
                 ).build().toString();
     }
 
+    public String getAddAgentJson(String accountId){
+        JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        return factory.createArrayBuilder()
+                .add(factory.createObjectBuilder()
+                        .add("accountId", accountId)
+                        .add("displayName",getAccountDisplayName(accountId))
+                ).build().toString();
+    }
+
     private String getSubscriptionId(){
         String query ="SELECT abo_id FROM webadmin_20170426.abo \n" +
                 "where customer_fk = 906144 and display_name=\"Queue/ACD\" and abo_id not in \n" +
@@ -639,8 +648,25 @@ public class Queue extends BaseTestMethods {
         String query ="SELECT c. display_name,a.name\n" +
                 "FROM webadmin_20170426.account a\n" +
                 "join customer c on c.customer_id = a.customer_fk\n" +
-                "where a.account_id= 792888;";
+                "where a.account_id= %s;";
         ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,agent.getAccountId()));
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1)+" "+resultSet.getString(2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    private String getAccountDisplayName(String accountID){
+        String query ="SELECT c. display_name,a.name\n" +
+                "FROM webadmin_20170426.account a\n" +
+                "join customer c on c.customer_id = a.customer_fk\n" +
+                "where a.account_id= %s;";
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(String.format(query,accountID));
         while (true){
             try {
                 if (!resultSet.next()) break;

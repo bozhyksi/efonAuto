@@ -82,4 +82,10 @@ public class RecordingsQueueTab extends QueuesBasePage {
         return this;
     }
 
+    @Step("Verify if Queue display name dropdown does not contain queue")
+    public RecordingsQueueTab verifyIfDisplayNameDropDownDoesNotContainQueue(String queueName){
+        super.verifyIfDropDownDoesNotContainQueue(getDropdownQueueDisplayName(),queueName);
+        return this;
+    }
+
 }

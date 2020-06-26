@@ -155,6 +155,12 @@ public class CreateNewQueuePopup extends BasePopup {
         return this;
     }
 
+    @Step ("Deselect queue reporter")
+    public CreateNewQueuePopup unassignQueueReporter (String reporterName){
+        getButtonUnAssignManagerReporterByName(reporterName).click();
+        return this;
+    }
+
     @Step ("Select Login/logout short number")
     public CreateNewQueuePopup selectLoginShortNum(AbbreviatedDialling shortNum){
         getDropdownLoginLogout().selectOptionContainingText(shortNum.getSingleShortNum());

@@ -17,6 +17,8 @@ public abstract class AutotestUserData{
     public final static String autotestUserId = "906645";
     public final static String autotestUserDisplayName = "AutoTestUser AutoTestUser";
     public final static String autotestUserContactID = "1110126";
+    public final static String autotestUserAccountID = "792888";
+
 
     private static String getAutoTestUserEndDeviceNameFromDB(){
         String query = "SELECT name FROM webadmin_20170426.account where account_id=792888";

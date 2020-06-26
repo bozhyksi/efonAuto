@@ -36,9 +36,11 @@ public class QueueApi {
     }
 
     @Step("Delete Queue via API")
-    public static void deleteQueueApi(Queue queue){
-        login()
-                .delete(deleteDeleteQueue,queue.getId());
+    public static void deleteQueueApi(Queue ... queues){
+        for (Queue queue:queues) {
+            login()
+                    .delete(deleteDeleteQueue,queue.getId());
+        }
     }
 
     @Step("Delete Queue with manager and reporter via API")
@@ -56,6 +58,15 @@ public class QueueApi {
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(queue.getAddAgentJson())
+                .post(postAddQueueAgent,queue.getId());
+    }
+
+    @Step("Add agent to Queue via API")
+    public static void addQueueAgentApi(Queue queue, String agentAccountID){
+        login()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(queue.getAddAgentJson(agentAccountID))
                 .post(postAddQueueAgent,queue.getId());
     }
 }
