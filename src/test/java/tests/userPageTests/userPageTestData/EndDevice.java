@@ -62,6 +62,7 @@ public class EndDevice extends BaseTestMethods  {
         }
     }
 
+    //<editor-fold desc="properties">
     private String endDevName;
     private String endDevUserId;
     private String endDevPass;
@@ -76,6 +77,7 @@ public class EndDevice extends BaseTestMethods  {
     private boolean endDevSuppressedNO;
     private boolean endDevSuppressed;
     private String randomEndDeviceForEdit;
+    //</editor-fold>
 
     public EndDevice() {
         endDevName = "EndDevice" + getRandomString(10);
@@ -84,13 +86,14 @@ public class EndDevice extends BaseTestMethods  {
         endDevCodec = Codecs.getCodec();
         endDevPhoneLanguage = Language.getRandomVal();
         endDevDisplayName = getRandomString(15);
-        endDevLocation = "8306";
+        endDevLocation = getRandomLocationFromDB();
         endDevProxy = Proxy.getRandomProxy();
         endDevOutgoingNumber = getRandomOutgoingNumberFromDB();
         endDevSuppressed = getRandomBoolean();
         randomEndDeviceForEdit = getRandomEndDeviceForEditFromDB();
     }
 
+    //<editor-fold desc="get\set">
     public String getRandomEndDeviceForEdit() {
         return randomEndDeviceForEdit;
     }
@@ -135,10 +138,6 @@ public class EndDevice extends BaseTestMethods  {
         return endDevPhoneLanguage;
     }
 
-    public boolean getEndDevSuppressedYES() {
-        return endDevSuppressedYES;
-    }
-
     public String getEndDevUserId() {
         return endDevUserId;
     }
@@ -147,25 +146,15 @@ public class EndDevice extends BaseTestMethods  {
         this.endDevOutgoingNumber = endDevOutgoingNumber;
     }
 
-    public void setEndDevCallPickups(String endDevCallPickups) {
-        this.endDevCallPickups = endDevCallPickups;
-    }
-
-    public void setEndDevCodec(String endDevCodec) {
-        this.endDevCodec = endDevCodec;
-    }
-
     public void setEndDevSuppressedYES(boolean endDevSuppressedYES) {
         this.endDevSuppressedYES = endDevSuppressedYES;
-    }
-
-    public boolean getEndDevSuppressedNO(){
-        return this.endDevSuppressedNO;
     }
 
     public void setEndDevSuppressedNO(boolean endDevSuppressedNO) {
         this.endDevSuppressedNO = endDevSuppressedNO;
     }
+    //</editor-fold>
+
 
     private String getRandomOutgoingNumberFromDB(){
         String query = "SELECT number FROM webadmin_20170426.phonenumber where customer_fk = 906144";
@@ -200,5 +189,28 @@ public class EndDevice extends BaseTestMethods  {
         return endDeviceList.get(new Random().nextInt(endDeviceList.size()));
     }
 
+    private String getRandomLocationFromDB(){
+        String query = "SELECT zip_code FROM webadmin_20170426.location;";
+        ArrayList<String> locations = new ArrayList<>();
+        ResultSet res = dataBaseWorker.execSqlQuery(query);
+        while (true){
+            try {
+                if (!res.next()) break;
+                locations.add(res.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return locations.get(new Random().nextInt(locations.size()));
+    }
+
+    public String changeOutgoingNumber(){
+        return this.endDevOutgoingNumber = getRandomOutgoingNumberFromDB();
+    }
+
+    public String changeLocation (){
+        return this.endDevLocation = getRandomLocationFromDB();
+    }
 
 }

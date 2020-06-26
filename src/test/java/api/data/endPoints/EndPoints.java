@@ -51,4 +51,7 @@ public abstract class EndPoints {
 
     //Provisioning
     public final static String putPhoneModelSettingUpdate = "/provisioning/settings/CUSTOMER/{id}";
+
+    //Numbers
+    public final static String getCustomerNumbers = "/phone-numbers/search";
 }

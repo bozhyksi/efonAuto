@@ -2,10 +2,13 @@ package pages.endDevicesPage;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.testng.Assert;
 import pages.basePage.BasePage;
 import pages.endDevicesPage.endDevicesPopUps.AutoProvisioningInfoToolTip;
 import pages.endDevicesPage.endDevicesPopUps.ConfigureEndDevicesPopup;
 import tests.endDevicesPageTests.endDevicesTestData.EndDevicesTestData;
+
+import java.util.ArrayList;
 
 public class EndDevicesPage extends BasePage {
     //<editor-fold desc="locators">
@@ -68,6 +71,18 @@ public class EndDevicesPage extends BasePage {
         getButtonEdit(endDeviceName).click();
         waitUntilAlertDisappear();
         return new ConfigureEndDevicesPopup();
+    }
+
+    @Step("Verify if all customer numbers are available as outgoing")
+    public void verifyOutgoingNumbersList(ArrayList<String> customerNumbersList, ArrayList<String> outgoingNumbersList){
+        Assert.assertEquals(customerNumbersList.size(),outgoingNumbersList.size(),
+                "Size of numbers lists is not equal " +
+                "customer numbers: "+customerNumbersList.size()+"; outgoing numbers: "+outgoingNumbersList.size());
+
+        for (String customerNumber: customerNumbersList) {
+            Assert.assertTrue(outgoingNumbersList.contains(customerNumber),
+                    customerNumber+" - does not exist in outgoing numbers list");
+        }
     }
 
 }

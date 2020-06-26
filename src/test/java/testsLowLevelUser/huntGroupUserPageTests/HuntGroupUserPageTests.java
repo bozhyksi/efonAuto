@@ -110,9 +110,8 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
     }
 
-    //1023
     @Description("Check if low-level user can configure \"Full Days\" section on HuntGroup")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
     public void configureFullDaysTest(){
         HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
         filesList.add(huntGroup.getAnnouncement());
@@ -143,9 +142,8 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteAnnouncementApi(huntGroup.getAnnouncement());
     }
 
-    //bug EPRO-1023
     @Description("Check if low-level user can configure \"Standart Timers\" section on HuntGroup")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
     public void configureStandartTimersTest(){
         HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
         filesList.add(huntGroup.getAnnouncement());
@@ -173,10 +171,9 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteAnnouncementApi(huntGroup.getAnnouncement());
     }
 
-    //bug EPRO-1023
     @Description("Check if low-level user can configure \"Further Time groups\" section on HuntGroup")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"}, enabled =  false)
-    public void vanConfigureFurtherTimeGroupsTest(){
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
+    public void configureFurtherTimeGroupsTest(){
         HuntGroup huntGroup = new HuntGroup(new FileManagementTestData(), new Queue());
         filesList.add(huntGroup.getAnnouncement());
         huntGroupsList.add(huntGroup);
@@ -224,14 +221,21 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
     public void noAccessToUnAssignedHuntGroupTest(){
         HuntGroup huntGroup = new HuntGroup();
+        HuntGroup huntGroup2 = new HuntGroup();
         huntGroupsList.add(huntGroup);
+        huntGroupsList.add(huntGroup2);
 
+        //Here I'am creating two hunt groups. One is related to the user one is not.
+        //this is because - if user has no at least one related huntGroup - HUNT_Group tab is unavailable in the menu.
         createHuntGroupApi(huntGroup);
+        createHuntGroupWithAuthorizedUserApi(huntGroup2,autotestUserId,autotestUserDisplayName);
+
         loginAsLowLevelUser()
                 .goToMenuTab(HUNT_GROUPS);
         huntGroupPage
                 .verifyIfHuntGroupNameNotExist(huntGroup.getHuntGroupName());
-        deleteHuntGroupApi(huntGroup);
+
+        deleteHuntGroupApi(huntGroup, huntGroup2);
     }
 
     @AfterClass(alwaysRun = true)

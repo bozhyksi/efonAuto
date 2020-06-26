@@ -1,18 +1,18 @@
 package testsLowLevelUser.endDevicesUserPageTests;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.EndDevice;
 
 import java.util.ArrayList;
 
-import static io.qameta.allure.Allure.step;
-
+import static api.baseApiMethods.NumbersApi.getCustomerNumbersApi;
+import static com.codeborne.selenide.Condition.value;
 import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
 import static testsLowLevelUser.testData.AutotestUserData.autotestUserEndDevname;
 
@@ -26,39 +26,49 @@ public class EndDevicesUserPageTests extends BaseTestMethods {
     public void editOwnEndDevicesTest(){
         EndDevice endDevice = new EndDevice();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(END_DEVICES);
-        endDevicesUserPage
+        endDevicesPage
                 .configureEndDevice(autotestUserEndDevname)
-                .selectPhoneLanguage(endDevice.getEndDevPhoneLanguage())
+                .selectLanguage(endDevice.getEndDevPhoneLanguage())
                 .selectOutgoingNumber(endDevice.getEndDevOutgoingNumber())
-                .selectSuppressedOption(endDevice.getEndDevSuppressed())
-                .enterLocation(endDevice.getEndDevLocation())
+                .setSuppressed(endDevice.getEndDevSuppressed())
+                .setLocation(endDevice.getEndDevLocation())
                 .saveChanges()
                 .configureEndDevice(autotestUserEndDevname)
-                .validateEndDeviceConfiguration(endDevice);
+                .verifyEndDeviceConfiguration(endDevice);
     }
 
     @Description("Check if all customer numbers are available as End Device outgoing number")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
-    public void CheckIfAllCustomerNumbersAreAvailableAsOutgoingNumbers(){
-        step("Prepare test data");
-        ArrayList<String> customerNumbersList;
+    public void verifyOutgoingNumbersListTest(){
+        ArrayList<String> customerNumbersList = getCustomerNumbersApi();
         ArrayList<String> outgoingNumbersList;
 
-        step("Log in as admin and get customer numbers list");
-        customerNumbersList = getListOfAllCustomerNumbers();
+        loginAsLowLevelUser()
+                .goToMenuTab(END_DEVICES);
+        outgoingNumbersList = endDevicesPage
+                .configureEndDevice(autotestUserEndDevname)
+                .getOutgoingDropdownItems();
+        endDevicesPage
+                .verifyOutgoingNumbersList(customerNumbersList,outgoingNumbersList);
+    }
 
-        step("Log in as low-level user");
-        loginAsLowLevelUser();
+    @Description("Check if user can change outgoing number and set new Location zip code")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
+    public void changeLocationZipCodeTest(){
+        EndDevice endDevice = new EndDevice();
 
-        step("Goto end devices and verify if all customer numbers exist in outgoing dropdown");
-        basePageLowLevelUser.goToMenuTab(END_DEVICES);
-        endDevicesUserPage.getButtonEditEndDeviceByName(autotestUserEndDevname).click();
-        waitUntilAlertDisappear();
-        outgoingNumbersList = endDevicesUserPage.getOutgoingDropdownItems();
-        endDevicesUserPage.verifyIfAllCustomerNumbersAreAvailableAsOutgoing(customerNumbersList,outgoingNumbersList);
+        loginAsLowLevelUser()
+                .goToMenuTab(END_DEVICES);
+        endDevicesPage
+                .configureEndDevice(autotestUserEndDevname)
+                .selectOutgoingNumber(endDevice.changeOutgoingNumber())
+                .verifyLocationFieldEmpty()
+                .setLocation(endDevice.changeLocation())
+                .saveChanges()
+                .configureEndDevice(autotestUserEndDevname)
+                .getInputLocation().shouldHave(value(endDevice.getEndDevLocation()));
     }
 
 

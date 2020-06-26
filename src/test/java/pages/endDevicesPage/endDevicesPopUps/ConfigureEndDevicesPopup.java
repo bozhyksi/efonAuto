@@ -3,8 +3,14 @@ package pages.endDevicesPage.endDevicesPopUps;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import pages.endDevicesPage.EndDevicesPage;
 import tests.userPageTests.userPageTestData.EndDevice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
 
@@ -156,10 +162,10 @@ public class ConfigureEndDevicesPopup extends EndDevicesPage {
     }
 
     @Step("Save changes, close popup")
-    public ConfigureEndDevicesPopup saveChanges(){
+    public EndDevicesPage saveChanges(){
         getButtonSave().click();
         waitUntilAlertDisappear();
-        return this;
+        return new EndDevicesPage();
     }
 
     @Step("Verify end-device configuration")
@@ -175,6 +181,24 @@ public class ConfigureEndDevicesPopup extends EndDevicesPage {
         if (endDevice.getEndDevSuppressed()) getCheckboxSuppressedYes().shouldBe(selected);
         else getCheckboxSuppressedNo().shouldBe(selected);
         return this;
+    }
+
+    @Step("Verify if location field empty")
+    public ConfigureEndDevicesPopup verifyLocationFieldEmpty(){
+        getInputLocation().shouldHave(value(""));
+        return this;
+    }
+
+    @Step("Get outgoing drop down items")
+    public ArrayList<String> getOutgoingDropdownItems(){
+        waitUntilAlertDisappear();
+        ArrayList<String> dropdownItemsList = new ArrayList<>();
+        Select obj = new Select(getDropdownOutgoingNumber());
+        List<WebElement> itemsList = obj.getOptions();
+        for (WebElement elem: itemsList) {
+            if (!elem.getText().contains("Not Selected"))dropdownItemsList.add(elem.getText().replaceAll("\\s",""));
+        }
+        return dropdownItemsList;
     }
 
 }

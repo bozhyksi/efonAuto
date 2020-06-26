@@ -1,15 +1,21 @@
-package api.tests;
+package api.baseApiMethods;
 
 import api.data.endPoints.EndPoints;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
+import io.restassured.response.ResponseBody;
 
+import javax.json.Json;
 import java.util.ArrayList;
 
+import static api.data.endPoints.EndPoints.getCustomerNumbers;
 import static api.data.preparation.Preparation.login;
 
-public class test2 {
-    public static void main(String[] args) {
-        ArrayList<String> nums = login()
+public class NumbersApi {
+
+    @Step("Get customer's number list")
+    public static ArrayList<String> getCustomerNumbersApi(){
+        return login()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .get(EndPoints.getCustomerNumbers)
@@ -18,5 +24,6 @@ public class test2 {
                 .path("result.number");
     }
 
-
 }
+
+
