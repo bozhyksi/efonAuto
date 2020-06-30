@@ -91,10 +91,6 @@ public class UserPage extends BasePage {
     }
     //</editor-fold>
 
-    public void checkPageTitle(String val){
-        getPageTitle().getText().equals(val);
-    }
-
     public void checkIfUserExistsInTheList(User user){
         getListUserNames().filterBy(Condition.text(user.getFullName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
     }
@@ -107,13 +103,15 @@ public class UserPage extends BasePage {
         getChildByParentName(getListUserNames(),getListButtonDeleteUser(),userName).click();
     }
 
-    public void openEditUserPopup(User user){
+    @Step("Open Edit user popup")
+    public ConfigureUserBasePopup clickEditUser(User user){
         getButtonConfigUserByName(user.getFirstName()).click();
         waitUntilAlertDisappear();
+        return new ConfigureUserBasePopup();
     }
 
     @Step("Open Edit user popup")
-    public ConfigureUserBasePopup openEditUserPopup(String user){
+    public ConfigureUserBasePopup clickEditUser(String user){
         getButtonConfigUserByName(user).click();
         waitUntilAlertDisappear();
         return new ConfigureUserBasePopup();
@@ -134,7 +132,6 @@ public class UserPage extends BasePage {
 
     @Step("Create user")
     public UserPage createUser(User ... users){
-        goToMenuTab(USER);
         for (User user : users) {
             clickCreateNewUserButton()
                     .selectTitle(user.getTitle())
@@ -151,7 +148,6 @@ public class UserPage extends BasePage {
 
     @Step("Delete users")
     public UserPage deleteUser(User ... users){
-        goToMenuTab(USER);
         for (User user : users) {
             getButtonDeleteUserByName(user.getFirstName()).click();
             waitUntilAlertDisappear();

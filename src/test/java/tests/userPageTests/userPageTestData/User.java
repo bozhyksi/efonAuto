@@ -2,10 +2,12 @@ package tests.userPageTests.userPageTestData;
 
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 
 
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
+import javax.json.JsonValue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,8 +22,8 @@ public class User extends BaseTestMethods {
     private String VoiceEmail = getRandomEmail();
     private String phoneNumber;
     private String endDevices;
-    private String permittedDestinationNumbers;
-    private String callsRecordingDirection;
+    private String permittedDestinationNumbers = PublicEnums.PermittedDestNums.getRandVal();
+    private String callsRecordingDirection = PublicEnums.CallsRecordingDirection.getRandVal();
     private String inputLocalHeaderInfo = getRandomString(10);
     private String forwardDelay;
     private String forwardToPhone = getRandomPhone();
@@ -33,11 +35,16 @@ public class User extends BaseTestMethods {
     private String voicemailEmail = getRandomEmail();
     private String voicemailSalutation = getRandomString(15);
     private String faxEmail = getRandomEmail();
+    private String differentContactEmail = getRandomEmail();
     private String penalty = getRandomNumber(100,999);
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
+
+    public String getDifferentContactEmail() {
+        return differentContactEmail;
+    }
 
     public String getPenalty() {
         return penalty;
@@ -173,24 +180,24 @@ public class User extends BaseTestMethods {
                         .add("firstName", getFirstName())
                         .add("lastName", getLastName())
                         .add("loginEmail", getLoginEmail())
-                        //.add("useDifferentContactEmail", "")
+                        .add("useDifferentContactEmail", JsonValue.TRUE)
+                        .add("differentContactEmail",getDifferentContactEmail())
                 )
                 .add("userAllocation", factory.createObjectBuilder()
-                        //.add("useVoicemailEmail", "")
+                        .add("useVoicemailEmail", JsonValue.TRUE)
+                        .add("voicemailEmail", getVoicemailEmail())
                         .add("number", getPhoneNumber())
                         .add("accounts", factory.createArrayBuilder()
                                 .add(getEndDevId())
                         )
-                        .add("busyOnBusy",false)
+                        .add("busyOnBusy",JsonValue.TRUE)
                         .add("internalNumbers", factory.createArrayBuilder())
-                        .add("currentBlockSet",7300)
-                        .add("smsEnabled",false)
-                        .add("faxEnabled",false)
-                        //.add("faxNumber", "")
-                        //.add("localHeaderInfo", "")
+                        .add("currentBlockSet",Integer.parseInt(getPermittedDestinationNumbers()))
+                        .add("smsEnabled",JsonValue.FALSE)
+                        .add("faxEnabled",JsonValue.FALSE)
                         .add("callRecording", factory.createObjectBuilder()
-                                .add("activateCallRecording",false)
-                                .add("callRecordingDirection","ALL")
+                                .add("activateCallRecording",JsonValue.TRUE)
+                                .add("callRecordingDirection",getCallsRecordingDirection())
                         )
                 ).build().toString();
     }
@@ -241,5 +248,4 @@ public class User extends BaseTestMethods {
         }
         return "";
     }
-
 }

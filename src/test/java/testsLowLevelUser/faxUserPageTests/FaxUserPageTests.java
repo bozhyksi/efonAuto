@@ -115,7 +115,7 @@ public class FaxUserPageTests extends BaseTestMethods {
         createUser(user);
         refreshPage();
         userPage
-                .openEditUserPopup(autotestUserFullName)
+                .clickEditUser(autotestUserFullName)
                 .goToTab(ALLOCATIONS);
         allocationTabConfigUserPopup
                 .selectNumberAssignFax2EmailAccess(user.getPhoneNumber())

@@ -1,6 +1,5 @@
 package flow;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import core.configuration.preparations.eFonApp;
@@ -8,7 +7,6 @@ import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
-import tests.IVRpageTests.IVRtestData.BlockListTestData;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.callPickUpPageTests.CallPickUpTestData.CallPickUp;
@@ -34,12 +32,10 @@ import static api.baseApiMethods.FileManagementApi.deleteMohApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
-import static api.baseApiMethods.UserApi.deleteUserApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
-import static pages.basePage.BasePage.ItemsPerPage._All;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
@@ -698,7 +694,7 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void uploadAnnouncementForUserOnEditPopup(User user, FileManagementTestData announcFile){
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ConfigureUserBasePopup.Tabs.ANNOUNCEMENTS);
         announcementsTabConfigUserPopup.getButtonUploadFile().click();
         announcementsTabConfigUserPopup.uploadAnnouncementFile(announcFile.getFilePath());

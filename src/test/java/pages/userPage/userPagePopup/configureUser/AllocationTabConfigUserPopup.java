@@ -84,36 +84,52 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     }
     //</editor-fold>
 
-    public void validateVoicemailEmail(String expR){
-        Assert.assertEquals(getInputVoicemailEmail().getText(), expR, "Voicemail e-mail does not match.");
+    @Step("Validate VoicemailEmail")
+    public AllocationTabConfigUserPopup validateVoicemailEmail(String expR){
+        Assert.assertEquals(getInputVoicemailEmail().getValue(), expR, "Voicemail e-mail does not match.");
+        return  this;
     }
 
-    public void validateNumber(String expR){
+    @Step("Validate Number")
+    public AllocationTabConfigUserPopup validateNumber(String expR){
         getDropdownNumber().getSelectedText().contains(expR);
+        return  this;
     }
 
-    public void validateEndDevice (String expR){
+    @Step("Validate EndDevice")
+    public AllocationTabConfigUserPopup validateEndDevice (String expR){
         getSelectedEndDevice().text().contains(expR);
+        return  this;
     }
 
-    public void validateBusyOnBusy (){
+    @Step("Validate BusyOnBusy")
+    public AllocationTabConfigUserPopup validateBusyOnBusy (){
         getCheckboxBusyOnBusy().shouldBe(Condition.selected);
+        return  this;
     }
 
-    public void validatePermittedDestinationNumbers (String expR){
-        getDropdownPermittedDestination().getSelectedText().contains(expR);
+    @Step("Validate DestinationNumbers")
+    public AllocationTabConfigUserPopup validatePermittedDestinationNumbers (String expR){
+        getDropdownPermittedDestination().getSelectedValue().contains(expR);
+        return  this;
     }
 
-    public void validateActivateSMSservices (){
+    @Step("Validate SMS")
+    public AllocationTabConfigUserPopup validateActivateSMSservices (){
         getCheckboxActivateSms().shouldBe(Condition.selected);
+        return  this;
     }
 
-    public void validateCallsRecording (){
+    @Step("Validate CallsRecording")
+    public AllocationTabConfigUserPopup validateCallsRecording (){
         getCheckboxCallsRecording().shouldBe(Condition.selected);
+        return  this;
     }
 
-    public void validateCallsRecordingDirection(String expR){
+    @Step("Validate CallsRecordingDirection")
+    public AllocationTabConfigUserPopup validateCallsRecordingDirection(String expR){
         getDropdownCallsRecording().getSelectedText().contains(expR);
+        return  this;
     }
 
     @Step("Select number in Fax2Email dropdown")

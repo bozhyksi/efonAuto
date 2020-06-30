@@ -142,4 +142,36 @@ public class PublicEnums {
         }
     }
 
+    //Users
+    public enum PermittedDestNums{
+        _1000("1000"),
+        _4000("4000"),
+        _7000("7000"),
+        _7300("7300"),
+        _7310("7310"),
+        _7340("7340");
+
+        private String val;
+
+        PermittedDestNums(String val){
+            this.val = val;
+        }
+
+        public static String getRandVal(){
+            return PermittedDestNums.values()[new Random().nextInt((PermittedDestNums.values().length))].val;
+        }
+    }
+    public enum CallsRecordingDirection{
+        ALL,
+        IN,
+        OUT;
+
+        public static String getRandVal(){
+            return CallsRecordingDirection.values()[new Random().nextInt((CallsRecordingDirection.values().length))].toString();
+        }
+
+    }
+
+
+
 }

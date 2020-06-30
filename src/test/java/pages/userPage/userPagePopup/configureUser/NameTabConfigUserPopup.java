@@ -2,6 +2,7 @@ package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 public class NameTabConfigUserPopup extends ConfigureUserBasePopup{
     //<editor-fold desc="//-- NameTabConfigUserPopup Locators --//">
@@ -44,24 +45,35 @@ public class NameTabConfigUserPopup extends ConfigureUserBasePopup{
     }
     //</editor-fold>
 
-    public void validateTitle(String expectedText){
+
+    @Step("Verify Title")
+    public NameTabConfigUserPopup validateTitle(String expectedText){
         getDropdownTitle().getSelectedText().contains(expectedText);
+        return this;
     }
 
-    public void validateFirstName(String expectedText){
+    @Step("Verify FirstName")
+    public NameTabConfigUserPopup validateFirstName(String expectedText){
         getInputFirstName().getText().contains(expectedText);
+        return this;
     }
 
-    public void validateLastName(String expectedText){
+    @Step("Verify LastName")
+    public NameTabConfigUserPopup validateLastName(String expectedText){
         getInputLastName().getText().contains(expectedText);
+        return this;
     }
 
-    public void validateLoginEmail(String expectedText){
+    @Step("Verify LoginEmail")
+    public NameTabConfigUserPopup validateLoginEmail(String expectedText){
         getInputLoginEmail().getText().contains(expectedText);
+        return this;
     }
 
-    public void validateDiffContactEmail(String expectedText){
+    @Step("Verify DiffContactEmail")
+    public NameTabConfigUserPopup validateDiffContactEmail(String expectedText){
         getCheckboxUseDiffContactEmail().shouldBe(Condition.selected);
         getInputDiffContactEmail().getText().contains(expectedText);
+        return this;
     }
 }

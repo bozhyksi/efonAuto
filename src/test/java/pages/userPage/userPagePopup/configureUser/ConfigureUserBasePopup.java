@@ -8,6 +8,7 @@ import pages.userPage.UserPage;
 import static com.codeborne.selenide.Condition.*;
 
 public class ConfigureUserBasePopup extends UserPage {
+
     public enum Tabs{
         NAME,
         ALLOCATIONS,
@@ -101,10 +102,6 @@ public class ConfigureUserBasePopup extends UserPage {
     }
     //</editor-fold>
 
-    public void validatePopupTitle(String expected){
-        getPopupTitle().shouldHave(Condition.text(expected));
-    }
-
     private SelenideElement getTabElement(Tabs tabName){
         switch (tabName){
             case FAX:
@@ -143,6 +140,6 @@ public class ConfigureUserBasePopup extends UserPage {
     public UserPage closeEditUserPopup(){
         getButtonClose().click();
         waitUntilAlertDisappear();
-        return this;
+        return new UserPage();
     }
 }

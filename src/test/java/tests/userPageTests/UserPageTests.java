@@ -15,6 +15,7 @@ import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.UserApi.*;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
@@ -23,17 +24,18 @@ import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.
 @Listeners({CustomListeners.class})
 
 public class UserPageTests extends BaseTestMethods {
-    ArrayList<User> userArrayList = new ArrayList<>();
-    ArrayList<FileManagementTestData> filesArrayList = new ArrayList<>();
+    ArrayList<User> usersList = new ArrayList<>();
+    ArrayList<FileManagementTestData> filesList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
-    public void CheckIfVpbxAdminIsAbleToCreateUsers(){
+    public void createDeleteUserTest(){
 
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
-        login();
+        login()
+                .goToMenuTab(USER);
         userPage
                 .createUser(user)
                 .verifyIfUserExists(user.getFirstName())
@@ -42,88 +44,63 @@ public class UserPageTests extends BaseTestMethods {
 
     @Description("Check if VPBX admin is able to DELETE users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
-    public void CheckIfVpbxAdminCanDeleteUsers(){
-
+    public void deleteUserTest(){
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
-        login();
+        createUsersApi(user);
+        login()
+                .goToMenuTab(USER);
         userPage
-                .createUser(user)
-                .deleteUser(user);
-
+                .deleteUser(user)
+                .verifyIfUserDoesNotExist(user.getFirstName());
     }
 
     @Description("Check if the system shows correct user's data on edit popup - \"NAME\" tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
-    public void CheckIfTheSystemShowsCorrectUserDataOnEditPopupNameTab(){
-        step("Preparing test data, creating new object - User");
+    public void verifyUserInfoOnEditPopupNameTab(){
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
-        step("Login the test environment");
-        login();
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .createUser(user)
+                .clickEditUser(user)
+                .goToTab(NAME);
+        nameTabConfigUserPopup
+                .validateTitle(user.getTitle())
+                .validateFirstName(user.getFirstName())
+                .validateLastName(user.getLastName())
+                .validateLoginEmail(user.getLoginEmail())
+                .closeEditUserPopup();
 
-        step("Create new user");
-        createUser(user);
-
-        step("Open user's EDIT mode, and goto Name tab");
-        userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.goToTab(NAME);
-
-        step("Validate popup Title");
-        configureUserBasePopup.validatePopupTitle("Configure user");
-
-        step("Validate if Name tab shows correct data of earlier created user");
-        nameTabConfigUserPopup.validateTitle(user.getTitle());
-        nameTabConfigUserPopup.validateFirstName(user.getFirstName());
-        nameTabConfigUserPopup.validateLastName(user.getLastName());
-        nameTabConfigUserPopup.validateLoginEmail(user.getLoginEmail());
-        nameTabConfigUserPopup.validateDiffContactEmail(user.getUseDiffContactEmail());
-
-        step("Close edit popup, and refresh page");
-        nameTabConfigUserPopup.getButtonClose().click();
-        refreshPage();
-        waitUntilAlertDisappear();
-
-        step("Delete test user");
-        deleteUser(user);
+        deleteUsersApi(user);
     }
 
+    //905
     @Description("Check if the system shows correct user's data on edit popup - \"ALLOCATIONS\" tab")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
-    public void CheckIfTheSystemShowsCorrectUserDataOnEditPopupALLOCATIONSTab(){
-        step("Preparing test data, creating new object - User");
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"},enabled = false)
+    public void validateUserDataOnEditPopupALLOCATIONSTab(){
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
-        step("Login the test environment");
-        login();
+        createUsersApi(user);
 
-        step("Create new user");
-        createUser(user);
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .clickEditUser(user)
+                .goToTab(ALLOCATIONS);
+        allocationTabConfigUserPopup
+                .validateVoicemailEmail(user.getVoicemailEmail())
+                .validateNumber(user.getPhoneNumber())
+                .validatePermittedDestinationNumbers(user.getPermittedDestinationNumbers())
+                .validateBusyOnBusy()
+                .validateCallsRecordingDirection(user.getCallsRecordingDirection())
+                .closeEditUserPopup();
 
-        step("Open user's EDIT mode, and goto Name tab");
-        userPage.getButtonConfigUserByName(user.getFirstName()).click();
-        configureUserBasePopup.goToTab(ALLOCATIONS);
-
-        step("Validate if ALLOCATIONS tab shows correct data of earlier created user");
-        //allocationTabConfigUserPopup.validateVoicemailEmail(user.getVoiceEmail()); -- looks like a bug in DOM
-        allocationTabConfigUserPopup.validateNumber(user.getPhoneNumber());
-        allocationTabConfigUserPopup.validateEndDevice(user.getEndDevices());
-        //allocationTabConfigUserPopup.validateBusyOnBusy();  -- bug created
-        allocationTabConfigUserPopup.validatePermittedDestinationNumbers(user.getPermittedDestinationNumbers());
-        allocationTabConfigUserPopup.validateActivateSMSservices();
-        allocationTabConfigUserPopup.getCheckboxCallsRecording();
-        allocationTabConfigUserPopup.validateCallsRecordingDirection(user.getCallsRecordingDirection());
-
-        step("Close edit popup, and refresh page");
-        allocationTabConfigUserPopup.getButtonClose().click();
-        refreshPage();
-        waitUntilAlertDisappear();
-
-        step("Delete test user");
-        deleteUser(user);
+        deleteUsersApi(user);
     }
 
     @Description("Check if the system allows to configure data on FORWARDING tab")
@@ -131,7 +108,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfTheSystemAllowsToConfigureDataOnForwardingTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -201,7 +178,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfTheConfiguredDataOnForwardingTabAppearsOnCallForwarding(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -261,7 +238,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfTheConfiguredDataOnVoicemailTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -317,7 +294,7 @@ public class UserPageTests extends BaseTestMethods {
         FileManagementTestData announcFile = new FileManagementTestData();
 
         //filesArrayList.add(announcFile);
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -355,7 +332,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfUserCanConfigureFaxTab(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -401,7 +378,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfFaxConfigurationMadeOnEditUserPopupIsShownOnFaxTabInMainMenu(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -448,7 +425,7 @@ public class UserPageTests extends BaseTestMethods {
         step("Preparing test data, creating new object - User");
         User user = new User();
         EndDevice endDevice = new EndDevice();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -519,7 +496,7 @@ public class UserPageTests extends BaseTestMethods {
         step("Preparing test data, creating new object - User");
         User user = new User();
         EndDevice endDevice = new EndDevice();
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -528,7 +505,7 @@ public class UserPageTests extends BaseTestMethods {
         createUser(user);
 
         step("Open user's EDIT mode, and goto END DEVICES tab");
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ENDDEVICE);
 
         step("Select end device");
@@ -541,7 +518,7 @@ public class UserPageTests extends BaseTestMethods {
         endDeviceTabConfigUserPopup.getButtonSave().click();
         waitUntilAlertDisappear();
         refreshPage();
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ENDDEVICE);
         endDeviceTabConfigUserPopup.getDropdownSelectEndDevice().selectOptionContainingText(user.getEndDevices());
         endDeviceTabConfigUserPopup.getDropdownOutgoingNumEndDev().getSelectedValue().contains(user.getPhoneNumber());
@@ -556,7 +533,7 @@ public class UserPageTests extends BaseTestMethods {
     public void CheckIfAllCustomersNumbersAreAvailableAsOutgoing(){
         step("Preparing test data, creating new object - User");
         User user = new User();
-        userArrayList.add(user);
+        usersList.add(user);
 
         ArrayList<String> customerNumbersList;
         ArrayList<String> outgoingNumbersList;
@@ -575,7 +552,7 @@ public class UserPageTests extends BaseTestMethods {
 
         step("Open user's EDIT mode, and goto END DEVICES tab");
         basePage.goToMenuTab(USER);
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ENDDEVICE);
 
         step("Get list of outgoing numbers");
@@ -596,7 +573,7 @@ public class UserPageTests extends BaseTestMethods {
         User user = new User();
         FileManagementTestData announcFile = new FileManagementTestData();
 
-        userArrayList.add(user);
+        usersList.add(user);
 
         step("Login the test environment");
         login();
@@ -608,13 +585,13 @@ public class UserPageTests extends BaseTestMethods {
         uploadAnnouncementForUserOnEditPopup(user,announcFile);
 
         step("Edit uploaded ANNOUNCEMENTS");
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ANNOUNCEMENTS);
         announcementsTabConfigUserPopup.changeAnnouncementName(announcFile);
         refreshPage();
 
         step("Verify if changes saved");
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ANNOUNCEMENTS);
         announcementsTabConfigUserPopup.verifyAnnouncementName(announcFile);
         refreshPage();
@@ -630,8 +607,8 @@ public class UserPageTests extends BaseTestMethods {
         User user = new User();
         FileManagementTestData announcFile = new FileManagementTestData();
 
-        userArrayList.add(user);
-        filesArrayList.add(announcFile);
+        usersList.add(user);
+        filesList.add(announcFile);
 
         step("Login the test environment");
         login();
@@ -643,7 +620,7 @@ public class UserPageTests extends BaseTestMethods {
         uploadAnnouncementForUserOnEditPopup(user,announcFile);
 
         step("Edit uploaded ANNOUNCEMENTS and mark it as Ringback");
-        userPage.openEditUserPopup(user);
+        userPage.clickEditUser(user);
         configureUserBasePopup.goToTab(ANNOUNCEMENTS);
         announcementsTabConfigUserPopup.activateRingbackOption(announcFile);
         configureUserBasePopup.getButtonClose().click();
@@ -663,7 +640,7 @@ public class UserPageTests extends BaseTestMethods {
         step("Preparing test data, creating new object - User");
         String user = "AutoTestUser";
         FileManagementTestData announcement = new FileManagementTestData();
-        filesArrayList.add(announcement);
+        filesList.add(announcement);
 
         step("Upload test recording file to the server");
         SSHFileTransfer.uploadFile(announcement.getSourcePath(),announcement.getDestinationPath());
@@ -684,10 +661,7 @@ public class UserPageTests extends BaseTestMethods {
 
     @AfterClass(alwaysRun = true)
     private void сleanUp(){
-        startBrowser();
-        login();
-        userCleanUp(userArrayList);
-        announcementCleanUp(filesArrayList);
-        closeBrowser();
+        userCleanUp(usersList);
+        announcementCleanUp(filesList);
     }
 }

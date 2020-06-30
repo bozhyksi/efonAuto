@@ -1,5 +1,6 @@
 package api.baseApiMethods;
 
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import tests.userPageTests.userPageTestData.User;
 
@@ -9,6 +10,7 @@ import static api.data.preparation.Preparation.login;
 
 public class UserApi {
 
+    @Step("Create user via API")
     public static void createUserApi(String userJsonData){
         login()
                 .given()
@@ -18,6 +20,7 @@ public class UserApi {
                 .post(postCreateUser);
     }
 
+    @Step("Create user via API")
     public static void createUsersApi(User... users){
         for (User user : users) {
             login()
@@ -29,11 +32,13 @@ public class UserApi {
         }
     }
 
+    @Step("Delete user via API")
     public static void deleteUserApi(String userId){
         login()
                 .delete(deleteDeleteUser, userId);
     }
 
+    @Step("Delete user via API")
     public static void deleteUsersApi(User ... users){
         for (User user : users) {
             if (!user.getId().equals("")) {
