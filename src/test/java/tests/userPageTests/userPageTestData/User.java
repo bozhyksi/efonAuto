@@ -37,10 +37,15 @@ public class User extends BaseTestMethods {
     private String faxEmail = getRandomEmail();
     private String differentContactEmail = getRandomEmail();
     private String penalty = getRandomNumber(100,999);
+    private String faxReceiveFormat = PublicEnums.FaxReceiveFormat.getRandom();
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
+
+    public String getFaxReceiveFormat() {
+        return faxReceiveFormat;
+    }
 
     public String getDifferentContactEmail() {
         return differentContactEmail;

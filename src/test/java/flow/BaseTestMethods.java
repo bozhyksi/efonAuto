@@ -693,19 +693,6 @@ public class BaseTestMethods extends eFonApp {
         return customerNumbersList;
     }
 
-    public void uploadAnnouncementForUserOnEditPopup(User user, FileManagementTestData announcFile){
-        userPage.clickEditUser(user);
-        configureUserBasePopup.goToTab(ConfigureUserBasePopup.Tabs.ANNOUNCEMENTS);
-        announcementsTabConfigUserPopup.getButtonUploadFile().click();
-        announcementsTabConfigUserPopup.uploadAnnouncementFile(announcFile.getFilePath());
-        waitUntilAlertDisappear();
-        announcementsTabConfigUserPopup.getInputName().setValue(announcFile.getFileName());
-        announcementsTabConfigUserPopup.getButtonSave().click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        announcementsTabConfigUserPopup.getButtonClose().click();
-    }
-
     public void cleanUpConfCalls(ArrayList<ConferenceCallTestData> confCallsList){
         for (ConferenceCallTestData entry : confCallsList) {
             deleteConferenceCallApi(entry.getId());

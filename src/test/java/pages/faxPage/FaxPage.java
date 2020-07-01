@@ -1,9 +1,9 @@
 package pages.faxPage;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.BasePage;
+import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.Condition.value;
@@ -14,9 +14,9 @@ public class FaxPage extends BasePage {
     private String dropdownSelectNumberXpath = "//h3[text()=\"Select number\"]//following-sibling::select";
     private String editButtonXpath = "//a[@name=\"editLink\"]|//div[text()=\"Fax2Email is not configured for this phone number\"]//following-sibling::div/a[@class=\"icon-link\"]";
     private String inputEmail = "//input[@formcontrolname=\"fax2emailEmail\"]";
-    private String radioTiffAndPdfXpath = "//span[text()=\"TIFF and PDF\"]//preceding-sibling::input[@formcontrolname=\"fax2emailFormat\"][1]";
-    private String radioPdfOnlyXpath = "//span[text()=\"PDF only\"]//preceding-sibling::input[@formcontrolname=\"fax2emailFormat\"][1]";
-    private String radioTiffOnlyXpath = "//span[text()=\"TIFF only\"]//preceding-sibling::input[@formcontrolname=\"fax2emailFormat\"][1]";
+    private String radioTiffAndPdfXpath = "//input[@formcontrolname=\"fax2emailFormat\"][1]";
+    private String radioTiffOnlyXpath = "//input[@formcontrolname=\"fax2emailFormat\"][2]";
+    private String radioPdfOnlyXpath = "//input[@formcontrolname=\"fax2emailFormat\"][3]";
     private String buttonSaveXpath= "//button[text()=\"Save\"]";
     private String buttonCancelXpath = "//button[text()=\"Cancel\"]";
     private String checkboxTiffAndPDFXpath = "//span[text()=\"TIFF and PDF\"]//preceding-sibling::input[@formcontrolname=\"fax2emailFormat\"]";
@@ -80,9 +80,19 @@ public class FaxPage extends BasePage {
         return this;
     }
 
-    @Step("Select fax format - pdf only")
-    public FaxPage selectPdfOnly(){
-        getRadioPdfOnly().click();
+    @Step("Select fax format")
+    public FaxPage selectFaxReceiveFormat(String format){
+        switch (format){
+            case "TIFF_and_PDF":
+                getRadioTiffAndPdf().click();
+                break;
+            case "PDF":
+                getRadioPdfOnly().click();
+                break;
+            case "TIFF":
+                getRadioTiffOnly().click();
+                break;
+        }
         return this;
     }
 
@@ -94,9 +104,19 @@ public class FaxPage extends BasePage {
     }
 
     @Step("Validate")
-    public FaxPage validateSavedData(String email){
-        getInputEmail().shouldHave(value(email));
-        getRadioPdfOnly().shouldBe(selected);
+    public FaxPage validateFaxSettings(User user){
+        getInputEmail().shouldHave(value(user.getFaxEmail()));
+        switch (user.getFaxReceiveFormat()){
+            case "TIFF_and_PDF":
+                getRadioTiffAndPdf().shouldBe(selected);
+                break;
+            case "PDF":
+                getRadioPdfOnly().shouldBe(selected);
+                break;
+            case "TIFF":
+                getRadioTiffOnly().shouldBe(selected);
+                break;
+        }
         return this;
     }
 }

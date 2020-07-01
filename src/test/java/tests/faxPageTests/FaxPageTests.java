@@ -1,6 +1,5 @@
 package tests.faxPageTests;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -25,7 +24,6 @@ public class FaxPageTests extends BaseTestMethods {
     @Description("Verify if user can configure Fax for newly created user")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "faxPageTests"})
     public void fax2EmailConfigurationsTest() {
-        String fax2email = getRandomEmail();
         User user = new User();
         userArrayList.add(user);
 
@@ -35,11 +33,11 @@ public class FaxPageTests extends BaseTestMethods {
         faxPage
                 .selectNumber(user.getPhoneNumber())
                 .clickEditFax2Email()
-                .enterEmail(fax2email)
-                .selectPdfOnly()
+                .enterEmail(user.getFaxEmail())
+                .selectFaxReceiveFormat(user.getFaxReceiveFormat())
                 .saveChanges()
                 .clickEditFax2Email()
-                .validateSavedData(fax2email);
+                .validateFaxSettings(user);
         deleteUserApi(user.getId());
     }
 

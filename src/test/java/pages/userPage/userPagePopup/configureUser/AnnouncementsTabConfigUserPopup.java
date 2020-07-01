@@ -2,6 +2,7 @@ package pages.userPage.userPagePopup.configureUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.basePage.basePopup.ConfirmationPopup;
 import pages.fileManagementPage.FileManagementBasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -9,6 +10,7 @@ import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestDa
 import java.io.File;
 
 import static com.codeborne.selenide.Condition.*;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
 
 public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
 
@@ -121,24 +123,42 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
     }
     //</editor-fold>
 
-    public void uploadAnnouncementFile (String filePath){
-        getInputFileUpload().uploadFile(new File(filePath));
+    @Step("Upload announcement")
+    public AnnouncementsTabConfigUserPopup uploadAnnouncementFile (FileManagementTestData announcement){
+        getButtonUploadFile().click();
+        getInputFileUpload().uploadFile(new File(announcement.getFilePath()));
+        waitUntilAlertDisappear();
+        getInputName().setValue(announcement.getFileName());
+        getButtonSave().click();
+        confirmationPopup.getYesButton().click();
+        waitUntilAlertDisappear();
+        return this;
     }
 
-    public void changeAnnouncementName (FileManagementTestData announcFile){
+    @Step("Verify announcement exists")
+    public AnnouncementsTabConfigUserPopup verifyAnnouncementExist(FileManagementTestData announcement){
+        getFieldAnnouncementName(announcement.getFileName()).should(Condition.exist);
+        return this;
+    }
+
+    @Step("Change announcement name")
+    public AnnouncementsTabConfigUserPopup changeAnnouncementName (FileManagementTestData announcFile){
         getButtonEditUserAnnouncementsByName(announcFile.getFileName()).click();
         waitUntilAlertDisappear();
         configureAnnouncementPopup.getInputName().setValue(announcFile.rename());
         configureAnnouncementPopup.getButtonSave().click();
         waitUntilAlertDisappear();
+        return this;
     }
 
-    public void verifyAnnouncementName(FileManagementTestData announcFile){
+    @Step("Verify announcement name")
+    public AnnouncementsTabConfigUserPopup verifyAnnouncementName(FileManagementTestData announcFile){
         getButtonEditUserAnnouncementsByName(announcFile.getFileName()).click();
         waitUntilAlertDisappear();
         configureAnnouncementPopup.getInputName().shouldHave(value(announcFile.getFileName()));
         configureAnnouncementPopup.getButtonCancel().click();
         waitUntilAlertDisappear();
+        return this;
     }
 
     public void activateRingbackOption(FileManagementTestData announcFile){
@@ -166,6 +186,15 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         refreshPage();
         return this;
     }
+
+    @Step("Save")
+    public AnnouncementsTabConfigUserPopup save(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+
 }
 
 

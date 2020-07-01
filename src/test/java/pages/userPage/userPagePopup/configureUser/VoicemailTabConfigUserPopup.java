@@ -1,6 +1,11 @@
 package pages.userPage.userPagePopup.configureUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import tests.userPageTests.userPageTestData.User;
+
+import static io.qameta.allure.Allure.step;
 
 public class VoicemailTabConfigUserPopup extends ConfigureUserBasePopup {
     //<editor-fold desc="locators">
@@ -70,4 +75,52 @@ public class VoicemailTabConfigUserPopup extends ConfigureUserBasePopup {
         return field(buttonCancelXpath);
     }
     //</editor-fold>
+
+    @Step("Select number")
+    public VoicemailTabConfigUserPopup selectNumber(String num){
+        getDropdownSelectNumber().selectOptionContainingText(num);
+        return this;
+    }
+
+    @Step("Click edit button in \"Voicemail retrieval/delivery\" section")
+    public VoicemailTabConfigUserPopup clickEdit(){
+        getButtonVoicemailEdit().click();
+        return this;
+    }
+
+    @Step("Fill in PIN code")
+    public VoicemailTabConfigUserPopup enterPIN(String pin){
+        getInputPinCode().setValue(pin);
+        return this;
+    }
+
+    @Step("Fill in E-mail for voice message delivery")
+    public VoicemailTabConfigUserPopup enterEmail(String email){
+        getInputEmailForVoice().setValue(email);
+        return this;
+    }
+
+    @Step("Fill in Salutation")
+    public VoicemailTabConfigUserPopup enterSalutation(String salut){
+        getInputSalutation().setValue(salut);
+        return this;
+    }
+
+    @Step("Save")
+    public VoicemailTabConfigUserPopup save(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Verify voice mail configs")
+    public VoicemailTabConfigUserPopup verifyVoicemailConfigs(User user){
+        getDropdownSelectNumber().selectOptionContainingText(user.getPhoneNumber());
+        getButtonVoicemailEdit().click();
+        getInputEmailForVoice().shouldHave(Condition.value(user.getVoicemailEmail()));
+        getInputSalutation().shouldHave(Condition.value(user.getVoicemailSalutation()));
+        getInputPinCode().shouldHave(Condition.value(user.getVoicemailPinCode()));
+        return this;
+    }
+
 }

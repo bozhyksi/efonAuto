@@ -7,6 +7,9 @@ import jdk.nashorn.internal.codegen.CompilerConstants;
 import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.User;
 
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.value;
+
 public class CallForwardingPage extends BasePage {
     //<editor-fold desc="Locators">
     private String dropdownMyNumbersXpath = "//h3[text()=\"My numbers\"]//following-sibling::select";
@@ -166,20 +169,39 @@ public class CallForwardingPage extends BasePage {
         return this;
     }
 
-    @Step("Verify if all entered data was saved")
-    public CallForwardingPage verifySavedData(User user, String delay, String forwardToPhone){
+    @Step("Verify if AfterSection was saved")
+    public CallForwardingPage verifyAfterSection(User user){
         getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
-        getInputDelay().shouldHave(Condition.value(delay));
+        getCheckboxAfter().shouldBe(selected);
+        getInputDelay().shouldHave(value(user.getAfterDelay()));
         getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
-        getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
+        getInputAfterPhone().shouldHave(value(user.getForwardToPhone()));
         return this;
     }
 
-    @Step("Verify if all entered data was saved")
-    public CallForwardingPage verifySavedData(User user, String forwardToPhone){
+    @Step("Verify if BusySection was saved")
+    public CallForwardingPage verifyIfBusySection(User user){
         getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
-        getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
-        getInputAfterPhone().shouldHave(Condition.value(forwardToPhone));
+        getCheckboxIfbusy().shouldBe(selected);
+        getDropdownIfbusyForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
+        getInputIfbusyPhone().shouldHave(value(user.getForwardToPhone()));
+        return this;
+    }
+
+    @Step("Verify if EndDevSection was saved")
+    public CallForwardingPage verifyEndDevSection(User user){
+        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
+        getCheckboxDeviceUnavailable().shouldBe(selected);
+        getDropdownDeviceForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
+        getInputDevicePhone().shouldHave(value(user.getForwardToPhone()));
+        return this;
+    }
+
+    @Step("Verify if Manual status was saved")
+    public CallForwardingPage verifyManualStatus(User user){
+        getCheckboxManualStatus().shouldBe(selected);
+        getInputAbsent().shouldHave(value(user.getManualStatusSubj()));
+        getInputManualStatusPhone().shouldHave(value(user.getForwardToPhone()));
         return this;
     }
 

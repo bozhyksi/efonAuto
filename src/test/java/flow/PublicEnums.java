@@ -147,9 +147,9 @@ public class PublicEnums {
         _1000("1000"),
         _4000("4000"),
         _7000("7000"),
-        _7300("7300"),
-        _7310("7310"),
-        _7340("7340");
+        _7300("7300");
+        //_7310("7310"),
+        //_7340("7340");
 
         private String val;
 
@@ -168,6 +168,18 @@ public class PublicEnums {
 
         public static String getRandVal(){
             return CallsRecordingDirection.values()[new Random().nextInt((CallsRecordingDirection.values().length))].toString();
+        }
+
+    }
+
+    //Fax
+    public enum FaxReceiveFormat{
+        TIFF_and_PDF,
+        PDF,
+        TIFF;
+
+        public static String getRandom(){
+            return FaxReceiveFormat.values()[new Random().nextInt(FaxReceiveFormat.values().length)].toString();
         }
 
     }

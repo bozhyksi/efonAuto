@@ -1,6 +1,11 @@
 package pages.userPage.userPagePopup.configureUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import tests.userPageTests.userPageTestData.User;
+
+import static com.codeborne.selenide.Condition.value;
 
 public class ForwardingTabConfigUserPopup extends ConfigureUserBasePopup {
     //<editor-fold desc="Locators">
@@ -115,4 +120,80 @@ public class ForwardingTabConfigUserPopup extends ConfigureUserBasePopup {
         return field(inputForwardToPhoneXpath);
     }
     //</editor-fold>
+
+    @Step("Select number")
+    public ForwardingTabConfigUserPopup selectNumber(String num){
+        getDropdownMyNumbers().selectOptionContainingText(num);
+        return this;
+    }
+
+    @Step("Configure After section")
+    public ForwardingTabConfigUserPopup configAfterSection(String delay, String forwardToPhone){
+        if (!getCheckboxAfter().isSelected()) getCheckboxAfter().click();
+        getInputForwardDelay().setValue(delay);
+        getDropdownForwardTo().selectOptionContainingText("Phone");
+        getInputForwardToPhone().setValue(forwardToPhone);
+        return this;
+    }
+
+    @Step("Configure If busy section")
+    public ForwardingTabConfigUserPopup configIfBusySection(String forwardToPhone){
+        if (!getCheckboxIfBusy().isSelected()) getCheckboxIfBusy().click();
+        getDropdownIfBusy().selectOptionContainingText("Phone");
+        getInputIfBusyPhone().setValue(forwardToPhone);
+        return this;
+    }
+
+    @Step("Configure \"Manual status\" section")
+    public ForwardingTabConfigUserPopup configManualStatus(User user){
+        if (!getCheckboxManualStatus().isSelected())getCheckboxManualStatus().click();
+        getInputManualSubject().setValue(user.getManualStatusSubj());
+        getDropdownManualStatusForwardTo().selectOptionContainingText("Phone");
+        getInputManualStatusForwardTo().setValue(user.getForwardToPhone());
+        getInputDateFrom().setValue(user.getManualStatusDataFrom());
+        getInputDateTo().setValue(user.getManualStatusDataTo());
+        return this;
+    }
+
+    @Step("Config If end device unavailable (not registered)")
+    public ForwardingTabConfigUserPopup configEndDevSection(String forwardToPhone){
+        if (!getCheckboxIfEndDeviceUnavailable().isSelected()) getCheckboxIfEndDeviceUnavailable().click();
+        getDropdownIfEndDeviceUnavailablePhone().selectOptionContainingText("Phone");
+        getInputIfEndDeviceUnavailablePhone().setValue(forwardToPhone);
+        return this;
+    }
+
+    @Step("Save")
+    public ForwardingTabConfigUserPopup save(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return this;
+    }
+
+    @Step("Open the same user for edit and check if data was saved on \"After\" section")
+    public ForwardingTabConfigUserPopup verifyAfterSection(String delay, String forwardToPhone){
+        getCheckboxAfter().shouldBe(Condition.selected);
+        getInputForwardDelay().shouldHave(value(delay));
+        getInputForwardToPhone().shouldHave(value(forwardToPhone));
+        return this;
+    }
+
+    @Step("Check if data was saved on \"If busy\" section")
+    public ForwardingTabConfigUserPopup verifyIfBusy(String forwardToPhone){
+        getCheckboxIfBusy().shouldBe(Condition.selected);
+        getInputIfBusyPhone().shouldHave(Condition.value(forwardToPhone));
+        return this;
+    }
+
+    @Step("Check if data was saved on \"Manual status\" section")
+    public ForwardingTabConfigUserPopup verifyManualStatusSection(User user){
+        getCheckboxManualStatus().shouldBe(Condition.selected);
+        getInputManualSubject().shouldHave(Condition.value(user.getManualStatusSubj()));
+        getInputDateFrom().shouldHave(Condition.value(user.getManualStatusDataFrom()));
+        getInputDateTo().shouldHave(Condition.value(user.getManualStatusDataTo()));
+        return this;
+    }
+
 }
+
+

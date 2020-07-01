@@ -142,17 +142,6 @@ public class EndDevice extends BaseTestMethods  {
         return endDevUserId;
     }
 
-    public void setEndDevOutgoingNumber(String endDevOutgoingNumber) {
-        this.endDevOutgoingNumber = endDevOutgoingNumber;
-    }
-
-    public void setEndDevSuppressedYES(boolean endDevSuppressedYES) {
-        this.endDevSuppressedYES = endDevSuppressedYES;
-    }
-
-    public void setEndDevSuppressedNO(boolean endDevSuppressedNO) {
-        this.endDevSuppressedNO = endDevSuppressedNO;
-    }
     //</editor-fold>
 
 

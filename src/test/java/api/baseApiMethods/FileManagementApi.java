@@ -2,8 +2,10 @@ package api.baseApiMethods;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
+import org.testng.Assert;
 import pages.fileManagementPage.FileManagementBasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.userPageTests.userPageTestData.User;
 
 import java.io.File;
 
@@ -14,14 +16,36 @@ public class FileManagementApi {
 
     @Step("Upload announcement via API")
     public static void uploadAnnouncementApi(FileManagementTestData file) {
-        login().
+        boolean success = login().
                 given()
                 .contentType("multipart/form-data")
                 .accept(ContentType.JSON)
                 .multiPart("multipartFile", new File(file.getFilePath()), "audio/wav")
                 .formParam("displayName", file.getFileName())
                 .when()
-                .post(postAnnouncementUpload);
+                .post(postAnnouncementUpload)
+                .then()
+                .extract()
+                .body()
+                .path("success");
+        Assert.assertTrue(success,"\n\n Announcement upload via API failed! Success - false \n\n");
+    }
+
+    @Step("Upload announcement for proper user via API")
+    public static void uploadAnnouncementForUserApi(User user, FileManagementTestData file) {
+        boolean success = login().
+                given()
+                .contentType("multipart/form-data")
+                .accept(ContentType.JSON)
+                .multiPart("multipartFile", new File(file.getFilePath()), "audio/wav")
+                .formParam("displayName", file.getFileName())
+                .when()
+                .post(postUploadAnnouncementForUser, user.getId())
+                .then()
+                .extract()
+                .body()
+                .path("success");
+        Assert.assertTrue(success,"\n\n Announcement upload via API failed! Success - false \n\n");
     }
 
     @Step("Delete announcement via API")
