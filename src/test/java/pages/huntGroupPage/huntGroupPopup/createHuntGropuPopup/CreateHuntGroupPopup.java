@@ -82,10 +82,14 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     private String inputSundayXpath = "//label[text()=\"Sunday\"]/following-sibling::div/input";
     private String buttonEditFurtherTimeXpath = "//dt[text()=\"Time\"]/parent::dl//i[contains(@class,\"fa-cog\")]//parent::a";
 
+    private final String checkboxBusyOnBusy = "//input[@formcontrolname=\"busyOnBusy\"]";
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
-
+    public SelenideElement getBusyOnBusy(){
+        return field(checkboxBusyOnBusy);
+    }
 
     public SelenideElement getButtonEditHuntGroup() {
         return field(buttonEditHuntGroupXpath);
@@ -454,5 +458,12 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
         field(buttonAddXpath).click();
         waitUntilAlertDisappear();
         return new AddFurtherTimePopup();
+    }
+
+    @Step("Activate Busy on Busy")
+    public CreateHuntGroupPopup activateBusyOnBusy(){
+        if (!field(checkboxBusyOnBusy).isSelected())
+            field(checkboxBusyOnBusy).click();
+        return this;
     }
 }

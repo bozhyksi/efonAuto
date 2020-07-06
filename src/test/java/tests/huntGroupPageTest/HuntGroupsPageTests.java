@@ -1,5 +1,6 @@
 package tests.huntGroupPageTest;
 
+import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -16,6 +17,7 @@ import static api.baseApiMethods.QueueApi.createQueueApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
 import static api.baseApiMethods.UserApi.createUsersApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
+import static com.codeborne.selenide.Condition.selected;
 import static flow.PublicEnums.HuntGroupTimerGroup.FULL_DAYS;
 import static flow.PublicEnums.HuntGroupTimerGroup.TIME;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
@@ -319,6 +321,44 @@ public class HuntGroupsPageTests extends BaseTestMethods {
                 .deleteHuntGroup(huntGroup);
         blockListSections
                 .checkIfDropdownNotContainsNumber(huntGroup.getHuntGroupNumber());
+    }
+
+    @Description("Verify if user can edit hunt group and activate Busy on Busy")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void editHuntGroupAndActivateBusyOnBusyTest(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        createHuntGroupApi(huntGroup);
+        login()
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                    .activateBusyOnBusy()
+                    .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                    .getBusyOnBusy().shouldBe(selected);
+        deleteHuntGroupApi(huntGroup);
+    }
+
+    @Description("Verify if user can create hunt group and activate Busy on Busy")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void createHuntGroupAndActivateBusyOnBusyTest(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        login()
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickCreateNewHuntGroup()
+                    .selectNumber(huntGroup.getHuntGroupNumber())
+                    .setDisplayName(huntGroup.getHuntGroupDisplayName())
+                    .setName(huntGroup.getHuntGroupName())
+                    .activateBusyOnBusy()
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .getBusyOnBusy().shouldBe(selected);
+        deleteHuntGroupApi(huntGroup);
     }
 
     @AfterClass(alwaysRun = true)

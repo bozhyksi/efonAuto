@@ -375,36 +375,28 @@ public class UserPageTests extends BaseTestMethods {
 
     @Description("Check if marked as Ringback announcement appears on File management")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
-    public void CheckIfMarkedAsRingbackAnnouncementAppearsOnFileManagement(){
-        step("Preparing test data, creating new object - User");
+    public void markAsRingbackAnnouncementAppearsOnFileManagementTest(){
         User user = new User();
         FileManagementTestData announcFile = new FileManagementTestData();
-
         usersList.add(user);
         filesList.add(announcFile);
 
-        step("Login the test environment");
-        login();
-
-        step("Create new user");
-        createUser(user);
-
-        step("Open user's EDIT mode, and goto ANNOUNCEMENTS tab. Upload announcement.");
-        //uploadAnnouncementForUserOnEditPopup(user,announcFile);
-
-        step("Edit uploaded ANNOUNCEMENTS and mark it as Ringback");
-        userPage.clickEditUser(user);
-        configureUserBasePopup.goToTab(ANNOUNCEMENTS);
-        announcementsTabConfigUserPopup.activateRingbackOption(announcFile);
-        configureUserBasePopup.getButtonClose().click();
-
-
-        step("Check if announcement file appeared on File management");
-        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
-        deleteAnnouncementFile(announcFile.getFileName());
-
-        step("Clear test data");
-        deleteUser(user);
+        createUsersApi(user);
+        uploadAnnouncementForUserApi(user,announcFile);
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .clickEditUser(user)
+                .goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup
+                .activateRingbackOption(announcFile)
+                .closeEditUserPopup()
+                .goToMenuTab(FILE_MANAGEMENT)
+                .goToMenuTab(ANNOUNCEMENT_DISPLAY);
+        announcementDisplayPage
+                .verifyIfAnnouncementExists(announcFile);
+        deleteUsersApi(user);
+        deleteAnnouncementApi(announcFile);
     }
 
     @Description("Check if user can Record voicemail announcement by phone")

@@ -161,12 +161,14 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         return this;
     }
 
-    public void activateRingbackOption(FileManagementTestData announcFile){
+    @Step("Activate Ringback option")
+    public AnnouncementsTabConfigUserPopup activateRingbackOption(FileManagementTestData announcFile){
         getButtonEditUserAnnouncementsByName(announcFile.getFileName()).click();
         waitUntilAlertDisappear();
         configureAnnouncementPopup.getInputRingback().click();
         configureAnnouncementPopup.getButtonSave().click();
         waitUntilAlertDisappear();
+        return this;
     }
 
     public AnnouncementsTabConfigUserPopup getRecordedVoicemailAnnouncementByPhone(FileManagementTestData file){
