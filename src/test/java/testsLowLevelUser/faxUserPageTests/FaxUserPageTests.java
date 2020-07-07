@@ -82,51 +82,8 @@ public class FaxUserPageTests extends BaseTestMethods {
                 .validateFaxSettings(fax2EmailSettings);
     }
 
-    //bug 1025
-    @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab - bug 1025")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"},enabled = false)
-    public void checkNumbersDropdownOnFaxTab(){
-        User user = new User();
-        usersList.add(user);
-
-        createUsersApi(user);
-
-        login()
-                .goToMenuTab(USER);
-        userPage
-                .clickEditUser(autotestUserFullName)
-                .goToTab(ALLOCATIONS);
-        allocationTabConfigUserPopup
-                .selectNumberAssignFax2EmailAccess(user.getPhoneNumber())
-                .saveChanges()
-                .closeEditUserPopup();
-        logOut();
-
-        loginAsLowLevelUser();
-        basePageLowLevelUser
-                .goToMenuTab(FAX)
-                .goToMenuTab(FAX_ARRIVED);
-        faxArrivedUserPage
-                .selectNumberFromSearchDropdown(user.getPhoneNumber());
-        deleteUsersApi(user);
-        faxArrivedUserPage
-                .validateNumberSearchDropDownItems();
-    }
-
-    //bug 1025
-    @Description("Check if \"Select number\" drop-down on Fax tab contains only user related numbers - bug 1025")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"}, enabled = false)
-    public void selectNumberDropDownContainsOnlyUserRelatedNumbersTest(){
-        loginAsLowLevelUser();
-        basePageLowLevelUser
-                .goToMenuTab(FAX)
-                .goToMenuTab(FAX_ARRIVED);
-        faxArrivedUserPage
-                .validateNumberSearchDropDownItems();
-    }
-
     @Description("Check if \"Outgoing number\" drop-down on SendFax tab contains all customer numbers")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests", "ttt"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
     public void sendFaxOutgoingNumberContainsAllCustomerNumbersTest(){
 
         loginAsLowLevelUser()

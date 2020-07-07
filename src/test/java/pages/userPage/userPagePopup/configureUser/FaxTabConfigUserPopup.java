@@ -64,7 +64,7 @@ public class FaxTabConfigUserPopup extends ConfigureUserBasePopup {
         return this;
     }
 
-    @Step("Select TIFF and PDF")
+    @Step("Select Fax Receive Format")
     public FaxTabConfigUserPopup selectFaxReceiveFormat(String format){
         switch (format){
             case "TIFF_and_PDF":
@@ -91,13 +91,19 @@ public class FaxTabConfigUserPopup extends ConfigureUserBasePopup {
     public FaxTabConfigUserPopup verifyFaxSettings(User user){
         getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         getButtonEditFax().click();
-        getCheckboxTiffAndPdf().shouldBe(Condition.selected);
+        switch (user.getFaxReceiveFormat()) {
+            case "TIFF_and_PDF":
+                getCheckboxTiffAndPdf().shouldBe(selected);
+                break;
+            case "PDF":
+                getCheckboxPdf().shouldBe(selected);
+                break;
+            case "TIFF":
+                getCheckboxTiff().shouldBe(selected);
+                break;
+        }
         getInputEmail().shouldHave(Condition.value(user.getFaxEmail()));
         return this;
     }
-
-
-
-
 
 }

@@ -23,6 +23,7 @@ import static api.baseApiMethods.UserApi.*;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
+import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.FAX;
 
 @Listeners({CustomListeners.class})
 
@@ -227,7 +228,7 @@ public class UserPageTests extends BaseTestMethods {
                 .goToMenuTab(USER);
         userPage
                 .clickEditUser(user)
-                .goToTab(ConfigureUserBasePopup.Tabs.FAX);
+                .goToTab(FAX);
         faxTabConfigUserPopup
                 .selectNumber(user.getPhoneNumber())
                 .clickEdit()
@@ -236,7 +237,7 @@ public class UserPageTests extends BaseTestMethods {
                 .save()
                 .closeEditUserPopup()
                 .clickEditUser(user)
-                .goToTab(ConfigureUserBasePopup.Tabs.FAX);
+                .goToTab(FAX);
         faxTabConfigUserPopup
                 .verifyFaxSettings(user);
         deleteUsersApi(user);
@@ -253,7 +254,7 @@ public class UserPageTests extends BaseTestMethods {
                 .goToMenuTab(USER);
         userPage
                 .clickEditUser(user)
-                .goToTab(ConfigureUserBasePopup.Tabs.FAX);
+                .goToTab(FAX);
         faxTabConfigUserPopup
                 .selectNumber(user.getPhoneNumber())
                 .clickEdit()
@@ -401,7 +402,7 @@ public class UserPageTests extends BaseTestMethods {
 
     //EPRO-1126
     @Description("Check if user can Record voicemail announcement by phone")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"},enabled = false)
     public void recordVoicemailAnnouncementByPhoneTest(){
         String user = "AutoTestUser";
         FileManagementTestData announcement = new FileManagementTestData();

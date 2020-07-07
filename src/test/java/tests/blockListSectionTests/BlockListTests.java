@@ -236,7 +236,7 @@ public class BlockListTests extends BaseTestMethods {
         deleteIvrApi(ivr,ivr2);
     }
 
-    //bug 1075
+    //bug EPRO-1128
     @Description("Check if after creating and deleting Conference Call phone number can be re-used")
     @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "huntGroupsPageTests"},enabled = false)
     public void phoneNumberReUseConferenceCallTest(){
@@ -263,13 +263,10 @@ public class BlockListTests extends BaseTestMethods {
 
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
-        startBrowser();
-        login();
         ivrCleanUp(ivrList);
         huntGroupCleanUp(huntGroupsList);
         announcementCleanUp(announcementList);
         cleanUpConfCalls(confCallList);
-        closeBrowser();
     }
 
 }
