@@ -41,10 +41,12 @@ public class ConfigureUserBasePopup extends UserPage {
     //<editor-fold desc="//-- ConfigureUserBasePopup get\set methods --//">
 
 
+    @Step("Goto FAX")
     public SelenideElement getTabUserFax() {
         return field(tabFaxXpath);
     }
 
+    @Step("Goto VoiceMail")
     public SelenideElement getTabVoiceMail() {
         return field(tabVoiceMailXpath);
     }
@@ -69,6 +71,7 @@ public class ConfigureUserBasePopup extends UserPage {
         return field(textNumberXpath);
     }
 
+    @Step("Goto EndDevices")
     public SelenideElement getTabEndDevices() {
         return field(tabEndDevicesXpath);
     }
@@ -77,22 +80,27 @@ public class ConfigureUserBasePopup extends UserPage {
         return field(textEndDevicesXpath);
     }
 
+    @Step("Goto Name")
     public SelenideElement getTabName() {
         return field(tabNameXpath);
     }
 
+    @Step("Goto Allocations")
     public SelenideElement getTabAllocations() {
         return field(tabAllocationsXpath);
     }
 
+    @Step("Goto Forwarding")
     public SelenideElement getTabForwarding() {
         return field(tabForwardingXpath);
     }
 
+    @Step("Goto Security")
     public SelenideElement getTabSecurity() {
         return field(tabSecurityXpath);
     }
 
+    @Step("GotoAnnouncements")
     public SelenideElement getTabAnnouncements() {
         return field(tabAnnouncementsXpath);
     }

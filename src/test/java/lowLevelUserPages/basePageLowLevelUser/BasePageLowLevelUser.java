@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static core.configuration.preparations.eFonApp.dataBaseWorker;
+import static core.configuration.preparations.eFonApp.reportsQueuePage;
 
 public class BasePageLowLevelUser extends BasePage {
 
@@ -26,7 +27,9 @@ public class BasePageLowLevelUser extends BasePage {
         MANAGE_SENDER_NUMBERS_AND_NAMES,
         FAX_ARRIVED,
         FAX_SETTINGS,
-        SEND_FAX;
+        SEND_FAX,
+        ADDRESS_BOOK,
+        SEND_TEXT_MESSAGE;
     }
     public enum PageTitles{
         OVERVIEW("Overview"),
@@ -64,9 +67,21 @@ public class BasePageLowLevelUser extends BasePage {
     private String tabFaxArrivedXpath = "//a[contains(@href,\"/fax/received-faxes\")]";
     private String tabFaxSettingsXpath = "//a[contains(@href,\"/fax/fax-settings\")]";
     private String tabFaxSendXpath = "//a[contains(@href,\"/fax/fax-send\")]";
+    private String tabSendTextMessageXpath = "//a[contains(@href,\"/sms/sms-send\")]";
+    private String tabAddressBookXpath = "//a[contains(@href,\"/sms/sms-addressbook\")]";
+
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    @Step("Goto Send text message")
+    public SelenideElement getTabSendTextMessage() {
+        return field(tabSendTextMessageXpath);
+    }
+
+    @Step("Goto Address book")
+    public SelenideElement getTabAddressBook() {
+        return field(tabAddressBookXpath);
+    }
 
     public SelenideElement getTabFaxArrived() {
         return field(tabFaxArrivedXpath);
@@ -149,6 +164,8 @@ public class BasePageLowLevelUser extends BasePage {
             case FAX_ARRIVED: return getTabFaxArrived();
             case SEND_FAX: return getTabFaxSend();
             case FAX_SETTINGS: return getTabFaxSettings();
+            case ADDRESS_BOOK: return getTabAddressBook();
+            case SEND_TEXT_MESSAGE:return getTabSendTextMessage();
             default: return null;
         }
     }

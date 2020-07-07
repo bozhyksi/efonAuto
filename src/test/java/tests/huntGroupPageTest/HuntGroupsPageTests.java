@@ -1,6 +1,5 @@
 package tests.huntGroupPageTest;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -8,6 +7,12 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
+import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
+import tests.queuesPageTest.queueTestData.Queue;
+import tests.userPageTests.userPageTestData.User;
+
+import java.util.ArrayList;
 
 import static api.baseApiMethods.FileManagementApi.deleteAnnouncementApi;
 import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
@@ -21,15 +26,6 @@ import static com.codeborne.selenide.Condition.selected;
 import static flow.PublicEnums.HuntGroupTimerGroup.FULL_DAYS;
 import static flow.PublicEnums.HuntGroupTimerGroup.TIME;
 import static pages.basePage.BasePage.MenuTabsBasePage.HUNT_GROUPS;
-
-import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
-import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
-import tests.queuesPageTest.queueTestData.Queue;
-import tests.userPageTests.userPageTestData.User;
-
-import java.util.ArrayList;
-
-import static io.qameta.allure.Allure.step;
 
 @Listeners(CustomListeners.class)
 

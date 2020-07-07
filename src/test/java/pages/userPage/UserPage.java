@@ -117,6 +117,7 @@ public class UserPage extends BasePage {
         return new ConfigureUserBasePopup();
     }
 
+    @Step("Open Edit user popup")
     public ConfigureUserBasePopup editUser(String user){
         getButtonConfigUserByName(user).click();
         waitUntilAlertDisappear();

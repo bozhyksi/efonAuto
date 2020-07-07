@@ -399,29 +399,24 @@ public class UserPageTests extends BaseTestMethods {
         deleteAnnouncementApi(announcFile);
     }
 
+    //EPRO-1126
     @Description("Check if user can Record voicemail announcement by phone")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
-    public void CheckIfUserCanRecordVoicemailAnnouncementByPhone(){
-        step("Preparing test data, creating new object - User");
+    public void recordVoicemailAnnouncementByPhoneTest(){
         String user = "AutoTestUser";
         FileManagementTestData announcement = new FileManagementTestData();
         filesList.add(announcement);
-
-        step("Upload test recording file to the server");
         SSHFileTransfer.uploadFile(announcement.getSourcePath(),announcement.getDestinationPath());
 
-        step("Login the test environment");
-        login();
-
-        step("Edit created user and goto ANNOUNCEMENTS tab.");
-        userPage.editUser(user).goToTab(ANNOUNCEMENTS);
-
-        step("Save uploaded ANNOUNCEMENT by phone");
-        announcementsTabConfigUserPopup.getRecordedVoicemailAnnouncementByPhone(announcement);
-
-        step("Verify if Recorded announcement was saved");
-        userPage.editUser(user).goToTab(ANNOUNCEMENTS);
-        announcementsTabConfigUserPopup.deleteAnnouncement(announcement);
+        login()
+            .goToMenuTab(USER);
+        userPage
+                .editUser(user)
+                .goToTab(ANNOUNCEMENTS);
+        announcementsTabConfigUserPopup
+                .getRecordedVoicemailAnnouncementByPhone(announcement)
+                .verifyAnnouncementExist(announcement);
+        deleteAnnouncementApi(announcement);
     }
 
     @AfterClass(alwaysRun = true)

@@ -15,6 +15,8 @@ import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.SendFaxTestData;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.UserApi.createUsersApi;
+import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_ARRIVED;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.SEND_FAX;
@@ -22,6 +24,7 @@ import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTa
 
 import static lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage.FaxesBaseUserPageTabs.FAX_SETTINGS;
 import static pages.basePage.BasePage.MenuTabsBasePage.FAX;
+import static pages.basePage.BasePage.MenuTabsBasePage.USER;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.ALLOCATIONS;
 import static testsLowLevelUser.testData.AutotestUserData.autotestUserFullName;
 
@@ -105,15 +108,16 @@ public class FaxUserPageTests extends BaseTestMethods {
 
     //bug 1025
     @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab - bug 1025")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"}, enabled = false)
-    public void CheckIfSelectedNumberInFax2emailIsAvailableInSelectNumberDropdownOnFaxTab(){
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"},enabled = false)
+    public void checkNumbersDropdownOnFaxTab(){
         step("Prepare test data");
         User user = new User();
         usersList.add(user);
 
-        login();
-        createUser(user);
-        refreshPage();
+        createUsersApi(user);
+
+        login()
+                .goToMenuTab(USER);
         userPage
                 .clickEditUser(autotestUserFullName)
                 .goToTab(ALLOCATIONS);
@@ -129,16 +133,7 @@ public class FaxUserPageTests extends BaseTestMethods {
                 .goToMenuTab(FAX_ARRIVED);
         faxArrivedUserPage
                 .selectNumberFromSearchDropdown(user.getPhoneNumber());
-        logOut();
-
-        login();
-        deleteUser(user);
-        logOut();
-
-        loginAsLowLevelUser();
-        basePageLowLevelUser
-                .goToMenuTab(FAX)
-                .goToMenuTab(FAX_ARRIVED);
+        deleteUsersApi(user);
         faxArrivedUserPage
                 .validateNumberSearchDropDownItems();
     }

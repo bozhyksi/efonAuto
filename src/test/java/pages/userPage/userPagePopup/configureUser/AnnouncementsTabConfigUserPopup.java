@@ -171,13 +171,13 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         return this;
     }
 
+    @Step("Get Recorded Voicemail Announcement By Phone")
     public AnnouncementsTabConfigUserPopup getRecordedVoicemailAnnouncementByPhone(FileManagementTestData file){
         recordVoicemailAnnouncementByPhone.getInputName().shouldHave(value("new"));
         recordVoicemailAnnouncementByPhone.getCheckboxVoicemail().shouldBe(selected);
         recordVoicemailAnnouncementByPhone.getInputName().setValue(file.getFileName());
         recordVoicemailAnnouncementByPhone.getButtonSave().click();
         waitUntilAlertDisappear();
-        refreshPage();
         return this;
     }
 

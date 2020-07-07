@@ -2,6 +2,8 @@ package lowLevelUserPages.sendSmsPageLowLevelUser;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
 
 public class SendTextMessageUserPage extends SendSmsBaseUserPage {
     //<editor-fold desc="locators">
@@ -49,11 +51,50 @@ public class SendTextMessageUserPage extends SendSmsBaseUserPage {
     }
     //</editor-fold>
 
-    public void checkValidationMessage(String number){
+    @Step("Validate Recipient number input")
+    public SendTextMessageUserPage validateRecipientNumberInput(String number){
         getInputRecipientNumber().clear();
         getInputRecipientNumber().setValue(number);
         getInputRecipientNumber().pressTab();
         waitUntilAlertDisappear();
         getFieldValidationMessageRecipientNumber().should(Condition.exist,Condition.appear,Condition.visible);
+        return this;
     }
+
+    @Step("Add recipient")
+    public SendTextMessageUserPage addRecipient(String recipientName){
+        getInputRecipientNumber().setValue(recipientName);
+        waitUntilAlertDisappear();
+        getButtonAddRecipient().click();
+        return this;
+    }
+
+    @Step("Fill in SMS text")
+    public SendTextMessageUserPage enterSmsText(String smsText){
+        getInputSmsTextArea().setValue(smsText);
+        return this;
+    }
+
+    @Step("Click Send SMS")
+    public SmsConfirmationPopup clickSend(){
+        getButtonSend().click();
+        waitUntilAlertDisappear();
+        return new SmsConfirmationPopup();
+    }
+
+    @Step("Add recipient from address book")
+    public SendTextMessageUserPage selectNumberFromAddressBook(String num){
+        getDropdownAddressBook().selectOptionByValue(num);
+        return this;
+    }
+
+    @Step("Select sender")
+    public SendTextMessageUserPage selectSenderNumber(String senderNumber){
+        getDropdownSenderName().selectOptionByValue(senderNumber);
+        return this;
+    }
+
+
+
+
 }

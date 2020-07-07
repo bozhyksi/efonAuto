@@ -10,8 +10,7 @@ import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.FilterableResponseSpecification;
 import io.restassured.specification.RequestSpecification;
 
-import static core.configuration.preparations.PreparationsForRun.getLogin;
-import static core.configuration.preparations.PreparationsForRun.getPassword;
+import static core.configuration.preparations.PreparationsForRun.*;
 import static io.restassured.RestAssured.given;
 
 public abstract class Preparation {
@@ -26,6 +25,19 @@ public abstract class Preparation {
                                 "j_username",
                                 "j_password")
                                 )
+                .contentType(ContentType.JSON);
+    }
+
+    public static RequestSpecification loginAsLowLevelUser (){
+        setup();
+        return given()
+                .auth()
+                .form(getLowLevelUserLogin(), getLowLevelUserPassword(),
+                        new FormAuthConfig(
+                                "/portal/j_spring_security_check",
+                                "j_username",
+                                "j_password")
+                )
                 .contentType(ContentType.JSON);
     }
 

@@ -55,4 +55,12 @@ public abstract class EndPoints {
 
     //Numbers
     public final static String getCustomerNumbers = "/phone-numbers/search";
+
+    //Send SMS
+    public final static String postCreateAddressBookEntry = "/sms-addressbook";
+    public final static String getAddressBookEntries = "/sms-addressbook";
+    public final static String deleteAddressBookEntryDelete = "/sms-addressbook/{id}";
+    public final static String putAddAuthorizedNumber = "/sms-authorized-number";
+    public final static String deleteAddAuthorizedNumberDelete = "/sms-authorized-number/{id}";
+    public final static String postEnterAuthorizationCode = "/sms-authorized-number/register-code";
 }

@@ -1,6 +1,7 @@
 package lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 
@@ -40,17 +41,28 @@ public class CreateSmsAddressPopup extends AddressBookUserPage {
     }
     //</editor-fold>
 
-    public void fillInAllAddressBookRequiredFields(AddressBookTestData addressBook){
+    @Step("Enter address book data")
+    public CreateSmsAddressPopup enterAddressBookRequiredFields(AddressBookTestData addressBook){
         getInputMobileNumber().setValue(addressBook.getMobileNumber());
         getInputFirstName().setValue(addressBook.getFirstName());
         getInputLastName().setValue(addressBook.getLastName());
         getInputCompany().setValue(addressBook.getCompany());
+        return this;
     }
 
-    public void clearFields(){
+    @Step("Save all data")
+    public AddressBookUserPage save(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new AddressBookUserPage();
+    }
+
+    @Step("Clear all fields")
+    public CreateSmsAddressPopup clearFields(){
         getInputMobileNumber().clear();
         getInputFirstName().clear();
         getInputLastName().clear();
         getInputCompany().clear();
+        return this;
     }
 }

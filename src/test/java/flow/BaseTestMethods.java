@@ -17,6 +17,7 @@ import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
+import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AuthorizedNumberTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
 import java.sql.ResultSet;
@@ -32,6 +33,8 @@ import static api.baseApiMethods.FileManagementApi.deleteMohApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
+import static api.baseApiMethods.SendSmsApi.deleteAddressBookEntryApi;
+import static api.baseApiMethods.SendSmsApi.deleteAuthorizedNumberApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
 import static io.qameta.allure.Allure.step;
@@ -39,6 +42,19 @@ import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTa
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BaseTestMethods extends eFonApp {
+
+    public String getEntityIdFromDB(String query){
+        ResultSet resultSet = dataBaseWorker.execSqlQuery(query);
+        while (true){
+            try {
+                if (!resultSet.next()) break;
+                return resultSet.getString(1);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 
     public String getPhoneNumberId(String phoneNumber){
         String query ="SELECT phonenumber_id FROM webadmin_20170426.phonenumber where number= \"%s\"";
@@ -338,42 +354,6 @@ public class BaseTestMethods extends eFonApp {
         loginPage.getButtonLogin().click();
     }
 
-    @Step("Create new user")
-    public void createUser(User user) {
-        basePage.getTabUser().click();
-        userPage.getPageTitle().getText().equals("User");
-        userPage.getButtonCreateNewUser().click();
-        createUserPopup.getInputFirstName().waitUntil(Condition.appears, 10000);
-        createUserPopup.getPopupTitle().getText().equals("Create user");
-        createUserPopup.selectTitle(user.getTitle());
-        createUserPopup.fillFirstName(user.getFirstName());
-        createUserPopup.fillLastName(user.getLastName());
-        createUserPopup.fillLoginEmail(user.getLoginEmail());
-        createUserPopup.selectNumber(user.getPhoneNumber());
-        createUserPopup.selectEndDevices();
-        user.setEndDevices(createUserPopup.getSelectedEndDeviceName());
-        createUserPopup.fillInDiffContactEmail(user.getUseDiffContactEmail());
-        createUserPopup.fillInVoiceEmail(user.getVoiceEmail());
-        createUserPopup.getCheckboxBusyOnBusy().click();
-        user.setPermittedDestinationNumbers(createUserPopup.selectPermittedDestinationNumbers());
-        createUserPopup.getCheckboxSmsEnabled().click();
-        user.setCallsRecordingDirection(createUserPopup.activateCallRecordings());
-        //createUserPopup.activateFaxDispatch(user.getInputLocalHeaderInfo());
-        createUserPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        userPage.checkIfUserExistsInTheList(user);
-    }
-
-    @Step("Delete the user")
-    public void deleteUser(User user) {
-        basePage.getTabUser().click();
-        waitUntilAlertDisappear();
-        userPage.deleteUserButtonClick(user.getFullName());
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        userPage.checkIfUserDeleted(user);
-    }
-
     public void uploadPhoneBook(Phonebook phonebook) {
         phonebook.createExcelPhonebookFile();
         basePage.getTabPhonebook().click();
@@ -399,34 +379,6 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void createHuntGroup(HuntGroup huntGroup, String authorisedUser){
-        basePage.goToMenuTab(HUNT_GROUPS);
-        huntGroupPage.getButtonCreateNewHuntGroup().click();
-        waitUntilAlertDisappear();
-        createHuntGroupPopup.getInputName().setValue(huntGroup.getHuntGroupName());
-        createHuntGroupPopup.getInputDisplName().setValue(huntGroup.getHuntGroupDisplayName());
-        createHuntGroupPopup.selectRandomNumber();
-        huntGroup.setHuntGroupNumber(createHuntGroupPopup.getDropdownNumber().getSelectedText());
-        createHuntGroupPopup.getDropdownLanguage().selectOptionByValue(huntGroup.getHuntGroupLanguage());
-        createHuntGroupPopup.getDropdownAuthUsers().selectOptionContainingText(authorisedUser);
-        huntGroup.setHuntGroupAuthorizedUser(authorisedUser);
-        createHuntGroupPopup.getButtonSubmitEditHuntGroup().click();
-        createHuntGroupPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        huntGroupPage.getfieldNameByText(huntGroup.getHuntGroupName()).should(Condition.exist);
-    }
-
-    @Step("Delete hunt group")
-    public void deleteHuntGroup(String name){
-        basePage.goToMenuTab(HUNT_GROUPS);
-        waitUntilAlertDisappear();
-        huntGroupPage.getButtonDeleteByName(name).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        huntGroupPage.getfieldNameByText(name).shouldNot(Condition.exist);
-    }
-
     public void ivrCleanUp(List<IVRtestData> ivrList){
         for (IVRtestData ivr : ivrList) {
             deleteIvrApi(ivr);
@@ -445,29 +397,6 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void createQueueOnlyRequiredFields(Queue queue){
-        basePage.getTabQueues().click();
-        waitUntilAlertDisappear();
-        queuesBasePage.getTabConfigureQueues().click();
-        waitUntilAlertDisappear();
-        configureQueueTab.getButtonCreateNewQueue().click();
-        createNewQueuePopup.getInputQueueName().setValue(queue.getName());
-        createNewQueuePopup.selectRandomSubscriptionForQueue();
-        queue.setSubscription(createNewQueuePopup.getDropdownSubscription().getSelectedText());
-        createNewQueuePopup.getButtonSave().shouldBe(Condition.enabled).click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        configureQueueTab.getFieldQueueNameByText(queue.getName()).should(Condition.exist);
-    }
-
-    public void deleteQueue(String queueName){
-        basePage.goToMenuTab(QUEUES).goToMenuTab(CONFIGURE_QUEUES);
-        configureQueueTab.getButtonDeleteQueueByName(queueName).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        configureQueueTab.getFieldQueueNameByText(queueName).shouldNot(Condition.exist);
-    }
-
     public void queueCleanUp(List<Queue> queueList){
         for (Queue queue : queueList) {
             deleteQueueApi(queue);
@@ -480,33 +409,10 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    @Step("Clean up abbreviated numbers - delete test data")
     public void abbrevNumsCleanUp(ArrayList<AbbreviatedDialling> abbrevDialList){
         for (AbbreviatedDialling abbreviatedDial : abbrevDialList) {
             deleteAbbreviatedNumberApi(abbreviatedDial);
         }
-    }
-
-    public void uploadAnnouncementFile(FileManagementTestData file){
-        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
-        announcementDisplayPage.getButtonUploadFile().click();
-        announcementDisplayPage.uploadFile(file.getFilePath());
-        waitUntilAlertDisappear();
-        announcementDisplayPage.getInputName().setValue(file.getFileName());
-        announcementDisplayPage.getButtonSave().click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage(); // temp fix because of the bug
-        announcementDisplayPage.getFieldNameByText(file.getFileName()).should(Condition.exist);
-    }
-
-    public void deleteAnnouncementFile(String fileName){
-        basePage.goToMenuTab(FILE_MANAGEMENT).goToMenuTab(ANNOUNCEMENT_DISPLAY);
-        announcementDisplayPage.getButtonDeleteByName(fileName).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        announcementDisplayPage.getFieldNameByText(fileName).shouldNot(Condition.exist);
     }
 
     public void deleteAnnouncementLowLevelUser(FileManagementTestData announcement){
@@ -559,47 +465,10 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void deleteAddressBook(String addressBookPhone){
-        basePageLowLevelUser.getTabSendSms().click();
-        sendSmsBaseUserPage.getTabAddressBook().click();
-        addressBookUserPage.getButtonDeleteByText(addressBookPhone).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        addressBookUserPage.getFieldMobileNumberByText(addressBookPhone).shouldNot(Condition.exist);
-    }
-
     public void addressBookCleanUp(List<AddressBookTestData> addressBookList){
-        try {
-            basePageLowLevelUser.getTabSendSms().click();
-            sendSmsBaseUserPage.getTabAddressBook().click();
-            for (AddressBookTestData entry: addressBookList) {
-                if (configureQueueTab.getFieldQueueNameByText(entry.getMobileNumber()).exists()){
-                    deleteAddressBook(entry.getMobileNumber());
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("addressBookCleanUp failed");
-            e.printStackTrace();
+        for (AddressBookTestData addressBook:addressBookList) {
+            deleteAddressBookEntryApi(addressBook);
         }
-    }
-
-    public void createAddressBookEntry(AddressBookTestData addressBook){
-
-        basePageLowLevelUser.getTabSendSms().click();
-        sendSmsBaseUserPage.getTabAddressBook().click();
-        step("Click Add button");
-        addressBookUserPage.getButtonAdd().click();
-
-        step("Fill in all Address Book required fields");
-        createSmsAddressPopup.fillInAllAddressBookRequiredFields(addressBook);
-
-        step("Save all data");
-        createSmsAddressPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-
-        step("Validate if entry was created");
-        addressBookUserPage.validateIfEntryWasCreated(addressBook);
     }
 
     public void lowLevelUserCallForwardingCleanUp(){
@@ -612,90 +481,15 @@ public class BaseTestMethods extends eFonApp {
         waitUntilAlertDisappear();
     }
 
-    public void createNonAthorizedSmsSenderNumber(String senderNumber){
-        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
-        manageSenderNumbersUserPage.getButtonAdd().click();
-        waitUntilAlertDisappear();
-        newSenderNumberPopup.getInputMobileNumber().setValue(senderNumber);
-        newSenderNumberPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        manageSenderNumbersUserPage.verifyIfNumberAddedAsNonAuthorized(senderNumber);
-    }
-
-    public void createAthorizedSmsSenderNumber(String senderNumber){
-        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
-        manageSenderNumbersUserPage.getButtonAdd().click();
-        waitUntilAlertDisappear();
-        newSenderNumberPopup.getInputMobileNumber().setValue(senderNumber);
-        newSenderNumberPopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        manageSenderNumbersUserPage.verifyIfNumberAddedAsNonAuthorized(senderNumber);
-        manageSenderNumbersUserPage.getButtonEditByText(senderNumber).click();
-        waitUntilAlertDisappear();
-        activateAuthorisationCodePopup.enterAuthorizationCode(senderNumber);
-        activateAuthorisationCodePopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        manageSenderNumbersUserPage.verifyIfNumberAddedAsAuthorized(senderNumber);
-    }
-
-    public void authorizeSmsSenderNumber(String senderNumber){
-        manageSenderNumbersUserPage.getButtonEditByText(senderNumber).click();
-        waitUntilAlertDisappear();
-        activateAuthorisationCodePopup.enterAuthorizationCode(senderNumber);
-        activateAuthorisationCodePopup.getButtonSave().click();
-        waitUntilAlertDisappear();
-        manageSenderNumbersUserPage.verifyIfNumberAddedAsAuthorized(senderNumber);
-    }
-
-    public void deleteSmsSenderNumber(String senderNumber){
-        basePageLowLevelUser.goToMenuTab(SEND_SMS).goToMenuTab(MANAGE_SENDER_NUMBERS_AND_NAMES);
-        manageSenderNumbersUserPage.getButtonDeleteByText(senderNumber).click();
-        waitUntilAlertDisappear();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-        manageSenderNumbersUserPage.getFiledMobileNumberByText(senderNumber).shouldNot(exist);
-    }
-
-    public void sendSms(SendSmsTestData sms){
-        step("Go to Send SMS page");
-        basePageLowLevelUser.goToMenuTab(SEND_SMS);
-
-        step("Select sender");
-        sendTextMessageUserPage.getDropdownSenderName().selectOptionByValue(sms.getSenderNumber());
-
-        step("Add recipient");
-        sendTextMessageUserPage.getInputRecipientNumber().setValue(sms.getRecipientNumber());
-        waitUntilAlertDisappear();
-        sendTextMessageUserPage.getButtonAddRecipient().click();
-
-        step("Fill in SMS text");
-        sendTextMessageUserPage.getInputSmsTextArea().setValue(sms.getSmsText());
-
-        step("Click Send SMS");
-        sendTextMessageUserPage.getButtonSend().click();
-        waitUntilAlertDisappear();
-
-        step("Check if SMS were sent and \"Confirmation popup appears\"");
-        smsConfirmationPopup.getTitle().shouldBe(Condition.visible,Condition.appear);
-        smsConfirmationPopup.getButtonClose().click();
-    }
-
-    public ArrayList<String> getListOfAllCustomerNumbers(){
-        ArrayList<String> customerNumbersList;
-        login();
-        basePage.goToMenuTab(NUMBERS);
-        basePage.getDropdownItemsPerPage().selectOptionContainingText("All");
-        waitUntilAlertDisappear();
-        customerNumbersList = numbersPage.getListOfNumbers();
-        logOut();
-        waitUntilAlertDisappear();
-        return customerNumbersList;
-    }
-
     public void cleanUpConfCalls(ArrayList<ConferenceCallTestData> confCallsList){
         for (ConferenceCallTestData entry : confCallsList) {
             deleteConferenceCallApi(entry.getId());
+        }
+    }
+
+    public void cleanUpAuthNums(ArrayList<AuthorizedNumberTestData> authorizedNumberList){
+        for (AuthorizedNumberTestData authNumber:authorizedNumberList) {
+            deleteAuthorizedNumberApi(authNumber);
         }
     }
 

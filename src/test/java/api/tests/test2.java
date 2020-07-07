@@ -1,14 +1,17 @@
 package api.tests;
 
-import tests.userPageTests.userPageTestData.User;
+import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 
-import static api.baseApiMethods.UserApi.createUserApi;
+import static api.baseApiMethods.SendSmsApi.createAddressBookEntryApi;
+import static api.baseApiMethods.SendSmsApi.deleteAddressBookEntryApi;
+
 
 public class test2 {
     public static void main(String[] args) {
-        User user = new User();
-
-        createUserApi(user.getJson());
+        AddressBookTestData addressBookTestData = new AddressBookTestData();
+        createAddressBookEntryApi(addressBookTestData);
+        deleteAddressBookEntryApi(addressBookTestData);
+        deleteAddressBookEntryApi(addressBookTestData);
 
     }
 }
