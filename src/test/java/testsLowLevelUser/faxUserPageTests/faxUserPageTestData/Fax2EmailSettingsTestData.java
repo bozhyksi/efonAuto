@@ -1,36 +1,26 @@
 package testsLowLevelUser.faxUserPageTests.faxUserPageTestData;
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 
 import java.util.Random;
 
 public class Fax2EmailSettingsTestData extends BaseTestMethods {
 
-    public enum FaxMessageFormat{
-        TIFF_Only("TIFF only"),
-        PDF_Only("PDF only"),
-        TIFF_and_PDF("TIFF and PDF");
+    //<editor-fold desc="properties">
+    private String number;
+    private String email;
+    private String faxMessageFormat;
+    //</editor-fold>
 
-        private String format;
+    public Fax2EmailSettingsTestData(){
+        this.number = "00451245789908";
+        this.email = getRandomEmail();
+        this.faxMessageFormat = PublicEnums.FaxReceiveFormat.getRandom();
 
-        FaxMessageFormat(String format){
-            this.format = format;
-        }
-
-        private static FaxMessageFormat rand(){
-            Random rand = new Random();
-            return values()[rand.nextInt(values().length)];
-        }
-
-        public static String getRandomFormat(){
-            return rand().format;
-        }
     }
 
-    private String number = "00451245789908";
-    private String email = getRandomEmail();
-    private String faxMessageFormat = FaxMessageFormat.getRandomFormat();
-
+    //<editor-fold desc="get\set">
     public String getEmail() {
         return email;
     }
@@ -42,4 +32,5 @@ public class Fax2EmailSettingsTestData extends BaseTestMethods {
     public String getNumber() {
         return number;
     }
+    //</editor-fold>
 }

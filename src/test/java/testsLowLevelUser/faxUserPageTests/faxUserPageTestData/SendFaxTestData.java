@@ -3,12 +3,21 @@ package testsLowLevelUser.faxUserPageTests.faxUserPageTestData;
 import flow.BaseTestMethods;
 
 public class SendFaxTestData extends BaseTestMethods {
-    private String outgoingNumberValue = getRandomNumber(1,30)+": Object";
+    //<editor-fold desc="properties">
+    private String outgoingNumberValue;
     private String outgoingNumber;
-    private String destinationNumber = getRandomPhone("044",7);
-    private String faxFilePath = "testData\\faxSendFile\\sample.pdf";
+    private String destinationNumber;
+    private String faxFilePath;
+    //</editor-fold>
 
+    public SendFaxTestData(){
+        this.outgoingNumberValue = getRandomNumber(1,30)+": Object";
+        this.outgoingNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.destinationNumber = getRandomPhone("044",7);
+        this.faxFilePath = "testData\\faxSendFile\\sample.pdf";
+    }
 
+    //<editor-fold desc="get\set">
     public String getFaxFilePath() {
         return faxFilePath;
     }
@@ -28,6 +37,7 @@ public class SendFaxTestData extends BaseTestMethods {
     public String getOutgoingNumberValue() {
         return outgoingNumberValue;
     }
+    //</editor-fold>
 
 }
 

@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.User;
+import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.Fax2EmailSettingsTestData;
 
 import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.Condition.value;
@@ -107,6 +108,23 @@ public class FaxPage extends BasePage {
     public FaxPage validateFaxSettings(User user){
         getInputEmail().shouldHave(value(user.getFaxEmail()));
         switch (user.getFaxReceiveFormat()){
+            case "TIFF_and_PDF":
+                getRadioTiffAndPdf().shouldBe(selected);
+                break;
+            case "PDF":
+                getRadioPdfOnly().shouldBe(selected);
+                break;
+            case "TIFF":
+                getRadioTiffOnly().shouldBe(selected);
+                break;
+        }
+        return this;
+    }
+
+    @Step("Validate")
+    public FaxPage validateFaxSettings(Fax2EmailSettingsTestData fax2EmailSettings){
+        getInputEmail().shouldHave(value(fax2EmailSettings.getEmail()));
+        switch (fax2EmailSettings.getFaxMessageFormat()){
             case "TIFF_and_PDF":
                 getRadioTiffAndPdf().shouldBe(selected);
                 break;

@@ -6,7 +6,6 @@ import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import pages.basePage.BasePage;
-import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.callPickUpPageTests.CallPickUpTestData.CallPickUp;
@@ -18,7 +17,6 @@ import tests.userPageTests.userPageTestData.User;
 import tests.сonferenceCallsPageTests.ConferenceCallTestData.ConferenceCallTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
 import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AuthorizedNumberTestData;
-import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,9 +35,9 @@ import static api.baseApiMethods.SendSmsApi.deleteAddressBookEntryApi;
 import static api.baseApiMethods.SendSmsApi.deleteAuthorizedNumberApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
-import static io.qameta.allure.Allure.step;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
-import static pages.basePage.BasePage.MenuTabsBasePage.*;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.ANNOUNCEMENTS;
+import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
+import static pages.basePage.BasePage.MenuTabsBasePage.CALL_FORWARDING;
 
 public class BaseTestMethods extends eFonApp {
 

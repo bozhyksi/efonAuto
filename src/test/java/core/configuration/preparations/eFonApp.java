@@ -8,7 +8,6 @@ import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxArrivedUserPage;
-import lowLevelUserPages.faxPageLowLevelUser.FaxSettingUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.IncomingLastCallsUserPage;
@@ -25,34 +24,23 @@ import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirm
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailUserPage;
-import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.IVRpage.IVRpage;
-import pages.IVRpage.IVRpagePopup.CreateEditIvrPopup;
-import pages.IVRpage.blockListSection.BlockListSection;
-import pages.IVRpage.blockListSection.BlocklistPopup;
 import pages.abbreviatedDialling.AbbreviatedDiallingBasePage;
 import pages.abbreviatedDialling.AbbreviatedNumbers;
 import pages.abbreviatedDialling.ManageAbbreviatedNumbers;
-import pages.abbreviatedDialling.abbreviatedDiallingPopup.AssignAbbreviatedDialling;
-import pages.abbreviatedDialling.abbreviatedDiallingPopup.SecretaryPopup;
 import pages.basePage.BasePage;
 import pages.basePage.basePopup.AlertPopup;
 import pages.basePage.basePopup.ConfirmationPopup;
 import pages.callForwardingPage.CallForwardingPage;
 import pages.callPickUpPage.CallPickUpPage;
-import pages.callPickUpPage.callPickUpPopup.GroupCallPickupPopup;
 import pages.conferenceCallsPage.ConferenceCallsPage;
-import pages.conferenceCallsPage.conferenceCallsPagePopup.CreateNewConferenceCallPopup;
 import pages.contactDataPage.ContactDataPage;
 import pages.endDevicesPage.EndDevicesPage;
 import pages.faxPage.FaxPage;
 import pages.fileManagementPage.AnnouncementDisplayPage;
 import pages.fileManagementPage.FileManagementBasePage;
 import pages.fileManagementPage.MusicOnHoldPage;
-import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
 import pages.huntGroupPage.HuntGroupPage;
-import pages.huntGroupPage.huntGroupPopup.AddFullDaysPopup;
-import pages.huntGroupPage.huntGroupPopup.AddFurtherTimePopup;
 import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
 import pages.lastCallsPage.IncomingCallsTab;
 import pages.lastCallsPage.LastCallsPage;
@@ -77,7 +65,7 @@ import pages.userPage.UserPage;
 import pages.userPage.userPagePopup.CreateUserPopup;
 import pages.userPage.userPagePopup.configureUser.*;
 
-public class eFonApp extends PreparationsForRun{
+public class eFonApp extends PreparationsForRun {
 
     public Fields fields = new Fields();
     public BasePage basePage = new BasePage();
@@ -87,11 +75,27 @@ public class eFonApp extends PreparationsForRun{
 
     public static ProvisioningPhoneModelsPage provisioningPhoneModelsPage = new ProvisioningPhoneModelsPage();
     public static ConfirmationPopup confirmationPopup = new ConfirmationPopup();
+    public static CallForwardingPage callForwardingPage = new CallForwardingPage();
+    public static ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
+    public static IVRpage ivrPage = new IVRpage();
+    public static HuntGroupPage huntGroupPage = new HuntGroupPage();
+    public static AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
+    public static QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
+    public static StatusQueueTab statusQueuePage = new StatusQueueTab();
+    public static RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
+    public static ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
+    public static ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
+    public static ProvisioningManagerPage provisioningManagerPage = new ProvisioningManagerPage();
+    public static FaxArrivedUserPage faxArrivedUserPage = new FaxArrivedUserPage();
+    public static MissedLastCallsUserPage missedLastCallsUserPage = new MissedLastCallsUserPage();
+    public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
+    public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
+    public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
+    public static ProvisioningEndDevicesPage provisioningEndDevicesPage = new ProvisioningEndDevicesPage();
+    public static pages.blockListSection.BlockListSection blockListSections = new pages.blockListSection.BlockListSection();
     public AlertPopup alertPopup = new AlertPopup();
     public LoginPage loginPage = new LoginPage();
     public UserPage userPage = new UserPage();
-    public CreateUserPopup createUserPopup = new CreateUserPopup();
-    public ConfigureUserBasePopup configureUserBasePopup = new ConfigureUserBasePopup();
     public NameTabConfigUserPopup nameTabConfigUserPopup = new NameTabConfigUserPopup();
     public PhonebookPage phonebookPage = new PhonebookPage();
     public AbbreviatedDiallingBasePage abbrevDialBasePage = new AbbreviatedDiallingBasePage();
@@ -99,14 +103,8 @@ public class eFonApp extends PreparationsForRun{
     public AbbreviatedNumbers abbreviatedNumbersPage = new AbbreviatedNumbers();
     public FaxPage faxPage = new FaxPage();
     public CallPickUpPage callPickUpPage = new CallPickUpPage();
-    public static CallForwardingPage callForwardingPage = new CallForwardingPage();
-    public static ConferenceCallsPage conferenceCallsPage = new ConferenceCallsPage();
-    public static IVRpage ivrPage = new IVRpage();
-    public static HuntGroupPage huntGroupPage = new HuntGroupPage();
-    public CreateHuntGroupPopup createHuntGroupPopup = new CreateHuntGroupPopup();
     public QueuesBasePage queuesBasePage = new QueuesBasePage();
     public ConfigureQueueTab configureQueueTab = new ConfigureQueueTab();
-    public CreateNewQueuePopup createNewQueuePopup = new CreateNewQueuePopup();
     public NumbersPage numbersPage = new NumbersPage();
     public SubscriptionsPage subscriptionsPage = new SubscriptionsPage();
     public LastCallsPage lastCallsPage = new LastCallsPage();
@@ -115,8 +113,6 @@ public class eFonApp extends PreparationsForRun{
     public RecordedCallsBasePage recordedCallsPage = new RecordedCallsBasePage();
     public ContactDataPage contactDataPage = new ContactDataPage();
     public MusicOnHoldPage musicOnHoldPage = new MusicOnHoldPage();
-    public static AnnouncementDisplayPage announcementDisplayPage = new AnnouncementDisplayPage();
-    public static QueueForAgentsPopup queueForAgentsPopup = new QueueForAgentsPopup();
     public AllocationTabConfigUserPopup allocationTabConfigUserPopup = new AllocationTabConfigUserPopup();
     public ForwardingTabConfigUserPopup forwardingTabConfigUserPopup = new ForwardingTabConfigUserPopup();
     public VoicemailTabConfigUserPopup voicemailTabConfigUserPopup = new VoicemailTabConfigUserPopup();
@@ -129,36 +125,14 @@ public class eFonApp extends PreparationsForRun{
     public MissedCallsTab missedCallsTab = new MissedCallsTab();
     public OutgoingCallsTab outgoingCallsTab = new OutgoingCallsTab();
     public BasePageLowLevelUser basePageLowLevelUser = new BasePageLowLevelUser();
-    public SendSmsBaseUserPage sendSmsBaseUserPage = new SendSmsBaseUserPage();
     public SendTextMessageUserPage sendTextMessageUserPage = new SendTextMessageUserPage();
     public AddressBookUserPage addressBookUserPage = new AddressBookUserPage();
-    public SmsConfirmationPopup smsConfirmationPopup = new SmsConfirmationPopup();
-    public CreateSmsAddressPopup createSmsAddressPopup = new CreateSmsAddressPopup();
-    public FaxesBaseUserPage faxesBaseUserPage = new FaxesBaseUserPage();
     public SendFaxUserPage sendFaxUserPage = new SendFaxUserPage();
-    public FaxSettingUserPage faxSettingUserPage = new FaxSettingUserPage();
     public DashboardUserPage dashboardUserPage = new DashboardUserPage();
     public VoicemailSettingUserPage voicemailSettingUserPage = new VoicemailSettingUserPage();
     public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
     public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
     public ManageSenderNumbersAndNamesUserPage manageSenderNumbersUserPage = new ManageSenderNumbersAndNamesUserPage();
-    public NewSenderNumberPopup newSenderNumberPopup = new NewSenderNumberPopup();
-    public ActivateAuthorisationCodePopup activateAuthorisationCodePopup = new ActivateAuthorisationCodePopup();
-    public static StatusQueueTab statusQueuePage = new StatusQueueTab();
-    public static PenaltyPopup penaltyPopup = new PenaltyPopup();
-    public static RecordingsQueueTab recordingsQueuePage = new RecordingsQueueTab();
-    public static ReportsQueueTab reportsQueuePage = new ReportsQueueTab();
-
-    public static ProvisioningBasePage provisioningBasePage = new ProvisioningBasePage();
-    public static ProvisioningManagerPage provisioningManagerPage = new ProvisioningManagerPage();
-    public static FaxArrivedUserPage faxArrivedUserPage = new FaxArrivedUserPage();
-    public static MissedLastCallsUserPage missedLastCallsUserPage = new MissedLastCallsUserPage();
-    public static IncomingLastCallsUserPage incomingLastCallsUserPage = new IncomingLastCallsUserPage();
-    public static OutgoingLastCallsUserPage outgoingLastCallsUserPage = new OutgoingLastCallsUserPage();
-    public static VoicemailUserPage voicemailUserPage = new VoicemailUserPage();
-
-    public static ProvisioningEndDevicesPage provisioningEndDevicesPage = new ProvisioningEndDevicesPage();
-    public static pages.blockListSection.BlockListSection blockListSections = new pages.blockListSection.BlockListSection();
 
 
 }

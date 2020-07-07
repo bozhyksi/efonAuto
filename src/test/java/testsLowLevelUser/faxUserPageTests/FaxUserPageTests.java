@@ -1,14 +1,13 @@
 package testsLowLevelUser.faxUserPageTests;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
 import io.qameta.allure.Description;
+import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.userPageTests.userPageTestData.User;
 import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.Fax2EmailSettingsTestData;
 import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.SendFaxTestData;
@@ -17,12 +16,8 @@ import java.util.ArrayList;
 
 import static api.baseApiMethods.UserApi.createUsersApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
-import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_ARRIVED;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.SEND_FAX;
-
-
-import static lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage.FaxesBaseUserPageTabs.FAX_SETTINGS;
 import static pages.basePage.BasePage.MenuTabsBasePage.FAX;
 import static pages.basePage.BasePage.MenuTabsBasePage.USER;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.ALLOCATIONS;
@@ -36,81 +31,61 @@ public class FaxUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can Send Fax")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
-    public void CheckIfLowLevelUserCanSendFax(){
-        step("Prepare test data");
+    public void sendFaxTest(){
         SendFaxTestData fax = new SendFaxTestData();
 
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Go to Send Fax page");
-        basePageLowLevelUser.getTabFax().click();
-        faxesBaseUserPage.getTabFaxSend().click();
-        waitUntilAlertDisappear();
-
-        step("Select Outgoing number");
-        sendFaxUserPage.getDropdownOutgoingNumber().selectOptionByValue(fax.getOutgoingNumberValue());
-        fax.setOutgoingNumber(sendFaxUserPage.getDropdownOutgoingNumber().getSelectedText());
-
-        step("Fill in Destination number");
-        sendFaxUserPage.getInputDestinationNumber().setValue(fax.getDestinationNumber());
-
-        step("Upload sample file");
-        sendFaxUserPage.uploadFaxFile(fax.getFaxFilePath());
-        waitUntilAlertDisappear();
-
-        step("Click Send button");
-        sendFaxUserPage.getButtonSend().shouldBe(Condition.enabled).click();
-        refreshPage();
-
-        step("Validate if fax appeared in the grid as sent");
-        sendFaxUserPage.getFieldRecipientByNumber(fax.getDestinationNumber()).shouldBe(Condition.visible, Condition.exist);
-        sendFaxUserPage.getSenderByText(fax.getOutgoingNumber()).shouldBe(Condition.visible, Condition.exist);
+        loginAsLowLevelUser()
+            .goToMenuTab(FAX)
+            .goToMenuTab(SEND_FAX);
+        sendFaxUserPage
+                .selectOutGoingNumber(fax.getOutgoingNumber())
+                .enterDestinationNumber(fax.getDestinationNumber())
+                .uploadFaxFile(fax.getFaxFilePath())
+                .clickSend()
+                .refreshPage(); // overcome due to bug EPRO-1127
+        sendFaxUserPage
+                .verifyIfFaxSent(fax);
     }
 
     @Description("Check validation of the Destination number input")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
-    public void CheckValidationOfTheDestinationNumberInput(){
-
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Go to Send Fax page");
-        basePageLowLevelUser.getTabFax().click();
-        faxesBaseUserPage.getTabFaxSend().click();
-        waitUntilAlertDisappear();
-
-        step("Validate Destination number");
-        sendFaxUserPage.validateDestinationNumber("   ","0123456", "04412378","asd","0481234aa","+380441234567", "+380677851465");
+    public void validateDestinationNumberTest(){
+        loginAsLowLevelUser()
+            .goToMenuTab(FAX)
+            .goToMenuTab(SEND_FAX);
+        sendFaxUserPage
+                .validateDestinationNumber(
+                        "   "
+                        ,"0123456",
+                        "04412378",
+                        "asd",
+                        "0481234aa",
+                        "+380441234567",
+                        "+380677851465");
     }
 
     @Description("Check if user can configure Fax2Email settings")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"})
-    public void CheckIfUserCanConfigureFax2emailSettings(){
-        step("Prepare test data");
+    public void configureFax2emailSettingsTest(){
         Fax2EmailSettingsTestData fax2EmailSettings = new Fax2EmailSettingsTestData();
 
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Goto Faxes -> Fax Settings");
-        basePageLowLevelUser.goToMenuTab(BasePage.MenuTabsBasePage.FAX);
-        faxesBaseUserPage.goToMenuTab(FAX_SETTINGS);
-
-        step("Configure Fax2Email");
-        faxSettingUserPage.configureFax2Email(fax2EmailSettings);
-        refreshPage();
-
-        step("Validate if changes were saved");
-        faxSettingUserPage.validateFax2EmailSettings(fax2EmailSettings);
-
+        loginAsLowLevelUser()
+            .goToMenuTab(FAX)
+            .goToMenuTab(BasePageLowLevelUser.MenuTabsLowLevelUser.FAX_SETTINGS);
+        faxPage
+                .selectNumber(fax2EmailSettings.getNumber())
+                .clickEditFax2Email()
+                .enterEmail(fax2EmailSettings.getEmail())
+                .selectFaxReceiveFormat(fax2EmailSettings.getFaxMessageFormat())
+                .saveChanges()
+                .clickEditFax2Email()
+                .validateFaxSettings(fax2EmailSettings);
     }
 
     //bug 1025
     @Description("Check if selected number in Fax2Email is available in \"Select number\" drop-down on Fax tab - bug 1025")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"},enabled = false)
     public void checkNumbersDropdownOnFaxTab(){
-        step("Prepare test data");
         User user = new User();
         usersList.add(user);
 
@@ -141,7 +116,7 @@ public class FaxUserPageTests extends BaseTestMethods {
     //bug 1025
     @Description("Check if \"Select number\" drop-down on Fax tab contains only user related numbers - bug 1025")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests"}, enabled = false)
-    public void CheckIfSelectNumberDropDownOnFaxTabContainsOnlyUserRelatedNumbers(){
+    public void selectNumberDropDownContainsOnlyUserRelatedNumbersTest(){
         loginAsLowLevelUser();
         basePageLowLevelUser
                 .goToMenuTab(FAX)
@@ -152,22 +127,18 @@ public class FaxUserPageTests extends BaseTestMethods {
 
     @Description("Check if \"Outgoing number\" drop-down on SendFax tab contains all customer numbers")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "faxUserPageTests", "ttt"})
-    public void CheckIfOutgoingNumberDropDownOnSendFaxTabContainsAllCustomerNumbers(){
+    public void sendFaxOutgoingNumberContainsAllCustomerNumbersTest(){
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(FAX)
                 .goToMenuTab(SEND_FAX);
         sendFaxUserPage
                 .verifyIfAllCustomerNumbersAreAvailableInOutgoingNumberDropdown();
     }
 
-    @AfterClass(alwaysRun = true, enabled = false)
+    @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        login();
         userCleanUp(usersList);
-        closeBrowser();
     }
 
 }

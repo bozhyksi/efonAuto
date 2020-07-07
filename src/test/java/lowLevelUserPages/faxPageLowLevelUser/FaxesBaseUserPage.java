@@ -47,10 +47,7 @@ public class FaxesBaseUserPage extends BasePageLowLevelUser {
         return super.getDropdownItemsPerPage();
     }
 
-    public void goToMenuTab(FaxesBaseUserPageTabs tabName) {
-        waitUntilAlertDisappear();
-        getTab(tabName).click();
-    }
+
 
     private SelenideElement getTab(FaxesBaseUserPageTabs tab){
         switch (tab){

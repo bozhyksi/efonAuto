@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import testsLowLevelUser.faxUserPageTests.faxUserPageTestData.SendFaxTestData;
 
 import java.io.File;
 
@@ -55,19 +56,22 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
     }
     //</editor-fold>
 
-    public void uploadFaxFile(String filePath){
+    @Step("Upload sample file")
+    public SendFaxUserPage uploadFaxFile(String filePath){
         getInputFileTobeSent().uploadFile(new File(filePath));
         waitUntilAlertDisappear();
+        return this;
     }
 
-    public void validateDestinationNumber(String ... inputs){
+    @Step("Validate destination number")
+    public SendFaxUserPage validateDestinationNumber(String ... inputs){
         for (String input : inputs) {
             getInputDestinationNumber().clear();
             getInputDestinationNumber().setValue(input);
             getInputDestinationNumber().pressTab();
             getFieldInputRequiredDestNumber().should(Condition.appear,Condition.visible,Condition.exist);
         }
-
+        return this;
     }
 
     @Step("Verify if all customer numbers are available in Outgoing number dropdown")
@@ -78,4 +82,30 @@ public class SendFaxUserPage extends FaxesBaseUserPage {
                 "Customer has "+customerNumbersQuantity+" phone numbers but "+outgoingNumbersQuantity+" are available!");
         return this;
     }
+
+    @Step("Select Outgoing number")
+    public SendFaxUserPage selectOutGoingNumber(String outGoingNum){
+        getDropdownOutgoingNumber().selectOptionContainingText(outGoingNum);
+        return this;
+    }
+
+    @Step("Fill in Destination number")
+    public SendFaxUserPage enterDestinationNumber(String destNum){
+        getInputDestinationNumber().setValue(destNum);
+        return this;
+    }
+
+    @Step("Click Send button")
+    public SendFaxUserPage clickSend(){
+        getButtonSend().shouldBe(Condition.enabled).click();
+        return this;
+    }
+
+    @Step("Validate if fax appeared in the grid as sent")
+    public SendFaxUserPage verifyIfFaxSent(SendFaxTestData fax){
+        getFieldRecipientByNumber(fax.getDestinationNumber()).shouldBe(Condition.visible, Condition.exist);
+        getSenderByText(fax.getOutgoingNumber()).shouldBe(Condition.visible, Condition.exist);
+        return this;
+    }
+
 }
