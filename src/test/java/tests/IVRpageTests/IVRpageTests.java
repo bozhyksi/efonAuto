@@ -214,6 +214,37 @@ public class IVRpageTests extends BaseTestMethods {
         deleteIvrApi(ivr);
     }
 
+    //EPRO-1130
+    @Description("Verify if user can configure \"Call to abbrev number\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"},enabled = false)
+    public void configureCallToAbbreviatedNumberActionTest(){
+        User user = new User(new AbbreviatedDialling(SINGLE));
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData(), user.getShortNum());
+
+        filesList.add(ivr.getAnnouncement());
+        ivrList.add(ivr);
+        usersList.add(user);
+        shortNumList.add(user.getShortNum());
+
+        createAbbreviatedNumberApi(user.getShortNum());
+        createUsersApi(user);
+        createIvrApi(ivr);
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .configureAbbreviatedNumberAction(user.getShortNum())
+                .saveChanges()
+                .clickEditIvr(ivr)
+                .verifyIvrAction(PublicEnums.IvrActions.PHONE_INTERNAL,ivr);
+        deleteIvrApi(ivr);
+        deleteAnnouncementApi(ivr.getAnnouncement());
+        deleteUsersApi(user);
+        deleteAbbreviatedNumberApi(user.getShortNum());
+
+    }
+
+
     @Description("Verify if user can configure \"Play file and hang up\" ivr action")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void configurePlayFileAndHangUpIvrActionTest() {
@@ -268,13 +299,15 @@ public class IVRpageTests extends BaseTestMethods {
 
         IVRtestData ivr = new IVRtestData(new FileManagementTestData());
         HuntGroup huntGroup = new HuntGroup();
-        User user = new User();
+        User user = new User(new AbbreviatedDialling(SINGLE));
 
         filesList.add(ivr.getAnnouncement());
         ivrList.add(ivr);
         usersList.add(user);
         huntGroupsList.add(huntGroup);
+        shortNumList.add(user.getShortNum());
 
+        createAbbreviatedNumberApi(user.getShortNum());
         createHuntGroupApi(huntGroup);
         createUsersApi(user);
         createIvrApi(ivr);
@@ -284,6 +317,7 @@ public class IVRpageTests extends BaseTestMethods {
         ivrPage
                 .clickEditIvr(ivr)
                 .configureHuntGroupAction(huntGroup)
+                .configureAbbreviatedNumberAction(user.getShortNum())
                 .configurePhoneDirectAction(user)
                 .configureExternalDirectAction(ivr.getParameterExtTelNumber())
                 .configureVoiceMailUnavailableAction()
@@ -301,6 +335,7 @@ public class IVRpageTests extends BaseTestMethods {
         deleteAnnouncementApi(ivr.getAnnouncement());
         deleteHuntGroupApi(huntGroup);
         deleteUsersApi(user);
+        deleteAbbreviatedNumberApi(user.getShortNum());
     }
 
     @AfterClass(alwaysRun = true)

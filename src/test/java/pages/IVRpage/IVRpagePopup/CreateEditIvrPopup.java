@@ -357,6 +357,8 @@ public class CreateEditIvrPopup extends IVRpage {
             case PHONE_EXTERNAL:
                 getInputParameterByEvent(_4.getVal()).shouldHave(value(ivr.getParameterExtTelNumber()));
                 break;
+            case PHONE_INTERNAL:
+                getDropdownParameterByEvent(_3.getVal()).selectOptionContainingText(ivr.getShortNum().getSingleShortNum());
             case RINGRUF:
                 getDropdownParameterByEvent(_1.getVal()).getSelectedText().contains(ivr.getHuntGroup().getHuntGroupName());
                 break;

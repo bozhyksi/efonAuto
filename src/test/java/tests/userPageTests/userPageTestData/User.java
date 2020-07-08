@@ -3,11 +3,11 @@ package tests.userPageTests.userPageTestData;
 
 import flow.BaseTestMethods;
 import flow.PublicEnums;
+import pages.abbreviatedDialling.AbbreviatedNumbers;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonValue;
+import javax.json.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -38,10 +38,15 @@ public class User extends BaseTestMethods {
     private String differentContactEmail = getRandomEmail();
     private String penalty = getRandomNumber(100,999);
     private String faxReceiveFormat = PublicEnums.FaxReceiveFormat.getRandom();
+    private AbbreviatedDialling shortNum;
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
+
+    public AbbreviatedDialling getShortNum() {
+        return shortNum;
+    }
 
     public String getFaxReceiveFormat() {
         return faxReceiveFormat;
@@ -169,6 +174,12 @@ public class User extends BaseTestMethods {
         this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
     }
 
+    public User(AbbreviatedDialling shortNum){
+        this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
+        this.shortNum = shortNum;
+    }
+
     public User(String autoProvisionedEndDevice){
         this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.endDevices = autoProvisionedEndDevice;
@@ -176,6 +187,11 @@ public class User extends BaseTestMethods {
 
     public String getJson(){
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
+        JsonArrayBuilder shortNumsJsonArray = Json.createArrayBuilder();
+        if (shortNum != null){
+            shortNumsJsonArray
+                    .add(shortNum.getSingleShortNum());
+        }
         return factory.createObjectBuilder()
                 .add("userNaming", factory.createObjectBuilder()
                         .add("salutation", factory.createObjectBuilder()
@@ -196,7 +212,9 @@ public class User extends BaseTestMethods {
                                 .add(getEndDevId())
                         )
                         .add("busyOnBusy",JsonValue.TRUE)
-                        .add("internalNumbers", factory.createArrayBuilder())
+                        .add("internalNumbers", factory.createArrayBuilder()
+                            .addAll(shortNumsJsonArray)
+                        )
                         .add("currentBlockSet",Integer.parseInt(getPermittedDestinationNumbers()))
                         .add("smsEnabled",JsonValue.FALSE)
                         .add("faxEnabled",JsonValue.FALSE)

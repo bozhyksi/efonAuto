@@ -167,6 +167,4 @@ public class VoicemailUserPageTests extends BaseTestMethods {
         closeBrowser();
 
     }
-
-
 }

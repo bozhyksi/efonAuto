@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import flow.BaseTestMethods;
 import flow.PublicEnums;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
@@ -41,6 +42,7 @@ public class IVRtestData extends BaseTestMethods {
     private HuntGroup huntGroup;
     private User user;
     private Queue queue;
+    private AbbreviatedDialling shortNum;
     //</editor-fold>
 
     public IVRtestData(FileManagementTestData announcement){
@@ -68,6 +70,20 @@ public class IVRtestData extends BaseTestMethods {
         this.pinCode = getRandomNumber(1111,9999);
         this.announcement = announcement;
         this.queue = queue;
+    }
+
+    public IVRtestData(FileManagementTestData announcement, AbbreviatedDialling shortNum){
+        this.parameterMaxThroughputs = getRandomNumber(1,9);
+        this.parameterMaxWaitingTime = getRandomNumber(10,19);
+        this.ivrName = getRandomString(10);
+        this.ivrDisplName = getRandomString(10);
+        this.ivrLanguage = PublicEnums.LanguageValues.getRandLangVal();
+        this.active = getRandomBoolean();
+        this.parameterExtTelNumber = getRandomPhone();
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.pinCode = getRandomNumber(1111,9999);
+        this.announcement = announcement;
+        this.shortNum = shortNum;
     }
 
     public IVRtestData(FileManagementTestData announcement, User user){
@@ -113,6 +129,10 @@ public class IVRtestData extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+
+    public AbbreviatedDialling getShortNum() {
+        return shortNum;
+    }
 
     public Queue getQueue() {
         return queue;
