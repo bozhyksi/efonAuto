@@ -2,9 +2,13 @@ package flow;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import core.configuration.preparations.eFonApp;
 import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
@@ -31,13 +35,12 @@ import static api.baseApiMethods.FileManagementApi.deleteMohApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
+import static api.baseApiMethods.UserApi.setInterfaceLangEnglishApi;
 import static api.baseLowLevelUserApi.FileManagementApi.deleteAnnouncementLowLevelUserApi;
 import static api.baseLowLevelUserApi.SendSmsApi.deleteAddressBookEntryApi;
 import static api.baseLowLevelUserApi.SendSmsApi.deleteAuthorizedNumberApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.ANNOUNCEMENTS;
-import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
 import static pages.basePage.BasePage.MenuTabsBasePage.CALL_FORWARDING;
 
 public class BaseTestMethods extends eFonApp {
@@ -347,10 +350,14 @@ public class BaseTestMethods extends eFonApp {
         return new BasePageLowLevelUser();
     }
 
-    public void login(String login, String pass) {
+    @Step("Log in the system")
+    public BasePage login(String login, String pass) {
+        setInterfaceLangEnglishApi(login,pass);
         loginPage.fillInLogin(login);
         loginPage.fillInPassword(pass);
         loginPage.getButtonLogin().click();
+        waitUntilAlertDisappear();
+        return new BasePage();
     }
 
     public void uploadPhoneBook(Phonebook phonebook) {
@@ -414,16 +421,6 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void deleteAnnouncementLowLevelUser(FileManagementTestData announcement){
-        basePageLowLevelUser
-                .goToMenuTab(VOICEMAIL)
-                .goToMenuTab(BasePageLowLevelUser.MenuTabsLowLevelUser.ANNOUNCEMENTS);
-        announcementsUserPage.getButtonDeleteByName(announcement.getFileName()).click();
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        announcementsUserPage.getFieldNameByText(announcement.getFileName()).shouldNot(exist);
-    }
-
     public void announcementCleanUp(List<FileManagementTestData> filesList){
         for (FileManagementTestData announcement: filesList) {
             deleteAnnouncementApi(announcement);
@@ -436,14 +433,16 @@ public class BaseTestMethods extends eFonApp {
         }
     }
 
-    public void lowLevelUserUploadAnnouncement(FileManagementTestData announcement){
-        basePageLowLevelUser
-                .goToMenuTab(VOICEMAIL)
-                .goToMenuTab(ANNOUNCEMENTS);
-        announcementsUserPage.uploadAnnouncementFile(announcement);
-        confirmationPopup.getYesButton().click();
+    public void validateDropDownItems(SelenideElement dropdown){
+        dropdown.click();
         waitUntilAlertDisappear();
-        announcementsUserPage.validateIfAnnouncementExcists(announcement);
+        ArrayList<String> phones = new ArrayList<>();
+        Select select = new Select(dropdown);
+        int size = select.getOptions().size();
+        for (WebElement elem:select.getOptions()) {
+            phones.add(elem.getText());
+        }
+        Assert.assertEquals(size, 1,"Numbers list contains not user related phones: \n" + phones);
     }
 
     public void phoneBookExcelCleanUp(List<Phonebook> phonebookList){

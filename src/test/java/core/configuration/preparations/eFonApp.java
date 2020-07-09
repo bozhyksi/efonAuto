@@ -5,22 +5,15 @@ import core.workers.dbWorker.DataBaseWorker;
 import core.workers.excelWorker.ExcelFileWorker;
 import core.workers.javaScriptExecutor.JavaScriptExecutor;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
-import lowLevelUserPages.callForwardingLowLevelUserPage.CallForwardingUserPage;
 import lowLevelUserPages.dashboardPageLowLevelUser.DashboardUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.FaxArrivedUserPage;
-import lowLevelUserPages.faxPageLowLevelUser.FaxesBaseUserPage;
 import lowLevelUserPages.faxPageLowLevelUser.SendFaxUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.IncomingLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.MissedLastCallsUserPage;
 import lowLevelUserPages.lastCallsLowLevelUserPage.OutgoingLastCallsUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.AddressBookUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.ManageSenderNumbersAndNamesUserPage;
-import lowLevelUserPages.sendSmsPageLowLevelUser.SendSmsBaseUserPage;
 import lowLevelUserPages.sendSmsPageLowLevelUser.SendTextMessageUserPage;
-import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.ActivateAuthorisationCodePopup;
-import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.CreateSmsAddressPopup;
-import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.NewSenderNumberPopup;
-import lowLevelUserPages.sendSmsPageLowLevelUser.sendSmsUserPagePopup.SmsConfirmationPopup;
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailSettingUserPage;
 import lowLevelUserPages.voicemailLowLevelUserpage.VoicemailUserPage;
@@ -41,7 +34,6 @@ import pages.fileManagementPage.AnnouncementDisplayPage;
 import pages.fileManagementPage.FileManagementBasePage;
 import pages.fileManagementPage.MusicOnHoldPage;
 import pages.huntGroupPage.HuntGroupPage;
-import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
 import pages.lastCallsPage.IncomingCallsTab;
 import pages.lastCallsPage.LastCallsPage;
 import pages.lastCallsPage.MissedCallsTab;
@@ -54,15 +46,12 @@ import pages.provisioningPage.ProvisioningEndDevicesPage;
 import pages.provisioningPage.ProvisioningManagerPage;
 import pages.provisioningPage.ProvisioningPhoneModelsPage;
 import pages.queuesPage.*;
-import pages.queuesPage.queuePagePopups.CreateNewQueuePopup;
-import pages.queuesPage.queuePagePopups.PenaltyPopup;
 import pages.queuesPage.queuePagePopups.QueueForAgentsPopup;
 import pages.recordedCallPage.RecordedCallConfigurationPage;
 import pages.recordedCallPage.RecordedCallOverviewPage;
 import pages.recordedCallPage.RecordedCallsBasePage;
 import pages.subscriptionsPage.SubscriptionsPage;
 import pages.userPage.UserPage;
-import pages.userPage.userPagePopup.CreateUserPopup;
 import pages.userPage.userPagePopup.configureUser.*;
 
 public class eFonApp extends PreparationsForRun {
@@ -131,7 +120,6 @@ public class eFonApp extends PreparationsForRun {
     public DashboardUserPage dashboardUserPage = new DashboardUserPage();
     public VoicemailSettingUserPage voicemailSettingUserPage = new VoicemailSettingUserPage();
     public AnnouncementsUserPage announcementsUserPage = new AnnouncementsUserPage();
-    public CallForwardingUserPage callForwardingUserPage = new CallForwardingUserPage();
     public ManageSenderNumbersAndNamesUserPage manageSenderNumbersUserPage = new ManageSenderNumbersAndNamesUserPage();
 
 

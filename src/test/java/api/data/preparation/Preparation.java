@@ -28,6 +28,19 @@ public abstract class Preparation {
                 .contentType(ContentType.JSON);
     }
 
+    public static RequestSpecification login (String login, String pass){
+        setup();
+        return given()
+                .auth()
+                .form(login, pass,
+                        new FormAuthConfig(
+                                "/portal/j_spring_security_check",
+                                "j_username",
+                                "j_password")
+                )
+                .contentType(ContentType.JSON);
+    }
+
     public static RequestSpecification loginAsLowLevelUser (){
         setup();
         return given()

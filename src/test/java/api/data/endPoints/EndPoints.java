@@ -16,6 +16,7 @@ public abstract class EndPoints {
     public final static String deleteDeleteUser = "/users/{id}";
     public final static String getUsersList = "/users/search";
     public final static String postUploadAnnouncementForUser = "uploader/upload/voicemail/{id}";
+    public final static String putInterfaceLanguageEn = "/user-login/change-locale/en";
 
     //File management
     public final static String postAnnouncementUpload = "/uploader/upload/announcement";

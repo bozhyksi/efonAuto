@@ -160,6 +160,7 @@ public class UserPageTests extends BaseTestMethods {
                 .closeEditUserPopup()
                 .goToMenuTab(CALL_FORWARDING);
         callForwardingPage
+                .selectNumber(user.getPhoneNumber())
                 .verifyAfterSection(user)
                 .verifyEndDevSection(user)
                 .verifyManualStatus(user)

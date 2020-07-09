@@ -3,7 +3,6 @@ package tests.userPageTests.userPageTestData;
 
 import flow.BaseTestMethods;
 import flow.PublicEnums;
-import pages.abbreviatedDialling.AbbreviatedNumbers;
 import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 
@@ -18,6 +17,7 @@ public class User extends BaseTestMethods {
     private String firstName = getRandomString(15);
     private String lastName = getRandomString(15);
     private String loginEmail = getRandomEmail();
+    private String password = "123456";
     private String UseDiffContactEmail = getRandomEmail();
     private String VoiceEmail = getRandomEmail();
     private String phoneNumber;
@@ -28,8 +28,8 @@ public class User extends BaseTestMethods {
     private String forwardDelay;
     private String forwardToPhone = getRandomPhone();
     private String manualStatusSubj = getRandomString(20);
-    private String manualStatusDataFrom = getDate("DAY",1);
-    private String manualStatusDataTo = getDate("YEAR", 1);;
+    private String manualStatusDateFrom = getDate("DAY",1);
+    private String manualStatusDateTo = getDate("YEAR", 1);;
     private String afterDelay = getRandomNumber(2);
     private String voicemailPinCode = getRandomNumber(4);
     private String voicemailEmail = getRandomEmail();
@@ -42,7 +42,14 @@ public class User extends BaseTestMethods {
     //</editor-fold>
 
     //<editor-fold desc="get\set">
-
+    public String getLoginPassword(){
+        String query = String.format(
+                "UPDATE webadmin_20170426.login\n" +
+                        "set md5password = \"7aad9504c5e209be607a70566b04df4009d3f141\"\n" +
+                        "where customer_fk=%s;",getId());
+        dataBaseWorker.executeUpdateQuery(query);
+        return this.password;
+    }
 
     public AbbreviatedDialling getShortNum() {
         return shortNum;
@@ -80,12 +87,12 @@ public class User extends BaseTestMethods {
         return afterDelay;
     }
 
-    public String getManualStatusDataTo() {
-        return manualStatusDataTo;
+    public String getManualStatusDateTo() {
+        return manualStatusDateTo;
     }
 
-    public String getManualStatusDataFrom() {
-        return manualStatusDataFrom;
+    public String getManualStatusDateFrom() {
+        return manualStatusDateFrom;
     }
 
     public String getManualStatusSubj() {
@@ -271,4 +278,6 @@ public class User extends BaseTestMethods {
         }
         return "";
     }
+
+
 }

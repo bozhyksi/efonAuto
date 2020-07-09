@@ -7,8 +7,7 @@ import io.restassured.response.ResponseBody;
 import org.testng.Assert;
 import tests.userPageTests.userPageTestData.User;
 
-import static api.data.endPoints.EndPoints.deleteDeleteUser;
-import static api.data.endPoints.EndPoints.postCreateUser;
+import static api.data.endPoints.EndPoints.*;
 import static api.data.preparation.Preparation.login;
 
 public class UserApi {
@@ -59,6 +58,16 @@ public class UserApi {
                         .delete(deleteDeleteUser, user.getId());
             }
         }
+    }
+
+    public static void setInterfaceLangEnglishApi(String login, String pass){
+        boolean success = login(login,pass)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body("")
+                .put(putInterfaceLanguageEn)
+                .then().extract().path("success");
+        Assert.assertTrue(success,"\n\n Interface language was not set to EN via API. Success - false! \n\n");
     }
 
 }

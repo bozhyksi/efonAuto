@@ -150,8 +150,8 @@ public class ForwardingTabConfigUserPopup extends ConfigureUserBasePopup {
         getInputManualSubject().setValue(user.getManualStatusSubj());
         getDropdownManualStatusForwardTo().selectOptionContainingText("Phone");
         getInputManualStatusForwardTo().setValue(user.getForwardToPhone());
-        getInputDateFrom().setValue(user.getManualStatusDataFrom());
-        getInputDateTo().setValue(user.getManualStatusDataTo());
+        getInputDateFrom().setValue(user.getManualStatusDateFrom());
+        getInputDateTo().setValue(user.getManualStatusDateTo());
         return this;
     }
 
@@ -189,8 +189,8 @@ public class ForwardingTabConfigUserPopup extends ConfigureUserBasePopup {
     public ForwardingTabConfigUserPopup verifyManualStatusSection(User user){
         getCheckboxManualStatus().shouldBe(Condition.selected);
         getInputManualSubject().shouldHave(Condition.value(user.getManualStatusSubj()));
-        getInputDateFrom().shouldHave(Condition.value(user.getManualStatusDataFrom()));
-        getInputDateTo().shouldHave(Condition.value(user.getManualStatusDataTo()));
+        getInputDateFrom().shouldHave(Condition.value(user.getManualStatusDateFrom()));
+        getInputDateTo().shouldHave(Condition.value(user.getManualStatusDateTo()));
         return this;
     }
 

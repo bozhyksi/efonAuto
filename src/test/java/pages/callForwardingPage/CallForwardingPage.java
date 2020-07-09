@@ -144,6 +144,14 @@ public class CallForwardingPage extends BasePage {
         return this;
     }
 
+    @Step("DeActivate \"After\" checkbox")
+    public CallForwardingPage deactivateAfter(){
+        if (getCheckboxAfter().isSelected()){
+            getCheckboxAfter().click();
+        }
+        return this;
+    }
+
     @Step("Fill in delay")
     public CallForwardingPage enterDelay(String delay){
         getInputDelay().setValue(delay);
@@ -171,7 +179,6 @@ public class CallForwardingPage extends BasePage {
 
     @Step("Verify if AfterSection was saved")
     public CallForwardingPage verifyAfterSection(User user){
-        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         getCheckboxAfter().shouldBe(selected);
         getInputDelay().shouldHave(value(user.getAfterDelay()));
         getDropdownAfterForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
@@ -181,7 +188,6 @@ public class CallForwardingPage extends BasePage {
 
     @Step("Verify if BusySection was saved")
     public CallForwardingPage verifyIfBusySection(User user){
-        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         getCheckboxIfbusy().shouldBe(selected);
         getDropdownIfbusyForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
         getInputIfbusyPhone().shouldHave(value(user.getForwardToPhone()));
@@ -190,10 +196,27 @@ public class CallForwardingPage extends BasePage {
 
     @Step("Verify if EndDevSection was saved")
     public CallForwardingPage verifyEndDevSection(User user){
-        getDropdownMyNumbers().selectOptionContainingText(user.getPhoneNumber());
         getCheckboxDeviceUnavailable().shouldBe(selected);
         getDropdownDeviceForwardTo().getSelectedOption().shouldHave(Condition.text("Phone"));
         getInputDevicePhone().shouldHave(value(user.getForwardToPhone()));
+        return this;
+    }
+
+    @Step("Activate \"Manual Status\" checkbox")
+    public CallForwardingPage activateManualStatus(){
+        getCheckboxManualStatus().click();
+        return this;
+    }
+
+    @Step("Deactivate \"Manual Status\" checkbox")
+    public CallForwardingPage deactivateManualStatus(){
+        getCheckboxManualStatus().click();
+        return this;
+    }
+
+    @Step("Enter Absent reason")
+    public CallForwardingPage enterAbsent(String absentReason){
+        getInputAbsent().setValue(absentReason);
         return this;
     }
 
@@ -211,9 +234,23 @@ public class CallForwardingPage extends BasePage {
         return this;
     }
 
+    @Step("Deactivate \"If Busy\" checkbox")
+    public CallForwardingPage deactivateIfBusy(){
+        if (getCheckboxIfbusy().isSelected())
+            getCheckboxIfbusy().click();
+        return this;
+    }
+
     @Step("Activate \"If end device unavailable (not registered)\" checkbox")
     public CallForwardingPage activateEndDevice(){
         getCheckboxDeviceUnavailable().click();
+        return this;
+    }
+
+    @Step("Deactivate \"If end device unavailable (not registered)\" checkbox")
+    public CallForwardingPage deactivateEndDevice(){
+        if (getCheckboxDeviceUnavailable().isSelected())
+            getCheckboxDeviceUnavailable().click();
         return this;
     }
 
@@ -222,5 +259,18 @@ public class CallForwardingPage extends BasePage {
         getCheckboxSuppressedNumbers().click();
         return this;
     }
+
+    @Step("Enter Manual status FROM date")
+    public CallForwardingPage enterManualStatusFromDate(String date){
+        getInputDateFrom().setValue(date);
+        return this;
+    }
+
+    @Step("Enter Manual status TO date")
+    public CallForwardingPage enterManualStatusToDate(String date){
+        getInputDateUntil().setValue(date);
+        return this;
+    }
+
 
 }

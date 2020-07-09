@@ -12,6 +12,7 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static api.baseApiMethods.UserApi.*;
+import static com.codeborne.selenide.Condition.value;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.CALL_FORWARDING;
 
@@ -38,6 +39,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
                 .saveChanges()
                 .refreshPage();
         callForwardingPage
+                .selectNumber(user.getPhoneNumber())
                 .verifyAfterSection(user);
         deleteUserApi(user.getId());
     }
@@ -103,6 +105,34 @@ public class CallForwardingPageTest extends BaseTestMethods {
                 .selectNumber(user.getPhoneNumber())
                 .getDropdownDeviceForwardTo().getSelectedText().equals("Voicemail");
         deleteUserApi(user.getId());
+    }
+
+    @Description("Verify if updates forwardTo number in After section in call forwarding")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
+    public void verifyUpdateOfForwardToPhoneTest(){
+        String phone = getRandomCustomerFreePhoneNumberFromDB();
+        String forwardToPhone1 = getRandomPhone();
+        String forwardToPhone2 = getRandomPhone();
+
+        login()
+                .goToMenuTab(CALL_FORWARDING);
+        callForwardingPage
+                .selectNumber(phone)
+                .activateAfter()
+                .enterPhone(forwardToPhone1)
+                .saveChanges()
+                .refreshPage();
+        callForwardingPage
+                .selectNumber(phone)
+                .deactivateAfter()
+                .saveChanges()
+                .activateAfter()
+                .enterPhone(forwardToPhone2)
+                .saveChanges()
+                .deactivateAfter()
+                .saveChanges()
+                .activateAfter()
+                .getInputAfterPhone().shouldHave(value(forwardToPhone2));
     }
 
     @AfterClass(alwaysRun = true)
