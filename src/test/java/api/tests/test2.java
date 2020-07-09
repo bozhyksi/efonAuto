@@ -1,22 +1,20 @@
 package api.tests;
 
-import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
-import tests.userPageTests.userPageTestData.User;
-import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.AddressBookTestData;
+import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
-import static api.baseApiMethods.AbbreviatedNumbersApi.createAbbreviatedNumberApi;
-import static api.baseApiMethods.SendSmsApi.createAddressBookEntryApi;
-import static api.baseApiMethods.SendSmsApi.deleteAddressBookEntryApi;
-import static api.baseApiMethods.UserApi.createUsersApi;
-import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
+
+import static api.baseLowLevelUserApi.FileManagementApi.deleteAnnouncementLowLevelUserApi;
+import static api.baseLowLevelUserApi.FileManagementApi.uploadAnnouncementLowLevelUserApi;
+import static api.data.endPoints.EndPoints.deleteAnnouncementLowLevelUser;
+import static api.data.preparation.Preparation.loginAsLowLevelUser;
 
 
 public class test2 {
     public static void main(String[] args) {
-        User user = new User();
+        FileManagementTestData announcement = new FileManagementTestData();
 
-
-        createUsersApi(user);
+        loginAsLowLevelUser()
+                .delete(deleteAnnouncementLowLevelUser, "277237").then().log().all();
 
     }
 }

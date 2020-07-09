@@ -1,4 +1,4 @@
-package api.baseApiMethods;
+package api.baseLowLevelUserApi;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;

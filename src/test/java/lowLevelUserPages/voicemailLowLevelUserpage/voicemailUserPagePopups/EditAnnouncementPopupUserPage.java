@@ -1,6 +1,7 @@
 package lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.voicemailLowLevelUserpage.AnnouncementsUserPage;
 
 public class EditAnnouncementPopupUserPage extends AnnouncementsUserPage {
@@ -28,5 +29,18 @@ public class EditAnnouncementPopupUserPage extends AnnouncementsUserPage {
         return field(checkboxRingbackXpath);
     }
     //</editor-fold>
+
+    @Step("Enter Name")
+    public EditAnnouncementPopupUserPage enterName(String name){
+        getInputName().setValue(name);
+        return this;
+    }
+
+    @Step("Save")
+    public AnnouncementsUserPage save(){
+        getButtonSave().click();
+        waitUntilAlertDisappear();
+        return new AnnouncementsUserPage();
+    }
 
 }

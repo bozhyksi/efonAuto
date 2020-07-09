@@ -13,7 +13,7 @@ import testsLowLevelUser.sendSmsUserPageTests.sendSmsTestData.SendSmsTestData;
 
 import java.util.ArrayList;
 
-import static api.baseApiMethods.SendSmsApi.*;
+import static api.baseLowLevelUserApi.SendSmsApi.*;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 

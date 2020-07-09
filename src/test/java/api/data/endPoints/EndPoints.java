@@ -22,6 +22,7 @@ public abstract class EndPoints {
     public final static String deleteAnnouncementDelete = "/announcements/{id}";
     public final static String postMohUpload = "/uploader/upload/moh";
     public final static String deleteMohDelete = "/moh/{id}";
+    public final static String deleteAnnouncementLowLevelUser = "/voicemail/announcements/{id}";
 
     //Hunt group
     public final static String postHuntGroupCreate = "/hunt-groups";

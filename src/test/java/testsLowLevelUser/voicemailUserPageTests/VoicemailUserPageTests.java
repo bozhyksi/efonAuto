@@ -14,7 +14,10 @@ import testsLowLevelUser.voicemailUserPageTests.voicemailTestData.VoicemailTestD
 
 import java.util.ArrayList;
 
+import static api.baseLowLevelUserApi.FileManagementApi.deleteAnnouncementLowLevelUserApi;
+import static api.baseLowLevelUserApi.FileManagementApi.uploadAnnouncementLowLevelUserApi;
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.value;
 import static io.qameta.allure.Allure.step;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.*;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL_SETTING;
@@ -28,143 +31,106 @@ public class VoicemailUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can configure Voicemail retrieval/delivery")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfLowLevelUserCanConfigureVoicemailRetrievalDelivery(){
-        step("Prepare test data");
-        VoicemailTestData voicemailAccess = new VoicemailTestData();
+    public void configureVoicemailRetrievalDeliveryTest(){
+        VoicemailTestData voicemailData = new VoicemailTestData();
 
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Goto Voicemail");
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(VOICEMAIL)
                 .goToMenuTab(VOICEMAIL_SETTING);
-
-        step("Configure Voicemail retrieval/delivery");
-        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
-        voicemailSettingUserPage.fillInVoicemailRetrievalDelivery(voicemailAccess);
-        refreshPage();
-
-        step("Validate if Voicemail retrieval/delivery configuration saved");
-        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
-        voicemailSettingUserPage.validateVoicemailRetrievalDeliveryData(voicemailAccess);
+        voicemailSettingUserPage
+                .selectNumber(autotestUserPhone)
+                .clickEditVoicemailRetrievalDelivery()
+                    .enterPin(voicemailData.getVoicemailPinCode())
+                    .enterEmail(voicemailData.getVoicemailEmail())
+                    .enterSalutation(voicemailData.getVoicemailSalutation())
+                    .save()
+                .clickEditVoicemailRetrievalDelivery()
+                .verifyVoicemailRetrievalDeliverySettings(voicemailData);
     }
 
     @Description("Check if low-level user can Upload Announcements")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfUserCanUploadAnnouncements(){
-
-        step("Prepare test data");
+    public void uploadAnnouncementsTest(){
         FileManagementTestData announcement = new FileManagementTestData();
         announcementList.add(announcement);
 
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Goto Announcements");
-        basePageLowLevelUser.goToMenuTab(VOICEMAIL).goToMenuTab(ANNOUNCEMENTS);
-        //voicemailBaseUserPage.goToMenuTab(ANNOUNCEMENTS);
-
-        step("Upload Announcements file");
-        announcementsUserPage.uploadAnnouncementFile(announcement);
-        confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
-        refreshPage();
-
-        step("Check if file was uploaded");
-        announcementsUserPage.validateIfAnnouncementExcists(announcement);
-
-        step("Cleat test data - delete uploaded file");
-        deleteAnnouncementLowLevelUser(announcement);
+        loginAsLowLevelUser()
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(ANNOUNCEMENTS);
+        announcementsUserPage
+                .uploadAnnouncementFile(announcement)
+                .validateIfAnnouncementExcists(announcement);
+        deleteAnnouncementLowLevelUserApi(announcement);
     }
 
     @Description("Check if low-level user can EDIT Announcements")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfLowLevelUserCanEditAnnouncements(){
-        step("Prepare test data");
+    public void editAnnouncementsTest(){
         FileManagementTestData announcement = new FileManagementTestData();
         announcementList.add(announcement);
 
-        step("Login as low-level user");
-        loginAsLowLevelUser();
-
-        step("Upload Announcements file");
-        lowLevelUserUploadAnnouncement(announcement);
-
-        step("Edit the name of the uploaded announcement");
-        announcementsUserPage.editAnnouncementName(announcement);
-
-        step("Validate changes");
-        announcementsUserPage.validateIfAnnouncementExcists(announcement);
-
-        step("Cleat test data - delete uploaded file");
-        deleteAnnouncementLowLevelUser(announcement);
+        uploadAnnouncementLowLevelUserApi(announcement);
+        loginAsLowLevelUser()
+                .goToMenuTab(VOICEMAIL)
+                .goToMenuTab(ANNOUNCEMENTS);
+        announcementsUserPage
+                .clickEdit(announcement)
+                    .enterName(announcement.rename())
+                    .save()
+                .validateIfAnnouncementExcists(announcement)
+                .clickEdit(announcement)
+                    .getInputName().shouldHave(value(announcement.getFileName()));
+        deleteAnnouncementLowLevelUserApi(announcement);
     }
 
     @Description("Check if low-level user can configure Voicemail announcement settings")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfLowLevelUserCanConfigureVoicemailAnnouncementSettings(){
-        step("Prepare test data");
+    public void configureVoicemailAnnouncementSettingsTest(){
         FileManagementTestData announcement = new FileManagementTestData();
         announcementList.add(announcement);
 
-        loginAsLowLevelUser();
-
-        step("Upload Announcements file");
-        lowLevelUserUploadAnnouncement(announcement);
-
-        step("Goto Voicemail Settings");
-        basePageLowLevelUser
+        uploadAnnouncementLowLevelUserApi(announcement);
+        loginAsLowLevelUser()
                 .goToMenuTab(VOICEMAIL)
                 .goToMenuTab(VOICEMAIL_SETTING);
-
-        step("Configure Voicemail announcement settings");
-        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
-        voicemailSettingUserPage.configureVoicemailAnnouncementSettings(announcement);
-
-        step("Validate made changes");
-        refreshPage();
-        voicemailSettingUserPage.getDropdownSelectNumber().selectOptionContainingText(autotestUserPhone);
-        voicemailSettingUserPage.validateVoicemailAnnouncementSettings(announcement);
-
-
-        step("Cleat test data - delete uploaded file");
-        deleteAnnouncementLowLevelUser(announcement);
+        voicemailSettingUserPage
+                .clickEditVoicemailAnnouncementSettings()
+                    .selectTemporaryAnnouncement(announcement.getFileName())
+                    .selectVoicemailBusy(announcement.getFileName())
+                    .selectVoicemailUnavailable(announcement.getFileName())
+                    .save()
+                .clickEditVoicemailAnnouncementSettings()
+                    .verifyVoicemailAnnouncementSettings(announcement)
+                    .selectTemporaryAnnouncement("Not set")
+                    .selectVoicemailBusy("Not set")
+                    .selectVoicemailUnavailable("Not set")
+                    .save();
+        deleteAnnouncementLowLevelUserApi(announcement);
     }
 
     @Description("Check if Select Number drop-down contains only user number on VOICEMAIL tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"})
-    public void CheckIfSelectNumberDropDownContainsOnlyUserNumberOnVoiceMail(){
-
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+    public void verifySelectNumberDropDownItemsOnVoicemailTest(){
+        loginAsLowLevelUser()
                 .goToMenuTab(VOICEMAIL);
         voicemailUserPage
                 .verifySelectNumberDropdownItems();
-
     }
 
     //BUG 1043
     @Description("Check if Select Number drop-down contains only user number on VOICEMAIL_SETTINGS tab - BUG 1043")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "voicemailUserPageTests"},enabled = false)
-    public void CheckIfSelectNumberDropDownContainsOnlyUserNumberOnSettings(){
-
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+    public void verifySelectNumberDropDownItemsOnSettingsTest(){
+        loginAsLowLevelUser()
                 .goToMenuTab(VOICEMAIL)
                 .goToMenuTab(VOICEMAIL_SETTING);
         voicemailSettingUserPage
                 .verifySelectNumberDropdownItems();
-
     }
 
 
     @AfterClass(alwaysRun = true)
     private void cleanUp(){
-        startBrowser();
-        loginAsLowLevelUser();
         lowLevelUserAnnouncementCleanUp(announcementList);
-        closeBrowser();
-
     }
 }

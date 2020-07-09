@@ -2,6 +2,7 @@ package lowLevelUserPages.voicemailLowLevelUserpage;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.voicemailLowLevelUserpage.voicemailUserPagePopups.EditAnnouncementPopupUserPage;
 import pages.userPage.userPagePopup.configureUser.AnnouncementsTabConfigUserPopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -10,6 +11,7 @@ import java.io.File;
 
 import static com.codeborne.selenide.Condition.and;
 import static com.codeborne.selenide.Condition.exist;
+import static core.configuration.preparations.eFonApp.confirmationPopup;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.VOICEMAIL;
 
 public class AnnouncementsUserPage extends VoicemailBaseUserPage {
@@ -66,18 +68,20 @@ public class AnnouncementsUserPage extends VoicemailBaseUserPage {
     }
     //</editor-fold>
 
-
-    public void uploadAnnouncementFile(FileManagementTestData file){
+    @Step("Upload announcement file")
+    public AnnouncementsUserPage uploadAnnouncementFile(FileManagementTestData file){
         getButtonUploadFile().click();
         getInputFileUpload().uploadFile(new File(file.getFilePath()));
-        waitUntilAlertDisappear();
         getInputFileName().setValue(file.getFileName());
         getButtonSave().click();
-        waitUntilAlertDisappear();
+        confirmationPopup.getYesButton().click();
+        return this;
     }
 
-    public void validateIfAnnouncementExcists(FileManagementTestData file){
+    @Step("Verify if announcement file exists")
+    public AnnouncementsUserPage validateIfAnnouncementExcists(FileManagementTestData file){
         getFieldNameByText(file.getFileName()).should(exist);
+        return this;
     }
 
     public void editAnnouncementName(FileManagementTestData file){
@@ -87,6 +91,13 @@ public class AnnouncementsUserPage extends VoicemailBaseUserPage {
         editPopup.getInputName().setValue(file.rename());
         getButtonSave().click();
         waitUntilAlertDisappear();
+    }
+
+    @Step("Click edit")
+    public EditAnnouncementPopupUserPage clickEdit(FileManagementTestData file){
+        getButtonEditByName(file.getFileName()).click();
+        waitUntilAlertDisappear();
+        return new EditAnnouncementPopupUserPage();
     }
 
     public void getRecordedAnnouncementByPhone(FileManagementTestData file){

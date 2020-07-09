@@ -31,8 +31,9 @@ import static api.baseApiMethods.FileManagementApi.deleteMohApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.deleteQueueApi;
-import static api.baseApiMethods.SendSmsApi.deleteAddressBookEntryApi;
-import static api.baseApiMethods.SendSmsApi.deleteAuthorizedNumberApi;
+import static api.baseLowLevelUserApi.FileManagementApi.deleteAnnouncementLowLevelUserApi;
+import static api.baseLowLevelUserApi.SendSmsApi.deleteAddressBookEntryApi;
+import static api.baseLowLevelUserApi.SendSmsApi.deleteAuthorizedNumberApi;
 import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.*;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.ANNOUNCEMENTS;
@@ -430,18 +431,8 @@ public class BaseTestMethods extends eFonApp {
     }
 
     public void lowLevelUserAnnouncementCleanUp(List<FileManagementTestData> filesList){
-        try {
-            basePageLowLevelUser
-                    .goToMenuTab(VOICEMAIL)
-                    .goToMenuTab(ANNOUNCEMENTS);
-            for (FileManagementTestData file: filesList) {
-                if (announcementsUserPage.getFieldNameByText(file.getFileName()).exists()){
-                    deleteAnnouncementLowLevelUser(file);
-                }
-            }
-        } catch (Throwable e) {
-            System.out.println("Low-LevelUser Announcement CleanUp failed");
-            e.printStackTrace();
+        for (FileManagementTestData file: filesList) {
+            deleteAnnouncementLowLevelUserApi(file);
         }
     }
 
