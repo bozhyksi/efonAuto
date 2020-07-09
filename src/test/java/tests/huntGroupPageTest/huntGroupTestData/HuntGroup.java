@@ -307,6 +307,8 @@ public class HuntGroup extends BaseTestMethods {
                                         .add("huntGroupQueueActionsUpdate", false)
                                         .add("viewIndex",0))
                 )
+                .add("showNumber", 0)
+                .add("busyOnBusy",JsonValue.NULL)
                 .add("hasCallsRecording", factory.createObjectBuilder()
                         .add("activateCallRecording", false)
                 ).build().toString();

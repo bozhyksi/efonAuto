@@ -83,10 +83,15 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     private String buttonEditFurtherTimeXpath = "//dt[text()=\"Time\"]/parent::dl//i[contains(@class,\"fa-cog\")]//parent::a";
 
     private final String checkboxBusyOnBusy = "//input[@formcontrolname=\"busyOnBusy\"]";
+    private final String dropdownShowNumber = "//select[@formcontrolname=\"showNumber\"]";
 
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+    public SelenideElement getDropdownShowNumber(){
+        return field(dropdownShowNumber);
+    }
+
     public SelenideElement getBusyOnBusy(){
         return field(checkboxBusyOnBusy);
     }
@@ -300,10 +305,6 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     }
     //</editor-fold>
 
-    public void selectRandomNumber() {
-        getDropdownNumber().selectOption(index.getAndIncrement());
-    }
-
     @Step("Activate call recording")
     public CreateHuntGroupPopup activateCallRecordings(){
         getCheckboxCallRecording().click();
@@ -464,6 +465,12 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     public CreateHuntGroupPopup activateBusyOnBusy(){
         if (!field(checkboxBusyOnBusy).isSelected())
             field(checkboxBusyOnBusy).click();
+        return this;
+    }
+
+    @Step("Select shown number")
+    public CreateHuntGroupPopup selectShowNumber(String showNumber){
+        getDropdownShowNumber().selectOptionContainingText(showNumber);
         return this;
     }
 }

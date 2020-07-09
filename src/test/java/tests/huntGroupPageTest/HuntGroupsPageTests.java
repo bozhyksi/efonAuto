@@ -357,6 +357,31 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
     }
 
+    @Description("Verify if user can create hunt group and configure Display following number, when forwarding")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},invocationCount = 3)
+    public void selectShowNumberTest(){
+        HuntGroup huntGroup = new HuntGroup();
+        huntGroupsList.add(huntGroup);
+
+        createHuntGroupApi(huntGroup);
+        login()
+                .goToMenuTab(HUNT_GROUPS);
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                .selectShowNumber("Original number")
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .getDropdownShowNumber().getSelectedText().contains("Original number");
+        refreshPage();
+        huntGroupPage
+                .clickEditHuntGroup(huntGroup)
+                .selectShowNumber("Fixed network number")
+                .saveChanges()
+                .clickEditHuntGroup(huntGroup)
+                .getDropdownShowNumber().getSelectedText().contains("Fixed network number");
+        deleteHuntGroupApi(huntGroup);
+    }
+
     @AfterClass(alwaysRun = true)
     private void cleanUp() {
         huntGroupCleanUp(huntGroupsList);
