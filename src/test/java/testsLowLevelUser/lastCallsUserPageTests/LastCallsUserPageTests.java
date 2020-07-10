@@ -17,11 +17,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create MISSED last calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfLowLevelUserCanCreateMissedLastCallsReport(){
+    public void createMissedLastCallsReportTest(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_MISSED);
         missedLastCallsUserPage
@@ -35,9 +34,8 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if phones dropdown include only users related number on MISSED last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfPhonesDropdownIncludeOnlyUsersRelatedNumberOnMissedLastCalls(){
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+    public void phonesDropdownIncludeOnlyUsersRelatedNumberOnMissedLastCallsTest(){
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_MISSED);
         missedLastCallsUserPage
@@ -46,11 +44,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create INCOMING last calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfLowLevelUserCanCreateIncomingLastCallsReport(){
+    public void createIncomingLastCallsReportTest(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_INCOMING);
         incomingLastCallsUserPage
@@ -64,9 +61,8 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if phones dropdown include only users related number on INCOMING last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfPhonesDropdownIncludeOnlyUsersRelatedNumberOnIncomingLastCalls(){
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+    public void phonesDropdownIncludeOnlyUsersRelatedNumberOnIncomingLastCallsTest(){
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_INCOMING);
         incomingLastCallsUserPage
@@ -75,11 +71,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create OUTGOING last calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfLowLevelUserCanCreateOutgoingLastCallsReport(){
+    public void createOutgoingLastCallsReportTest(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_OUTGOING);
         outgoingLastCallsUserPage
@@ -93,9 +88,8 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if phones dropdown include only users related number on OUTGOING last calls")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfPhonesDropdownIncludeOnlyUsersRelatedNumberOnOutgoingLastCalls(){
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+    public void phonesDropdownIncludeOnlyUsersRelatedNumberOnOutgoingLastCallsTest(){
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_OUTGOING);
         outgoingLastCallsUserPage
@@ -104,11 +98,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create ALL MISSED calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfUserCanCreateAllMissedCallsReport(){
+    public void createAllMissedCallsReport(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_MISSED);
         missedLastCallsUserPage
@@ -122,11 +115,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create ALL INCOMING calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfUserCanCreateAllIncomingCallsReport(){
+    public void createAllIncomingCallsReportTest(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_INCOMING);
         incomingLastCallsUserPage
@@ -140,11 +132,10 @@ public class LastCallsUserPageTests extends BaseTestMethods {
 
     @Description("Check if low-level user can create ALL OUTGOING calls report")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "lastCallsUserPageTests"})
-    public void CheckIfUserCanCreateAllOutgoingCallsReport(){
+    public void canCreateAllOutgoingCallsReport(){
         LastCallsUserPageTestData dto = new LastCallsUserPageTestData();
 
-        loginAsLowLevelUser();
-        basePageLowLevelUser
+        loginAsLowLevelUser()
                 .goToMenuTab(LAST_CALLS)
                 .goToMenuTab(LAST_CALLS_OUTGOING);
         outgoingLastCallsUserPage

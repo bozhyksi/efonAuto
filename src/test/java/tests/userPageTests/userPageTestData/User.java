@@ -39,9 +39,16 @@ public class User extends BaseTestMethods {
     private String penalty = getRandomNumber(100,999);
     private String faxReceiveFormat = PublicEnums.FaxReceiveFormat.getRandom();
     private AbbreviatedDialling shortNum;
+    private EndDevice endDeviceData;
     //</editor-fold>
 
     //<editor-fold desc="get\set">
+
+
+    public EndDevice getEndDeviceData() {
+        return endDeviceData;
+    }
+
     public String getLoginPassword(){
         String query = String.format(
                 "UPDATE webadmin_20170426.login\n" +
@@ -179,6 +186,12 @@ public class User extends BaseTestMethods {
     public User(){
         this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
         this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
+    }
+
+    public User(EndDevice endDeviceData){
+        this.phoneNumber = getRandomCustomerFreePhoneNumberFromDB();
+        this.endDevices = getRandomCustomerFreeEndDeviceFromDB();
+        this.endDeviceData = endDeviceData;
     }
 
     public User(AbbreviatedDialling shortNum){

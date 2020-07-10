@@ -33,7 +33,6 @@ public class DataBaseWorker {
     }
 
     public void executeUpdateQuery(String query){
-        ResultSet resultSet = null;
         try {
             connection.createStatement().executeUpdate(query);
         } catch (SQLException e) {

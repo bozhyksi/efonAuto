@@ -8,10 +8,13 @@ import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.userPageTests.userPageTestData.EndDevice;
+import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
 import static api.baseApiMethods.NumbersApi.getCustomerNumbersApi;
+import static api.baseApiMethods.UserApi.createUsersApi;
+import static api.baseApiMethods.UserApi.deleteUsersApi;
 import static com.codeborne.selenide.Condition.value;
 import static pages.basePage.BasePage.MenuTabsBasePage.END_DEVICES;
 import static testsLowLevelUser.testData.AutotestUserData.autotestUserEndDevname;
@@ -57,18 +60,20 @@ public class EndDevicesUserPageTests extends BaseTestMethods {
     @Description("Check if user can change outgoing number and set new Location zip code")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
     public void changeLocationZipCodeTest(){
-        EndDevice endDevice = new EndDevice();
+        User user = new User(new EndDevice());
 
-        loginAsLowLevelUser()
+        createUsersApi(user);
+        login(user.getLoginEmail(),user.getLoginPassword())
                 .goToMenuTab(END_DEVICES);
         endDevicesPage
-                .configureEndDevice(autotestUserEndDevname)
-                .selectOutgoingNumber(endDevice.changeOutgoingNumber())
+                .configureEndDevice(user.getEndDevices())
+                .selectOutgoingNumber(user.getEndDeviceData().changeOutgoingNumber())
                 .verifyLocationFieldEmpty()
-                .setLocation(endDevice.changeLocation())
+                .setLocation(user.getEndDeviceData().changeLocation())
                 .saveChanges()
-                .configureEndDevice(autotestUserEndDevname)
-                .getInputLocation().shouldHave(value(endDevice.getEndDevLocation()));
+                .configureEndDevice(user.getEndDevices())
+                .getInputLocation().shouldHave(value(user.getEndDeviceData().getEndDevLocation()));
+        deleteUsersApi(user);
     }
 
 
