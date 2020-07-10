@@ -28,8 +28,11 @@ import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.*;
 import static api.baseApiMethods.UserApi.*;
 import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.visible;
 import static flow.PublicEnums.IvrActions.CALL_CENTER_QUEUE;
 import static flow.PublicEnums.IvrActions.PHONE_EXTERNAL;
+import static flow.PublicEnums.State.ACTIVATED;
+import static flow.PublicEnums.State.DEACTIVATED;
 import static pages.basePage.BasePage.MenuTabsBasePage.IVRs;
 import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
@@ -244,7 +247,6 @@ public class IVRpageTests extends BaseTestMethods {
 
     }
 
-
     @Description("Verify if user can configure \"Play file and hang up\" ivr action")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void configurePlayFileAndHangUpIvrActionTest() {
@@ -336,6 +338,28 @@ public class IVRpageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
         deleteUsersApi(user);
         deleteAbbreviatedNumberApi(user.getShortNum());
+    }
+
+    @Description("Verify if user can activate/deactivate CAll Recordings")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void activateCallRecordingTest(){
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
+        filesList.add(ivr.getAnnouncement());
+        ivrList.add(ivr);
+
+        createIvrApi(ivr);
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .activateCallRecordings()
+                .saveChanges()
+                .verifyCallRecording(ivr,ACTIVATED)
+                .clickEditIvr(ivr)
+                .deactivateCallRecordings()
+                .saveChanges()
+                .verifyCallRecording(ivr,DEACTIVATED);
+        deleteIvrApi(ivr);
     }
 
     @AfterClass(alwaysRun = true)

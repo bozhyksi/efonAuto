@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class PublicEnums {
 
+    //general
     public enum LanguageValues{
 
         IT("it"),
@@ -29,6 +30,12 @@ public class PublicEnums {
         SECTION_SELECTED,
         SECTION_NOT_SELECTED
     }
+    public enum State{
+        ACTIVATED,
+        DEACTIVATED;
+    }
+
+
 
 
     //IVRs

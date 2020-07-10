@@ -1,6 +1,5 @@
 package pages.IVRpage.IVRpagePopup;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import flow.PublicEnums;
 import io.qameta.allure.Step;
@@ -39,14 +38,14 @@ public class CreateEditIvrPopup extends IVRpage {
     private final String voiceMailEmail = "//input[@formcontrolname=\"voiceMailEmail\"]";
     private final String voiceMailSalutation = "//input[@formcontrolname=\"voiceMailTitle\"]";
     private final String deleteVoiceMail = "//input[@formcontrolname=\"deleteVoiceMail\"]";
-    private final String activateCallRecording = "//input[@formcontrolname=\"activateCallRecording\"]";
+    private final String checkboxCallRecording = "//input[@formcontrolname=\"activateCallRecording\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
 
-    public SelenideElement getActivateCallRecording() {
-        return field(activateCallRecording);
+    public SelenideElement getCheckboxCallRecording() {
+        return field(checkboxCallRecording);
     }
 
     public SelenideElement getDeleteVoiceMail() {
@@ -121,10 +120,6 @@ public class CreateEditIvrPopup extends IVRpage {
         return field(buttonCancelXpath);
     }
     //</editor-fold>
-
-    public void selectIvrNumber(){
-        getDropdownSelectIvrNumber().selectOption(1);
-    }
 
     @Step("Enter IVR name")
     public CreateEditIvrPopup enterIvrName(String name){
@@ -224,7 +219,14 @@ public class CreateEditIvrPopup extends IVRpage {
 
     @Step("Activate call recordings")
     public CreateEditIvrPopup activateCallRecordings(){
-        getActivateCallRecording().click();
+        getCheckboxCallRecording().click();
+        return this;
+    }
+
+    @Step("Deactivate call recordings")
+    public CreateEditIvrPopup deactivateCallRecordings(){
+        if (getCheckboxCallRecording().isSelected())
+            getCheckboxCallRecording().click();
         return this;
     }
 

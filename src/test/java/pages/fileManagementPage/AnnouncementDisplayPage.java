@@ -3,6 +3,7 @@ package pages.fileManagementPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import pages.fileManagementPage.fileManagementPopups.EditFileManagementPopup;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
 import java.io.File;
@@ -90,5 +91,24 @@ public class AnnouncementDisplayPage extends FileManagementBasePage {
     public AnnouncementDisplayPage verifyIfAnnouncementNotExist(FileManagementTestData file){
         getFieldNameByText(file.getFileName()).shouldNot(exist);
         return this;
+    }
+
+    @Step("Click create test configuration")
+    public AnnouncementDisplayPage clickCreateTestConfig(FileManagementTestData file){
+        getButtonTestConfigByName(file.getFileName()).click();
+        return this;
+    }
+
+    @Step("Verify if test configuration was created")
+    public AnnouncementDisplayPage verifyTestConfigCreated(){
+        field("//*[contains(text(),\"Test configuration created\")]").should(exist);
+        return this;
+    }
+
+    @Step("Click edit")
+    public EditFileManagementPopup clickEdit(FileManagementTestData file){
+        getButtonEditByName(file.getFileName()).click();
+        waitUntilAlertDisappear();
+        return new EditFileManagementPopup();
     }
 }

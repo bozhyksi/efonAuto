@@ -3,6 +3,7 @@ package pages.IVRpage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import flow.PublicEnums;
 import io.qameta.allure.Step;
 import pages.IVRpage.IVRpagePopup.CreateEditIvrPopup;
 import pages.basePage.BasePage;
@@ -30,10 +31,15 @@ public class IVRpage extends BasePage {
     private String dropdownActionByEventNumberXpath = "//table//td[2][text()=\"%s\"]//ancestor::tr//select[@formcontrolname=\"ivrActionType\"]";
     private String checkboxActiveByEventNumberXpath = "//table//td[2][text()=\"%s\"]//ancestor::tr//input[@formcontrolname=\"active\"]";
     private final String fieldByText = "//td[contains(text(), \"%s\")]";
+    private final String fieldCallRecordings = "//td[contains(text(), \"%s\")]//p[contains(text(),\"calls recording\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
 
+
+    public SelenideElement getFieldCallRecordings(String nameIvr) {
+        return field(String.format(fieldCallRecordings,nameIvr));
+    }
 
     public SelenideElement getFieldNameByText(String text) {
         return field(String.format(fieldByText,text));
@@ -151,5 +157,19 @@ public class IVRpage extends BasePage {
         waitUntilAlertDisappear();
         return new  CreateEditIvrPopup();
     }
+
+    @Step("Verify if call recordings activated")
+    public IVRpage verifyCallRecording(IVRtestData ivr, PublicEnums.State state){
+        switch (state){
+            case ACTIVATED:
+                getFieldCallRecordings(ivr.getIvrName()).should(exist);
+                break;
+            case DEACTIVATED:
+                getFieldCallRecordings(ivr.getIvrName()).shouldNot(exist);
+                break;
+        }
+        return this;
+    }
+
 
 }

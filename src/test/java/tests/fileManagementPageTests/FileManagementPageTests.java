@@ -1,6 +1,5 @@
 package tests.fileManagementPageTests;
 
-import com.codeborne.selenide.Condition;
 import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import flow.BaseTestMethods;
@@ -8,13 +7,11 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 
 import java.util.ArrayList;
 
-import static api.baseApiMethods.FileManagementApi.deleteMohApi;
-import static api.baseApiMethods.FileManagementApi.uploadMohApi;
+import static api.baseApiMethods.FileManagementApi.*;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
@@ -50,16 +47,14 @@ public class FileManagementPageTests extends BaseTestMethods {
         fileArrayList.add(moh);
 
         uploadMohApi(moh);
-
         login()
                 .goToMenuTab(FILE_MANAGEMENT)
                 .goToMenuTab(MUSIC_ON_HOLD);
         musicOnHoldPage
                 .clickEdit(moh)
                 .enterName(moh.rename())
-                .save()
+                .saveMoh()
                 .verifyFileUploaded(moh.getFileName());
-
         deleteMohApi(moh);
     }
 
@@ -78,6 +73,40 @@ public class FileManagementPageTests extends BaseTestMethods {
                 .verifyIfAnnouncementExists(announcement)
                 .deleteAnnouncement(announcement)
                 .verifyIfAnnouncementNotExist(announcement);
+    }
+
+    @Description("Verify if user can create test configuration")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "fileManagementPageTests"})
+    public void createTestConfigurationTest(){
+        FileManagementTestData announcement = new FileManagementTestData();
+        fileArrayList.add(announcement);
+
+        uploadAnnouncementApi(announcement);
+        login()
+                .goToMenuTab(FILE_MANAGEMENT)
+                .goToMenuTab(ANNOUNCEMENT_DISPLAY);
+        announcementDisplayPage
+                .clickCreateTestConfig(announcement)
+                .verifyTestConfigCreated();
+        deleteAnnouncementApi(announcement);
+    }
+
+    @Description("Verify if user can edit name of announcement file")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "fileManagementPageTests"})
+    public void editAnnouncementNameTest(){
+        FileManagementTestData announcement = new FileManagementTestData();
+        fileArrayList.add(announcement);
+
+        uploadAnnouncementApi(announcement);
+        login()
+                .goToMenuTab(FILE_MANAGEMENT)
+                .goToMenuTab(ANNOUNCEMENT_DISPLAY);
+        announcementDisplayPage
+                .clickEdit(announcement)
+                .enterName(announcement.rename())
+                .saveAnnouncement()
+                .verifyIfAnnouncementExists(announcement);
+        deleteAnnouncementApi(announcement);
     }
 
     @AfterClass(alwaysRun = true)
