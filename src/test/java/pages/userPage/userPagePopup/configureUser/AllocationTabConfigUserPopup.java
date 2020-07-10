@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 import pages.userPage.UserPage;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 
 public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
     //<editor-fold desc="Locators">
@@ -145,8 +146,15 @@ public class AllocationTabConfigUserPopup extends ConfigureUserBasePopup {
         return this;
     }
 
+    @Step("Close edit popup")
     public UserPage closeEditUserPopup(){
         return super.closeEditUserPopup();
+    }
+
+    @Step("Select Abbreviated number")
+    public AllocationTabConfigUserPopup selectAbbreviatedNumber(AbbreviatedDialling shortNum){
+        getDropdownAbbreviatedNumbers().selectOptionContainingText(shortNum.getSingleShortNum());
+        return this;
     }
 
 

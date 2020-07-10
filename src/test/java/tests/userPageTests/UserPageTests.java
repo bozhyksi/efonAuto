@@ -11,12 +11,15 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.basePage.BasePage;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
 import tests.userPageTests.userPageTestData.User;
 
 import java.util.ArrayList;
 
+import static api.baseApiMethods.AbbreviatedNumbersApi.createAbbreviatedNumberApi;
+import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberApi;
 import static api.baseApiMethods.FileManagementApi.*;
 import static api.baseApiMethods.NumbersApi.getCustomerNumbersApi;
 import static api.baseApiMethods.UserApi.*;
@@ -24,12 +27,14 @@ import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.FAX;
+import static tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling.Type.SINGLE;
 
 @Listeners({CustomListeners.class})
 
 public class UserPageTests extends BaseTestMethods {
     ArrayList<User> usersList = new ArrayList<>();
     ArrayList<FileManagementTestData> filesList = new ArrayList<>();
+    ArrayList<AbbreviatedDialling> shorNumsList = new ArrayList<>();
 
     @Description("Check if VPBX admin is able to create users")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "userPageTests"})
@@ -420,6 +425,34 @@ public class UserPageTests extends BaseTestMethods {
                 .verifyAnnouncementExist(announcement);
         deleteAnnouncementApi(announcement);
     }
+
+    @Description("Assign short number to user on Allocations tab")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void assignShortNumberTest(){
+        User user = new User();
+        AbbreviatedDialling shortNum = new AbbreviatedDialling(SINGLE);
+        usersList.add(user);
+        shorNumsList.add(shortNum);
+
+        createAbbreviatedNumberApi(shortNum);
+        createUsersApi(user);
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .clickEditUser(user)
+                .goToTab(ALLOCATIONS);
+        allocationTabConfigUserPopup
+                .selectAbbreviatedNumber(shortNum)
+                .saveChanges()
+                .closeEditUserPopup()
+                .goToMenuTab(ABBREVIATED_DIALING)
+                .goToMenuTab(ABBREVIATED_NUMBERS);
+        abbreviatedNumbersPage
+                .validateInternalUserShorDial(user);
+        deleteUsersApi(user);
+        deleteAbbreviatedNumberApi(shortNum);
+    }
+
 
     @AfterClass(alwaysRun = true)
     private void сleanUp(){
