@@ -62,6 +62,7 @@ public class eFonApp extends PreparationsForRun {
     public static ExcelFileWorker excelFileWorker = new ExcelFileWorker();
     public JavaScriptExecutor javaScriptExecutor = new JavaScriptExecutor();
 
+    public static SecurityTabConfigUserPopup securityTabConfigUserPopup = new SecurityTabConfigUserPopup();
     public static ProvisioningPhoneModelsPage provisioningPhoneModelsPage = new ProvisioningPhoneModelsPage();
     public static ConfirmationPopup confirmationPopup = new ConfirmationPopup();
     public static CallForwardingPage callForwardingPage = new CallForwardingPage();

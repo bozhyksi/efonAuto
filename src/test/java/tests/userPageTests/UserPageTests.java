@@ -5,6 +5,7 @@ import core.customListeners.CustomListeners;
 import core.retryAnalyzer.RetryAnalyzer;
 import core.workers.sshFileTransfer.SSHFileTransfer;
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
@@ -23,6 +24,7 @@ import static api.baseApiMethods.AbbreviatedNumbersApi.deleteAbbreviatedNumberAp
 import static api.baseApiMethods.FileManagementApi.*;
 import static api.baseApiMethods.NumbersApi.getCustomerNumbersApi;
 import static api.baseApiMethods.UserApi.*;
+import static flow.PublicEnums.Roles.VPBX_ADMIN;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.*;
 import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.*;
@@ -451,6 +453,31 @@ public class UserPageTests extends BaseTestMethods {
                 .validateInternalUserShorDial(user);
         deleteUsersApi(user);
         deleteAbbreviatedNumberApi(shortNum);
+    }
+
+    @Description("Assign VPBX admin role to user")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
+    public void userWithVpbxAdminRoleLoginTest(){
+        User user = new User();
+        usersList.add(user);
+
+        createUsersApi(user);
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .clickEditUser(user)
+                .goToTab(SECURITY);
+        securityTabConfigUserPopup
+                .clickEditActiveRoles()
+                .selectRole(VPBX_ADMIN)
+                .save()
+                .closeEditUserPopup()
+                .logOut();
+        login(user.getLoginEmail(),user.getLoginPassword());
+        dashboardUserPage
+                .verifyAdminPanelAvailable()
+                .logOut();
+        deleteUsersApi(user);
     }
 
 

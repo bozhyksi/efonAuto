@@ -35,9 +35,6 @@ public class PublicEnums {
         DEACTIVATED;
     }
 
-
-
-
     //IVRs
     public enum IvrActions{
         RINGRUF,
@@ -177,6 +174,20 @@ public class PublicEnums {
             return CallsRecordingDirection.values()[new Random().nextInt((CallsRecordingDirection.values().length))].toString();
         }
 
+    }
+    public enum Roles{
+        VPBX_ADMIN("ROLE_SUPERUSER"),
+        RECORDED_CALLS_MANAGER("ROLE_RECORDED_CALLS_MANAGER");
+
+        private String role;
+
+        Roles(String role){
+            this.role = role;
+        }
+
+        public String getRole() {
+            return role;
+        }
     }
 
     //Fax

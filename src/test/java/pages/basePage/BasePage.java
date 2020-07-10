@@ -5,7 +5,9 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import core.fields.Fields;
 import flow.BaseTestMethods;
+import io.qameta.allure.Step;
 import pages.basePage.basePopup.BasePopup;
+import pages.loginPage.LoginPage;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -369,6 +371,13 @@ public class BasePage extends Fields{
     public BasePage setItemsPerPage(ItemsPerPage value){
         getDropdownItemsPerPage().selectOptionByValue(value.getItems());
         return this;
+    }
+
+    @Step("LogOut")
+    public LoginPage logOut(){
+        getButtonLogout().click();
+        waitUntilAlertDisappear();
+        return new LoginPage();
     }
 
 }

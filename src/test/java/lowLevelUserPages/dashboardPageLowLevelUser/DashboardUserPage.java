@@ -1,8 +1,11 @@
 package lowLevelUserPages.dashboardPageLowLevelUser;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser;
 
+import static com.codeborne.selenide.Condition.exist;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.MenuTabsLowLevelUser.DASHBOARD;
 import static lowLevelUserPages.basePageLowLevelUser.BasePageLowLevelUser.PageTitles.SEND_SMS;
 
@@ -43,6 +46,12 @@ public class DashboardUserPage extends BasePageLowLevelUser {
         goToMenuTab(DASHBOARD);
         if(expectedPageTitle == SEND_SMS) goToMenuTab(DASHBOARD);
         waitUntilAlertDisappear();
+    }
+
+    @Step("Check if Administration panel is available")
+    public DashboardUserPage verifyAdminPanelAvailable(){
+        field("//a[text()=\"Administration\"]").should(exist);
+        return this;
     }
 
 }
