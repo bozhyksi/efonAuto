@@ -2,6 +2,7 @@ package api.baseApiMethods;
 
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
+import org.testng.Assert;
 import tests.queuesPageTest.queueTestData.Queue;
 
 import static api.data.endPoints.EndPoints.*;
@@ -11,12 +12,17 @@ public class QueueApi {
 
     @Step("Create Queue via API")
     public static void createQueueApi(Queue queue){
-        login()
+        boolean success = login()
                 .given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(queue.getJson())
-                .post(postCreateQueue);
+                .post(postCreateQueue)
+                .then()
+                .extract()
+                .body()
+                .path("success");
+        Assert.assertTrue(success,"\n\n Queue creation via API failed! Success - false \n\n");;
     }
 
     @Step("Create Queue with manager and reporter via API")
@@ -38,8 +44,10 @@ public class QueueApi {
     @Step("Delete Queue via API")
     public static void deleteQueueApi(Queue ... queues){
         for (Queue queue:queues) {
-            login()
-                    .delete(deleteDeleteQueue,queue.getId());
+            if (!queue.getId().equals("")){
+                login()
+                        .delete(deleteDeleteQueue,queue.getId());
+            }
         }
     }
 

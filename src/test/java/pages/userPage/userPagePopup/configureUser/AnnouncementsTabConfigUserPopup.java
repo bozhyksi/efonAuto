@@ -181,6 +181,7 @@ public class AnnouncementsTabConfigUserPopup extends ConfigureUserBasePopup {
         return this;
     }
 
+    @Step("Delete Announcement")
     public AnnouncementsTabConfigUserPopup deleteAnnouncement(FileManagementTestData file){
         getButtonDeleteUserAnnouncementByName(file.getFileName()).click();
         new ConfirmationPopup().getYesButton().click();

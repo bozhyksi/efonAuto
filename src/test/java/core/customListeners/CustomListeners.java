@@ -8,19 +8,22 @@ import static core.configuration.preparations.ReportPreparations.setAllureEnvPro
 import static core.configuration.screen.ScreenShotMaker.*;
 
 public class CustomListeners implements ITestListener {
+    private final String ANSI_RED    = "\u001B[31m";
+    private final String ANSI_BOLD   = "\u001B[1m";
+    private final String ANSI_GREEN   = "\u001b[32m";
 
     public void onTestStart(ITestResult iTestResult) {
 
     }
 
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("\n\nTest '"+iTestResult.getName()+"' successfully PASSED!\n\n");
+        System.out.println(ANSI_GREEN+ANSI_BOLD+"\n\nTest '"+iTestResult.getName()+"' successfully PASSED!\n\n");
     }
 
     public void onTestFailure(ITestResult iTestResult) {
         String fileName = iTestResult.getName()+iTestResult.getEndMillis();
         attachment(fileName);
-        System.out.println("\n\nTest '"+iTestResult.getName()+"' FAILED!\n\n");
+        System.out.println(ANSI_RED+ANSI_BOLD+"\n\nTest '"+iTestResult.getName()+"' FAILED!\n\n");
     }
 
     public void onTestSkipped(ITestResult iTestResult) {

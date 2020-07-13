@@ -269,7 +269,7 @@ public class QueuesPageTests extends BaseTestMethods {
 
     @Description("Check if VPBX admin can create Report by Period")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "queuePageTest"})
-    public void CheckIfVpbxAdminCanCreateReportByPeriod() {
+    public void createReportByPeriodTest() {
         Queue queue = new Queue(new User());
 
         queuesList.add(queue);

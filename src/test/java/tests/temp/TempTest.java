@@ -14,14 +14,18 @@ import java.awt.event.InputEvent;
 import static com.codeborne.selenide.Condition.exist;
 import static io.qameta.allure.Allure.step;
 import static pages.basePage.BasePage.MenuTabsBasePage.QUEUES;
+import static pages.basePage.BasePage.MenuTabsBasePage.USER;
+import static pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup.Tabs.ANNOUNCEMENTS;
 
 public class TempTest extends BaseTestMethods {
 
     @Test
     public void sss() {
-
-            String query = String.format("SELECT * FROM webadmin_20170426.sms_authorized_number where sender_number=%s","0741234567");
-        System.out.println(getEntityIdFromDB(query));
+        login()
+                .goToMenuTab(USER);
+        userPage
+                .clickEditUser("tthrjniylnrifzg")
+                .goToTab(ANNOUNCEMENTS);
 
     }
 

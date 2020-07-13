@@ -61,6 +61,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
                 .saveChanges()
                 .refreshPage();
         callForwardingPage
+                .selectNumber(user.getPhoneNumber())
                 .verifyIfBusySection(user);
         deleteUsersApi(user);
     }
@@ -82,6 +83,7 @@ public class CallForwardingPageTest extends BaseTestMethods {
                 .saveChanges()
                 .refreshPage();
         callForwardingPage
+                .selectNumber(user.getPhoneNumber())
                 .verifyEndDevSection(user);
        deleteUserApi(user.getId());
     }
@@ -107,8 +109,9 @@ public class CallForwardingPageTest extends BaseTestMethods {
         deleteUserApi(user.getId());
     }
 
-    @Description("Verify if updates forwardTo number in After section in call forwarding")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"})
+    //EPRO-1132
+    @Description("Verify if system updates forwardTo phone number in After section")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "callForwardingPage"}, enabled = false)
     public void verifyUpdateOfForwardToPhoneTest(){
         String phone = getRandomCustomerFreePhoneNumberFromDB();
         String forwardToPhone1 = getRandomPhone();

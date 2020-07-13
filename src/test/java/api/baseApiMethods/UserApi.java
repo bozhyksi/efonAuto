@@ -1,5 +1,6 @@
 package api.baseApiMethods;
 
+import flow.PublicEnums;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -11,6 +12,16 @@ import static api.data.endPoints.EndPoints.*;
 import static api.data.preparation.Preparation.login;
 
 public class UserApi {
+
+    @Step("Set items per page to ALL")
+    public static void setItemsPerPageApi(PublicEnums.ItemsPerPage item){
+        login()
+                .given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(String.format("{\"item\":\"%s\"}",item.getItems()))
+                .put(putItemsPerPage);
+    }
 
     @Step("Create user via API")
     public static void createUserApi(String userJsonData){

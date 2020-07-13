@@ -10,11 +10,10 @@ import pages.userPage.userPagePopup.CreateUserPopup;
 import pages.userPage.userPagePopup.configureUser.ConfigureUserBasePopup;
 import tests.userPageTests.userPageTestData.User;
 
-import javax.jws.soap.SOAPBinding;
-
+import static api.baseApiMethods.UserApi.setItemsPerPageApi;
 import static com.codeborne.selenide.Condition.exist;
 import static core.configuration.preparations.eFonApp.confirmationPopup;
-import static pages.basePage.BasePage.MenuTabsBasePage.USER;
+import static flow.PublicEnums.ItemsPerPage._All;
 
 public class UserPage extends BasePage {
     //<editor-fold desc="//-- UserPage Locators --// ">
@@ -27,8 +26,8 @@ public class UserPage extends BasePage {
     private String buttonBlockUserXpath = "//*[@role=\"grid\"]//a[@id=\"blockUserButton\"]";
     private String buttonConfigUserXpath = "//*[@role=\"grid\"]//a[@id=\"editUserButton\"]";
     private String buttonDeleteUserXpath = "//*[@role=\"grid\"]//a[@id=\"deleteUserButton\"]";
-    private String buttonConfigUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"editUserButton\"]";
-    private String buttonDeleteUserByNameXpath = "//*[@role=\"grid\"]//td[1][contains(text(),\"%s\")]//ancestor::tr//a[@id=\"deleteUserButton\"]";
+    private String buttonConfigUserByNameXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"editUserButton\"]";
+    private String buttonDeleteUserByNameXpath = "//td[contains(text(),\"%s\")]/..//a[@id=\"deleteUserButton\"]";
     private final String getFieldByText = "//table//td[contains(text(),\"%s\")]";
     //</editor-fold>
 
@@ -105,6 +104,7 @@ public class UserPage extends BasePage {
 
     @Step("Open Edit user popup")
     public ConfigureUserBasePopup clickEditUser(User user){
+        setItemsPerPageApi(_All);
         getButtonConfigUserByName(user.getFirstName()).click();
         waitUntilAlertDisappear();
         return new ConfigureUserBasePopup();
@@ -112,6 +112,7 @@ public class UserPage extends BasePage {
 
     @Step("Open Edit user popup")
     public ConfigureUserBasePopup clickEditUser(String user){
+        setItemsPerPageApi(_All);
         getButtonConfigUserByName(user).click();
         waitUntilAlertDisappear();
         return new ConfigureUserBasePopup();

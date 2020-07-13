@@ -34,6 +34,23 @@ public class PublicEnums {
         ACTIVATED,
         DEACTIVATED;
     }
+    public enum ItemsPerPage{
+        _10("10"),
+        _25("25"),
+        _50("50"),
+        _100("100"),
+        _All("-1");
+
+        private String items;
+
+        ItemsPerPage(String items){
+            this.items = items;
+        }
+
+        public String getItems() {
+            return items;
+        }
+    }
 
     //IVRs
     public enum IvrActions{

@@ -378,7 +378,7 @@ public class UserPageTests extends BaseTestMethods {
                 .clickEditUser(user)
                 .goToTab(ANNOUNCEMENTS);
         announcementsTabConfigUserPopup
-                .verifyAnnouncementName(announcement);
+                .verifyAnnouncementExist(announcement);
         deleteUsersApi(user);
     }
 
