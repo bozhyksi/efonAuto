@@ -7,7 +7,6 @@ import io.qameta.allure.Description;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.IVRpageTests.IVRtestData.IVRtestData;
 import tests.blockListSectionTests.blockListTestData.BlockListTestData;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 
 import static api.baseApiMethods.ConferenceCallsApi.createConferenceCallApi;
 import static api.baseApiMethods.ConferenceCallsApi.deleteConferenceCallApi;
-import static api.baseApiMethods.FileManagementApi.uploadAnnouncementApi;
 import static api.baseApiMethods.HuntGroupApi.createHuntGroupApi;
 import static api.baseApiMethods.HuntGroupApi.deleteHuntGroupApi;
 import static api.baseApiMethods.IVRApi.createIvrApi;
@@ -29,21 +27,23 @@ import static pages.basePage.BasePage.MenuTabsBasePage.*;
 
 public class BlockListTests extends BaseTestMethods {
 
+    //<editor-fold desc="Lists">
     ArrayList<HuntGroup> huntGroupsList = new ArrayList<>();
     ArrayList<IVRtestData> ivrList = new ArrayList<>();
     ArrayList<FileManagementTestData> announcementList = new ArrayList<>();
     ArrayList<ConferenceCallTestData> confCallList = new ArrayList<>();
+    //</editor-fold>
 
     //bug 974
     @Description("Check Block incoming calls configurations")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"}, enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
     public void configBlockIncomingCallsTest (){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
-        login();
-        huntGroupPage
-                .createHuntGroup(huntGroup);
+        createHuntGroupApi(huntGroup);
+        login()
+                .goToMenuTab(HUNT_GROUPS);
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .clickBlockIncomingCalls()
@@ -53,9 +53,7 @@ public class BlockListTests extends BaseTestMethods {
         blockListSections
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .verifyBlockIncomingCallsConfig();
-        huntGroupPage
-                .deleteHuntGroup(huntGroup);
-
+        deleteHuntGroupApi(huntGroup);
     }
 
     @Description("Check Calls with suppressed numbers configurations")
@@ -128,7 +126,7 @@ public class BlockListTests extends BaseTestMethods {
                 .clickClose()
                 .clickEdit()
                 .bulkDeleteNumber(blockList.getBlockedNumber())
-                .verifyBlockedNumberNotExists(blockList.getBlockedNumber());
+                .verifyNumberNotExist(blockList.getBlockedNumber());
 
         deleteHuntGroupApi(huntGroup);
     }
@@ -149,7 +147,7 @@ public class BlockListTests extends BaseTestMethods {
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
                 .clickEdit()
-                .addBlocklistNumber(blockList.getBlockedNumber())
+                .addNumber(blockList.getBlockedNumber())
                 .clickClose()
                 .clickEdit()
                 .clickEditNumber(blockList.getBlockedNumber())
@@ -157,7 +155,7 @@ public class BlockListTests extends BaseTestMethods {
                     .saveChanges()
                 .clickClose()
                 .clickEdit()
-                .verifyBlockedNumberExists(blockList.getBlockedNumber());
+                .verifyNumberExists(blockList.getBlockedNumber());
 
         deleteHuntGroupApi(huntGroup);
     }
@@ -178,13 +176,13 @@ public class BlockListTests extends BaseTestMethods {
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .activateUseBlocklist()
                 .clickEdit()
-                .addBlocklistNumber(blockList.getBlockedNumber())
+                .addNumber(blockList.getBlockedNumber())
                 .clickClose()
                 .clickEdit()
                 .deleteNumber(blockList.getBlockedNumber())
                 .clickClose()
                 .clickEdit()
-                .verifyBlockedNumberNotExists(blockList.getBlockedNumber());
+                .verifyNumberNotExist(blockList.getBlockedNumber());
 
         deleteHuntGroupApi(huntGroup);
     }
@@ -258,6 +256,37 @@ public class BlockListTests extends BaseTestMethods {
                 .createConfCall(confCall2);
 
         deleteConferenceCallApi(confCall,confCall2);
+    }
+
+    @Description("Check if user can configure \"Permitted numbers\"")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void configPermittedNumbers(){
+        BlockListTestData blockListData = new BlockListTestData();
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
+        ivrList.add(ivr);
+
+        createIvrApi(ivr);
+        login()
+                .goToMenuTab(IVRs);
+        blockListSections
+                .selectNumber(ivr.getIvrNumber())
+                .clickBlockIncomingCalls()
+                .selectForwardTo("Voicemail")
+                .activateUseBlocklist()
+                .selectBlockListType("Permitted numbers")
+                .clickEdit()
+                    .clickAdd()
+                    .enterNumber(blockListData.getPermittedNumber())
+                    .enterComment(blockListData.getComment())
+                    .saveNumber()
+                    .clickClose()
+                .verifyIfNumberShown(blockListData.getPermittedNumber())
+                .clickEdit()
+                    .deleteNumber(blockListData.getPermittedNumber())
+                    .clickClose()
+                .clickEdit()
+                    .verifyNumberNotExist(blockListData.getPermittedNumber());
+        deleteIvrApi(ivr);
     }
 
 

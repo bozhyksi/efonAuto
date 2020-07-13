@@ -62,8 +62,8 @@ public class BlockedNumbersPopup extends BasePopup {
     public class AddNumber{
 
         //<editor-fold desc="locators">
-        private final String inputBlockedNumber = "//input[@id=\"blockedNumber\"]";
-        private final String inputBlockedNumberComment = "//input[@id=\"blockedNumberComment\"]";
+        private final String inputBlockedNumber = "//input[@id=\"blockedNumber\" or @id=\"permittedNumber\"]";
+        private final String inputBlockedNumberComment = "//input[@id=\"blockedNumberComment\" or @id=\"permittedNumberComment\" ]";
         private final String checkboxEntireCustomer = "//input[@id=\"blockedNumberForEntireCustomer\"]";
         private final String buttonSaveXpath = "//*[@id=\"systemModal\"]//button[text()=\"Save\"]";
         private final String buttonCancelXpath = "//*[@id=\"systemModal\"]//button[text()=\"Cancel\"]";
@@ -203,20 +203,20 @@ public class BlockedNumbersPopup extends BasePopup {
         return this;
     }
 
-    @Step("Verify if blocked number Not exists")
-    public BlockedNumbersPopup verifyBlockedNumberNotExists(String num){
+    @Step("Verify if number Not exists")
+    public BlockedNumbersPopup verifyNumberNotExist(String num){
         getFieldNumberByText(num).shouldNot(exist);
         return this;
     }
 
-    @Step("Verify if blocked number exists")
-    public BlockedNumbersPopup verifyBlockedNumberExists(String num){
+    @Step("Verify if number exists")
+    public BlockedNumbersPopup verifyNumberExists(String num){
         getFieldNumberByText(num).should(exist);
         return this;
     }
 
-    @Step("Add blocklist number")
-    public BlockedNumbersPopup addBlocklistNumber(String num){
+    @Step("Add number")
+    public BlockedNumbersPopup addNumber(String num){
         clickAdd()
                 .enterNumber(num)
                 .saveNumber();

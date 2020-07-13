@@ -1,6 +1,5 @@
 package pages.blockListSection;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
@@ -9,7 +8,6 @@ import org.testng.Assert;
 import pages.basePage.BasePage;
 import pages.blockListSection.blockListSectionPopup.BlockedNumbersPopup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.exist;
@@ -26,6 +24,7 @@ public class BlockListSection extends BasePage {
     private final String dropdownBlocklistTypeXpath = "//select[@formcontrolname=\"blockListType\"]";
     private final String buttonEdit = "//select[@formcontrolname=\"blockListType\"]/../..//i[contains(@class, \"fa-cog\")]/..";
     private final String fieldByText = "//*[@id=\"systemModal\"]//td[contains(text(),\"%s\")]";
+    private final String fieldNumber = "//block-list//span[text()=\"%s\"]";
     //</editor-fold >
 
 
@@ -66,6 +65,12 @@ public class BlockListSection extends BasePage {
         return field(dropdownBlocklistTypeXpath);
     }
     //</editor-fold>
+
+    @Step("Verify if permitted numbers is sjoen in BlockList section")
+    public BlockListSection verifyIfNumberShown(String number){
+        field(String.format(fieldNumber, number)).should(exist);
+        return this;
+    }
 
     @Step("Check if number exists in Blocklist dropdown")
     public BlockListSection checkIfDropdownContainsNumber(String item){
@@ -165,6 +170,12 @@ public class BlockListSection extends BasePage {
     public BlockListSection verifyUseBlocklistConfigs(){
         getCheckboxUseBlockList().shouldBe(selected);
         getDropdownBlocklistType().getSelectedOption().getText().contains("Blocked numbers");
+        return this;
+    }
+
+    @Step("Select BlockList type")
+    public BlockListSection selectBlockListType(String type){
+        getDropdownBlocklistType().selectOptionContainingText(type);
         return this;
     }
 

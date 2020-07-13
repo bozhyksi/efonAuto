@@ -357,9 +357,9 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
     }
 
-    @Description("Verify if user can create hunt group and configure Display following number, when forwarding")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},invocationCount = 3)
-    public void selectShowNumberTest(){
+    @Description("Verify if user can create hunt group and configure dropdown \"Display following number, when forwarding\"")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    public void dropdownSelectShowNumberTest(){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);
 
