@@ -27,8 +27,7 @@ import static api.baseApiMethods.IVRApi.createIvrApi;
 import static api.baseApiMethods.IVRApi.deleteIvrApi;
 import static api.baseApiMethods.QueueApi.*;
 import static api.baseApiMethods.UserApi.*;
-import static com.codeborne.selenide.Condition.value;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static flow.PublicEnums.IvrActions.CALL_CENTER_QUEUE;
 import static flow.PublicEnums.IvrActions.PHONE_EXTERNAL;
 import static flow.PublicEnums.State.ACTIVATED;
@@ -360,6 +359,74 @@ public class IVRpageTests extends BaseTestMethods {
                 .saveChanges()
                 .verifyCallRecording(ivr,DEACTIVATED);
         deleteIvrApi(ivr);
+    }
+
+    @Description("Verify if user can configure VoiceMail section")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void configVoiceMailSectionTest(){
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
+        ivrList.add(ivr);
+
+        createIvrApi(ivr);
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .enterPIN(ivr.getPinCode())
+                .enterVoiceMailEmail(ivr.getVoicemailEmail())
+                .enterSalutation(ivr.getSalutation())
+                .activateDeleteVoiceMailOption()
+                .saveChanges()
+                .clickEditIvr(ivr)
+                .verifyVoiceMailSettings(ivr);
+        deleteIvrApi(ivr);
+    }
+
+    @Description("Verify if user can use short number as IVR phone number")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void useShortNumAsIvrPhoneNumber(){
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData(), new AbbreviatedDialling(SINGLE));
+        ivrList.add(ivr);
+        shortNumList.add(ivr.getShortNum());
+        filesList.add(ivr.getAnnouncement());
+
+        uploadAnnouncementApi(ivr.getAnnouncement());
+        createAbbreviatedNumberApi(ivr.getShortNum());
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickNewIvr()
+                .enterIvrName(ivr.getIvrName())
+                .enterDisplayName(ivr.getIvrDisplName())
+                .selectNumber(ivr.getShortNum().getSingleShortNum())
+                .selectAnnouncement(ivr.getAnnouncement().getFileName())
+                .saveChanges();
+        deleteIvrApi(ivr);
+        deleteAbbreviatedNumberApi(ivr.getShortNum());
+    }
+
+    //EPRO-1145
+    @Description("Verify if used short number as IVR phone number are not available in blocklist dropdown")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"}, enabled = false)
+    public void shortNumbersNotAvailableInBlockLIstDropdownTest(){
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData(), new AbbreviatedDialling(SINGLE));
+        ivrList.add(ivr);
+        shortNumList.add(ivr.getShortNum());
+        filesList.add(ivr.getAnnouncement());
+
+        createIvrApi(ivr);
+        createAbbreviatedNumberApi(ivr.getShortNum());
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .selectNumber(ivr.getShortNum().getSingleShortNum())
+                .saveChanges()
+                .refreshPage();
+        blockListSections
+                .checkIfDropdownNotContainsNumber(ivr.getShortNum().getSingleShortNum());
+        deleteIvrApi(ivr);
+        deleteAbbreviatedNumberApi(ivr.getShortNum());
     }
 
     @AfterClass(alwaysRun = true)

@@ -38,6 +38,8 @@ public class IVRtestData extends BaseTestMethods {
     private String parameterMaxThroughputs;
     private String parameterMaxWaitingTime;
     private String pinCode;
+    private String voicemailEmail = getRandomEmail();
+    private String salutation = getRandomString(5);
     private FileManagementTestData announcement;
     private HuntGroup huntGroup;
     private User user;
@@ -129,6 +131,13 @@ public class IVRtestData extends BaseTestMethods {
 
     //<editor-fold desc="get\set">
 
+    public String getVoicemailEmail() {
+        return voicemailEmail;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
 
     public AbbreviatedDialling getShortNum() {
         return shortNum;

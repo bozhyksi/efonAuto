@@ -66,7 +66,7 @@ public class BlockListSection extends BasePage {
     }
     //</editor-fold>
 
-    @Step("Verify if permitted numbers is sjoen in BlockList section")
+    @Step("Verify if permitted numbers is shown in BlockList section")
     public BlockListSection verifyIfNumberShown(String number){
         field(String.format(fieldNumber, number)).should(exist);
         return this;
@@ -94,7 +94,7 @@ public class BlockListSection extends BasePage {
         List<WebElement> list = new Select(field(dropdownNumbersXpath)).getOptions();
         for (WebElement elem : list) {
             if(elem.getText().contains(item)) {
-                Assert.assertTrue(false, item+"exists in the dropdown");
+                Assert.assertTrue(false, "\nNumber: \""+item+"\" exists in the dropdown, but it should not\n");
                 return this;
             }
         }

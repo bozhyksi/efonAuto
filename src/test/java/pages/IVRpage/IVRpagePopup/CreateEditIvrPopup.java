@@ -11,7 +11,7 @@ import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
-import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.*;
 import static flow.PublicEnums.IvrActions.*;
 import static flow.PublicEnums.IvrEvents.*;
 
@@ -141,7 +141,8 @@ public class CreateEditIvrPopup extends IVRpage {
 
     @Step("Select IVR number")
     public CreateEditIvrPopup selectNumber(String num){
-        getDropdownSelectIvrNumber().selectOptionContainingText(num);
+        //getDropdownSelectIvrNumber().selectOptionContainingText(num);
+        getDropdownSelectIvrNumber().selectOption(num);
         return this;
     }
 
@@ -208,6 +209,15 @@ public class CreateEditIvrPopup extends IVRpage {
     @Step("Enter salutation")
     public CreateEditIvrPopup enterSalutation(String salutation){
         getVoiceMailSalutation().setValue(salutation);
+        return this;
+    }
+
+    @Step("Verify Voicemail settings")
+    public CreateEditIvrPopup verifyVoiceMailSettings(IVRtestData ivr){
+        getInputPin().shouldHave(value(ivr.getPinCode()));
+        getVoiceMailEmail().shouldHave(value(ivr.getVoicemailEmail()));
+        getVoiceMailSalutation().shouldHave(value(ivr.getSalutation()));
+        getDeleteVoiceMail().shouldBe(selected);
         return this;
     }
 
