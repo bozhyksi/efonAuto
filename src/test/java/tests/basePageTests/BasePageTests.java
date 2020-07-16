@@ -18,7 +18,7 @@ public class BasePageTests extends BaseTestMethods {
 
     @Description("Verify if user can open each main menu Tab")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "BasePageTests"})
-    public void VerifyIfUserCanOpenEachMainMenuTab() {
+    public void openEachMainMenuTabTest() {
 
         step("Log in the system");
         login();
@@ -96,6 +96,4 @@ public class BasePageTests extends BaseTestMethods {
         basePage.goToMenuTab(CONTACT_DATA);
         Assert.assertEquals(contactDataPage.getPageTitle().text(), MainMenu.contactData.getTabName());
     }
-
-
 }

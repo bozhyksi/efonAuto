@@ -194,31 +194,8 @@ public class IVRpageTests extends BaseTestMethods {
         deleteUsersApi(ivr.getUser());
     }
 
-    @Description("Verify if user can configure \"Voicemail: no announcement\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
-    public void configureVoicemailNoAnnouncementIvrActionTest() {
-
-        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
-        ivrList.add(ivr);
-        filesList.add(ivr.getAnnouncement());
-
-        createIvrApi(ivr);
-
-        login()
-                .goToMenuTab(IVRs);
-        ivrPage
-                .clickEditIvr(ivr)
-                .configureVoiceMailNoAnnouncementAction()
-                .saveChanges()
-                .clickEditIvr(ivr)
-                .verifyIvrAction(PublicEnums.IvrActions.VM_NO_ANNOUNCE,ivr);
-
-        deleteIvrApi(ivr);
-    }
-
-    //EPRO-1130
     @Description("Verify if user can configure \"Call to abbrev number\" ivr action")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void configureCallToAbbreviatedNumberActionTest(){
         User user = new User(new AbbreviatedDialling(SINGLE));
         IVRtestData ivr = new IVRtestData(new FileManagementTestData(), user.getShortNum());
@@ -243,7 +220,28 @@ public class IVRpageTests extends BaseTestMethods {
         deleteAnnouncementApi(ivr.getAnnouncement());
         deleteUsersApi(user);
         deleteAbbreviatedNumberApi(user.getShortNum());
+    }
 
+    @Description("Verify if user can configure \"Voicemail: no announcement\" ivr action")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void configureVoicemailNoAnnouncementIvrActionTest() {
+
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData());
+        ivrList.add(ivr);
+        filesList.add(ivr.getAnnouncement());
+
+        createIvrApi(ivr);
+
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .configureVoiceMailNoAnnouncementAction()
+                .saveChanges()
+                .clickEditIvr(ivr)
+                .verifyIvrAction(PublicEnums.IvrActions.VM_NO_ANNOUNCE,ivr);
+
+        deleteIvrApi(ivr);
     }
 
     @Description("Verify if user can configure \"Play file and hang up\" ivr action")
