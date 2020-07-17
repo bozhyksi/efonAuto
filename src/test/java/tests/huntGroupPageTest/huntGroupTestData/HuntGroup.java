@@ -2,13 +2,12 @@ package tests.huntGroupPageTest.huntGroupTestData;
 
 import flow.BaseTestMethods;
 import flow.PublicEnums;
+import tests.abbreviatedDialPageTest.abbrevNumTestData.AbbreviatedDialling;
 import tests.fileManagementPageTests.fileManagementTestData.FileManagementTestData;
 import tests.queuesPageTest.queueTestData.Queue;
 import tests.userPageTests.userPageTestData.User;
 
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonValue;
+import javax.json.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,31 +16,33 @@ public class HuntGroup extends BaseTestMethods {
 
     //<editor-fold desc="properties">
 
-    private FileManagementTestData announcement;
-    private Queue queue;
-    private User authorisedUser;
+    private FileManagementTestData announcement = null;
+    private Queue queue  = null;
+    private User authorisedUser  = null;
+    private AbbreviatedDialling shotNum  = null;
 
     //Edit hunt group section
-    private String huntGroupNumber;
-    private String huntGroupLanguage;
+    private String huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();;
+    private String huntGroupLanguage = PublicEnums.LanguageValues.getRandLangVal();
     private String huntGroupAuthorizedUser;
-    private String huntGroupName;
-    private String huntGroupDisplayName;
+    private String huntGroupName = getRandomString(10);;
+    private String huntGroupDisplayName = "Display_"+this.huntGroupName;;
     private ArrayList<String> huntGroupAuthorizedUsers;
 
     //Voicemail settings
-    private String pinCode;
-    private String voicemailEmail;
-    private String salutation;
+    private String pinCode = getRandomNumber(1111,9999);;
+    private String voicemailEmail = getRandomEmail();;
+    private String salutation = "Dear Ms";
 
     //If end devices not available (not registered) section
     private String relevantAccount;
-    private String backUpNumber;
+    private String backUpNumber = getRandomPhone();
 
     //Full days
-    private String fullDayName;
-    private String fullDayDate;
-    private String fullDayPhoneNumber;
+    private String fullDayName = getRandomString(10);
+    private String fullDayDate = "1.8; 24.12; 31.09; 08.12";
+    private String fullDayWithTimeRanges = "1.8.;24.12. 15:00-23:00;25.12.-4.1.;1.5-2.5. 12:00-18:00";
+    private String fullDayPhoneNumber = getRandomPhone();
 
     //Further time
     private String furtherTimeName = getRandomString(15);
@@ -77,74 +78,40 @@ public class HuntGroup extends BaseTestMethods {
 
     public HuntGroup(User authorisedUser){
         this.authorisedUser= authorisedUser;
-
-        //Edit hunt group section
-        this.huntGroupLanguage = "en";
-        this.huntGroupName = getRandomString(10);
-        this.huntGroupDisplayName = "Display_"+this.huntGroupName;
-        this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
-
-        //Voicemail settings
-        this.pinCode = getRandomNumber(1111,9999);
-        this.voicemailEmail = getRandomEmail();
-        this.salutation = "Dear Ms";
-
-        //If end devices not available (not registered) section
-        this.backUpNumber = getRandomPhone();
-
-        //Full days
-        this.fullDayName = getRandomString(10);
-        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
-        fullDayPhoneNumber = getRandomPhone();
     }
 
     public HuntGroup(String huntGroupName, String huntGroupNumber){
-        //Edit hunt group section
-        this.huntGroupLanguage = "en";
         this.huntGroupName = huntGroupName;
         this.huntGroupDisplayName = huntGroupName;
         this.huntGroupNumber = huntGroupNumber;
 
-        //Voicemail settings
-        this.pinCode = getRandomNumber(1111,9999);
-        this.voicemailEmail = getRandomEmail();
-        this.salutation = "Dear Ms";
-
-        //If end devices not available (not registered) section
-        this.backUpNumber = getRandomPhone();
-
-        //Full days
-        this.fullDayName = getRandomString(10);
-        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
-        fullDayPhoneNumber = getRandomPhone();
     }
 
     public HuntGroup(FileManagementTestData announcement, Queue queue){
         this.queue = queue;
         this.announcement = announcement;
+    }
 
-        //Edit hunt group section
-        this.huntGroupLanguage = "en";
-        this.huntGroupName = getRandomString(10);
-        this.huntGroupDisplayName = "Display_"+this.huntGroupName;
-        this.huntGroupNumber = getRandomCustomerFreePhoneNumberFromDB();
+    public HuntGroup(AbbreviatedDialling shortNumber){
+        this.shotNum = shortNumber;
+        this.huntGroupNumber = shortNumber.getSingleShortNum();
+    }
 
-        //Voicemail settings
-        this.pinCode = getRandomNumber(1111,9999);
-        this.voicemailEmail = getRandomEmail();
-        this.salutation = "Dear Ms";
-
-        //If end devices not available (not registered) section
-        this.backUpNumber = getRandomPhone();
-
-        //Full days
-        this.fullDayName = getRandomString(10);
-        this.fullDayDate = "1.8; 24.12; 31.09; 08.12";
-        fullDayPhoneNumber = getRandomPhone();
+    public HuntGroup(User authorisedUser, AbbreviatedDialling shortNumber){
+        this.shotNum = shortNumber;
+        this.authorisedUser= authorisedUser;
+        this.huntGroupNumber = shortNumber.getSingleShortNum();
     }
 
     //<editor-fold desc="get\set">
 
+    public AbbreviatedDialling getShotNum() {
+        return shotNum;
+    }
+
+    public String getFullDayWithTimeRanges() {
+        return fullDayWithTimeRanges;
+    }
 
     public User getAuthorisedUser() {
         return authorisedUser;
@@ -276,16 +243,38 @@ public class HuntGroup extends BaseTestMethods {
     }
 
     public String getJson(){
+        //ShortNums
+        JsonObjectBuilder objectNumberJson = Json.createObjectBuilder();
+        if (shotNum != null){
+            objectNumberJson
+                    .add("phoneNumberId", shotNum.getId())
+                    .add("number", shotNum.getSingleShortNum())
+                    .add("isPublic",JsonValue.FALSE);
+        }else{
+            objectNumberJson
+                    .add("phoneNumberId", getPhoneNumberId())
+                    .add("number", getHuntGroupNumber())
+                    .add("isPublic",JsonValue.TRUE);
+        }
+
+        //AuthUsers
+        JsonArrayBuilder authUserJsonArray = Json.createArrayBuilder();
+        if (authorisedUser != null){
+            authUserJsonArray.add( Json.createObjectBuilder()
+                            .add("id", Integer.parseInt((getAuthorisedUser().getId())))
+                            .add("displayName", getAuthorisedUser().getDisplayName())
+            );
+        }
+
         JsonBuilderFactory factory = Json.createBuilderFactory(null);
         return factory.createObjectBuilder()
                 .add("huntGroupNumber", factory.createObjectBuilder()
-                        .add("phoneNumberId", getPhoneNumberId())
-                        .add("number", getHuntGroupNumber())
+                        .addAll(objectNumberJson)
                 )
                 .add("huntGroupName",getHuntGroupName())
                 .add("huntGroupDisplayName",getHuntGroupDisplayName())
                 .add("huntGroupLanguage",getHuntGroupLanguage())
-                .add("grantedUsers",factory.createArrayBuilder())
+                .add("grantedUsers",authUserJsonArray)
                 .add("voicemailSettings",factory.createObjectBuilder()
                         .add("email","")
                         .add("pin","")

@@ -30,10 +30,17 @@ public class ConfigureEndDevicesPopup extends EndDevicesPage {
     private final String inputLocationXpath = "//input[@formcontrolname=\"emergencyLocation\"]";
     private final String checkboxSuppressedYesXpath = "//input[@formcontrolname=\"suppressed\" and @value=\"true\"]";
     private final String checkboxSuppressedNoXpath = "//input[@formcontrolname=\"suppressed\" and @value=\"false\"]";
+    private final String dropdownCountryCode = "//select[@formcontrolname=\"countryCode\"]";
     //</editor-fold>
 
 
     //<editor-fold desc="get\set">
+
+
+    public SelenideElement getDropdownCountryCode() {
+        return field("//select[@formcontrolname=\"countryCode\"]");
+    }
+
     public SelenideElement getInputName() {
         return field(inputNameXpath);
     }
@@ -189,6 +196,13 @@ public class ConfigureEndDevicesPopup extends EndDevicesPage {
         return this;
     }
 
+    @Step("Verify location field value")
+    public ConfigureEndDevicesPopup verifyLocationFieldValue(String locationExpected){
+        String locationActual = getInputLocation().getValue();
+        Assert.assertEquals(locationActual,locationExpected);
+        return this;
+    }
+
     @Step("Get outgoing drop down items")
     public ArrayList<String> getOutgoingDropdownItems(){
         waitUntilAlertDisappear();
@@ -201,4 +215,17 @@ public class ConfigureEndDevicesPopup extends EndDevicesPage {
         return dropdownItemsList;
     }
 
+    @Step("Select Country Code")
+    public ConfigureEndDevicesPopup selectCountryCode(String countryCode){
+        field("//select[@formcontrolname=\"countryCode\"]").selectOptionByValue(countryCode);
+        return this;
+    }
+
+    @Step("Verify Country Code")
+    public ConfigureEndDevicesPopup verifyCountryCode(String countryCodeExpected){
+        String countryCodeActual = getDropdownCountryCode().getSelectedValue();
+        Assert.assertEquals(countryCodeActual,countryCodeExpected,
+                "\nCountry Code is "+countryCodeActual+" but should be "+countryCodeExpected+"\n");
+        return this;
+    }
 }

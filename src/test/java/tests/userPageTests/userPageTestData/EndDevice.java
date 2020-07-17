@@ -1,6 +1,7 @@
 package tests.userPageTests.userPageTestData;
 
 import flow.BaseTestMethods;
+import flow.PublicEnums;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,6 +78,7 @@ public class EndDevice extends BaseTestMethods  {
     private boolean endDevSuppressedNO;
     private boolean endDevSuppressed;
     private String randomEndDeviceForEdit;
+    private String countryCode = PublicEnums.CountryCode.getRandomCountryCode();
     //</editor-fold>
 
     public EndDevice() {
@@ -93,7 +95,29 @@ public class EndDevice extends BaseTestMethods  {
         randomEndDeviceForEdit = getRandomEndDeviceForEditFromDB();
     }
 
+    public EndDevice(PublicEnums.OutgoingNumberType outgoingNumberType) {
+        endDevName = "EndDevice" + getRandomString(10);
+        endDevUserId = getRandomNumber(10);
+        endDevPass = getRandomPassword();
+        endDevCodec = Codecs.getCodec();
+        endDevPhoneLanguage = Language.getRandomVal();
+        endDevDisplayName = getRandomString(15);
+        endDevLocation = getRandomLocationFromDB();
+        endDevProxy = Proxy.getRandomProxy();
+        if (outgoingNumberType == PublicEnums.OutgoingNumberType.INTERNAL)
+            this.endDevOutgoingNumber = getRandomInternalOutgoingNumberFromDB();
+        else
+            this.endDevOutgoingNumber = getRandomInternationalOutgoingNumberFromDB();
+        endDevSuppressed = getRandomBoolean();
+        randomEndDeviceForEdit = getRandomEndDeviceForEditFromDB();
+    }
+
     //<editor-fold desc="get\set">
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
     public String getRandomEndDeviceForEdit() {
         return randomEndDeviceForEdit;
     }
@@ -144,6 +168,41 @@ public class EndDevice extends BaseTestMethods  {
 
     //</editor-fold>
 
+    private String getRandomInternalOutgoingNumberFromDB(){
+        String query = "SELECT number FROM webadmin_20170426.phonenumber \n" +
+                        "where customer_fk = 906144 and number not like \"00%\"";
+        ArrayList<String> outgoingNumbers = new ArrayList<>();
+
+        ResultSet res = dataBaseWorker.execSqlQuery(query);
+        while (true){
+            try {
+                if (!res.next()) break;
+                outgoingNumbers.add(res.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return outgoingNumbers.get(new Random().nextInt(outgoingNumbers.size()));
+    }
+
+    private String getRandomInternationalOutgoingNumberFromDB(){
+        String query = "SELECT number FROM webadmin_20170426.phonenumber \n" +
+                "where customer_fk = 906144 and number like \"00%\"";
+        ArrayList<String> outgoingNumbers = new ArrayList<>();
+
+        ResultSet res = dataBaseWorker.execSqlQuery(query);
+        while (true){
+            try {
+                if (!res.next()) break;
+                outgoingNumbers.add(res.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return outgoingNumbers.get(new Random().nextInt(outgoingNumbers.size()));
+    }
 
     private String getRandomOutgoingNumberFromDB(){
         String query = "SELECT number FROM webadmin_20170426.phonenumber where customer_fk = 906144";

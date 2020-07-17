@@ -67,7 +67,7 @@ public class EndDevicesPage extends BasePage {
     }
 
     @Step("Edit end-device, open \"Configure end devices\" popup")
-    public ConfigureEndDevicesPopup configureEndDevice(String endDeviceName){
+    public ConfigureEndDevicesPopup clickEditEndDevice(String endDeviceName){
         getButtonEdit(endDeviceName).click();
         waitUntilAlertDisappear();
         return new ConfigureEndDevicesPopup();

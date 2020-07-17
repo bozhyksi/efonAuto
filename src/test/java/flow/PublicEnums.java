@@ -219,6 +219,22 @@ public class PublicEnums {
 
     }
 
+    //End Devices
+    public enum OutgoingNumberType{
+        INTERNAL,
+        INTERNATIONAL
+    }
+    public enum CountryCode{
+        DE,
+        AT,
+        CH,
+        IT;
+
+        public static String getRandomCountryCode(){
+            return CountryCode.values()[new Random().nextInt(CountryCode.values().length)].toString();
+        }
+    }
+
 
 
 }

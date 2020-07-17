@@ -292,5 +292,7 @@ public class User extends BaseTestMethods {
         return "";
     }
 
-
+    public String getDisplayName(){
+        return getFullName();
+    }
 }

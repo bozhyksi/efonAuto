@@ -324,7 +324,7 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     }
 
     @Step("Set hunt group name")
-    public CreateHuntGroupPopup setName(String huntGroupName){
+    public CreateHuntGroupPopup enterName(String huntGroupName){
         getInputName().setValue(huntGroupName);
         return this;
     }
@@ -359,7 +359,7 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     }
 
     @Step("Set display name")
-    public CreateHuntGroupPopup setDisplayName(String displayName){
+    public CreateHuntGroupPopup enterDisplayName(String displayName){
         getInputDisplName().setValue(displayName);
         return this;
     }
@@ -432,6 +432,13 @@ public class CreateHuntGroupPopup extends HuntGroupPage {
     public CreateHuntGroupPopup verifyFullDaysConfig(HuntGroup huntGroup){
         getInputFullDayName().shouldHave(value(huntGroup.getFullDayName()));
         getInputFullDayDate().shouldHave(value(huntGroup.getFullDayDate()));
+        return this;
+    }
+
+    @Step("Verify full days with Time Ranges configuration")
+    public CreateHuntGroupPopup verifyFullDaysWithTimeRangesConfig(HuntGroup huntGroup){
+        getInputFullDayName().shouldHave(value(huntGroup.getFullDayName()));
+        getInputFullDayDate().shouldHave(value(huntGroup.getFullDayWithTimeRanges()));
         return this;
     }
 

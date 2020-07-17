@@ -7,7 +7,6 @@ import io.qameta.allure.Step;
 import pages.basePage.BasePage;
 import pages.huntGroupPage.huntGroupPopup.createHuntGropuPopup.CreateHuntGroupPopup;
 import tests.huntGroupPageTest.huntGroupTestData.HuntGroup;
-import tests.userPageTests.userPageTestData.User;
 
 import static com.codeborne.selenide.Condition.exist;
 import static core.configuration.preparations.eFonApp.confirmationPopup;
@@ -142,8 +141,8 @@ public class HuntGroupPage extends BasePage {
     public HuntGroupPage createHuntGroup(HuntGroup huntGroup){
         goToMenuTab(HUNT_GROUPS);
         clickCreateNewHuntGroup()
-                .setName(huntGroup.getHuntGroupName())
-                .setDisplayName(huntGroup.getHuntGroupDisplayName())
+                .enterName(huntGroup.getHuntGroupName())
+                .enterDisplayName(huntGroup.getHuntGroupDisplayName())
                 .selectLanguage(huntGroup.getHuntGroupLanguage())
                 .selectNumber(huntGroup.getHuntGroupNumber())
                 .saveChanges();

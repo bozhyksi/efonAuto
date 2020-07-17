@@ -6,7 +6,6 @@ import flow.BaseTestMethods;
 import io.qameta.allure.Description;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.basePage.BasePage;
 import tests.endDevicesPageTests.endDevicesTestData.EndDevicesTestData;
 import tests.userPageTests.userPageTestData.EndDevice;
 
@@ -37,7 +36,7 @@ public class EndDevicesPageTests extends BaseTestMethods {
         login()
                 .goToMenuTab(END_DEVICES);
         endDevicesPage
-                .configureEndDevice(endDevice.getRandomEndDeviceForEdit())
+                .clickEditEndDevice(endDevice.getRandomEndDeviceForEdit())
                 .setName(endDevice.getEndDevName())
                 .setUserId(endDevice.getEndDevUserId())
                 .setPassword(endDevice.getEndDevPass())
@@ -51,7 +50,7 @@ public class EndDevicesPageTests extends BaseTestMethods {
                 .saveChanges()
                 .refreshPage();
         endDevicesPage
-                .configureEndDevice(endDevice.getEndDevName())
+                .clickEditEndDevice(endDevice.getEndDevName())
                 .verifyEndDeviceConfiguration(endDevice);
     }
 }

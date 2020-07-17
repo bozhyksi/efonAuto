@@ -134,6 +134,32 @@ public class IVRpageTests extends BaseTestMethods {
         deleteHuntGroupApi(ivr.getHuntGroup());
     }
 
+    @Description("Verify if HungGroup with shortNumber available for IVR actions")
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
+    public void useHuntGroupWithShortNumInIvrActionTest(){
+        IVRtestData ivr = new IVRtestData(new FileManagementTestData(), new HuntGroup(new AbbreviatedDialling(SINGLE)));
+
+        ivrList.add(ivr);
+        filesList.add(ivr.getAnnouncement());
+        huntGroupsList.add(ivr.getHuntGroup());
+        shortNumList.add(ivr.getHuntGroup().getShotNum());
+
+        createAbbreviatedNumberApi(ivr.getHuntGroup().getShotNum());
+        createIvrApi(ivr);
+        createHuntGroupApi(ivr.getHuntGroup());
+        login()
+                .goToMenuTab(IVRs);
+        ivrPage
+                .clickEditIvr(ivr)
+                .configureHuntGroupAction(ivr.getHuntGroup())
+                .saveChanges()
+                .clickEditIvr(ivr)
+                .verifyIvrAction(PublicEnums.IvrActions.RINGRUF, ivr);
+        deleteIvrApi(ivr);
+        deleteHuntGroupApi(ivr.getHuntGroup());
+        deleteAbbreviatedNumberApi(ivr.getHuntGroup().getShotNum());
+    }
+
     @Description("Verify if user can configure \"Queues\" ivr action")
     @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "IVRpageTests"})
     public void configureQueuesIvrActionTest() {
