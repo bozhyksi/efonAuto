@@ -161,7 +161,7 @@ public class IVRpageTests extends BaseTestMethods {
     }
 
     @Description("Verify if user can configure \"Queues\" ivr action")
-    @Test(/*retryAnalyzer = RetryAnalyzer.class,*/ groups = {"regression", "IVRpageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "IVRpageTests"})
     public void configureQueuesIvrActionTest() {
 
         Queue queue = new Queue(new User(), new User(),new User(),new AbbreviatedDialling(SINGLE));

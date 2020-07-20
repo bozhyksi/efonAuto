@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.basePage.BasePage;
 import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 import tests.phonebookPageTests.phonebookPageTestData.PhonebookRowMapper;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.qameta.allure.Allure.step;
+import static pages.basePage.BasePage.MenuTabsBasePage.PHONEBOOK;
 
 @Listeners(CustomListeners.class)
 
@@ -114,25 +116,16 @@ public class PhonebookPageTests extends BaseTestMethods {
         }
     }
 
-    // bug PRO-881
     @Description("Verify if user is able to download example file")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"}, enabled = false)
-    public void VerifyIfUserIsAbleToDownloadExample(){
-        step("Log in the system as VPBX admin and goto Phonebook tab");
-        login();
-        basePage.getTabPhonebook().click();
-        phonebookPage.validatePageTitle("Phonebook");
-
-        step("Click Download Example button");
-        phonebookPage.downloadExample();
-
-        step("Check if example file was downloaded");
-        try {
-            Assert.assertTrue(excelFileWorker.checkIfFileExists("excelimport_phonebook_example.xls"), "Example file not found");
-        } finally {
-            step("Delete example file");
-            excelFileWorker.deleteFile("excelimport_phonebook_example.xls");
-        }
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "smoke", "phonebookPageTests"})
+    public void downloadExampleFileTest(){
+        login()
+                .goToMenuTab(PHONEBOOK);
+        phonebookPage
+                .validatePageTitle("Phonebook")
+                .downloadExample()
+                .verifyExampleFileDownloaded()
+                .deleteDownloadedExampleFile();
     }
 
     @AfterClass(alwaysRun = true)

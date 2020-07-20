@@ -4,9 +4,15 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import org.testng.Assert;
 import pages.basePage.BasePage;
+import tests.phonebookPageTests.phonebookPageTestData.Phonebook;
 
 import java.io.File;
+
+import static core.configuration.preparations.eFonApp.excelFileWorker;
+import static io.qameta.allure.Allure.step;
 
 public class PhonebookPage extends BasePage {
     //<editor-fold desc="//-- PhonebookPage locators--//">
@@ -59,8 +65,10 @@ public class PhonebookPage extends BasePage {
     }
     //</editor-fold>
 
-    public void validatePageTitle(String excpected){
+    @Step("Verify page title")
+    public PhonebookPage validatePageTitle(String excpected){
         getPageTitle().getText().contains(excpected);
+        return this;
     }
 
     public void uploadFile(String fileName){
@@ -80,8 +88,23 @@ public class PhonebookPage extends BasePage {
         Selenide.sleep(3000);
     }
 
-    public void downloadExample(){
+    @Step("Download example file")
+    public PhonebookPage downloadExample(){
         getButtonDownloadExample().click();
         Selenide.sleep(3000);
+        return this;
+    }
+
+    @Step("Verify if file downloaded")
+    public PhonebookPage verifyExampleFileDownloaded(){
+        Assert.assertTrue(excelFileWorker.checkIfFileExists("excelimport_phonebook_example.xls"),
+                "Example file not found");
+        return this;
+    }
+
+    @Step("Delete downloaded example file")
+    public PhonebookPage deleteDownloadedExampleFile(){
+        excelFileWorker.deleteFile("excelimport_phonebook_example.xls");
+        return this;
     }
 }
