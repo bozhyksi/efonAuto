@@ -10,6 +10,7 @@ public class EditAnnouncementPopupUserPage extends AnnouncementsUserPage {
     private String inputNameXpath = "//announcement-edit-name//input[@formcontrolname=\"displayName\"]";
     private String checkboxVoicemailXpath = "//announcement-edit-name//input[@formcontrolname=\"asVoicemail\"]";
     private String checkboxRingbackXpath = "//announcement-edit-name//input[@formcontrolname=\"asRingback\"]";
+    private String saveButton = "//*[@role=\"dialog\"]//button[text()=\"Save\"]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">
@@ -38,7 +39,7 @@ public class EditAnnouncementPopupUserPage extends AnnouncementsUserPage {
 
     @Step("Save")
     public AnnouncementsUserPage save(){
-        getButtonSave().click();
+        field(saveButton).click();
         waitUntilAlertDisappear();
         return new AnnouncementsUserPage();
     }

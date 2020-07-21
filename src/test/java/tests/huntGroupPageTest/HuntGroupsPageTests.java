@@ -392,8 +392,9 @@ public class HuntGroupsPageTests extends BaseTestMethods {
         deleteHuntGroupApi(huntGroup);
     }
 
+    //EPRO-1167
     @Description("Verify if system delete HuntGroups after editing")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"})
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupsPageTests"},enabled = false)
     public void deleteHuntGroupAfterEditingTest(){
         HuntGroup huntGroup = new HuntGroup();
         huntGroupsList.add(huntGroup);

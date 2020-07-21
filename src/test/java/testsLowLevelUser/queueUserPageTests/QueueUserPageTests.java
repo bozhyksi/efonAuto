@@ -81,55 +81,64 @@ public class QueueUserPageTests extends BaseTestMethods {
     @Description("Check if low-level user can create Queues Report by DAY")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void createReportByDayTest(){
-        Queue queue = new Queue();
+        User reporter = new User();
+        Queue queue = new Queue(reporter,reporter);
         queuesList.add(queue);
+        usersList.add(reporter);
 
-        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
-        addQueueAgentApi(queue,autotestUserAccountID);
+        createUsersApi(reporter);
+        createQueueApi(queue);
+        addQueueAgentApi(queue,queue.getReporter().getAccountId());
 
-        loginAsLowLevelUser()
+        login(reporter.getLoginEmail(),reporter.getLoginPassword())
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
         reportsQueuePage
-                .createReportForEveryType(Day, queue,autotestUserFirstName);
-
+                .createReportForEveryType(Day, queue,reporter.getFirstName());
         deleteQueueApi(queue);
+        deleteUsersApi(queue.getReporter());
     }
 
     @Description("Check if low-level user can create Queues Report by MONTH")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void createReportByMonthTest(){
-        Queue queue = new Queue();
+        User reporter = new User();
+        Queue queue = new Queue(reporter,reporter);
         queuesList.add(queue);
+        usersList.add(reporter);
 
-        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
-        addQueueAgentApi(queue,autotestUserAccountID);
+        createUsersApi(reporter);
+        createQueueApi(queue);
+        addQueueAgentApi(queue,queue.getReporter().getAccountId());
 
-        loginAsLowLevelUser()
+        login(reporter.getLoginEmail(),reporter.getLoginPassword())
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
         reportsQueuePage
-                .createReportForEveryType(Month, queue,autotestUserFirstName);
-
+                .createReportForEveryType(Month, queue,reporter.getFirstName());
         deleteQueueApi(queue);
+        deleteUsersApi(queue.getReporter());
     }
 
     @Description("Check if low-level user can create Queues Report by PERIOD")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression","queueUserPageTest"})
     public void createReportByPeriodTest(){
-        Queue queue = new Queue();
+        User reporter = new User();
+        Queue queue = new Queue(reporter,reporter);
         queuesList.add(queue);
+        usersList.add(reporter);
 
-        createQueueWithMangerReporterApi(queue,autotestUserContactID,autotestUserContactID);
-        addQueueAgentApi(queue,autotestUserAccountID);
+        createUsersApi(reporter);
+        createQueueApi(queue);
+        addQueueAgentApi(queue,queue.getReporter().getAccountId());
 
-        loginAsLowLevelUser()
+        login(reporter.getLoginEmail(),reporter.getLoginPassword())
                 .goToMenuTab(QUEUES)
                 .goToMenuTab(REPORT_QUEUES);
         reportsQueuePage
-                .createReportForEveryType(Period,queue,autotestUserFirstName);
-
+                .createReportForEveryType(Period,queue,reporter.getFirstName());
         deleteQueueApi(queue);
+        deleteUsersApi(queue.getReporter());
     }
 
     @Description("Check if low-level user can see Queues where he is assigned as a manager")

@@ -50,16 +50,20 @@ public class EndDevicesUserPageTests extends BaseTestMethods {
     @Description("Check if all customer numbers are available as End Device outgoing number")
     @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
     public void verifyOutgoingNumbersListTest(){
+        User user = new User();
+        userList.add(user);
         ArrayList<String> customerNumbersList = getCustomerNumbersApi();
         ArrayList<String> outgoingNumbersList;
 
-        loginAsLowLevelUser()
+        createUsersApi(user);
+        login(user.getLoginEmail(),user.getLoginPassword())
                 .goToMenuTab(END_DEVICES);
         outgoingNumbersList = endDevicesPage
-                .clickEditEndDevice(autotestUserEndDevname)
+                .clickEditEndDevice()
                 .getOutgoingDropdownItems();
         endDevicesPage
                 .verifyOutgoingNumbersList(customerNumbersList,outgoingNumbersList);
+        deleteUsersApi(user);
     }
 
     @Description("Check if user can change INTERNAL outgoing number and set new Location zip code")
