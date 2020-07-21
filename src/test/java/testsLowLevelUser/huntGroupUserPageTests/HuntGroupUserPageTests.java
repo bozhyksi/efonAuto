@@ -278,9 +278,8 @@ public class HuntGroupUserPageTests extends BaseTestMethods {
         deleteUsersApi(user);
     }
 
-    //bug 1158
     @Description("Check if HuntGroup with shortNums are available for low-level user")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "huntGroupUserPageTests"})
     public void huntGroupsWithShortNumsAvailableForLowUserTest(){
         User user = new User();
         HuntGroup huntGroup = new HuntGroup(user ,new AbbreviatedDialling(SINGLE));

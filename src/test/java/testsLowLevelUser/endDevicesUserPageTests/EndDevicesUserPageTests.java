@@ -13,8 +13,7 @@ import tests.userPageTests.userPageTestData.User;
 import java.util.ArrayList;
 
 import static api.baseApiMethods.NumbersApi.getCustomerNumbersApi;
-import static api.baseApiMethods.UserApi.createUsersApi;
-import static api.baseApiMethods.UserApi.deleteUsersApi;
+import static api.baseApiMethods.UserApi.*;
 import static com.codeborne.selenide.Condition.disabled;
 import static com.codeborne.selenide.Condition.value;
 import static flow.PublicEnums.OutgoingNumberType.INTERNAL;
@@ -27,23 +26,25 @@ import static testsLowLevelUser.testData.AutotestUserData.autotestUserEndDevname
 public class EndDevicesUserPageTests extends BaseTestMethods {
     ArrayList<User> userList = new ArrayList<>();
 
-    //EPRO-1103
     @Description("Check if low-level user can edit his own End Devices")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "endDevicesUserPageTests"})
     public void editOwnEndDevicesTest(){
-        EndDevice endDevice = new EndDevice();
+        User user = new User(new EndDevice(INTERNAL));
+        userList.add(user);
 
-        loginAsLowLevelUser()
+        createUsersApi(user);
+        login(user.getLoginEmail(),user.getLoginPassword())
                 .goToMenuTab(END_DEVICES);
         endDevicesPage
-                .clickEditEndDevice(autotestUserEndDevname)
-                .selectLanguage(endDevice.getEndDevPhoneLanguage())
-                .selectOutgoingNumber(endDevice.getEndDevOutgoingNumber())
-                .setSuppressed(endDevice.getEndDevSuppressed())
-                .setLocation(endDevice.getEndDevLocation())
+                .clickEditEndDevice()
+                .selectLanguage(user.getEndDeviceData().getEndDevPhoneLanguage())
+                .selectOutgoingNumber(user.getEndDeviceData().getEndDevOutgoingNumber())
+                .setSuppressed(user.getEndDeviceData().getEndDevSuppressed())
+                .setLocation(user.getEndDeviceData().getEndDevLocation())
                 .saveChanges()
-                .clickEditEndDevice(autotestUserEndDevname)
-                .verifyEndDeviceConfiguration(endDevice);
+                .clickEditEndDevice()
+                .getInputLocation().shouldHave(value(user.getEndDeviceData().getEndDevLocation()));
+        deleteUsersApi(user);
     }
 
     @Description("Check if all customer numbers are available as End Device outgoing number")

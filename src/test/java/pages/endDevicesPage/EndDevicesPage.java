@@ -73,6 +73,13 @@ public class EndDevicesPage extends BasePage {
         return new ConfigureEndDevicesPopup();
     }
 
+    @Step("Edit end-device, open \"Configure end devices\" popup")
+    public ConfigureEndDevicesPopup clickEditEndDevice(){
+        field("//i[contains(@class,\"fa-cog\")]/..").click();
+        waitUntilAlertDisappear();
+        return new ConfigureEndDevicesPopup();
+    }
+
     @Step("Verify if all customer numbers are available as outgoing")
     public void verifyOutgoingNumbersList(ArrayList<String> customerNumbersList, ArrayList<String> outgoingNumbersList){
         Assert.assertEquals(customerNumbersList.size(),outgoingNumbersList.size(),
