@@ -449,4 +449,9 @@ public class IVRtestData extends BaseTestMethods {
         return this.ivrDisplName = getRandomString(15);
     }
 
+    public String changeNumber(){
+        this.ivrNumber = getRandomCustomerFreePhoneNumberFromDB();
+        return this.ivrNumber;
+    }
+
 }

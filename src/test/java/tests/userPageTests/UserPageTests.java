@@ -408,9 +408,8 @@ public class UserPageTests extends BaseTestMethods {
         deleteAnnouncementApi(announcFile);
     }
 
-    //EPRO-1126
     @Description("Check if user can Record voicemail announcement by phone")
-    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"},enabled = false)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = {"regression", "userPageTests"})
     public void recordVoicemailAnnouncementByPhoneTest(){
         String user = "AutoTestUser";
         FileManagementTestData announcement = new FileManagementTestData();
