@@ -30,9 +30,9 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     private final String buttonChangeIpXpath = "//*[@id=\"dropdown-custom-html\"]//a[text()=\"Change IP address\"]";
     private final String buttonDeselectProvisXpath = "//*[@id=\"dropdown-custom-html\"]//a[text()=\"Deselect from provisioning\"]";
     private final String buttonResetManuallyProvisXpath = "//*[@id=\"dropdown-custom-html\"]//a[text()=\"Reset manually provisioned\"]";
-    private final String iconFaCheckManualProvByTextXpath= "//td[contains(text(),\"%s\")]/..//td[8]//i[contains(@class, \"fa-check\")]";
-    private final String iconFaCheckSelectProvByTextXpath= "//td[contains(text(),\"%s\")]/..//td[7]//i[contains(@class, \"fa-check\")]";
-    private final String iconFaCheckAutoProvByTextXpath= "//td[contains(text(),\"%s\")]/..//td[6]//i[contains(@class, \"fa-check\")]";
+    private final String iconFaCheckManualProvByTextXpath= "//td[contains(text(),\"%s\")]/..//i[contains(@class, \"fa-check\")]";
+    private final String iconFaCheckSelectProvByTextXpath= "//td[contains(text(),\"%s\")]/..//i[contains(@class, \"fa-check\")]";
+    private final String iconFaCheckAutoProvByTextXpath= "//td[contains(text(),\"%s\")]/..//i[contains(@class, \"fa-check\")]";
     private final String fieldMacByTextXpath= "//td/span[text()=\"%s\"]";
 
     //</editor-fold>
@@ -125,9 +125,7 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     public ProvisioningEndDevicesPage selectForProvisioning(String name){
         openMenu(name);
         getButtonSelectForProvision().click();
-        waitUntilAlertDisappear();
         confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
         verifyIfSelectedForProvisioning(name);
         return this;
     }
@@ -136,9 +134,7 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     public ProvisioningEndDevicesPage deSelectForProvisioning(String name){
         openMenu(name);
         getButtonDeselectProvis().click();
-        waitUntilAlertDisappear();
         confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
         verifyIfNotSelectedForProvisioning(name);
         return this;
     }
@@ -147,9 +143,7 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     public ProvisioningEndDevicesPage setManuallyProvisioned(String name){
         openMenu(name);
         getButtonSetManuallProvision().click();
-        waitUntilAlertDisappear();
         confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
         verifyIfManuallyProvisioned(name);
         return this;
     }
@@ -158,9 +152,7 @@ public class ProvisioningEndDevicesPage extends ProvisioningBasePage {
     public ProvisioningEndDevicesPage resetManuallyProvisioned(String name){
         openMenu(name);
         getButtonResetManuallyProvis().click();
-        waitUntilAlertDisappear();
         confirmationPopup.getYesButton().click();
-        waitUntilAlertDisappear();
         getIconFaCheckManualProvByText(name).shouldNot(exist);
         return this;
     }

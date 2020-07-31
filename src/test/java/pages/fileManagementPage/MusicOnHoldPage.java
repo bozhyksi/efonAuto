@@ -11,9 +11,9 @@ import static core.configuration.preparations.eFonApp.confirmationPopup;
 public class MusicOnHoldPage extends FileManagementBasePage {
     //<editor-fold desc="Locators">
     private String pageTitleXpath = "//music-on-hold//h1";
-    private String fieldNameByTextXpath = "(//music-on-hold//table)[2]//td[2]//div[text()[contains(.,\"%s\")]]";
-    private String buttonEditByNameXpath = "(//music-on-hold//table)[2]//td[2]//div[text()[contains(.,\"%s\")]]/parent::td/following-sibling::td/i[2]";
-    private String buttonDeleteByNameXpath = "(//music-on-hold//table)[2]//td[2]//div[text()[contains(.,\"%s\")]]/parent::td/following-sibling::td/i[3]";
+    private String fieldNameByTextXpath = "//div[text()[contains(.,\"%s\")]]/..";
+    private String buttonEditByNameXpath = "//div[text()[contains(.,\"%s\")]]/../..//a[contains(@id,\"fa-cog\")]";
+    private String buttonDeleteByNameXpath = "//div[text()[contains(.,\"%s\")]]/../..//a[contains(@id,\"fa-trash\")]";
     //</editor-fold>
 
     //<editor-fold desc="get\set">

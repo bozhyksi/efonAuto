@@ -217,8 +217,7 @@ public class AbbreviatedNumbers extends AbbreviatedDiallingBasePage {
 
     @Step("Check if short dial was assign to the user and user's info is showed in the grid")
     public AbbreviatedNumbers validateInternalUserShorDial(User user){
-        getListLastName().filterBy(Condition.text(user.getLastName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
-        getListFirstName().filterBy(Condition.text(user.getFirstName())).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        field(String.format("//table//td[text()=\"%s\"]",user.getFullName())).should(exist);
         return this;
     }
 
